@@ -3,7 +3,14 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] private Weapon weapon;
+    [System.Serializable]
+    struct WeaponCanMove
+    {
+        public Weapon weapon;
+        public bool canMove;
+    }
+
+    [SerializeField] private WeaponCanMove[] weapons;
     [SerializeField] private Player player;
     [SerializeField] private float moveSpeed;
     [SerializeField] private Enemy enemyPrefab;
@@ -22,11 +29,13 @@ public class EnemySpawner : MonoBehaviour
         {
             Vector3 pos = transform.position;
 
+            WeaponCanMove wcm = weapons[Random.Range(0, weapons.Length)];
+
             Instantiate(enemyPrefab, new Vector3(
                     pos.x + Random.Range(-halfExtendsSpawnBounds.x, halfExtendsSpawnBounds.x), 
                     pos.y + Random.Range(-halfExtendsSpawnBounds.y, halfExtendsSpawnBounds.y), 
                     pos.z), 
-                Quaternion.identity).Set(weapon, player, moveSpeed);
+                Quaternion.identity).Set(wcm.weapon, player, moveSpeed, wcm.canMove);
             yield return new WaitForSeconds(spawnSpeed);
         }
     }

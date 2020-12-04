@@ -9,20 +9,25 @@ public class Enemy : MonoBehaviour
     [SerializeField] private Player player;
     [SerializeField] private float moveSpeed;
 
+    private float rangeShootAtPlayer = 200.0f;
     Rigidbody2D body;
 
-    private void Start()
+    private void Awake()
     {
         body = GetComponent<Rigidbody2D>();
-        StartCoroutine(ShootAtPlayer());
-        StartCoroutine(MoveAwayFromPlayer());
     }
 
-    public void Set(Weapon weapon, Player player, float moveSpeed)
+    public void Set(Weapon weapon, Player player, float moveSpeed, bool shouldMove)
     {
         this.weapon = weapon;
         this.player = player;
         this.moveSpeed = moveSpeed;
+
+        StartCoroutine(ShootAtPlayer());
+        if (shouldMove == true)
+            StartCoroutine(MoveAwayFromPlayer());
+        else
+            rangeShootAtPlayer = float.MaxValue;
     }
 
     private IEnumerator MoveAwayFromPlayer()
@@ -48,7 +53,7 @@ public class Enemy : MonoBehaviour
         {
             Vector3 direction = player.transform.position - transform.position;
             direction.z = 0.0f;
-            if (direction.sqrMagnitude < 200.0f)
+            if (direction.sqrMagnitude < rangeShootAtPlayer)
             {
                 weapon.Fire(gameObject, transform.position, direction.normalized);
                 yield return new WaitForSeconds(weapon.ShootPerSecond);

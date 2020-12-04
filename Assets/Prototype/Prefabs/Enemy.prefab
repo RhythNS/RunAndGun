@@ -114,7 +114,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weapon: {fileID: 11400000, guid: 4f98bfcfa89fd6c4688d5321255e9117, type: 2}
   player: {fileID: 0}
-  moveSpeed: 600
+  moveSpeed: 1
 --- !u!50 &3415029707729215112
 Rigidbody2D:
   serializedVersion: 4
@@ -153,7 +153,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.84375, y: 0.9375}
+    oldSize: {x: 1.6875, y: 1.875}
     newSize: {x: 0.27, y: 0.3}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
