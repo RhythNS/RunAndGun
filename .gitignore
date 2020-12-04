@@ -1,8 +1,12 @@
 # This .gitignore file should be placed at the root of your Unity project directory
 #
 # Get latest from https://github.com/github/gitignore/blob/master/Unity.gitignore
-#
+
+# Ignore copyrighted folders
+/[Aa]ssets/[Pp]lugins
 /[Aa]ssets/[Ii]mported [Aa]ssets
+
+# Ignore Unity folders
 /[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/
@@ -13,6 +17,8 @@
 
 # Never ignore Asset meta data
 !/[Aa]ssets/**/*.meta
+# Ignore plugins folder meta data
+/[Aa]ssets/[Pp]lugins.meta
 
 # Uncomment this line if you wish to ignore the asset store tools plugin
 # /[Aa]ssets/AssetStoreTools*
