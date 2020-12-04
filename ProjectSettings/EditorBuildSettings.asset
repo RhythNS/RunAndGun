@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Prototype/Scenes/RhythScene.unity
+    guid: 61c633cf9ce83d444820321678683061
   m_configObjects: {}

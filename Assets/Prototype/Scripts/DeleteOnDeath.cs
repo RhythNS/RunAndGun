@@ -2,6 +2,7 @@
 {
     public override void Die()
     {
+        ScoreUpdater.OnEnemyKilled();
         Destroy(gameObject);
     }
 }
