@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5990999414539364323}
   - component: {fileID: 1567271966186459954}
   - component: {fileID: 6619189546221977461}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -135,3 +135,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxLifeTime: 5
   vel: {x: 0, y: 0}
+  owner: 0

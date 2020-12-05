@@ -28,6 +28,9 @@ public class BulletP : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.transform.CompareTag("Enemy")) {
             if (owner) {
+                collision.GetComponent<EnemyController>().health -= 25;
+                if (collision.GetComponent<EnemyController>().health <= 0)
+                    Destroy(collision.gameObject);
                 Destroy(gameObject);
             }
         } else if (collision.transform.CompareTag("Player")) {

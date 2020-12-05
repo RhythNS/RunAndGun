@@ -53,7 +53,7 @@ public class CharController : MonoBehaviour
         Vector3 screenPos = Camera.main.ScreenToWorldPoint(mousePos);
 
         GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
-        bullet.GetComponent<BulletP>().vel = (new Vector2(screenPos.x, screenPos.y) - new Vector2(transform.position.x, transform.position.y)).normalized * 4;
+        bullet.GetComponent<BulletP>().vel = (new Vector2(screenPos.x, screenPos.y) - new Vector2(transform.position.x, transform.position.y)).normalized * 8;
         bullet.GetComponent<BulletP>().owner = true;
     }
 }

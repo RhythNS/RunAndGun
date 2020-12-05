@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1595300916563440717}
   - component: {fileID: 1595300916563440718}
   - component: {fileID: 1595300916563440719}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -136,3 +136,7 @@ MonoBehaviour:
   target: {fileID: 0}
   bulletPrefab: {fileID: 3967827031791124016, guid: 547cb819e08dd824a8e0d28ed8362072,
     type: 3}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 512
+  test: {x: 0, y: 0}

@@ -9,6 +9,9 @@ public class EnemyController : MonoBehaviour
     [SerializeField]
     private GameObject bulletPrefab;
 
+    [SerializeField]
+    private LayerMask layerMask;
+
     private Rigidbody2D rb;
 
     float update = 0;
@@ -17,6 +20,8 @@ public class EnemyController : MonoBehaviour
     float fixedCooldown = 2;
     float cooldown = 0;
     bool canShoot = false;
+
+    public int health = 100;
 
     private void Start() {
         rb = GetComponent<Rigidbody2D>();
@@ -31,12 +36,8 @@ public class EnemyController : MonoBehaviour
             }
         }
 
-        if (canShoot) {
-            canShoot = false;
-
-            Shoot();
-        }
-
+        if (canShoot)
+            TryShoot();
     }
 
     private void FixedUpdate() {
@@ -65,9 +66,14 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    private void Shoot() {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.position - target.position, 6);
-        if (hit.transform.CompareTag("Player")) {
+    private void TryShoot() {
+        Vector2 origin = new Vector2(transform.position.x, transform.position.y);
+        Vector2 direction = new Vector2(target.position.x, target.position.y) - new Vector2(transform.position.x, transform.position.y);
+        RaycastHit2D hit = Physics2D.Raycast(origin, direction.normalized, 100f, layerMask);
+
+        if (hit.transform && hit.transform.CompareTag("Player")) {
+            canShoot = false;
+
             GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
             bullet.GetComponent<BulletP>().vel = (new Vector2(target.position.x, target.position.y) - new Vector2(transform.position.x, transform.position.y)).normalized * 4;
         }
