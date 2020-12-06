@@ -21,6 +21,21 @@ public class Player : MonoBehaviour
         body = GetComponent<Rigidbody2D>();
     }
 
+    private void Start()
+    {
+        StartCoroutine(SliderUpdate());
+    }
+
+    private IEnumerator SliderUpdate()
+    {
+        while (true)
+        {
+            float perc = Mathf.Max(0.0f, dashTimer / dashCooldown);
+            DashUpdater.UpdatePercentage(1.0f - perc);
+            yield return null;
+        }
+    }
+
     private void Update()
     {
         if (dashing == true)
@@ -81,7 +96,7 @@ public class Player : MonoBehaviour
         color.a = 0.5f;
         renderer.color = color;
         float timer = dashDuration;
-        while(true)
+        while (true)
         {
             timer -= Time.deltaTime;
             if (timer < 0.0f)
