@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Dungeon
+public class DungeonOLD
 {
     [System.Serializable]
     public class DungeonTileset
@@ -32,7 +32,7 @@ public class Dungeon
     [SerializeField, Range(0f, 1f)]
     private float roomChance = 0.4f;
 
-    public Dungeon(Vector2Int maxSize) {
+    public DungeonOLD(Vector2Int maxSize) {
         this.maxSize = maxSize;
         map = new TileTypes[this.maxSize.x, this.maxSize.y];
 
