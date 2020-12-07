@@ -9,12 +9,9 @@ public class Dungeon : Map
     private const int MIN_CORRIDOR_LENGTH = 3;
     private const int MAX_CORRIDOR_LENGTH = 7;
     private const int MAX_STRUCTURES = 50;
-    private const float ROOM_CHANCE = 0.5f;
+    private const float ROOM_CHANCE = 0.4f;
     
-    public Dungeon(int x, int y, int seed) : base(x, y) {
-        SizeX = x;
-        SizeY = y;
-
+    public Dungeon(int sizeX, int sizeY, int seed) : base(sizeX, sizeY) {
         if (seed != -1)
             Random.InitState(seed);
 
@@ -29,14 +26,14 @@ public class Dungeon : Map
         //}
 
         //// random using mapper
-        //Vector2Int currPos = new Vector2Int(sizeX / 2, sizeY / 2);
+        //Vector2Int currPos = new Vector2Int((int)((float)SizeX / (float)2), (int)((float)SizeY / (float)2));
         //int maxSteps = 50;
         //for (int i = 0; i < maxSteps; i++) {
         //    int rnd = Random.Range(0, 4);
 
         //    switch (rnd) {
         //        case 0:
-        //            if (currPos.x < sizeX - 2)
+        //            if (currPos.x < SizeX - 2)
         //                currPos.x++;
         //            break;
 
@@ -46,7 +43,7 @@ public class Dungeon : Map
         //            break;
 
         //        case 2:
-        //            if (currPos.y < sizeY - 2)
+        //            if (currPos.y < SizeY - 2)
         //                currPos.y++;
         //            break;
 
@@ -56,7 +53,7 @@ public class Dungeon : Map
         //            break;
         //    }
 
-        //    this[x, y] = Tile.Floor;
+        //    this[currPos.x, currPos.y] = Tile.Floor;
         //}
 
         // dungeon structure with rooms and tunnels
@@ -65,7 +62,7 @@ public class Dungeon : Map
         int rndSizeY = Random.Range(MIN_ROOM_SIZE, MAX_ROOM_SIZE);
         int rndPosX = SizeX / 2 - rndSizeX / 2;
         int rndPosY = SizeY / 2 - rndSizeY / 2;
-        Structure startRoom = new Structure(rndSizeX, rndSizeY, rndPosX, rndPosY, true);
+        Structure startRoom = new Structure(rndPosX, rndPosY, rndSizeX, rndSizeY, true);
         AddStructure(startRoom, Direction.Left, true);
 
         // create as many rooms as possible
@@ -74,21 +71,48 @@ public class Dungeon : Map
                 Debug.Log("Cannot create more structures!");
         }
 
-        //// if there are left over walls, try and create more rooms
-        //for (int i = 0; i < walls.Count; i++) {
-        //    if (!walls[i].IsRoom)
-        //        continue;
+        // if there are left over walls, try and create more rooms
+        for (int i = 0; i < walls.Count; i++) {
+            if (walls[i].IsRoom)
+                continue;
 
-        //    rndPosX = Random.Range(walls[i].Position.x, walls[i].Position.x + walls[i].Size.x - 1);
-        //    rndPosY = Random.Range(walls[i].Position.y, walls[i].Position.y + walls[i].Size.y - 1);
+            rndPosX = Random.Range(walls[i].Position.x, walls[i].Position.x + walls[i].Size.x - 1);
+            rndPosY = Random.Range(walls[i].Position.y, walls[i].Position.y + walls[i].Size.y - 1);
 
-        //    for (int j = 0; j < 4; j++) {
-        //        if (CreateRoom(rndPosX, rndPosY, (Direction)j)) {
-        //            this[x, y] = Tile.Floor;
-        //            break;
-        //        }
-        //    }
-        //}
+            for (int j = 0; j < 4; j++) {
+                if (CreateRoom(rndPosX, rndPosY, (Direction)j)) {
+                    this[rndPosX, rndPosY] = Tile.Floor;
+                    break;
+                }
+            }
+        }
+
+        // delete dead-ends
+        bool foundDeadEnd = true;
+        while (foundDeadEnd) {
+            foundDeadEnd = false;
+
+            for (int x = 1; x < SizeX - 1; x++) {
+                for (int y = 1; y < SizeY - 1; y++) {
+                    if (this[x, y] == Tile.Floor) {
+                        int wallCount = 0;
+                        if (this[x - 1, y] == Tile.Wall)
+                            wallCount++;
+                        if (this[x + 1, y] == Tile.Wall)
+                            wallCount++;
+                        if (this[x, y - 1] == Tile.Wall)
+                            wallCount++;
+                        if (this[x, y + 1] == Tile.Wall)
+                            wallCount++;
+
+                        if (wallCount >= 3) {
+                            foundDeadEnd = true;
+                            this[x, y] = Tile.Wall;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private bool CreateStructure() {
@@ -107,7 +131,7 @@ public class Dungeon : Map
     }
 
     private bool CreateStructure(int x, int y, Direction dir, bool isRoom) {
-        if (isRoom && Random.value < ROOM_CHANCE) {
+        if (!isRoom && Random.value < ROOM_CHANCE) {
             if (CreateRoom(x, y, dir)) {
                 this[x, y] = Tile.Floor;
 

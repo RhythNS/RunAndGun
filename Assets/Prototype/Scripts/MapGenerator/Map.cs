@@ -82,40 +82,38 @@ public abstract class Map
     /// <param name="dir">The direction in which to add it.</param>
     /// <param name="isStartRoom">If it is the start room. Defaults to false.</param>
     protected void AddStructure(Structure structure, Direction dir, bool isStartRoom = false) {
-        for (int x = 0; x < SizeX; x++) {
-            for (int y = 0; y < SizeY; y++) {
+        for (int x = structure.Position.x; x < structure.Position.x + structure.Size.x; x++) {
+            for (int y = structure.Position.y; y < structure.Position.y + structure.Size.y; y++) {
                 this[x, y] = Tile.Floor;
             }
         }
 
-        bool isWall = structure.Size.x == 1 || structure.Size.y == 1;
-
-        if (!isWall) {
+        if (structure.IsRoom) {
             rooms.Add(structure);
 
             if (dir != Direction.Left || isStartRoom)
                 walls.Add(new Structure(
                     structure.Position.x + structure.Size.x, structure.Position.y + 1,
                     1, structure.Size.y - 2,
-                    isStartRoom
+                    structure.IsRoom
                 ));
             if (dir != Direction.Right || isStartRoom)
                 walls.Add(new Structure(
                     structure.Position.x - 1, structure.Position.y + 1,
                     1, structure.Size.y - 2,
-                    isStartRoom
+                    structure.IsRoom
                 ));
             if (dir != Direction.Up || isStartRoom)
                 walls.Add(new Structure(
                     structure.Position.x + 1, structure.Position.y - 1,
                     structure.Size.x - 2, 1,
-                    isStartRoom
+                    structure.IsRoom
                 ));
             if (dir != Direction.Down || isStartRoom)
                 walls.Add(new Structure(
                     structure.Position.x + 1, structure.Position.y + structure.Size.y,
                     structure.Size.x - 2, 1,
-                    isStartRoom
+                    structure.IsRoom
                 ));
         } else {
             tunnels.Add(structure);
@@ -124,25 +122,25 @@ public abstract class Map
                 walls.Add(new Structure(
                     structure.Position.x + structure.Size.x, structure.Position.y,
                     1, structure.Size.y,
-                    isStartRoom
+                    structure.IsRoom
                 ));
             if (dir != Direction.Right || isStartRoom)
                 walls.Add(new Structure(
                     structure.Position.x - 1, structure.Position.y,
                     1, structure.Size.y,
-                    isStartRoom
+                    structure.IsRoom
                 ));
             if (dir != Direction.Up || isStartRoom)
                 walls.Add(new Structure(
                     structure.Position.x, structure.Position.y - 1,
                     structure.Size.x, 1,
-                    isStartRoom
+                    structure.IsRoom
                 ));
             if (dir != Direction.Down || isStartRoom)
                 walls.Add(new Structure(
                     structure.Position.x, structure.Position.y + structure.Size.y,
                     structure.Size.x, 1,
-                    isStartRoom
+                    structure.IsRoom
                 ));
         }
     }

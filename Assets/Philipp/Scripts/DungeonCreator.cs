@@ -20,7 +20,7 @@ public class DungeonCreator : MonoBehaviour
     private Tile floor;
 
     [SerializeField]
-    public int seed = -1;
+    private int seed = -1;
 
     public void CreateDungeon() {
         if (dungeon != null)
