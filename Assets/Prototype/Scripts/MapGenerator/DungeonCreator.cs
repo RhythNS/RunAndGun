@@ -44,6 +44,16 @@ public class DungeonCreator : MonoBehaviour
     [Range(0f, 1f)]
     private float roomChance = 0.4f;
 
+    [SerializeField]
+    private bool useAlternateTiles = false;
+
+    // --------------------------- Creates a dungeon when game is started, delete when not wanted
+    private void Awake()
+    {
+        if (useAlternateTiles)
+            CreateDungeon();
+    }
+
     private void OnValidate() {
         // clamp maxSize
         if (maxSize.x < 16) maxSize.x = 16;
@@ -72,6 +82,12 @@ public class DungeonCreator : MonoBehaviour
                     tilemap.SetTile(new Vector3Int(x, y, 0), floor);
                 }
             }
+        }
+
+        if (useAlternateTiles == true)
+        {
+            GetComponent<TilePlacer>().Fill(dungeon, tilemap);
+            return;
         }
     }
 }

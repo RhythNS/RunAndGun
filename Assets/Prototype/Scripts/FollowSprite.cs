@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FollowSprite : MonoBehaviour
 {
-    [SerializeField] private Transform toFollow;
+    [SerializeField] public Transform toFollow;
     [SerializeField] private float minDistance = 50.0f;
     [SerializeField] private float strength = 1.0f;
 
@@ -13,6 +13,7 @@ public class FollowSprite : MonoBehaviour
 
     private void Start()
     {
+        toFollow = FindObjectOfType<Player>().transform;
         distanceSqr = minDistance * minDistance;
     }
 

@@ -22,6 +22,12 @@ public abstract class Map
 
     public enum Tile { Wall, Floor }
 
+    /// -------------- Debug getters, remove if not wanted ---------------------
+    public List<Structure> Rooms => rooms;
+    public List<Structure> Tunnels => tunnels;
+    public List<Structure> Walls => walls;
+    /// -------------- Debug getters, remove if not wanted ---------------------
+
     private List<Structure> rooms = new List<Structure>();
     private List<Structure> tunnels = new List<Structure>();
     protected List<Structure> walls = new List<Structure>();

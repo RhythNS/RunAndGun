@@ -10,7 +10,7 @@ public class WeaponInWorld : MonoBehaviour
         return weapon;
     }
 
-    public void Drop(Player player, Weapon weapon)
+    public void Drop(GameObject player, Weapon weapon)
     {
         transform.position = player.transform.position;
         this.weapon = weapon;

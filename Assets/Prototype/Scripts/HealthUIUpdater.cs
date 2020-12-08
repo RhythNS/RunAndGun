@@ -6,8 +6,9 @@ public class HealthUIUpdater : MonoBehaviour
     [SerializeField] private Health trackingHealth;
     private TMP_Text text;
 
-    private void Awake()
+    private void Start()
     {
+        trackingHealth = FindObjectOfType<Player>().GetComponent<Health>();
         text = GetComponent<TMP_Text>();
     }
 

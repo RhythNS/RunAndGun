@@ -45,7 +45,7 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E) && closeByWeapons.Count > 0)
         {
             if (weapon != null)
-                Instantiate(WeaponDict.Instance.GetWeaponInWorldForWeapon(weapon)).Drop(this, weapon);
+                Instantiate(WeaponDict.Instance.GetWeaponInWorldForWeapon(weapon)).Drop(gameObject, weapon);
 
             weapon = closeByWeapons[0].PickUp();
         }

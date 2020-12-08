@@ -12,13 +12,13 @@ public class MapGen : MonoBehaviour
     private Tile wall;
     [SerializeField]
     private Tile floor;
-
     public int seed = -1;
 
     MapGenerator.Map map;
 
     public void GenerateMap() {
         map = MapGenerator.GenerateMap(seed);
+
 
         for (int x = 0; x < map.size.x; x++) {
             for (int y = 0; y < map.size.y; y++) {

@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -9,7 +8,9 @@ public class Enemy : MonoBehaviour
     [SerializeField] private Player player;
     [SerializeField] private float moveSpeed;
 
-    private float rangeShootAtPlayer = 200.0f;
+    [SerializeField] private bool shouldMove;
+
+    private float rangeShootAtPlayer = 300.0f;
     Rigidbody2D body;
 
     private void Awake()
@@ -17,17 +18,19 @@ public class Enemy : MonoBehaviour
         body = GetComponent<Rigidbody2D>();
     }
 
+    private void Start()
+    {
+        StartCoroutine(ShootAtPlayer());
+        if (shouldMove == true)
+            StartCoroutine(MoveAwayFromPlayer());
+    }
+
     public void Set(Weapon weapon, Player player, float moveSpeed, bool shouldMove)
     {
         this.weapon = weapon;
         this.player = player;
         this.moveSpeed = moveSpeed;
-
-        StartCoroutine(ShootAtPlayer());
-        if (shouldMove == true)
-            StartCoroutine(MoveAwayFromPlayer());
-        else
-            rangeShootAtPlayer = float.MaxValue;
+        this.shouldMove = shouldMove;
     }
 
     private IEnumerator MoveAwayFromPlayer()
@@ -35,7 +38,11 @@ public class Enemy : MonoBehaviour
         while (true)
         {
             Vector2 direction = transform.position - player.transform.position;
-            if (direction.sqrMagnitude < 128.0f)
+            float magnitude = direction.sqrMagnitude;
+
+            if (magnitude > rangeShootAtPlayer)
+                yield return new WaitForSeconds(Random.Range(1.0f, 1.1f));
+            else if (magnitude < 128.0f)
             {
                 body.AddForce(direction.normalized * moveSpeed);
             }

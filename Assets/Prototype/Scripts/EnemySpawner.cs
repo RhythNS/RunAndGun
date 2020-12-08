@@ -4,7 +4,7 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     [System.Serializable]
-    struct WeaponCanMove
+    public struct WeaponCanMove
     {
         public Weapon weapon;
         public bool canMove;
