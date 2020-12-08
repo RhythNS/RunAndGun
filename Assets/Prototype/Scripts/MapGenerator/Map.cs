@@ -152,8 +152,8 @@ public abstract class Map
     /// <param name="size">The size of the area to check.</param>
     /// <returns>Returns true if the map is empty in the area, false if not.</returns>
     protected bool IsEmptyInArea(Vector2Int position, Vector2Int size) {
-        for (int x = position.x - 1; x < position.x + size.x + 1; x++) {
-            for (int y = position.y - 1; y < position.y + size.y + 1; y++) {
+        for (int x = position.x - 1; x <= position.x + size.x; x++) {
+            for (int y = position.y - 1; y <= position.y + size.y; y++) {
                 if (x >= 0 && y >= 0 && x < SizeX && y < SizeY) {
                     if (this[x, y] == Tile.Floor) {
                         return false;

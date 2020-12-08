@@ -4,14 +4,21 @@ using UnityEngine;
 
 public class Dungeon : Map
 {
-    private const int MIN_ROOM_SIZE = 3;
-    private const int MAX_ROOM_SIZE = 9;
-    private const int MIN_CORRIDOR_LENGTH = 3;
-    private const int MAX_CORRIDOR_LENGTH = 7;
-    private const int MAX_STRUCTURES = 50;
-    private const float ROOM_CHANCE = 0.4f;
+    private int minRoomSize = 3;
+    private int maxRoomSize = 9;
+    private int minCorridorLength = 3;
+    private int maxCorridorLength = 7;
+    private int maxStructures = 50;
+    private float roomChance = 0.4f;
     
-    public Dungeon(int sizeX, int sizeY, int seed) : base(sizeX, sizeY) {
+    public Dungeon(int sizeX, int sizeY, int seed, int minRoomSize, int maxRoomSize, int minCorridorLength, int maxCorridorLength, int maxStructures, float roomChance) : base(sizeX, sizeY) {
+        this.minRoomSize = minRoomSize;
+        this.maxRoomSize = maxRoomSize;
+        this.minCorridorLength = minCorridorLength;
+        this.maxCorridorLength = maxCorridorLength;
+        this.maxStructures = maxStructures;
+        this.roomChance = roomChance;
+
         if (seed != -1)
             Random.InitState(seed);
 
@@ -58,17 +65,24 @@ public class Dungeon : Map
 
         // dungeon structure with rooms and tunnels
         // starting room
-        int rndSizeX = Random.Range(MIN_ROOM_SIZE, MAX_ROOM_SIZE);
-        int rndSizeY = Random.Range(MIN_ROOM_SIZE, MAX_ROOM_SIZE);
+        int rndSizeX = Random.Range(this.minRoomSize, this.maxRoomSize + 1);
+        int rndSizeY = Random.Range(this.minRoomSize, this.maxRoomSize + 1);
         int rndPosX = SizeX / 2 - rndSizeX / 2;
         int rndPosY = SizeY / 2 - rndSizeY / 2;
         Structure startRoom = new Structure(rndPosX, rndPosY, rndSizeX, rndSizeY, true);
         AddStructure(startRoom, Direction.Left, true);
 
         // create as many rooms as possible
-        for (int i = 0; i < MAX_STRUCTURES; i++) {
-            if (!CreateStructure())
+        int iterations = this.maxStructures * 8;
+        int structureCount = 0;
+        for (int i = 0; i < iterations; i++) {
+            if (CreateStructure()) {
+                structureCount++;
+                if (structureCount > this.maxStructures)
+                    break;
+            } else {
                 Debug.Log("Cannot create more structures!");
+            }
         }
 
         // if there are left over walls, try and create more rooms
@@ -76,8 +90,8 @@ public class Dungeon : Map
             if (walls[i].IsRoom)
                 continue;
 
-            rndPosX = Random.Range(walls[i].Position.x, walls[i].Position.x + walls[i].Size.x - 1);
-            rndPosY = Random.Range(walls[i].Position.y, walls[i].Position.y + walls[i].Size.y - 1);
+            rndPosX = Random.Range(walls[i].Position.x, walls[i].Position.x + walls[i].Size.x);
+            rndPosY = Random.Range(walls[i].Position.y, walls[i].Position.y + walls[i].Size.y);
 
             for (int j = 0; j < 4; j++) {
                 if (CreateRoom(rndPosX, rndPosY, (Direction)j)) {
@@ -117,8 +131,8 @@ public class Dungeon : Map
 
     private bool CreateStructure() {
         int rnd = Random.Range(0, walls.Count);
-        int rndPosX = Random.Range(walls[rnd].Position.x, walls[rnd].Position.x + walls[rnd].Size.x - 1);
-        int rndPosY = Random.Range(walls[rnd].Position.y, walls[rnd].Position.y + walls[rnd].Size.y - 1);
+        int rndPosX = Random.Range(walls[rnd].Position.x, walls[rnd].Position.x + walls[rnd].Size.x);
+        int rndPosY = Random.Range(walls[rnd].Position.y, walls[rnd].Position.y + walls[rnd].Size.y);
 
         for (int i = 0; i < 4; i++) {
             if (CreateStructure(rndPosX, rndPosY, (Direction)i, walls[rnd].IsRoom)) {
@@ -131,7 +145,7 @@ public class Dungeon : Map
     }
 
     private bool CreateStructure(int x, int y, Direction dir, bool isRoom) {
-        if (!isRoom && Random.value < ROOM_CHANCE) {
+        if (!isRoom && Random.value < roomChance) {
             if (CreateRoom(x, y, dir)) {
                 this[x, y] = Tile.Floor;
 
@@ -150,7 +164,7 @@ public class Dungeon : Map
 
     private bool CreateRoom(int x, int y, Direction dir) {
         Structure room = new Structure {
-            Size = new Vector2Int(Random.Range(MIN_ROOM_SIZE, MAX_ROOM_SIZE), Random.Range(MIN_ROOM_SIZE, MAX_ROOM_SIZE)),
+            Size = new Vector2Int(Random.Range(minRoomSize, maxRoomSize + 1), Random.Range(minRoomSize, maxRoomSize + 1)),
             IsRoom = true
         };
 
@@ -188,22 +202,22 @@ public class Dungeon : Map
 
         switch (dir) {
             case Direction.Left:
-                corridor.Size = new Vector2Int(Random.Range(MIN_CORRIDOR_LENGTH, MAX_CORRIDOR_LENGTH), 1);
+                corridor.Size = new Vector2Int(Random.Range(minCorridorLength, maxCorridorLength + 1), 1);
                 corridor.Position = new Vector2Int(x - corridor.Size.x, y);
                 break;
 
             case Direction.Right:
-                corridor.Size = new Vector2Int(Random.Range(MIN_CORRIDOR_LENGTH, MAX_CORRIDOR_LENGTH), 1);
+                corridor.Size = new Vector2Int(Random.Range(minCorridorLength, maxCorridorLength + 1), 1);
                 corridor.Position = new Vector2Int(x, y);
                 break;
 
             case Direction.Up:
-                corridor.Size = new Vector2Int(1, Random.Range(MIN_CORRIDOR_LENGTH, MAX_CORRIDOR_LENGTH));
+                corridor.Size = new Vector2Int(1, Random.Range(minCorridorLength, maxCorridorLength + 1));
                 corridor.Position = new Vector2Int(x, y);
                 break;
 
             case Direction.Down:
-                corridor.Size = new Vector2Int(1, Random.Range(MIN_CORRIDOR_LENGTH, MAX_CORRIDOR_LENGTH));
+                corridor.Size = new Vector2Int(1, Random.Range(minCorridorLength, maxCorridorLength + 1));
                 corridor.Position = new Vector2Int(x, y - corridor.Size.y);
                 break;
         }
