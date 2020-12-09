@@ -28,8 +28,8 @@ public abstract class Map
     public List<Structure> Walls => walls;
     /// -------------- Debug getters, remove if not wanted ---------------------
 
-    private List<Structure> rooms = new List<Structure>();
-    private List<Structure> tunnels = new List<Structure>();
+    protected List<Structure> rooms = new List<Structure>();
+    protected List<Structure> tunnels = new List<Structure>();
     protected List<Structure> walls = new List<Structure>();
     private Tile[][] mapTiles;
 

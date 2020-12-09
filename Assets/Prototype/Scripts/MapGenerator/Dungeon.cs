@@ -101,7 +101,11 @@ public class Dungeon : Map
             }
         }
 
-        // delete dead-ends
+        DeleteDeadEnds();
+    }
+
+    private void DeleteDeadEnds() {
+        int wallCount;
         bool foundDeadEnd = true;
         while (foundDeadEnd) {
             foundDeadEnd = false;
@@ -109,7 +113,7 @@ public class Dungeon : Map
             for (int x = 1; x < SizeX - 1; x++) {
                 for (int y = 1; y < SizeY - 1; y++) {
                     if (this[x, y] == Tile.Floor) {
-                        int wallCount = 0;
+                        wallCount = 0;
                         if (this[x - 1, y] == Tile.Wall)
                             wallCount++;
                         if (this[x + 1, y] == Tile.Wall)
@@ -122,6 +126,27 @@ public class Dungeon : Map
                         if (wallCount >= 3) {
                             foundDeadEnd = true;
                             this[x, y] = Tile.Wall;
+
+                            for (int i = 0; i < tunnels.Count; i++) {
+                                if (x == tunnels[i].Position.x && y == tunnels[i].Position.y) {
+                                    tunnels[i] = new Structure {
+                                        Position = new Vector2Int(tunnels[i].Position.x + 1, tunnels[i].Position.y + 1),
+                                        Size = new Vector2Int(tunnels[i].Size.x - 1, tunnels[i].Size.y - 1),
+                                        IsRoom = false
+                                    };
+
+                                    break;
+                                }
+                                if (x == tunnels[i].Position.x + tunnels[i].Size.x - 1 && y == tunnels[i].Position.y + tunnels[i].Size.y - 1) {
+                                    tunnels[i] = new Structure {
+                                        Position = tunnels[i].Position,
+                                        Size = new Vector2Int(tunnels[i].Size.x - 1, tunnels[i].Size.y - 1),
+                                        IsRoom = false
+                                    };
+
+                                    break;
+                                }
+                            }
                         }
                     }
                 }
