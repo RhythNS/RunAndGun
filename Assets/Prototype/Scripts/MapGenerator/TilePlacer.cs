@@ -31,7 +31,7 @@ public class TilePlacer : MonoBehaviour
 
     private GameObject parent;
 
-    public void Fill(Dungeon dungeon, Tilemap tileMap)
+    public void Fill(Dungeon dungeon, Tilemap tileMap, Map.Tile floor)
     {
         if (parent || (parent = GameObject.Find("Parent")))
             DestroyImmediate(parent);
@@ -60,7 +60,7 @@ public class TilePlacer : MonoBehaviour
 
         Player player = Instantiate(playerPrefab, tileMap.CellToWorld(
             new Vector3Int(startRoom.Position.x + startRoom.Size.x / 2,
-            startRoom.Position.y + startRoom.Size.y / 2, 0)), 
+            startRoom.Position.y + startRoom.Size.y / 2, 0)),
             Quaternion.identity);
         player.transform.parent = parent.transform;
 
@@ -94,6 +94,18 @@ public class TilePlacer : MonoBehaviour
         Stairs endStairs = Instantiate(stairs, tileMap.CellToWorld(
             GetRandomPosFromRoom(endRoom)), Quaternion.identity);
         endStairs.transform.parent = parent.transform;
+
+
+        for (int x = 0; x < dungeon.SizeX; x++)
+        {
+            for (int y = 0; y < dungeon.SizeY; y++)
+            {
+                if (dungeon[x, y] == floor)
+                {
+                    tileMap.SetTile(new Vector3Int(x, y, 0), roomTilesets[0].tiles[4]);
+                }
+            }
+        }
 
         foreach (var room in dungeon.Rooms)
         {
@@ -158,23 +170,7 @@ public class TilePlacer : MonoBehaviour
             tileMap.SetTile(new Vector3Int(room.Position.x, room.Position.y + room.Size.y - 1, 0), tileset.tiles[0]);
             tileMap.SetTile(new Vector3Int(room.Position.x + room.Size.x - 1, room.Position.y, 0), tileset.tiles[8]);
             tileMap.SetTile(new Vector3Int(room.Position.x + room.Size.x - 1, room.Position.y + room.Size.y - 1, 0), tileset.tiles[2]);
-
-
         }
-
-        // Tunnels dont seem to be working atm
-        /*
-        foreach (var tunnel in dungeon.Tunnels)
-        {
-            for (int x = tunnel.Position.x; x < tunnel.Position.x + tunnel.Size.x; x++)
-            {
-                for (int y = tunnel.Position.y; y < tunnel.Position.y + tunnel.Size.y; y++)
-                {
-                    tileMap.SetTile(new Vector3Int(x, y, 0), roomTilesets[0].tiles[4]);
-                }
-            }
-        }
-        */
     }
 
     private Vector3Int GetRandomPosFromRoom(Structure structure)

@@ -86,7 +86,7 @@ public class DungeonCreator : MonoBehaviour
 
         if (useAlternateTiles == true)
         {
-            GetComponent<TilePlacer>().Fill(dungeon, tilemap);
+            GetComponent<TilePlacer>().Fill(dungeon, tilemap, Map.Tile.Floor);
             return;
         }
     }
