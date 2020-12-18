@@ -202,12 +202,12 @@ public class Dungeon : Map
 
             case Direction.Right:
                 corridor.Size = new Vector2Int(Random.Range(minCorridorLength, maxCorridorLength + 1), 1);
-                corridor.Position = new Vector2Int(x, y);
+                corridor.Position = new Vector2Int(x + 1, y);
                 break;
 
             case Direction.Up:
                 corridor.Size = new Vector2Int(1, Random.Range(minCorridorLength, maxCorridorLength + 1));
-                corridor.Position = new Vector2Int(x, y);
+                corridor.Position = new Vector2Int(x, y + 1);
                 break;
 
             case Direction.Down:
