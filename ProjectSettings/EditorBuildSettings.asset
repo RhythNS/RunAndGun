@@ -5,12 +5,6 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Prototype/Scenes/RhythScene.unity
-    guid: 61c633cf9ce83d444820321678683061
-  - enabled: 0
-    path: Assets/Prototype/Scenes/GameScene.unity
-    guid: bea86a14141acae46a83eecbaeaac492
   - enabled: 1
     path: Assets/Scenes/PreLoadScene.unity
     guid: e9c04273d83fbea49979bfcb95f91ee1
