@@ -31,7 +31,7 @@ public class Dungeon : Map
         this.maxStructures = maxStructures;
         this.roomChance = roomChance;
 
-        if (seed != -1)
+        if (seed != int.MaxValue)
             Random.InitState(seed);
 
         // dungeon structure with rooms and tunnels

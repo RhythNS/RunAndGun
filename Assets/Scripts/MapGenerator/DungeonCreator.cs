@@ -1,9 +1,10 @@
-﻿using System.Collections;
+﻿using Mirror;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class DungeonCreator : MonoBehaviour
+public class DungeonCreator : NetworkBehaviour
 {
     [HideInInspector]
     public Dungeon dungeon;
@@ -12,13 +13,14 @@ public class DungeonCreator : MonoBehaviour
     private Tilemap tilemap;
 
     [SerializeField]
-    private Tile wall;
+    //private Tile wall;
+    private RuleTile wall;
     [SerializeField]
     private Tile floor;
 
     [Header("Dungeon")]
-    [SerializeField]
-    private int seed = -1;
+    //[SerializeField]
+    //private int seed = -1;
 
     [SerializeField]
     private Vector2Int maxSize = Vector2Int.one;
@@ -44,13 +46,18 @@ public class DungeonCreator : MonoBehaviour
     [Range(0f, 1f)]
     private float roomChance = 0.4f;
 
-    [SerializeField]
-    private bool useAlternateTiles = false;
+    [SyncVar]
+    private int seed;
 
-    // --------------------------- Creates a dungeon when game is started, delete when not wanted
     private void Awake() {
-        if (useAlternateTiles)
-            CreateDungeon();
+        if (isServer)
+            seed = Random.Range(int.MinValue, int.MaxValue);
+    }
+
+    public override void OnStartClient() {
+        base.OnStartClient();
+
+        CreateDungeon(seed);
     }
 
     private void OnValidate() {
@@ -67,7 +74,7 @@ public class DungeonCreator : MonoBehaviour
             minCorridorLength = maxCorridorLength;
     }
 
-    public void CreateDungeon() {
+    public void CreateDungeon(int seed) {
         if (dungeon != null)
             dungeon.Reset();
 
@@ -82,10 +89,5 @@ public class DungeonCreator : MonoBehaviour
                 }
             }
         }
-
-        //if (useAlternateTiles == true) {
-        //    GetComponent<TilePlacer>().Fill(dungeon, tilemap, Map.TileType.Floor);
-        //    return;
-        //}
     }
 }
