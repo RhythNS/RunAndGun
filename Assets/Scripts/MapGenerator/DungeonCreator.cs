@@ -8,7 +8,7 @@ public class DungeonCreator : NetworkBehaviour
 {
     [HideInInspector]
     public Dungeon dungeon;
-
+    
     [Header("Tilemaps")]
     [SerializeField]
     private Tilemap tilemapFloor;
@@ -18,11 +18,13 @@ public class DungeonCreator : NetworkBehaviour
     private Tilemap tilemapCeiling;
 
     [SerializeField]
-    private RuleTile tileFloor;
-    [SerializeField]
-    private RuleTile tileWall;
-    [SerializeField]
-    private RuleTile tileCeiling;
+    private Tileset tileset;
+    //[SerializeField]
+    //private RuleTile tileFloor;
+    //[SerializeField]
+    //private RuleTile tileWall;
+    //[SerializeField]
+    //private RuleTile tileCeiling;
     [SerializeField]
     private Tile tilePlaceholder;
 
@@ -90,29 +92,111 @@ public class DungeonCreator : NetworkBehaviour
         tilemapWall.ClearAllTiles();
         tilemapCeiling.ClearAllTiles();
 
-        // create new tilemaps
-        Vector3Int[] positionsFloor = new Vector3Int[dungeon.Size.x * dungeon.Size.y];
-        Vector3Int[] positionsWall = new Vector3Int[dungeon.Size.x * dungeon.Size.y];
-        Vector3Int[] positionsCeiling = new Vector3Int[dungeon.Size.x * dungeon.Size.y];
-        TileBase[] tilesFloor = new TileBase[dungeon.Size.x * dungeon.Size.y];
-        TileBase[] tilesWall = new TileBase[dungeon.Size.x * dungeon.Size.y];
-        TileBase[] tilesCeiling = new TileBase[dungeon.Size.x * dungeon.Size.y];
+        //// create new tilemaps
+        //int tileCount = dungeon.Size.x * dungeon.Size.y;
+        //Vector3Int[] positionsFloor = new Vector3Int[tileCount];
+        //Vector3Int[] positionsWall = new Vector3Int[tileCount];
+        //Vector3Int[] positionsCeiling = new Vector3Int[tileCount];
+        //TileBase[] tilesFloor = new TileBase[tileCount];
+        //TileBase[] tilesWall = new TileBase[tileCount];
+        //TileBase[] tilesCeiling = new TileBase[tileCount];
 
-        int index;
+        //int index;
+        //for (int x = 0; x < dungeon.Size.x; x++) {
+        //    for (int y = 0; y < dungeon.Size.y; y++) {
+        //        index = x * dungeon.Size.y + y;
+
+        //        if (dungeon[x, y] == Map.TileType.Floor) {
+        //            positionsFloor[index] = new Vector3Int(x, y, 0);
+        //            tilesFloor[index] = tileset.tileFloor;
+
+        //            if (y >= 2 && dungeon[x, y - 2] == Map.TileType.Wall) {
+        //                positionsCeiling[index] = new Vector3Int(x, y, 0);
+        //                tilesCeiling[index] = tileset.tileCeiling;
+        //            }
+        //        } else {
+        //            if (y >= 2 && (dungeon[x, y - 1] == Map.TileType.Floor)) {
+        //                positionsWall[index] = new Vector3Int(x, y, 0);
+        //                tilesWall[index] = tileset.tileWall;
+
+        //                if (dungeon[x, y - 2] == Map.TileType.Wall) {
+        //                    positionsCeiling[index] = new Vector3Int(x, y, 0);
+        //                    tilesCeiling[index] = tileset.tileCeiling;
+        //                }
+        //            } else if (y >= 2 && dungeon[x, y - 1] != Map.TileType.Floor && dungeon[x, y - 2] != Map.TileType.Floor) {
+        //                positionsCeiling[index] = new Vector3Int(x, y, 0);
+        //                tilesCeiling[index] = tileset.tileCeiling;
+        //            }
+        //        }
+        //    }
+        //}
+
+        // create new tilemaps
+        int tileCount = dungeon.Size.x * dungeon.Size.y * 4;
+        Vector3Int[] positionsFloor = new Vector3Int[tileCount];
+        Vector3Int[] positionsWall = new Vector3Int[tileCount];
+        Vector3Int[] positionsCeiling = new Vector3Int[tileCount];
+        TileBase[] tilesFloor = new TileBase[tileCount];
+        TileBase[] tilesWall = new TileBase[tileCount];
+        TileBase[] tilesCeiling = new TileBase[tileCount];
+
+        int index, xPos, yPos;
         for (int x = 0; x < dungeon.Size.x; x++) {
             for (int y = 0; y < dungeon.Size.y; y++) {
-                index = x * dungeon.Size.y + y;
+                index = (x * dungeon.Size.y + y) * 4;
+                xPos = x * 2;
+                yPos = y * 2;
 
                 if (dungeon[x, y] == Map.TileType.Floor) {
-                    positionsFloor[index] = new Vector3Int(x, y, 0);
-                    tilesFloor[index] = tileFloor;
+                    positionsFloor[index] = new Vector3Int(xPos, yPos, 0);
+                    positionsFloor[index + 1] = new Vector3Int(xPos + 1, yPos, 0);
+                    positionsFloor[index + 2] = new Vector3Int(xPos, yPos + 1, 0);
+                    positionsFloor[index + 3] = new Vector3Int(xPos + 1, yPos + 1, 0);
+                    tilesFloor[index] = tileset.tileFloor;
+                    tilesFloor[index + 1] = tileset.tileFloor;
+                    tilesFloor[index + 2] = tileset.tileFloor;
+                    tilesFloor[index + 3] = tileset.tileFloor;
+
+                    if (y >= 2 && dungeon[x, y - 1] == Map.TileType.Wall) {
+                        positionsCeiling[index] = new Vector3Int(xPos, yPos, 0);
+                        positionsCeiling[index + 1] = new Vector3Int(xPos + 1, yPos, 0);
+                        positionsCeiling[index + 2] = new Vector3Int(xPos, yPos + 1, 0);
+                        positionsCeiling[index + 3] = new Vector3Int(xPos + 1, yPos + 1, 0);
+                        tilesCeiling[index] = tileset.tileCeiling;
+                        tilesCeiling[index + 1] = tileset.tileCeiling;
+                        tilesCeiling[index + 2] = tileset.tileCeiling;
+                        tilesCeiling[index + 3] = tileset.tileCeiling;
+                    }
                 } else {
-                    if (y >= 2 && (dungeon[x, y - 1] == Map.TileType.Floor || dungeon[x, y - 2] == Map.TileType.Floor)) {
-                        positionsWall[index] = new Vector3Int(x, y, 0);
-                        tilesWall[index] = tileWall;
-                    } else {
-                        positionsCeiling[index] = new Vector3Int(x, y, 0);
-                        tilesCeiling[index] = tileCeiling;
+                    if (y >= 2 && (dungeon[x, y - 1] == Map.TileType.Floor)) {
+                        positionsWall[index] = new Vector3Int(xPos, yPos, 0);
+                        positionsWall[index + 1] = new Vector3Int(xPos + 1, yPos, 0);
+                        positionsWall[index + 2] = new Vector3Int(xPos, yPos + 1, 0);
+                        positionsWall[index + 3] = new Vector3Int(xPos + 1, yPos + 1, 0);
+                        tilesWall[index] = tileset.tileWall;
+                        tilesWall[index + 1] = tileset.tileWall;
+                        tilesWall[index + 2] = tileset.tileWall;
+                        tilesWall[index + 3] = tileset.tileWall;
+
+                        if (dungeon[x, y - 1] == Map.TileType.Wall) {
+                            positionsCeiling[index] = new Vector3Int(xPos, yPos, 0);
+                            positionsCeiling[index + 1] = new Vector3Int(xPos + 1, yPos, 0);
+                            positionsCeiling[index + 2] = new Vector3Int(xPos, yPos + 1, 0);
+                            positionsCeiling[index + 3] = new Vector3Int(xPos + 1, yPos + 1, 0);
+                            tilesCeiling[index] = tileset.tileCeiling;
+                            tilesCeiling[index + 1] = tileset.tileCeiling;
+                            tilesCeiling[index + 2] = tileset.tileCeiling;
+                            tilesCeiling[index + 3] = tileset.tileCeiling;
+                        }
+                    } else if (y >= 2 && dungeon[x, y - 1] != Map.TileType.Floor) {
+                        positionsCeiling[index] = new Vector3Int(xPos, yPos, 0);
+                        positionsCeiling[index + 1] = new Vector3Int(xPos + 1, yPos, 0);
+                        positionsCeiling[index + 2] = new Vector3Int(xPos, yPos + 1, 0);
+                        positionsCeiling[index + 3] = new Vector3Int(xPos + 1, yPos + 1, 0);
+                        tilesCeiling[index] = tileset.tileCeiling;
+                        tilesCeiling[index + 1] = tileset.tileCeiling;
+                        tilesCeiling[index + 2] = tileset.tileCeiling;
+                        tilesCeiling[index + 3] = tileset.tileCeiling;
                     }
                 }
             }
