@@ -31,4 +31,9 @@ public class Config : MonoBehaviour
     }
 
     public InputType selectedInput = InputType.KeyMouse;
+
+    private void OnDestroy()
+    {
+        Instance = null;
+    }
 }

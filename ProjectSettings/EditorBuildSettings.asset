@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/RhyTestScenes/LobbyScene.unity
+    guid: 72d6bcf05f6220145ab70d64d8b3e23c
+  - enabled: 1
     path: Assets/Scenes/PreLoadScene.unity
     guid: e9c04273d83fbea49979bfcb95f91ee1
   - enabled: 1
@@ -14,7 +17,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LobbyScene.unity
     guid: 87b7d1e601bb5464eb28cf069325acc0
-  - enabled: 1
-    path: Assets/Scenes/RhyTestScenes/LobbyScene.unity
-    guid: 72d6bcf05f6220145ab70d64d8b3e23c
   m_configObjects: {}
