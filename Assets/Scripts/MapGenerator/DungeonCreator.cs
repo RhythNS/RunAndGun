@@ -19,14 +19,6 @@ public class DungeonCreator : NetworkBehaviour
 
     [SerializeField]
     private Tileset tileset;
-    //[SerializeField]
-    //private RuleTile tileFloor;
-    //[SerializeField]
-    //private RuleTile tileWall;
-    //[SerializeField]
-    //private RuleTile tileCeiling;
-    [SerializeField]
-    private Tile tilePlaceholder;
 
     [Header("Settings")]
     [SerializeField]
@@ -206,5 +198,19 @@ public class DungeonCreator : NetworkBehaviour
         tilemapFloor.SetTiles(positionsFloor, tilesFloor);
         tilemapWall.SetTiles(positionsWall, tilesWall);
         tilemapCeiling.SetTiles(positionsCeiling, tilesCeiling);
+
+        // set border tiles
+        List<Vector3Int> positions = new List<Vector3Int>();
+        List<TileBase> tiles = new List<TileBase>();
+        for (int x = -10; x < dungeon.Size.x * 2 + 10; x++) {
+            for (int y = -10; y < dungeon.Size.y * 2 + 10; y++) {
+                if (x < 0 || y < 4 || x >= dungeon.Size.x * 2 || y >= dungeon.Size.y * 2) {
+                    positions.Add(new Vector3Int(x, y, 0));
+                    tiles.Add(tileset.tileCeiling);
+                }
+            }
+        }
+
+        tilemapCeiling.SetTiles(positions.ToArray(), tiles.ToArray());
     }
 }

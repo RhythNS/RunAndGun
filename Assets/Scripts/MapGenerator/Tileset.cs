@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
-[System.Serializable]
-class Tileset
+[CreateAssetMenu(fileName = "Tileset", menuName = "MapGenerator/Tileset", order = 1)]
+class Tileset : ScriptableObject
 {
     public RuleTile tileFloor;
     public RuleTile tileWall;
