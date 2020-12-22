@@ -18,22 +18,11 @@ public class Player : NetworkBehaviour
         Status = GetComponent<Status>();
     }
 
-    private void Start()
-    {
-        Init("Some");
-    }
 
-    /// <summary>
-    /// Called when player is created and assigend to a connection.
-    /// </summary>
-    /// <param name="name">The username of the connection.</param>
-    public void Init(string name)
+    public override void OnStartLocalPlayer()
     {
-        gameObject.name = name;
-
-        // Add input method if I am local player.
-        if (isLocalPlayer)
-            RAGInput.AttachInput(gameObject);
+        Config.Instance.selectedPlayerType = characterType;
+        RAGInput.AttachInput(gameObject);
     }
 
     [Command]

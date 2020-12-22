@@ -1,6 +1,4 @@
 ﻿using Mirror;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class RAGNetworkManager : NetworkManager
@@ -19,7 +17,8 @@ public class RAGNetworkManager : NetworkManager
 
         JoinMessage message = new JoinMessage
         {
-
+            name = Config.Instance.playerName,
+            characterType = Config.Instance.selectedPlayerType
         };
         conn.Send(message);
     }
@@ -32,7 +31,24 @@ public class RAGNetworkManager : NetworkManager
     /// <param name="joinMessage">The message.</param>
     private void OnJoinMessage(NetworkConnection connection, JoinMessage joinMessage)
     {
-        
+        Player newPlayer = Instantiate(CharacterDict.Instance.GetPlayerForType(joinMessage.characterType));
+        newPlayer.transform.position = startPositions[Random.Range(0, startPositions.Count)].position;
+
+        // Do they want to replace their character?
+        if (connection.identity?.gameObject)
+        {
+            GameObject oldPlayer = connection.identity.gameObject;
+
+            NetworkServer.ReplacePlayerForConnection(connection, newPlayer.gameObject);
+
+            Destroy(oldPlayer);
+        }
+        else // They joined for the first time
+        {
+            NetworkServer.AddPlayerForConnection(connection, newPlayer.gameObject);
+        }
+        newPlayer.name = joinMessage.name;
+
     }
 
 }

@@ -30,6 +30,11 @@ public class Config : MonoBehaviour
         // TODO: load some stuff
     }
 
+    // --- connection ---
+    public string playerName = "Test";
+    public CharacterType selectedPlayerType = CharacterType.Melee;
+
+    // ---- Input ----
     public InputType selectedInput = InputType.KeyMouse;
 
     private void OnDestroy()
