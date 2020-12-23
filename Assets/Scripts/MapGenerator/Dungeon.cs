@@ -31,7 +31,7 @@ public class Dungeon : Map
         this.maxStructures = maxStructures;
         this.roomChance = roomChance;
 
-        if (seed != -1)
+        if (seed != int.MaxValue)
             Random.InitState(seed);
 
         // dungeon structure with rooms and tunnels
@@ -182,6 +182,36 @@ public class Dungeon : Map
 
         if (IsEmptyInArea(room.Position, room.Size)) {
             AddStructure(room, dir);
+
+            if (room.Size.x % 4 == 0 && room.Size.y % 4 == 0) {
+                Structure addWall = new Structure {
+                    Position = new Vector2Int(room.Position.x + room.Size.x / 4, room.Position.y + room.Size.y / 4),
+                    Size = new Vector2Int(1, 1),
+                    IsRoom = false
+                };
+                AddWallStructure(addWall);
+
+                addWall = new Structure {
+                    Position = new Vector2Int(room.Position.x + room.Size.x / 4 * 3 - 1, room.Position.y + room.Size.y / 4),
+                    Size = new Vector2Int(1, 1),
+                    IsRoom = false
+                };
+                AddWallStructure(addWall);
+
+                addWall = new Structure {
+                    Position = new Vector2Int(room.Position.x + room.Size.x / 4, room.Position.y + room.Size.y / 4 * 3 - 1),
+                    Size = new Vector2Int(1, 1),
+                    IsRoom = false
+                };
+                AddWallStructure(addWall);
+
+                addWall = new Structure {
+                    Position = new Vector2Int(room.Position.x + room.Size.x / 4 * 3 - 1, room.Position.y + room.Size.y / 4 * 3 - 1),
+                    Size = new Vector2Int(1, 1),
+                    IsRoom = false
+                };
+                AddWallStructure(addWall);
+            }
 
             return true;
         }
