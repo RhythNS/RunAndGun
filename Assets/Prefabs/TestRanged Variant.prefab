@@ -19,7 +19,7 @@ PrefabInstance:
     - target: {fileID: 3992868732581162177, guid: 63f431cca889dbf42b617e481f43c216,
         type: 3}
       propertyPath: m_Name
-      value: TestRanged
+      value: TestRanged Variant
       objectReference: {fileID: 0}
     - target: {fileID: 6243887196303527659, guid: 63f431cca889dbf42b617e481f43c216,
         type: 3}

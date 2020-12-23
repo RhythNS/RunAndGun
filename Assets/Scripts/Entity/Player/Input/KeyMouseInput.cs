@@ -43,4 +43,8 @@ public class KeyMouseInput : RAGInput
         Destroy(this);
     }
 
+    private void OnDestroy()
+    {
+        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+    }
 }
