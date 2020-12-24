@@ -6,11 +6,11 @@ public class Health : NetworkBehaviour
     /// <summary>
     /// The max amount of hitpoints.
     /// </summary>
-    [SyncVar] private int max;
+    [SyncVar] private int max = 200;
     /// <summary>
     /// The current amount of hitpoints.
     /// </summary>
-    [SyncVar(hook = nameof(OnCurrentChanged))] private int current;
+    [SyncVar(hook = nameof(OnCurrentChanged))] private int current = 200;
 
     /// <summary>
     /// The max amount of hitpoints.
@@ -25,12 +25,19 @@ public class Health : NetworkBehaviour
     /// </summary>
     public int DamageTaken => max - current;
 
+    public void Damage(int amount)
+    {
+        bool isPlayer = gameObject.layer == 26; // TODO: Replace with player layer
+        if ((isPlayer && isLocalPlayer) || (!isPlayer && isServer))
+            CmdDamage(amount);
+    }
+
     /// <summary>
     /// Subtracts the specified amount from the current health total. Wenn the total
     /// reaches 0 then OnDied is called.
     /// </summary>
     [Command]
-    public void CmdDamage(int amount)
+    private void CmdDamage(int amount)
     {
         current = Mathf.Clamp(current - amount, 0, max);
         if (current == 0)
@@ -54,5 +61,6 @@ public class Health : NetworkBehaviour
     private void OnCurrentChanged(int prevHealth, int currentHealth)
     {
         // TODO: Maybe update UI or something
+        Debug.Log("HEALTH CHANGED FROM " + prevHealth + " to " + currentHealth);
     }
 }

@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using System.Diagnostics;
+using UnityEditor;
 using UnityEngine;
 
 // Taken from: https://www.appsfresh.com/blog/multiplayer/
@@ -24,10 +25,19 @@ public static class MultiplayersBuildAndRun
 
     static void PerformWin64Build(int playerCount)
     {
+        string path = Application.dataPath;
+        path = path.Substring(0, path.LastIndexOf("/")) + "/Builds/" + GetProjectName() + ".exe";
         EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Standalone, BuildTarget.StandaloneWindows);
+        BuildPlayerOptions bpo = new BuildPlayerOptions
+        {
+            scenes = GetScenePaths(),
+            target = BuildTarget.StandaloneWindows64,
+            locationPathName = path
+        };
+        BuildPipeline.BuildPlayer(bpo);
         for (int i = 1; i <= playerCount; i++)
         {
-            BuildPipeline.BuildPlayer(GetScenePaths(), "Builds/Win64/" + i.ToString() + "/" + GetProjectName() + i.ToString() + ".exe", BuildTarget.StandaloneWindows64, BuildOptions.AutoRunPlayer);
+            Process.Start(path);
         }
     }
 
