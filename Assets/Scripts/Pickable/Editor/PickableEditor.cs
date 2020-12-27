@@ -1,16 +1,21 @@
 ﻿using System.Collections.Generic;
 using UnityEditor;
+using UnityEngine;
 
 [CustomEditor(typeof(Pickable), true)]
 public class PickableEditor : Editor
 {
-    private static bool debugMode = true;
+    private static readonly bool debugMode = false;
 
     public override void OnInspectorGUI()
     {
         Pickable pickable = target as Pickable;
         serializedObject.UpdateIfRequiredOrScript();
         SerializedProperty prop = serializedObject.GetIterator();
+
+        if (GUILayout.Button("Fix IDs"))
+            FixIDs(LoadPickables(pickable.PickableType));
+
         while (prop.NextVisible(true))
         {
             if (prop.name == "id")
@@ -20,7 +25,10 @@ public class PickableEditor : Editor
 
                 // If we are not in debug mode then do not draw the id
                 if (!debugMode)
+                {
+                    EditorGUILayout.LabelField("Id", prop.intValue.ToString());
                     continue;
+                }
             }
 
             EditorGUILayout.PropertyField(prop);
@@ -31,12 +39,7 @@ public class PickableEditor : Editor
 
     private bool GetNewId(Pickable pickable, out ushort id)
     {
-        string[] guids = AssetDatabase.FindAssets(GetSearchString(pickable));
-        List<Pickable> pickables = new List<Pickable>();
-        for (int i = 0; i < guids.Length; i++)
-        {
-            pickables.Add(AssetDatabase.LoadAssetAtPath<Pickable>(AssetDatabase.GUIDToAssetPath(guids[i])));
-        }
+        List<Pickable> pickables = LoadPickables(pickable.PickableType);
 
         // No other pickables of this type
         if (pickables.Count == 0)
@@ -72,6 +75,21 @@ public class PickableEditor : Editor
         return true;
     }
 
+    public static List<Pickable> LoadPickables(PickableType pickable)
+    {
+        string[] guids = AssetDatabase.FindAssets(GetSearchString(pickable));
+        List<Pickable> pickables = new List<Pickable>();
+        for (int i = 0; i < guids.Length; i++)
+        {
+            pickables.Add(AssetDatabase.LoadAssetAtPath<Pickable>(AssetDatabase.GUIDToAssetPath(guids[i])));
+        }
+        return pickables;
+    }
+
+    /// <summary>
+    /// Gets all pickables and assignes them new ids.
+    /// </summary>
+    /// <param name="pickables">The pickables which ids needs fixing.</param>
     private void FixIDs(List<Pickable> pickables)
     {
         for (int i = 0; i < pickables.Count; i++)
@@ -82,9 +100,9 @@ public class PickableEditor : Editor
         }
     }
 
-    private string GetSearchString(Pickable pickable)
+    public static string GetSearchString(PickableType pickable)
     {
-        switch (pickable.PickableType)
+        switch (pickable)
         {
             case PickableType.Consumable:
                 return "t:Consumable";
@@ -93,6 +111,6 @@ public class PickableEditor : Editor
             case PickableType.Weapon:
                 return "t:Weapon";
         }
-        throw new System.Exception("Could not find that type" + pickable.PickableType);
+        throw new System.Exception("Could not find that type" + pickable);
     }
 }

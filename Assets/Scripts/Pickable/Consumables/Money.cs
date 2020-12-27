@@ -1,12 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(menuName = "Pickable/Consumable/Money")]
 public class Money : Consumable
 {
+    [SerializeField] private int moneyAmount;
+
     public override void Affect(Player player)
     {
-        throw new System.NotImplementedException();
+        player.Inventory.money += moneyAmount;
     }
 }

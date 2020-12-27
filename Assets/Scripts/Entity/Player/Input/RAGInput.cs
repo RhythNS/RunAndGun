@@ -6,13 +6,13 @@ public abstract class RAGInput : MonoBehaviour
 
     public float movementForce;
 
-    protected Rigidbody2D body;
+    protected Rigidbody2D Body { get; private set; }
     protected Player Player { get; private set; }
 
     private void Start()
     {
         movementForce = GetComponent<Stats>().GetMovementForce();
-        body = GetComponent<Rigidbody2D>();
+        Body = GetComponent<Rigidbody2D>();
         Player = GetComponent<Player>();
         OnStart(); // Call start on child classes.
     }
@@ -64,7 +64,7 @@ public abstract class RAGInput : MonoBehaviour
     {
         if (Player.Status.IsDashing())
             return;
-        body.AddForce(GetMovementInput() * movementForce);
+        Body.AddForce(GetMovementInput() * movementForce);
     }
 
     /// <summary>

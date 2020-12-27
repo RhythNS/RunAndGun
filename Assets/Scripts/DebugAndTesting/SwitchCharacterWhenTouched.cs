@@ -7,7 +7,7 @@ public class SwitchCharacterWhenTouched : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.TryGetComponent(out Player player) && player.TryGetComponent(out RAGInput _))
+        if (collision.TryGetComponent(out Player player) && player.isLocalPlayer)
         {
             if (toSwitchTo == Config.Instance.selectedPlayerType)
                 return;

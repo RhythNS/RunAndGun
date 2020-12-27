@@ -5,8 +5,6 @@ public class RAGNetworkManager : NetworkManager
 {
     public override void OnStartServer()
     {
-        base.OnStartServer();
-
         // Register custom messages
         NetworkServer.RegisterHandler<JoinMessage>(OnJoinMessage);
     }

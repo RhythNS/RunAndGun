@@ -6,7 +6,7 @@ public class Health : NetworkBehaviour
     /// <summary>
     /// The max amount of hitpoints.
     /// </summary>
-    [SyncVar] private int max = 200;
+    [SyncVar(hook = nameof(OnMaxChanged))] private int max = 200;
     /// <summary>
     /// The current amount of hitpoints.
     /// </summary>
@@ -62,5 +62,10 @@ public class Health : NetworkBehaviour
     {
         // TODO: Maybe update UI or something
         Debug.Log("HEALTH CHANGED FROM " + prevHealth + " to " + currentHealth);
+    }
+
+    private void OnMaxChanged(int prevMax, int currentMax)
+    {
+
     }
 }

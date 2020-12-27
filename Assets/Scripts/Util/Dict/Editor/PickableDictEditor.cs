@@ -1,0 +1,44 @@
+﻿using System.Collections.Generic;
+using UnityEditor;
+using UnityEngine;
+
+[CustomEditor(typeof(PickableDict))]
+public class PickableDictEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        if (GUILayout.Button("Auto add pickables"))
+        {
+            SerializedProperty prop = serializedObject.GetIterator();
+            while (prop.NextVisible(true))
+            {
+                switch (prop.name)
+                {
+                    case "weapons":
+                        AddAll(prop, PickableEditor.LoadPickables(PickableType.Weapon));
+                        break;
+                    case "consumables":
+                        AddAll(prop, PickableEditor.LoadPickables(PickableType.Consumable));
+                        break;
+                    case "items":
+                        AddAll(prop, PickableEditor.LoadPickables(PickableType.Item));
+                        break;
+                    default:
+                        break;
+                }
+            }
+            serializedObject.ApplyModifiedProperties();
+        }
+
+        base.OnInspectorGUI();
+    }
+
+    private void AddAll(SerializedProperty prop, List<Pickable> pickables)
+    {
+        prop.arraySize = pickables.Count;
+        for (int i = 0; i < pickables.Count; i++)
+        {
+            prop.GetArrayElementAtIndex(i).objectReferenceValue = pickables[i];
+        }
+    }
+}
