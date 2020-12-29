@@ -17,7 +17,7 @@ public abstract class RAGInput : MonoBehaviour
         OnStart(); // Call start on child classes.
     }
 
-    public static void AttachInput(GameObject gameObject)
+    public static RAGInput AttachInput(GameObject gameObject)
     {
         // Is there already a input instance on the player?
         if (gameObject.TryGetComponent(out RAGInput input))
@@ -26,8 +26,7 @@ public abstract class RAGInput : MonoBehaviour
         switch (Config.Instance.selectedInput)
         {
             case InputType.KeyMouse:
-                gameObject.AddComponent<KeyMouseInput>();
-                break;
+                return gameObject.AddComponent<KeyMouseInput>();
             /*
         case InputType.Keyboard:
             break;
@@ -38,7 +37,7 @@ public abstract class RAGInput : MonoBehaviour
             */
             default:
                 Debug.LogError("InputType " + Config.Instance.selectedInput + " not found!");
-                break;
+                return null;
         }
     }
 

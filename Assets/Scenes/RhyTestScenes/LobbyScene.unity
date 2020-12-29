@@ -973,6 +973,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b10f32a47bcc3804287b3aeaffeb581c, type: 2}
   - {fileID: 11400000, guid: 8f9766ed3bc60ff4b87b7e191a1ec6cb, type: 2}
   items: []
+  pickableInWorldPrefab: {fileID: 2834579130591557907, guid: d3fab481d47576b498258ab56332c8f9,
+    type: 3}
+  missingTexture: {fileID: 21300000, guid: 58e17a9b00c516d40b1c03debbed9feb, type: 3}
 --- !u!1 &1787434690
 GameObject:
   m_ObjectHideFlags: 0
@@ -1215,6 +1218,7 @@ MonoBehaviour:
   - {fileID: 2225341786073538340, guid: 6e1903cbfca72494a819f41729d7a653, type: 3}
   - {fileID: 5295730264361839604, guid: 35e542e06af903049a5d08f368ec42aa, type: 3}
   - {fileID: 6716250972173854799, guid: bc73c59a2b64fb241ab5a10bba3397fe, type: 3}
+  - {fileID: 2834579130591557907, guid: d3fab481d47576b498258ab56332c8f9, type: 3}
 --- !u!4 &4282887407683424663
 Transform:
   m_ObjectHideFlags: 0

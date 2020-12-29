@@ -9,6 +9,12 @@ public class PickableDict : MonoBehaviour
     [SerializeField] private Consumable[] consumables;
     [SerializeField] private Item[] items;
 
+    public GameObject PickableInWorldPrefab => pickableInWorldPrefab;
+    [SerializeField] private GameObject pickableInWorldPrefab;
+
+    public Sprite MissingTexture => missingTexture;
+    [SerializeField] private Sprite missingTexture;
+
     private readonly Dictionary<int, Weapon> weaponDict = new Dictionary<int, Weapon>();
     private readonly Dictionary<int, Consumable> consumableDict = new Dictionary<int, Consumable>();
     private readonly Dictionary<int, Item> itemDict = new Dictionary<int, Item>();

@@ -30,7 +30,10 @@ public class RAGNetworkManager : NetworkManager
     private void OnJoinMessage(NetworkConnection connection, JoinMessage joinMessage)
     {
         Player newPlayer = Instantiate(CharacterDict.Instance.GetPlayerForType(joinMessage.characterType));
-        newPlayer.transform.position = startPositions[Random.Range(0, startPositions.Count)].position;
+        newPlayer.SmoothSync.setPosition(
+            startPositions[Random.Range(0, startPositions.Count)].position,
+            true
+            );
 
         // Do they want to replace their character?
         if (connection.identity?.gameObject)

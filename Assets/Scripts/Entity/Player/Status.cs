@@ -7,6 +7,13 @@ public class Status : NetworkBehaviour
 {
     private bool dashing = false;
     private float dashTimer = 0.0f;
+    private float dashCooldown = 1.0f;
+
+    [Server]
+    public void SetDashCooldown(float cooldown)
+    {
+        dashCooldown = cooldown;
+    }
 
     private void Update()
     {

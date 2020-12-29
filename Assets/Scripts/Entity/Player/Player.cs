@@ -10,6 +10,7 @@ public class Player : NetworkBehaviour
     public RAGInput Input { get; private set; }
     public Stats Stats { get; private set; }
     public Status Status { get; private set; }
+    public Health Health { get; private set; }
     public Inventory Inventory { get; private set; }
     //public EquippedWeapon EquippedWeapon { get; private set; }
     public SmoothSyncMirror SmoothSync { get; private set; }
@@ -18,25 +19,15 @@ public class Player : NetworkBehaviour
     {
         Stats = GetComponent<Stats>();
         Status = GetComponent<Status>();
+        Health = GetComponent<Health>();
         Inventory = GetComponent<Inventory>();
         SmoothSync = GetComponent<SmoothSyncMirror>();
-    }
-
-    public override void OnStartServer()
-    {
-        // Auto pickup items
     }
 
     public override void OnStartLocalPlayer()
     {
         Config.Instance.selectedPlayerType = characterType;
-        RAGInput.AttachInput(gameObject);
-    }
-
-    [Command]
-    public void CmdValidate()
-    {
-
+        Input = RAGInput.AttachInput(gameObject);
     }
 
     /// <summary>

@@ -14,8 +14,8 @@ public abstract class Pickable : ScriptableObject
     public ushort Id => id;
     [SerializeField] private ushort id = 0;
 
-    public Texture2D Icon => icon;
-    [SerializeField] private Texture2D icon;
+    public Sprite Icon => icon;
+    [SerializeField] private Sprite icon;
 
     public bool InstantPickup => instantPickup;
     [SerializeField] private bool instantPickup = false;

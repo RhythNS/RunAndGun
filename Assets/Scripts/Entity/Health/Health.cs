@@ -25,6 +25,12 @@ public class Health : NetworkBehaviour
     /// </summary>
     public int DamageTaken => max - current;
 
+    [Server]
+    public void SetMax(int amount)
+    {
+        max = amount;
+    }
+
     public void Damage(int amount)
     {
         bool isPlayer = gameObject.layer == 26; // TODO: Replace with player layer

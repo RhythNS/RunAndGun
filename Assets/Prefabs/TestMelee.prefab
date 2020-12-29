@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 2103416703}
   - component: {fileID: -6418126549300102399}
   - component: {fileID: 3277487581593560095}
+  - component: {fileID: 4129985053763107452}
   m_Layer: 26
   m_Name: TestMelee
   m_TagString: Untagged
@@ -292,3 +293,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  money: 0
+--- !u!114 &4129985053763107452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3992868732581162177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcda028a88ec01e4d86c8e4486cb84e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
