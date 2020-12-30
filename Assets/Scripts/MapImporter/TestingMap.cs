@@ -22,7 +22,7 @@ public class TestingMap : MonoBehaviour
 
         for (int i = 0; i < map.Tilesets.Count; i++)
         {
-            map.Tilesets[i].Load(location);
+            //map.Tilesets[i].Load(location);
             string image = map.Tilesets[i].Image.Source;
             image = image.Substring(0, image.Length - 4);
             texs.Add(Resources.Load<Texture2D>(location + "/" + image));

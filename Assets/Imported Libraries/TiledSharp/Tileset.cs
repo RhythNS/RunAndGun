@@ -16,7 +16,6 @@ namespace TiledSharp
 
     public class TmxTileset : TmxDocument, ITmxElement
     {
-        public bool FinishedLoading { get; private set; }
         public int FirstGid { get; private set; }
         public string Name { get; private set; }
         public int TileWidth { get; private set; }
@@ -32,10 +31,15 @@ namespace TiledSharp
         public TmxImage Image { get; private set; }
         public TmxList<TmxTerrain> Terrains { get; private set; }
 
-        // TSX file constructor
-        public TmxTileset(XContainer xDoc, string tmxDir, ICustomLoader customLoader = null) :
-            this(xDoc.Element("tileset"), tmxDir, customLoader)
-        { }
+        public TmxTileset(TextAsset mapString, ICustomLoader customLoader = null) : base (customLoader)
+        {
+            MemoryStream stream = new MemoryStream(mapString.bytes);
+            XmlReader xmlReader = XmlReader.Create(stream);
+            var xDocTileset = XDocument.Load(xmlReader);
+            stream.Close();
+
+            Init(xDocTileset.Element("tileset"));
+        }
 
         // TMX tileset element constructor
         public TmxTileset(XElement xTileset, string tmxDir = "", ICustomLoader customLoader = null) : base(customLoader)
@@ -51,15 +55,33 @@ namespace TiledSharp
                 int start = source.LastIndexOf("/");
                 Name = source.Substring(start + 1, source.Length - start - 5); // at start + 1 to size - start - (.tsx length)
 
+                // Copy all tileset info to this instance
+                TmxTileset ts = TiledDict.Instance.GetTileset(Name).tileset;
+                Name = ts.Name;
+                TileWidth = ts.TileWidth;
+                TileHeight = ts.TileHeight;
+                Spacing = ts.Spacing;
+                Margin = ts.Margin;
+                Columns = ts.Columns;
+                TileCount = ts.TileCount;
+                TileOffset = ts.TileOffset;
+                Image = ts.Image;
+                Terrains = ts.Terrains;
+                Tiles = ts.Tiles;
+                Properties = ts.Properties;
+
                 return;
             }
-
-            FinishedLoading = true;
 
             // firstgid is always in TMX, but not TSX
             if (xFirstGid != null)
                 FirstGid = (int)xFirstGid;
 
+            Init(xTileset, tmxDir);
+        }
+
+        public void Init(XElement xTileset, string tmxDir = "")
+        {
             Name = (string)xTileset.Attribute("name");
             TileWidth = (int)xTileset.Attribute("tilewidth");
             TileHeight = (int)xTileset.Attribute("tileheight");
@@ -88,37 +110,6 @@ namespace TiledSharp
             Properties = new PropertyDict(xTileset.Element("properties"));
         }
 
-        public void Load(string tilesetRoot)
-        {
-            if (FinishedLoading == true)
-                return;
-
-            FinishedLoading = true;
-
-            // Prepend the parent TMX directory if necessary
-            string source = tilesetRoot + "/" + Name;
-
-            // Everything else is in the TSX file
-            TextAsset mapString = Resources.Load(source) as TextAsset;
-            MemoryStream stream = new MemoryStream(mapString.bytes);
-            XmlReader xmlReader = XmlReader.Create(stream);
-            var xDocTileset = XDocument.Load(xmlReader);
-            stream.Close();
-
-            var ts = new TmxTileset(xDocTileset, TmxDirectory, CustomLoader);
-            Name = ts.Name;
-            TileWidth = ts.TileWidth;
-            TileHeight = ts.TileHeight;
-            Spacing = ts.Spacing;
-            Margin = ts.Margin;
-            Columns = ts.Columns;
-            TileCount = ts.TileCount;
-            TileOffset = ts.TileOffset;
-            Image = ts.Image;
-            Terrains = ts.Terrains;
-            Tiles = ts.Tiles;
-            Properties = ts.Properties;
-        }
     }
 
     public class TmxTileOffset
