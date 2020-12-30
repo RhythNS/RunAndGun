@@ -9,11 +9,14 @@ public abstract class RAGInput : MonoBehaviour
     protected Rigidbody2D Body { get; private set; }
     protected Player Player { get; private set; }
 
+    private PlayerCamera playerCamera;
+
     private void Start()
     {
         movementForce = GetComponent<Stats>().GetMovementForce();
         Body = GetComponent<Rigidbody2D>();
         Player = GetComponent<Player>();
+        playerCamera = Camera.main.GetComponent<PlayerCamera>();
         OnStart(); // Call start on child classes.
     }
 
@@ -43,6 +46,9 @@ public abstract class RAGInput : MonoBehaviour
 
     private void Update()
     {
+        if (HasFocusPoint)
+            playerCamera.focusPoint = GetFocusPoint();
+
         // If the player is dashing dont listen to other input.
         if (Player.Status.IsDashing())
             return;
@@ -65,6 +71,10 @@ public abstract class RAGInput : MonoBehaviour
             return;
         Body.AddForce(GetMovementInput() * movementForce);
     }
+
+    protected virtual bool HasFocusPoint => false;
+
+    protected virtual Vector2 GetFocusPoint() { return new Vector2(0.0f, 0.0f); }
 
     /// <summary>
     /// Called after all internal values of RAGInput have been set. Should be treated as the

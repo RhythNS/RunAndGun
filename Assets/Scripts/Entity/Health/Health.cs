@@ -29,6 +29,9 @@ public class Health : NetworkBehaviour
     public void SetMax(int amount)
     {
         max = amount;
+        if (current > max)
+            current = max;
+        // TODO: If the max goes up, this the current also go up?
     }
 
     public void Damage(int amount)

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class KeyMouseInput : RAGInput
 {
@@ -12,6 +10,16 @@ public class KeyMouseInput : RAGInput
 
         Cursor.visible = true;
         Cursor.SetCursor(cursor, new Vector2(cursor.width / 2, cursor.height / 2), CursorMode.Auto);
+    }
+
+    protected override bool HasFocusPoint => true;
+
+    protected override Vector2 GetFocusPoint()
+    {
+        Vector2 mousePos = Input.mousePosition;
+        mousePos.x = Mathf.Clamp(mousePos.x, 0.0f, Screen.width);
+        mousePos.y = Mathf.Clamp(mousePos.y, 0.0f, Screen.height);
+        return Camera.main.ScreenToWorldPoint(mousePos);
     }
 
     protected override Vector2 GetMovementInput()

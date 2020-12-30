@@ -31,7 +31,7 @@ public class RAGNetworkManager : NetworkManager
     {
         Player newPlayer = Instantiate(CharacterDict.Instance.GetPlayerForType(joinMessage.characterType));
         newPlayer.SmoothSync.setPosition(
-            startPositions[Random.Range(0, startPositions.Count)].position,
+            RandomUtil.Element(startPositions).position,
             true
             );
 

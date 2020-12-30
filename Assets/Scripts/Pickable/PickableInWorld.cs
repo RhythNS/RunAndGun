@@ -19,11 +19,4 @@ public class PickableInWorld : NetworkBehaviour
     {
         GetComponent<SpriteRenderer>().sprite = pickable.Icon ? pickable.Icon : PickableDict.Instance.MissingTexture;
     }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (Pickable.InstantPickup && collision.gameObject.TryGetComponent(out Player player)
-            && player.isLocalPlayer)
-            player.CmdPickup(gameObject);
-    }
 }

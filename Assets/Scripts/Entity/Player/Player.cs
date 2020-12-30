@@ -28,6 +28,7 @@ public class Player : NetworkBehaviour
     {
         Config.Instance.selectedPlayerType = characterType;
         Input = RAGInput.AttachInput(gameObject);
+        Camera.main.GetComponent<PlayerCamera>().ToFollow = transform;
     }
 
     /// <summary>
@@ -57,4 +58,9 @@ public class Player : NetworkBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        if (Camera.main.TryGetComponent(out PlayerCamera camera))
+            camera.ToFollow = null;
+    }
 }
