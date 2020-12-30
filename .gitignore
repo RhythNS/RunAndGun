@@ -5,6 +5,7 @@
 # Ignore copyrighted folders
 /[Aa]ssets/[Pp]lugins
 /[Aa]ssets/[Ii]mported [Aa]ssets
+/[Aa]ssets/[Ii]mported [Ll]ibraries/[Cc]opyrighted/*
 
 # Ignore Unity folders
 /[Ll]ibrary/

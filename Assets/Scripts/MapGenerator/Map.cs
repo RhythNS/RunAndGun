@@ -11,6 +11,7 @@ public abstract class Map
     protected List<Structure> rooms;
     protected List<Structure> tunnels;
     protected List<Structure> walls;
+    private List<Structure> additionalWalls;
     private TileType[][] mapTiles;
 
     /// <summary>
@@ -66,6 +67,7 @@ public abstract class Map
         rooms = new List<Structure>();
         tunnels = new List<Structure>();
         walls = new List<Structure>();
+        additionalWalls = new List<Structure>();
 
         mapTiles = new TileType[Size.x][];
         for (int i = 0; i < Size.x; i++) {
@@ -145,6 +147,16 @@ public abstract class Map
                     structure.IsRoom
                 ));
         }
+    }
+
+    protected void AddWallStructure(Structure structure) {
+        for (int x = structure.Position.x; x < structure.Position.x + structure.Size.x; x++) {
+            for (int y = structure.Position.y; y < structure.Position.y + structure.Size.y; y++) {
+                this[x, y] = TileType.Wall;
+            }
+        }
+
+        additionalWalls.Add(structure);
     }
 
     /// <summary>
