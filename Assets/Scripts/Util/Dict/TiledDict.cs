@@ -9,8 +9,8 @@ public class TiledDict : MonoBehaviour
     [SerializeField] private Tilemap[] tileMaps;
     [SerializeField] private Tileset[] tilesets;
 
-    private Dictionary<string, Tileset> tilesetDict = new Dictionary<string, Tileset>();
-    private Dictionary<string, Tilemap> mapDict = new Dictionary<string, Tilemap>();
+    private readonly Dictionary<string, Tileset> tilesetDict = new Dictionary<string, Tileset>();
+    private readonly Dictionary<string, Tilemap> mapDict = new Dictionary<string, Tilemap>();
 
     [System.Serializable]
     public struct Tileset
@@ -40,7 +40,10 @@ public class TiledDict : MonoBehaviour
 
         for (int i = 0; i < tilesets.Length; i++)
         {
-            tilesets[i].tileset = new TmxTileset(tilesets[i].tsxFile);
+            tilesets[i].tileset = new TmxTileset(tilesets[i].tsxFile)
+            {
+                Image = tilesets[i].image
+            };
             tilesetDict.Add(tilesets[i].name, tilesets[i]);
         }
 

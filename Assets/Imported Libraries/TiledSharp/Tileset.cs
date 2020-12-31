@@ -28,7 +28,7 @@ namespace TiledSharp
         public Dictionary<int, TmxTilesetTile> Tiles { get; private set; }
         public TmxTileOffset TileOffset { get; private set; }
         public PropertyDict Properties { get; private set; }
-        public TmxImage Image { get; private set; }
+        public Texture2D Image { get; set; }
         public TmxList<TmxTerrain> Terrains { get; private set; }
 
         public TmxTileset(TextAsset mapString, ICustomLoader customLoader = null) : base (customLoader)
@@ -90,7 +90,6 @@ namespace TiledSharp
             Columns = (int?)xTileset.Attribute("columns");
             TileCount = (int?)xTileset.Attribute("tilecount");
             TileOffset = new TmxTileOffset(xTileset.Element("tileoffset"));
-            Image = new TmxImage(xTileset.Element("image"), tmxDir);
 
             Terrains = new TmxList<TmxTerrain>();
             var xTerrainType = xTileset.Element("terraintypes");
