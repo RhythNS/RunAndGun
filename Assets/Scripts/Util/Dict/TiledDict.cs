@@ -8,9 +8,11 @@ public class TiledDict : MonoBehaviour
 
     [SerializeField] private Tilemap[] tileMaps;
     [SerializeField] private Tileset[] tilesets;
+    [SerializeField] private CustomObject[] customObjects;
 
     private readonly Dictionary<string, Tileset> tilesetDict = new Dictionary<string, Tileset>();
     private readonly Dictionary<string, Tilemap> mapDict = new Dictionary<string, Tilemap>();
+    private readonly Dictionary<string, GameObject> objectDict = new Dictionary<string, GameObject>();
 
     [System.Serializable]
     public struct Tileset
@@ -26,6 +28,13 @@ public class TiledDict : MonoBehaviour
     {
         public string name;
         public TextAsset tsmFile;
+    }
+
+    [System.Serializable]
+    public struct CustomObject
+    {
+        public string name;
+        public GameObject prefab;
     }
 
     private void Awake()
@@ -51,6 +60,11 @@ public class TiledDict : MonoBehaviour
         {
             mapDict.Add(tileMaps[i].name, tileMaps[i]);
         }
+
+        for (int i = 0; i < customObjects.Length; i++)
+        {
+            objectDict.Add(customObjects[i].name, customObjects[i].prefab);
+        }
     }
 
     public Tileset GetTileset(string name)
@@ -61,6 +75,14 @@ public class TiledDict : MonoBehaviour
     public Tilemap GetTileMap(string name)
     {
         return mapDict[name];
+    }
+
+    public bool TryGetObject(string name, out GameObject obj)
+    {
+        if (objectDict.TryGetValue(name, out obj))
+            return true;
+        Debug.LogWarning("Could not find CustomObject " + name + "! I am not spawning him onto the map!");
+        return false;
     }
 
     private void OnDestroy()

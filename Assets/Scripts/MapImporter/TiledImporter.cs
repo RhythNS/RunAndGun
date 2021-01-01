@@ -1,11 +1,32 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using TiledSharp;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public static class TiledImporter
+public class TiledImporter : MonoBehaviour
 {
-    public static TmxMap LoadMap(string mapName)
+    public static TiledImporter Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance)
+        {
+            Debug.LogWarning("TiledImporter already in scene! Deleting myself!");
+            Destroy(this);
+            return;
+        }
+        Instance = this;
+    }
+
+    /// <summary>
+    /// Loads a tiled map based on its name.
+    /// </summary>
+    /// <param name="mapName">The name of the map.</param>
+    /// <returns>The loaded tiled map.</returns>
+    public TmxMap LoadMap(string mapName)
     {
         TextAsset mapString = TiledDict.Instance.GetTileMap(mapName).tsmFile;
         MemoryStream stream = new MemoryStream(mapString.bytes);
@@ -15,15 +36,73 @@ public static class TiledImporter
     }
 
     /// <summary>
+    /// Instantiates a gameobject based on a tiled object.
+    /// </summary>
+    /// <param name="map">The map where the tiled object is from.</param>
+    /// <param name="tmxObject">The object that was loaded.</param>
+    /// <param name="xOffset">The x offset of the map.</param>
+    /// <param name="yOffset">The y offset of the map.</param>
+    /// <param name="obj">The loaded gameobject.</param>
+    /// <returns>Wheter it succeeded ot not.</returns>
+    private bool LoadObject(TmxMap map, TmxObject tmxObject, float xOffset, float yOffset, out GameObject obj)
+    {
+        // Try to get the prefab
+        if (TiledDict.Instance.TryGetObject(tmxObject.Type, out obj) == false)
+            return false;
+
+        // Instantiate and position the object
+        obj = Instantiate(obj);
+        Vector3 pos = obj.transform.position;
+        pos.x = xOffset + ((float)tmxObject.X / map.TileWidth);
+        pos.y = yOffset + map.Height - ((float)tmxObject.Y / map.TileHeight);
+        obj.transform.position = pos;
+
+        // if there are no custom properties, we are done.
+        if (tmxObject.Properties.Count == 0)
+            return true;
+
+        ICustomTiledObject customObject = obj.GetComponent<ICustomTiledObject>();
+        Type type = customObject.GetType();
+        // Go over each custom property
+        foreach (string key in tmxObject.Properties.Keys)
+        {
+            // Get the reflection field info
+            FieldInfo fieldInfo = type.GetField(key);
+            if (fieldInfo == null)
+            {
+                Debug.LogWarning("Could not find field " + key + " on custom object " + tmxObject.Type + "!");
+                continue;
+            }
+
+            // Assign the field the value that we set in tiled.
+            // This does not look pretty, but I could not think of another way to do this.
+            Type fieldType = fieldInfo.FieldType;
+            if (fieldType == typeof(int))
+                fieldInfo.SetValue(customObject, int.Parse(tmxObject.Properties[key]));
+            else if (fieldType == typeof(string))
+                fieldInfo.SetValue(customObject, tmxObject.Properties[key]);
+            else if (fieldType == typeof(bool))
+                fieldInfo.SetValue(customObject, bool.Parse(tmxObject.Properties[key]));
+            else if (fieldType == typeof(float))
+                fieldInfo.SetValue(customObject, float.Parse(tmxObject.Properties[key]));
+            else
+                fieldInfo.SetValue(customObject, tmxObject.Properties[key]);
+        }
+
+        return true;
+    }
+
+    /// <summary>
     /// Replaces a section of the tilemap with a TiledMap.
     /// </summary>
     /// <param name="tileMap">The tilemap to be edited.</param>
     /// <param name="mapName">The name of the TiledMap.</param>
     /// <param name="x">The starting x point where the TiledMap will be placed to.</param>
     /// <param name="y">The starting y point where the TiledMap will be placed to.</param>
-    public static void ReplaceSection(Tilemap tileMap, string mapName, int x, int y)
+    public void ReplaceSection(Tilemap tileMap, string mapName, int x, int y, out List<GameObject> loadedGameobjects)
     {
         TmxMap map = LoadMap(mapName);
+        loadedGameobjects = new List<GameObject>();
 
         for (int l = 0; l < map.TileLayers.Count; l++)
         {
@@ -64,31 +143,29 @@ public static class TiledImporter
                 int column = gid % columns;
                 int row = gid / columns;
 
-                /*
-                int orgX = layerTile.X * tileWidth;
-                int orgY = layerTile.Y * tileHeight;
-
+                // If the tileset tile has objects, spawn them
                 if (toFindTileset.Tiles.TryGetValue(gid, out TmxTilesetTile tilesetTile) == true)
                 {
-                    // Get all hitboxes
                     for (int groupIndex = 0; groupIndex < tilesetTile.ObjectGroups.Count; groupIndex++)
                     {
                         for (int objectIndex = 0; objectIndex < tilesetTile.ObjectGroups[groupIndex].Objects.Count; objectIndex++)
                         {
-                            tiledBase.NotifyHitboxLoaded(mapComponent, transform, tilesetTile.ObjectGroups[groupIndex].Objects[objectIndex], orgX, orgY);
+                            if (LoadObject(map, tilesetTile.ObjectGroups[groupIndex].Objects[objectIndex], x, y, out GameObject obj))
+                                loadedGameobjects.Add(obj);
                         }
                     }
                 }
-                */
+
+                // Create and set the tile on the tilemap
                 Tile tile = ScriptableObject.CreateInstance<Tile>();
                 tile.sprite = Sprite.Create(
-                    tilesetImage, 
+                    tilesetImage,
                     new Rect(
                         column * map.TileWidth,
                         tilesetImage.height - (row + 1) * map.TileHeight,
                         tileWidth,
-                        tileHeight), 
-                    new Vector2(), 
+                        tileHeight),
+                    new Vector2(),
                     tileHeight
                     );
 
@@ -96,9 +173,20 @@ public static class TiledImporter
             }
         }
 
+        // Go through each objectlayer and spawn their objects
         for (int i = 0; i < map.ObjectGroups.Count; i++)
         {
-            // TODO: Load the objects
+            for (int j = 0; j < map.ObjectGroups[i].Objects.Count; j++)
+            {
+                if (LoadObject(map, map.ObjectGroups[i].Objects[j], x, y, out GameObject obj))
+                    loadedGameobjects.Add(obj);
+            }
         }
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+            Instance = null;
     }
 }

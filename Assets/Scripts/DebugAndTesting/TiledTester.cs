@@ -10,7 +10,7 @@ public class TiledTester : MonoBehaviour
 
     private void Start()
     {
-        TiledImporter.ReplaceSection(tilemap, toLoad, x, y);
+        TiledImporter.Instance.ReplaceSection(tilemap, toLoad, x, y, out _);
     }
 
 }
