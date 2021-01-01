@@ -1,0 +1,192 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+using TiledSharp;
+using UnityEngine;
+using UnityEngine.Tilemaps;
+
+public class TiledImporter : MonoBehaviour
+{
+    public static TiledImporter Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance)
+        {
+            Debug.LogWarning("TiledImporter already in scene! Deleting myself!");
+            Destroy(this);
+            return;
+        }
+        Instance = this;
+    }
+
+    /// <summary>
+    /// Loads a tiled map based on its name.
+    /// </summary>
+    /// <param name="mapName">The name of the map.</param>
+    /// <returns>The loaded tiled map.</returns>
+    public TmxMap LoadMap(string mapName)
+    {
+        TextAsset mapString = TiledDict.Instance.GetTileMap(mapName).tsmFile;
+        MemoryStream stream = new MemoryStream(mapString.bytes);
+        TmxMap map = new TmxMap(stream);
+        stream.Close();
+        return map;
+    }
+
+    /// <summary>
+    /// Instantiates a gameobject based on a tiled object.
+    /// </summary>
+    /// <param name="map">The map where the tiled object is from.</param>
+    /// <param name="tmxObject">The object that was loaded.</param>
+    /// <param name="xOffset">The x offset of the map.</param>
+    /// <param name="yOffset">The y offset of the map.</param>
+    /// <param name="obj">The loaded gameobject.</param>
+    /// <returns>Wheter it succeeded ot not.</returns>
+    private bool LoadObject(TmxMap map, TmxObject tmxObject, float xOffset, float yOffset, out GameObject obj)
+    {
+        // Try to get the prefab
+        if (TiledDict.Instance.TryGetObject(tmxObject.Type, out obj) == false)
+            return false;
+
+        // Instantiate and position the object
+        obj = Instantiate(obj);
+        Vector3 pos = obj.transform.position;
+        pos.x = xOffset + ((float)tmxObject.X / map.TileWidth);
+        pos.y = yOffset + map.Height - ((float)tmxObject.Y / map.TileHeight);
+        obj.transform.position = pos;
+
+        // if there are no custom properties, we are done.
+        if (tmxObject.Properties.Count == 0)
+            return true;
+
+        ICustomTiledObject customObject = obj.GetComponent<ICustomTiledObject>();
+        Type type = customObject.GetType();
+        // Go over each custom property
+        foreach (string key in tmxObject.Properties.Keys)
+        {
+            // Get the reflection field info
+            FieldInfo fieldInfo = type.GetField(key);
+            if (fieldInfo == null)
+            {
+                Debug.LogWarning("Could not find field " + key + " on custom object " + tmxObject.Type + "!");
+                continue;
+            }
+
+            // Assign the field the value that we set in tiled.
+            // This does not look pretty, but I could not think of another way to do this.
+            Type fieldType = fieldInfo.FieldType;
+            if (fieldType == typeof(int))
+                fieldInfo.SetValue(customObject, int.Parse(tmxObject.Properties[key]));
+            else if (fieldType == typeof(string))
+                fieldInfo.SetValue(customObject, tmxObject.Properties[key]);
+            else if (fieldType == typeof(bool))
+                fieldInfo.SetValue(customObject, bool.Parse(tmxObject.Properties[key]));
+            else if (fieldType == typeof(float))
+                fieldInfo.SetValue(customObject, float.Parse(tmxObject.Properties[key]));
+            else
+                fieldInfo.SetValue(customObject, tmxObject.Properties[key]);
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// Replaces a section of the tilemap with a TiledMap.
+    /// </summary>
+    /// <param name="tileMap">The tilemap to be edited.</param>
+    /// <param name="mapName">The name of the TiledMap.</param>
+    /// <param name="x">The starting x point where the TiledMap will be placed to.</param>
+    /// <param name="y">The starting y point where the TiledMap will be placed to.</param>
+    public void ReplaceSection(Tilemap tileMap, string mapName, int x, int y, out List<GameObject> loadedGameobjects)
+    {
+        TmxMap map = LoadMap(mapName);
+        loadedGameobjects = new List<GameObject>();
+
+        for (int l = 0; l < map.TileLayers.Count; l++)
+        {
+            for (int t = 0; t < map.TileLayers[l].Tiles.Count; t++)
+            {
+                TmxLayerTile layerTile = map.TileLayers[l].Tiles[t];
+                int gid = layerTile.Gid;
+
+                // Empty tile, do nothing
+                if (gid == 0)
+                    continue;
+
+                // Get the acctual gid value
+                gid--;
+
+                // Get the correct tileset with the gid value
+                TmxTileset toFindTileset = null;
+                for (int j = 0; j < map.Tilesets.Count; j++)
+                {
+                    gid -= map.Tilesets[j].TileCount ?? 0;
+                    if (gid <= 0)
+                    {
+                        toFindTileset = map.Tilesets[j];
+                        break;
+                    }
+                }
+
+                // set gid to a positive value again
+                gid += toFindTileset.TileCount ?? 0;
+
+                Texture2D tilesetImage = toFindTileset.Image;
+
+                int tileWidth = toFindTileset.TileWidth;
+                int tileHeight = toFindTileset.TileHeight;
+
+                int columns = toFindTileset.Columns.Value;
+
+                int column = gid % columns;
+                int row = gid / columns;
+
+                // If the tileset tile has objects, spawn them
+                if (toFindTileset.Tiles.TryGetValue(gid, out TmxTilesetTile tilesetTile) == true)
+                {
+                    for (int groupIndex = 0; groupIndex < tilesetTile.ObjectGroups.Count; groupIndex++)
+                    {
+                        for (int objectIndex = 0; objectIndex < tilesetTile.ObjectGroups[groupIndex].Objects.Count; objectIndex++)
+                        {
+                            if (LoadObject(map, tilesetTile.ObjectGroups[groupIndex].Objects[objectIndex], x, y, out GameObject obj))
+                                loadedGameobjects.Add(obj);
+                        }
+                    }
+                }
+
+                // Create and set the tile on the tilemap
+                Tile tile = ScriptableObject.CreateInstance<Tile>();
+                tile.sprite = Sprite.Create(
+                    tilesetImage,
+                    new Rect(
+                        column * map.TileWidth,
+                        tilesetImage.height - (row + 1) * map.TileHeight,
+                        tileWidth,
+                        tileHeight),
+                    new Vector2(),
+                    tileHeight
+                    );
+
+                tileMap.SetTile(new Vector3Int(layerTile.X + x, map.Height - layerTile.Y + y, l), tile);
+            }
+        }
+
+        // Go through each objectlayer and spawn their objects
+        for (int i = 0; i < map.ObjectGroups.Count; i++)
+        {
+            for (int j = 0; j < map.ObjectGroups[i].Objects.Count; j++)
+            {
+                if (LoadObject(map, map.ObjectGroups[i].Objects[j], x, y, out GameObject obj))
+                    loadedGameobjects.Add(obj);
+            }
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+            Instance = null;
+    }
+}

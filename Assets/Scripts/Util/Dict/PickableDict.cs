@@ -59,7 +59,7 @@ public class PickableDict : MonoBehaviour
 
     private void OnDestroy()
     {
-        Instance = null;
+        if (Instance == this)
+            Instance = null;
     }
-
 }
