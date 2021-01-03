@@ -12,7 +12,7 @@ public class Player : NetworkBehaviour
     public Status Status { get; private set; }
     public Health Health { get; private set; }
     public Inventory Inventory { get; private set; }
-    //public EquippedWeapon EquippedWeapon { get; private set; }
+    public EquippedWeapon EquippedWeapon { get; private set; }
     public SmoothSyncMirror SmoothSync { get; private set; }
 
     private void Awake()
@@ -21,6 +21,7 @@ public class Player : NetworkBehaviour
         Status = GetComponent<Status>();
         Health = GetComponent<Health>();
         Inventory = GetComponent<Inventory>();
+        EquippedWeapon = GetComponent<EquippedWeapon>();
         SmoothSync = GetComponent<SmoothSyncMirror>();
     }
 
@@ -50,7 +51,7 @@ public class Player : NetworkBehaviour
                 Inventory.PickUp((Item)pickable);
                 break;
             case PickableType.Weapon:
-                // EquippedWeapon.Swap((Weapon)pickable);
+                EquippedWeapon.Swap((Weapon)pickable);
                 break;
             default:
                 Debug.LogError("Type " + pickable.PickableType + " not implemented!");
