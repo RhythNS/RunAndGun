@@ -1049,6 +1049,7 @@ GameObject:
   - component: {fileID: 1626197462}
   - component: {fileID: 1626197463}
   - component: {fileID: 1626197464}
+  - component: {fileID: 1626197465}
   m_Layer: 0
   m_Name: Dicts
   m_TagString: Untagged
@@ -1119,7 +1120,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ed21c9b9e3e8b94d8f5e870e5cb13c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weapons: []
+  weapons:
+  - {fileID: 11400000, guid: ac7a3d27f5349fc4589c7af1ddc3ad4f, type: 2}
   consumables:
   - {fileID: 11400000, guid: 827216994d085974c970de0df9ff11d7, type: 2}
   - {fileID: 11400000, guid: b10f32a47bcc3804287b3aeaffeb581c, type: 2}
@@ -1160,6 +1162,20 @@ MonoBehaviour:
   - name: gunSpawn
     prefab: {fileID: 8185515871585183955, guid: 16623351620a6d34692c023dbfd55d23,
       type: 3}
+--- !u!114 &1626197465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1626197459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 414e2ae5304a1474caa3f6b256da3eb5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startingAmount: 0
+  maxCapacity: 0
 --- !u!1 &1774810172
 GameObject:
   m_ObjectHideFlags: 0
