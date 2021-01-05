@@ -39,6 +39,8 @@ public class PickableDict : MonoBehaviour
 
     public Pickable Get(PickableType type, int id)
     {
+        if (id == 0)
+            return null;
         switch (type)
         {
             case PickableType.Consumable:
@@ -51,11 +53,11 @@ public class PickableDict : MonoBehaviour
         throw new System.Exception("Could not find " + type);
     }
 
-    public Consumable GetConsumbale(int id) => consumableDict[id];
+    public Consumable GetConsumbale(int id) => id == 0 ? null : consumableDict[id];
 
-    public Weapon GetWeapon(int id) => weaponDict[id];
+    public Weapon GetWeapon(int id) => id == 0 ? null : weaponDict[id];
 
-    public Item GetItem(int id) => itemDict[id];
+    public Item GetItem(int id) => id == 0 ? null : itemDict[id];
 
     private void OnDestroy()
     {

@@ -62,6 +62,15 @@ public abstract class RAGInput : MonoBehaviour
         {
             Player.EquippedWeapon.CmdFire(fireDirection);
         }
+
+        // Let the implentation handle how they pick stuff up.
+        Pickup();
+
+        // Handle reload
+        if (GetReloadInput())
+        {
+            Player.EquippedWeapon.CmdReload();
+        }
     }
 
     private void FixedUpdate()
@@ -97,6 +106,10 @@ public abstract class RAGInput : MonoBehaviour
     /// <param name="fireDirection">The normalized direction.</param>
     /// <returns>Wheter the player wants to shoot or not.</returns>
     protected abstract bool GetFireInput(out Vector2 fireDirection);
+
+    protected abstract void Pickup();
+
+    protected abstract bool GetReloadInput();
 
     /// <summary>
     /// Removes the InputMethod from the player.

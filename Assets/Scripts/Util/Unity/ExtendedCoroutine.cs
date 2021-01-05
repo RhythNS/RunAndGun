@@ -1,16 +1,20 @@
 ﻿using System;
 using System.Collections;
+using UnityEngine;
 
 public class ExtendedCoroutine : IEnumerator
 {
     public bool IsFinshed { get; private set; } = false;
     public object Current => enumerator.Current;
+    public Coroutine Coroutine { get; private set; }
 
     private readonly IEnumerator enumerator;
     private readonly Action onFinished;
+    private MonoBehaviour onScript;
 
-    public ExtendedCoroutine(IEnumerator enumerator, Action onFinished = null)
+    public ExtendedCoroutine(MonoBehaviour onScript, IEnumerator enumerator, Action onFinished = null)
     {
+        this.onScript = onScript;
         this.enumerator = enumerator;
         this.onFinished = onFinished;
     }
@@ -30,5 +34,18 @@ public class ExtendedCoroutine : IEnumerator
     public void Reset()
     {
         enumerator.Reset();
+    }
+
+    public void Start()
+    {
+        Coroutine = onScript.StartCoroutine(this);
+    }
+
+    public void Stop(bool invokeOnFinished = true)
+    {
+        if (Coroutine != null)
+            onScript.StopCoroutine(Coroutine);
+        if (invokeOnFinished && onFinished != null)
+            onFinished.Invoke();
     }
 }

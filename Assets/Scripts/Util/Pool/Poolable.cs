@@ -1,6 +1,6 @@
 ﻿public interface IPoolable
 {
-    void Reset();
+    void Hide();
 
     void Delete();
 }

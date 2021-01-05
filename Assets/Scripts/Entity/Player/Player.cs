@@ -57,11 +57,12 @@ public class Player : NetworkBehaviour
                 Debug.LogError("Type " + pickable.PickableType + " not implemented!");
                 break;
         }
+        Destroy(pickup);
     }
 
     private void OnDestroy()
     {
-        if (Camera.main.TryGetComponent(out PlayerCamera camera))
+        if (Camera.main && Camera.main.TryGetComponent(out PlayerCamera camera))
             camera.ToFollow = null;
     }
 }

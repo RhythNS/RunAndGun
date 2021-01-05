@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class KeyMouseInput : RAGInput
 {
@@ -46,6 +47,29 @@ public class KeyMouseInput : RAGInput
         }
     }
 
+    protected override void Pickup()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            BoxCollider2D boxCollider2D = GetComponent<BoxCollider2D>();
+            List<Collider2D> colls = new List<Collider2D>();
+            boxCollider2D.OverlapCollider(new ContactFilter2D().NoFilter(), colls);
+            for (int i = 0; i < colls.Count; i++)
+            {
+                if (colls[i].gameObject.TryGetComponent(out PickableInWorld _))
+                {
+                    Player.CmdPickup(colls[i].gameObject);
+                    return;
+                }
+            }
+        }
+    }
+
+    protected override bool GetReloadInput()
+    {
+        return Input.GetKeyDown(KeyCode.R);
+    }
+
     public override void Remove()
     {
         Destroy(this);
@@ -55,4 +79,5 @@ public class KeyMouseInput : RAGInput
     {
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
     }
+
 }

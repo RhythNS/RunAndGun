@@ -13,11 +13,11 @@ public class Weapon : Pickable
     public ShotModel ShotModel => shotModel;
     [SerializeField] private ShotModel shotModel;
 
+    public BulletInfo BulletInfo => bulletInfo;
+    [SerializeField] private BulletInfo bulletInfo;
+
     public BulletSpawnModel BulletSpawnModel => bulletSpawnModel;
     [SerializeField] private BulletSpawnModel bulletSpawnModel;
-
-    public Bullet Bullet => bullet;
-    [SerializeField] private Bullet bullet;
 
     public RuntimeAnimatorController Animator => animator;
     [SerializeField] private RuntimeAnimatorController animator;

@@ -7,8 +7,8 @@ public class CoroutineTest : MonoBehaviour
 
     private void Awake()
     {
-        ext = new ExtendedCoroutine(Test(), OnFinished);
-        StartCoroutine(ext);
+        ext = new ExtendedCoroutine(this, Test(), OnFinished);
+        ext.Start();
     }
 
     private void OnFinished()

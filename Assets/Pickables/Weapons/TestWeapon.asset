@@ -13,15 +13,15 @@ MonoBehaviour:
   m_Name: TestWeapon
   m_EditorClassIdentifier: 
   id: 1
-  icon: {fileID: 0}
+  icon: {fileID: -7349882584872989000, guid: 4da522509089bb34193f504d220d2956, type: 3}
   instantPickup: 0
   effects: []
-  shotModel: {fileID: 0}
-  bulletSpawnModel: {fileID: 0}
-  bullet: {fileID: 0}
+  shotModel: {fileID: 11400000, guid: 0d8db3f1dfd8a9d408dcb65663868af5, type: 2}
+  bulletInfo: {fileID: 11400000, guid: cff976ac23e0bd84eb1d41e4556d9ea2, type: 2}
+  bulletSpawnModel: {fileID: 11400000, guid: 9cce36ab2ab7a954497b8496de02efe8, type: 2}
   animator: {fileID: 0}
   useLocalSpace: 0
-  range: 0
-  speed: 0
-  baseDamage: 0
-  magazineSize: 0
+  range: 20
+  speed: 6
+  baseDamage: 20
+  magazineSize: 8

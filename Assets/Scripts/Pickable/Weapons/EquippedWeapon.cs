@@ -10,7 +10,7 @@ public class EquippedWeapon : NetworkBehaviour
     public bool CanFire => true;
 
     public Weapon Weapon => weapon;
-    [SyncVar] private Weapon weapon;
+    [SerializeField] [SyncVar] private Weapon weapon;
 
     [SyncVar] int remainingBullets;
 
@@ -35,6 +35,7 @@ public class EquippedWeapon : NetworkBehaviour
             PickableInWorld.Place(weapon, transform.position);
 
         weapon = newWeapon;
+        remainingBullets = weapon.MagazineSize;
         // Reset all timed values and stuff
     }
 
@@ -44,13 +45,15 @@ public class EquippedWeapon : NetworkBehaviour
         if (!weapon || !CanFire || remainingBullets <= 0 || !(shootCoroutine == null || shootCoroutine.IsFinshed))
             return;
 
+        fireDirection.Normalize();
+
         // Play shoot animation
-        shootCoroutine = new ExtendedCoroutine(weapon.Shoot(health, this, transform.position, fireDirection));
-        StartCoroutine(shootCoroutine);
+        shootCoroutine = new ExtendedCoroutine(this, weapon.Shoot(health, this, transform.position, fireDirection));
+        shootCoroutine.Start();
     }
 
     [Command]
-    public void Reload()
+    public void CmdReload()
     {
         // Play reload animation
         remainingBullets = weapon.MagazineSize;

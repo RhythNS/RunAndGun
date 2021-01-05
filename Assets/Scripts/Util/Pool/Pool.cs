@@ -3,15 +3,26 @@ using UnityEngine;
 
 public abstract class Pool<T> : MonoBehaviour where T : IPoolable
 {
-    [SerializeField] private int startingAmount;
-    [SerializeField] private int maxCapacity;
+    [SerializeField] protected T prefab;
+    [SerializeField] protected int startingAmount;
+    [SerializeField] protected int maxCapacity;
 
     private Queue<T> poolQueue;
 
     private void Awake()
     {
         poolQueue = new Queue<T>(maxCapacity);
+        for (int i = 0; i < startingAmount; i++)
+        {
+            T t = Create();
+            t.Hide();
+            poolQueue.Enqueue(t);
+        }
+
+        InnerAwake();
     }
+
+    protected abstract void InnerAwake();
 
     public T Get()
     {
@@ -19,6 +30,8 @@ public abstract class Pool<T> : MonoBehaviour where T : IPoolable
             return Create();
         return poolQueue.Dequeue();
     }
+
+    protected abstract T Create();
 
     public void Free(T t)
     {
@@ -28,9 +41,7 @@ public abstract class Pool<T> : MonoBehaviour where T : IPoolable
             t.Delete();
             return;
         }
-        t.Reset();
+        t.Hide();
         poolQueue.Enqueue(t);
     }
-
-    protected abstract T Create();
 }
