@@ -10,7 +10,7 @@ public class ExtendedCoroutine : IEnumerator
 
     private readonly IEnumerator enumerator;
     private readonly Action onFinished;
-    private MonoBehaviour onScript;
+    private readonly MonoBehaviour onScript;
 
     public ExtendedCoroutine(MonoBehaviour onScript, IEnumerator enumerator, Action onFinished = null)
     {

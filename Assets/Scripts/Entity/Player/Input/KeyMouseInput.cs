@@ -35,16 +35,8 @@ public class KeyMouseInput : RAGInput
 
     protected override bool GetFireInput(out Vector2 fireDirection)
     {
-        if (Input.GetMouseButtonDown(0) == true)
-        {
-            fireDirection = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized;
-            return true;
-        }
-        else
-        {
-            fireDirection = new Vector2(0.0f, 0.0f);
-            return false;
-        }
+        fireDirection = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized;
+        return Input.GetMouseButton(0);
     }
 
     protected override void Pickup()

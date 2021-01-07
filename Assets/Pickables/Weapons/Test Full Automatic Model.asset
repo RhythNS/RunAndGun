@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3836cdd6b82e06a43bd5f7e99b23f4ee, type: 3}
-  m_Name: Test Single Shot Model
+  m_Script: {fileID: 11500000, guid: a6b2e09c8304774408e49f8730e154cf, type: 3}
+  m_Name: Test Full Automatic Model
   m_EditorClassIdentifier: 
-  timeBetweenShots: 0.2
+  timeBetweenShots: 0.1

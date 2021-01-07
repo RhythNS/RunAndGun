@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Pickable/Weapon/BulletSpawn/Spray")]
 public class SprayBulletSpawn : BulletSpawnModel
 {
-    public override void Shoot(Health shooter, EquippedWeapon weapon, Vector3 position, Vector2 direction)
+    protected override void InnerShoot(EquippedWeapon weapon)
     {
         throw new System.NotImplementedException();
     }

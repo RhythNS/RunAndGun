@@ -3,5 +3,11 @@ using UnityEngine;
 
 public abstract class ShotModel : ScriptableObject
 {
-    public abstract IEnumerator Shoot(Health shooter, EquippedWeapon equipped, Vector3 position, Vector2 direction);
+    public IEnumerator Shoot(EquippedWeapon equipped)
+    {
+        yield return InnerShoot(equipped);
+        equipped.OnStopFiring();
+    }
+
+    protected abstract IEnumerator InnerShoot(EquippedWeapon equipped);
 }

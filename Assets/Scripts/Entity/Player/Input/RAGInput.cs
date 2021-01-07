@@ -58,9 +58,24 @@ public abstract class RAGInput : MonoBehaviour
             return;
 
         // Handle weapon fire input.
-        if (GetFireInput(out Vector2 fireDirection) && Player.EquippedWeapon.CanFire)
+        EquippedWeapon weapon = Player.EquippedWeapon;
+        if (weapon.Weapon)
         {
-            Player.EquippedWeapon.CmdFire(fireDirection);
+            bool shouldFire = GetFireInput(out Vector2 fireDirection);
+            weapon.CmdSetDirection(fireDirection);
+
+            if (shouldFire)
+            {
+                if (weapon.CanFire && !weapon.Firing)
+                    weapon.CmdStartFire();
+            }
+            else
+            {
+                if (weapon.Firing && !weapon.RequstStopFire)
+                {
+                    weapon.CmdStopFire();
+                }
+            }
         }
 
         // Let the implentation handle how they pick stuff up.

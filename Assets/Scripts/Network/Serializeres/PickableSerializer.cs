@@ -14,8 +14,8 @@ public static class PickableSerializer
         }
         else
         {
-            writer.WriteUInt16(pickable.Id);
             writer.WriteByte((byte)pickable.PickableType);
+            writer.WriteUInt16(pickable.Id);
         }
     }
 

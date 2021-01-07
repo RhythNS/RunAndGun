@@ -13,6 +13,23 @@ public abstract class NetworkPool : NetworkBehaviour
 
     public override void OnStartServer()
     {
+        CreateInitialPool();
+
+        ClientScene.RegisterPrefab(prefab, Get, Free);
+    }
+
+    public override void OnStartClient()
+    {
+        if (isServer)
+            return;
+
+        CreateInitialPool();
+
+        ClientScene.RegisterPrefab(prefab, Get, Free);
+    }
+
+    private void CreateInitialPool()
+    {
         poolQueue = new Queue<GameObject>(maxCapacity);
         for (int i = 0; i < startingAmount; i++)
         {
@@ -22,11 +39,17 @@ public abstract class NetworkPool : NetworkBehaviour
         }
     }
 
-    public GameObject Get()
+    public GameObject Get(SpawnMessage spawnMessage)
     {
-        if (poolQueue.Count == 0)
-            return Create();
-        return poolQueue.Dequeue();
+        GameObject obj = GetFromPool();
+        obj.transform.position = spawnMessage.position;
+        obj.transform.rotation = spawnMessage.rotation;
+        return obj;
+    }
+
+    public GameObject GetFromPool()
+    {
+        return poolQueue.Count == 0 ? Create() : poolQueue.Dequeue();
     }
 
     protected abstract GameObject Create();

@@ -38,8 +38,8 @@ public class Weapon : Pickable
     [SerializeField] private int magazineSize;
 
     [Server]
-    public IEnumerator Shoot(Health shooter, EquippedWeapon equippedWeapon, Vector3 position, Vector2 direction)
+    public IEnumerator Shoot(EquippedWeapon equippedWeapon)
     {
-        return shotModel.Shoot(shooter, equippedWeapon, position, direction);
+        return shotModel.Shoot(equippedWeapon);
     }
 }

@@ -5,8 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Pickable/Weapon/BulletSpawn/Standard")]
 public class StandardBulletSpawn : BulletSpawnModel
 {
-    public override void Shoot(Health shooter, EquippedWeapon weapon, Vector3 position, Vector2 direction)
+    protected override void InnerShoot(EquippedWeapon weapon)
     {
-        Bullet.Set(shooter, weapon, position, direction);
+        Bullet.Set(weapon);
     }
 }

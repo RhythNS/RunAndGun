@@ -4,10 +4,12 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Pickable/Weapon/ShotModel/SingleShot")]
 public class SingleShotModel : ShotModel
 {
-    public override IEnumerator Shoot(Health shooter, EquippedWeapon equipped, Vector3 position, Vector2 direction)
+    [SerializeField] private float timeBetweenShots;
+
+    protected override IEnumerator InnerShoot(EquippedWeapon equipped)
     {
-        equipped.OnFiredSingleShot();
-        equipped.Weapon.BulletSpawnModel.Shoot(shooter, equipped, position, direction);
-        yield break;
+        equipped.Weapon.BulletSpawnModel.Shoot(equipped);
+        yield return new WaitForSeconds(timeBetweenShots);
+        while (!equipped.RequstStopFire) yield return null;
     }
 }

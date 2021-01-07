@@ -13,7 +13,6 @@ public class BulletPool : NetworkPool
     protected override GameObject Create()
     {
         GameObject bullet = Instantiate(prefab, transform);
-        NetworkServer.Spawn(bullet.gameObject);
         return bullet;
     }
 }

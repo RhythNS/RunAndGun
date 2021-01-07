@@ -1,12 +1,17 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Pickable/Weapon/ShotModel/FullAutomatic")]
 public class FullAutomaticModel : ShotModel
 {
-    public override IEnumerator Shoot(Health shooter, EquippedWeapon equipped, Vector3 position, Vector2 direction)
+    [SerializeField] private float timeBetweenShots;
+
+    protected override IEnumerator InnerShoot(EquippedWeapon equipped)
     {
-        throw new System.NotImplementedException();
+        while (!equipped.RequstStopFire && equipped.RemainingBullets > 0)
+        {
+            equipped.Weapon.BulletSpawnModel.Shoot(equipped);
+            yield return new WaitForSeconds(timeBetweenShots);
+        }
     }
 }
