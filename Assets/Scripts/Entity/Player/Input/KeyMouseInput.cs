@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class KeyMouseInput : RAGInput
 {
@@ -34,16 +35,31 @@ public class KeyMouseInput : RAGInput
 
     protected override bool GetFireInput(out Vector2 fireDirection)
     {
-        if (Input.GetMouseButtonDown(0) == true)
+        fireDirection = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized;
+        return Input.GetMouseButton(0);
+    }
+
+    protected override void Pickup()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            fireDirection = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized;
-            return true;
+            BoxCollider2D boxCollider2D = GetComponent<BoxCollider2D>();
+            List<Collider2D> colls = new List<Collider2D>();
+            boxCollider2D.OverlapCollider(new ContactFilter2D().NoFilter(), colls);
+            for (int i = 0; i < colls.Count; i++)
+            {
+                if (colls[i].gameObject.TryGetComponent(out PickableInWorld _))
+                {
+                    Player.CmdPickup(colls[i].gameObject);
+                    return;
+                }
+            }
         }
-        else
-        {
-            fireDirection = new Vector2(0.0f, 0.0f);
-            return false;
-        }
+    }
+
+    protected override bool GetReloadInput()
+    {
+        return Input.GetKeyDown(KeyCode.R);
     }
 
     public override void Remove()
@@ -55,4 +71,5 @@ public class KeyMouseInput : RAGInput
     {
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
     }
+
 }
