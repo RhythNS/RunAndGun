@@ -11,6 +11,8 @@ public class TiledTester : MonoBehaviour
     private void Start()
     {
         TiledImporter.Instance.ReplaceSection(tilemap, toLoad, x, y, out _);
+
+        var v = TiledImporter.Instance.GetReplacableMap("room1", x, y, out _);
     }
 
 }

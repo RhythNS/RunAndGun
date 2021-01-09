@@ -130,7 +130,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 264784992}
-  - component: {fileID: 264784991}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -138,22 +137,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &264784991
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 264784989}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneId: 3073541860
-  serverOnly: 1
-  m_AssetId: 
-  hasSpawned: 0
 --- !u!4 &264784992
 Transform:
   m_ObjectHideFlags: 0
@@ -994,7 +977,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   prefab: {fileID: 1324139871316016671, guid: ef07fde5c20031d4ca7a255ad96f5045, type: 3}
-  startingAmount: 64
+  startingAmount: 12
   maxCapacity: 128
 --- !u!114 &1323094388
 MonoBehaviour:
@@ -1327,14 +1310,24 @@ MonoBehaviour:
   - name: level3
     tsmFile: {fileID: 2811297602134710623, guid: b38e3c0f3aefcce4a8c1efeed84087d7,
       type: 3}
+  - name: room1
+    tsmFile: {fileID: 2811297602134710623, guid: bb09ca85d9d5221478f7e5d3bef37b80,
+      type: 3}
   tilesets:
   - image: {fileID: 2800000, guid: 27b824b1f3078684f8d1eafacb313cf0, type: 3}
     name: plattformer
     tsxFile: {fileID: 2811297602134710623, guid: b1bc1d8406f85d74c97328df4f486d9a,
       type: 3}
+  - image: {fileID: 2800000, guid: f7af37e9604511540bb321a4591ba918, type: 3}
+    name: tiledTiles
+    tsxFile: {fileID: 2811297602134710623, guid: 9c3de1f2b51a82947a1af5276787dc30,
+      type: 3}
   customObjects:
   - name: gunSpawn
     prefab: {fileID: 8185515871585183955, guid: 16623351620a6d34692c023dbfd55d23,
+      type: 3}
+  - name: lightSource
+    prefab: {fileID: 3871920191977636225, guid: 2515d6ad18ec4bd42be3a62d1d0a4773,
       type: 3}
 --- !u!1 &1774810172
 GameObject:
@@ -1362,7 +1355,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1774810172}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 83a08e858c76c8b4781bf6c953a58836, type: 3}
   m_Name: 
