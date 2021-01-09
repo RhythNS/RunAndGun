@@ -15,4 +15,5 @@ public class BulletPool : NetworkPool
         GameObject bullet = Instantiate(prefab, transform);
         return bullet;
     }
+
 }

@@ -37,7 +37,6 @@ public class Weapon : Pickable
     public int MagazineSize => magazineSize;
     [SerializeField] private int magazineSize;
 
-    [Server]
     public IEnumerator Shoot(EquippedWeapon equippedWeapon)
     {
         return shotModel.Shoot(equippedWeapon);

@@ -62,18 +62,18 @@ public abstract class RAGInput : MonoBehaviour
         if (weapon.Weapon)
         {
             bool shouldFire = GetFireInput(out Vector2 fireDirection);
-            weapon.CmdSetDirection(fireDirection);
+            weapon.SetDirection(fireDirection);
 
             if (shouldFire)
             {
                 if (weapon.CanFire && !weapon.Firing)
-                    weapon.CmdStartFire();
+                    weapon.StartFire();
             }
             else
             {
                 if (weapon.Firing && !weapon.RequstStopFire)
                 {
-                    weapon.CmdStopFire();
+                    weapon.StopFire();
                 }
             }
         }

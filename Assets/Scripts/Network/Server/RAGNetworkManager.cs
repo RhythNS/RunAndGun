@@ -34,6 +34,7 @@ public class RAGNetworkManager : NetworkManager
             RandomUtil.Element(startPositions).position,
             true
             );
+        newPlayer.playerId = connection.connectionId;
 
         // Do they want to replace their character?
         if (connection.identity?.gameObject)
@@ -48,7 +49,7 @@ public class RAGNetworkManager : NetworkManager
         {
             NetworkServer.AddPlayerForConnection(connection, newPlayer.gameObject);
         }
-        newPlayer.name = joinMessage.name;
+        newPlayer.userName = joinMessage.name;
 
     }
 

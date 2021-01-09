@@ -7,6 +7,11 @@ public class Player : NetworkBehaviour
     public CharacterType CharacterType => characterType;
     [SerializeField] private CharacterType characterType;
 
+    [SyncVar(hook = nameof(OnNameChanged))] public string userName;
+    [SyncVar] public int playerId;
+
+    public static Player LocalPlayer { get; private set; }
+
     public RAGInput Input { get; private set; }
     public Stats Stats { get; private set; }
     public Status Status { get; private set; }
@@ -25,8 +30,14 @@ public class Player : NetworkBehaviour
         SmoothSync = GetComponent<SmoothSyncMirror>();
     }
 
+    public override void OnStartClient()
+    {
+        gameObject.name = userName;
+    }
+
     public override void OnStartLocalPlayer()
     {
+        LocalPlayer = this;
         Config.Instance.selectedPlayerType = characterType;
         Input = RAGInput.AttachInput(gameObject);
         Camera.main.GetComponent<PlayerCamera>().ToFollow = transform;
@@ -58,6 +69,11 @@ public class Player : NetworkBehaviour
                 break;
         }
         Destroy(pickup);
+    }
+
+    private void OnNameChanged(string oldName, string newName)
+    {
+        gameObject.name = newName;
     }
 
     private void OnDestroy()

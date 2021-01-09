@@ -5,40 +5,35 @@ using UnityEngine;
 
 public class Bullet : NetworkBehaviour, IPoolable
 {
-    private SpriteRenderer spriteRenderer;
-    private SmoothSyncMirror ssm;
-    private Rigidbody2D body;
+    public SpriteRenderer SpriteRenderer { get; private set; }
+    public SmoothSyncMirror Ssm { get; private set; }
+    public Rigidbody2D Body { get; private set; }
 
-    private Health shooterHealth;
-    private Collider2D ownCollider;
+    public Health ShooterHealth { get; set; }
+    public Collider2D OwnCollider { get; private set; }
+
+    [SyncVar] public int owningPlayer = 0;
 
     private void Awake()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        ssm = GetComponent<SmoothSyncMirror>();
-        body = GetComponent<Rigidbody2D>();
-        ownCollider = GetComponent<Collider2D>();
+        SpriteRenderer = GetComponent<SpriteRenderer>();
+        Ssm = GetComponent<SmoothSyncMirror>();
+        Body = GetComponent<Rigidbody2D>();
+        OwnCollider = GetComponent<Collider2D>();
     }
 
-    public static void Set(EquippedWeapon equipped)
+    public override void OnStartClient()
     {
-        Bullet bullet = BulletPool.Instance.GetFromPool().GetComponent<Bullet>();
-        bullet.gameObject.SetActive(true);
+        base.OnStartClient();
 
-
-        bullet.shooterHealth = equipped.Health;
-        Physics2D.IgnoreCollision(equipped.GetComponent<Collider2D>(), bullet.ownCollider, true);
-
-        BulletInfo info = equipped.Weapon.BulletInfo;
-        bullet.spriteRenderer.sprite = info.Sprite;
-        Vector2 velocity = equipped.Direction * equipped.Weapon.Speed;
-        bullet.body.velocity = velocity;
-        bullet.StartCoroutine(bullet.DeleteWhenOutOfRange(velocity, equipped.Weapon.Range));
-        NetworkServer.Spawn(bullet.gameObject);
-        bullet.ssm.teleportAnyObjectFromServer(equipped.BulletSpawnPosition, bullet.transform.rotation, bullet.transform.localScale);
+        if (Player.LocalPlayer?.playerId == owningPlayer)
+            gameObject.SetActive(false);
+        else
+            Ssm.enabled = true;
     }
 
-    private IEnumerator DeleteWhenOutOfRange(Vector2 velocity, float range)
+
+    public IEnumerator DeleteWhenOutOfRange(Vector2 velocity, float range)
     {
         yield return new WaitForSeconds(range / velocity.magnitude);
         Free();
@@ -55,9 +50,9 @@ public class Bullet : NetworkBehaviour, IPoolable
 
     public void Hide()
     {
-        if (shooterHealth)
+        if (ShooterHealth)
         {
-            Physics2D.IgnoreCollision(shooterHealth.GetComponent<Collider2D>(), ownCollider, false);
+            Physics2D.IgnoreCollision(ShooterHealth.GetComponent<Collider2D>(), OwnCollider, false);
             StopAllCoroutines();
         }
         gameObject.SetActive(false);
