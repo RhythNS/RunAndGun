@@ -84,7 +84,7 @@ public abstract class RAGInput : MonoBehaviour
         // Handle reload
         if (GetReloadInput())
         {
-            Player.EquippedWeapon.CmdReload();
+            Player.EquippedWeapon.Reload();
         }
     }
 

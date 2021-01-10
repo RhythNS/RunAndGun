@@ -77,7 +77,7 @@ public class EquippedWeapon : NetworkBehaviour
         requstStopFire = true;
     }
 
-    public void CmdReload()
+    public void Reload()
     {
         if (!Firing)
             remainingBullets = weapon.MagazineSize;
