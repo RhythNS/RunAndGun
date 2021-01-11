@@ -37,6 +37,9 @@ public class Weapon : Pickable
     public int MagazineSize => magazineSize;
     [SerializeField] private int magazineSize;
 
+    public float ReloadTime => reloadTime;
+    [SerializeField] private float reloadTime;
+
     public IEnumerator Shoot(EquippedWeapon equippedWeapon)
     {
         return shotModel.Shoot(equippedWeapon);

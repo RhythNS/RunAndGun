@@ -6,7 +6,7 @@ public class FullAutomaticModel : ShotModel
 {
     [SerializeField] private float timeBetweenShots;
 
-    protected override IEnumerator InnerShoot(EquippedWeapon equipped)
+    public override IEnumerator Shoot(EquippedWeapon equipped)
     {
         while (!equipped.RequstStopFire && equipped.RemainingBullets > 0)
         {

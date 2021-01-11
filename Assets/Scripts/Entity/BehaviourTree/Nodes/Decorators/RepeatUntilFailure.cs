@@ -13,10 +13,10 @@ namespace Rhyth.BTree
 
         public override int MaxNumberOfChildren => 2;
 
-        [SerializeField] private Check check;
+        [SerializeField] private BNodeUtil.Check check;
         [SerializeField] private float checkEverySeconds;
-        [SerializeField] private OnFailure child1OnFailure;
-        [SerializeField] private OnFailure child2OnFailure;
+        [SerializeField] private BNodeUtil.ReturnOperation child1OnFailure;
+        [SerializeField] private BNodeUtil.ReturnOperation child2OnFailure;
 
         private float timer;
         private bool restartedFirstChild;
@@ -26,23 +26,16 @@ namespace Rhyth.BTree
 
         private bool displayedWarning = false;
 
-        private enum Check
-        {
-            EveryRun, EverySeconds
-        }
-
-        private enum OnFailure
-        {
-            ReturnFailure, Restart, ReturnSuccess
-        }
-
         public override void InnerBeginn()
         {
             if (children.Length == 2)
             {
-                if (displayedWarning == false && child1OnFailure == OnFailure.Restart && child2OnFailure == OnFailure.Restart)
+                if (displayedWarning == false &&
+                    child1OnFailure == BNodeUtil.ReturnOperation.Restart &&
+                    child2OnFailure == BNodeUtil.ReturnOperation.Restart)
                 {
-                    Debug.LogWarning("The node " + name + " on " + tree.AttachedBrain.name + " is configured to be in an endless loop");
+                    Debug.LogWarning("The node " + name + " on " + tree.AttachedBrain.name + 
+                        " is configured to be in an endless loop");
                     displayedWarning = true;
                 }
 
@@ -67,11 +60,12 @@ namespace Rhyth.BTree
         {
             if (children.Length != 2)
             {
-                Debug.LogWarning("Node " + name + " on " + tree.AttachedBrain.name + " has not 2 children. It will always return failure!");
+                Debug.LogWarning("Node " + name + " on " + tree.AttachedBrain.name + 
+                    " has not 2 children. It will always return failure!");
                 CurrentStatus = Status.Failure;
             }
 
-            if (check == Check.EverySeconds || forceCheck == true)
+            if (check == BNodeUtil.Check.EverySeconds || forceCheck == true)
             {
                 timer -= Time.deltaTime;
                 if (timer < 0 || forceCheck == true)
@@ -135,10 +129,10 @@ namespace Rhyth.BTree
                 case Status.Failure:
                     switch (child2OnFailure)
                     {
-                        case OnFailure.ReturnFailure:
+                        case BNodeUtil.ReturnOperation.ReturnFailure:
                             CurrentStatus = Status.Failure;
                             return;
-                        case OnFailure.ReturnSuccess:
+                        case BNodeUtil.ReturnOperation.ReturnSuccess:
                             CurrentStatus = Status.Success;
                             return;
                     }
@@ -155,12 +149,12 @@ namespace Rhyth.BTree
         {
             switch (child1OnFailure)
             {
-                case OnFailure.ReturnFailure:
+                case BNodeUtil.ReturnOperation.ReturnFailure:
                     CurrentStatus = Status.Failure;
                     return false;
-                case OnFailure.Restart:
+                case BNodeUtil.ReturnOperation.Restart:
                     return true;
-                case OnFailure.ReturnSuccess:
+                case BNodeUtil.ReturnOperation.ReturnSuccess:
                     CurrentStatus = Status.Success;
                     return false;
                 default:

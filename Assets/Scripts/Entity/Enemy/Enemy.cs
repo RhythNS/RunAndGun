@@ -19,9 +19,8 @@ public class Enemy : NetworkBehaviour
         SmoothSync = GetComponent<SmoothSyncMirror>();
     }
 
-    public override void OnStartClient()
+    public override void OnStartServer()
     {
-        if (isServer)
-            Brain.enabled = true;
+        Brain.enabled = true;
     }
 }

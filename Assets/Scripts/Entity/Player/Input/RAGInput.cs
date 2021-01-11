@@ -66,12 +66,12 @@ public abstract class RAGInput : MonoBehaviour
 
             if (shouldFire)
             {
-                if (weapon.CanFire && !weapon.Firing)
+                if (weapon.CanFire)
                     weapon.StartFire();
             }
             else
             {
-                if (weapon.Firing && !weapon.RequstStopFire)
+                if (weapon.IsFiring && !weapon.RequstStopFire)
                 {
                     weapon.StopFire();
                 }

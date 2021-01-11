@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Goto : BNodeAdapter
+public class GotoNode : BNodeAdapter
 {
     public override int MaxNumberOfChildren => 0;
 
@@ -36,7 +36,7 @@ public class Goto : BNodeAdapter
 
     protected override BNode InnerClone(Dictionary<Value, Value> originalValueForClonedValue)
     {
-        Goto cloned = CreateInstance<Goto>();
+        GotoNode cloned = CreateInstance<GotoNode>();
         cloned.destPos = destPos;
         cloned.requiredTime = requiredTime;
         return cloned;

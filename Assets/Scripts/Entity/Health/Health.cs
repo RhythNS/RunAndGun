@@ -24,6 +24,15 @@ public class Health : NetworkBehaviour
     /// How much damage in total was taken.
     /// </summary>
     public int DamageTaken => max - current;
+    /// <summary>
+    /// Checks if entity is still alive.
+    /// </summary>
+    public bool Alive => current > 0;
+
+    private void Start()
+    {
+        AliveHealthDict.Instance.Register(this);
+    }
 
     [Server]
     public void SetMax(int amount)

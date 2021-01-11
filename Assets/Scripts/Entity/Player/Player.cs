@@ -71,9 +71,29 @@ public class Player : NetworkBehaviour
         Destroy(pickup);
     }
 
+    [Command]
+    public void CmdBulletHit(GameObject gameObject)
+    {
+        if (gameObject.TryGetComponent(out Bullet bullet) == false)
+            return;
+
+        bullet.HitPlayer(this);
+    }
+
     private void OnNameChanged(string oldName, string newName)
     {
         gameObject.name = newName;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (isClient)
+        {
+            if (collision.TryGetComponent(out PickableInWorld pickable) && pickable.Pickable.InstantPickup)
+                CmdPickup(pickable.gameObject);
+            else if (collision.TryGetComponent(out Bullet bullet))
+                CmdBulletHit(bullet.gameObject);
+        }
     }
 
     private void OnDestroy()

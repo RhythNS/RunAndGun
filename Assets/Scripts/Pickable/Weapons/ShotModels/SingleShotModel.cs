@@ -6,7 +6,7 @@ public class SingleShotModel : ShotModel
 {
     [SerializeField] private float timeBetweenShots;
 
-    protected override IEnumerator InnerShoot(EquippedWeapon equipped)
+    public override IEnumerator Shoot(EquippedWeapon equipped)
     {
         equipped.Weapon.BulletSpawnModel.Shoot(equipped);
         yield return new WaitForSeconds(timeBetweenShots);
