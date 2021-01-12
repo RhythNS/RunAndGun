@@ -29,9 +29,14 @@ public class Health : NetworkBehaviour
     /// </summary>
     public bool Alive => current > 0;
 
-    private void Start()
+    private void OnEnable()
     {
         AliveHealthDict.Instance.Register(this);
+    }
+
+    private void OnDisable()
+    {
+        AliveHealthDict.Instance.DeRegister(this);
     }
 
     [Server]

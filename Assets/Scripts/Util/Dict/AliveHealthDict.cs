@@ -29,6 +29,14 @@ public class AliveHealthDict : MonoBehaviour
             enemyHealths.Add(health);
     }
 
+    public void DeRegister(Health health)
+    {
+        if (health.TryGetComponent<Player>(out _))
+            playerHealths.Remove(health);
+        else if (health.TryGetComponent<Enemy>(out _))
+            enemyHealths.Remove(health);
+    }
+
     private void OnDestroy()
     {
         if (Instance == this)

@@ -2,13 +2,13 @@
 
 namespace Rhyth.BTree
 {
-    public class VectorValue : Value
+    public class Vector3Value : Value
     {
         [SerializeField] private Vector3 value;
 
         public override Value Clone()
         {
-            VectorValue vectorValue = CreateInstance<VectorValue>();
+            Vector3Value vectorValue = CreateInstance<Vector3Value>();
             vectorValue.value = value;
             return vectorValue;
         }
@@ -20,6 +20,5 @@ namespace Rhyth.BTree
         public override void SetValue(object obj) => value = (Vector3)obj;
 
         public void Set(Vector3 vector) => value = vector;
-
     }
 }

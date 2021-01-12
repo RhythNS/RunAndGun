@@ -3,7 +3,7 @@ using Smooth;
 using System.Collections;
 using UnityEngine;
 
-public class Bullet : NetworkBehaviour, IPoolable
+public class Bullet : NetworkBehaviour
 {
     public SpriteRenderer SpriteRenderer { get; private set; }
     public SmoothSyncMirror Ssm { get; private set; }
@@ -26,10 +26,11 @@ public class Bullet : NetworkBehaviour, IPoolable
 
     public override void OnStartClient()
     {
-        base.OnStartClient();
-
-        if (!isServer && Player.LocalPlayer?.playerId == owningPlayer)
-            Free();
+        if (!isServer)
+        {
+            if (Player.LocalPlayer?.playerId == owningPlayer)
+                Free();
+        }
         else
             Ssm.enabled = true;
     }
@@ -47,22 +48,6 @@ public class Bullet : NetworkBehaviour, IPoolable
         {
             NetworkServer.UnSpawn(gameObject);
         }
-        BulletPool.Instance.Free(gameObject);
-    }
-
-    public void Hide()
-    {
-        if (ShooterHealth)
-        {
-            Physics2D.IgnoreCollision(ShooterHealth.GetComponent<Collider2D>(), OwnCollider, false);
-            owningBullet = false;
-            StopAllCoroutines();
-        }
-        gameObject.SetActive(false);
-    }
-
-    public void Delete()
-    {
         Destroy(gameObject);
     }
 
@@ -79,7 +64,6 @@ public class Bullet : NetworkBehaviour, IPoolable
         OnHit(player.gameObject);
     }
 
-    // TODO: ADD FREE BULLET SOMEWHERE
     private void OnHit(GameObject collider)
     {
         if (collider.TryGetComponent(out Health health) && isServer)
@@ -97,5 +81,7 @@ public class Bullet : NetworkBehaviour, IPoolable
                 fromWeapon.BulletInfo.BulletImpactEffects[i].OnBulletImpacted(transform.position, health != null);
             }
         }
+
+        Free();
     }
 }

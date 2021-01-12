@@ -72,8 +72,18 @@ public class Player : NetworkBehaviour
     }
 
     [Command]
-    public void CmdBulletHit(GameObject gameObject)
+    public void CmdBulletHit(GameObject gameObject, Weapon firedWeapon)
     {
+        if (!gameObject)
+        {
+            Health health = GetComponent<Health>();
+            for (int i = 0; i < firedWeapon.Effects.Length; i++)
+            {
+                firedWeapon.Effects[i].OnHit(firedWeapon, health);
+            }
+            return;
+        }
+
         if (gameObject.TryGetComponent(out Bullet bullet) == false)
             return;
 
@@ -87,12 +97,12 @@ public class Player : NetworkBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (isClient)
+        if (isLocalPlayer)
         {
             if (collision.TryGetComponent(out PickableInWorld pickable) && pickable.Pickable.InstantPickup)
                 CmdPickup(pickable.gameObject);
             else if (collision.TryGetComponent(out Bullet bullet))
-                CmdBulletHit(bullet.gameObject);
+                CmdBulletHit(bullet.gameObject, bullet.fromWeapon);
         }
     }
 

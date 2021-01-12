@@ -42,7 +42,7 @@ public class ShootAtNode : BNodeAdapter
             return;
         }
 
-        if (health.Alive == false)
+        if (health == null || health.Alive == false)
         {
             CurrentStatus = Status.Success;
             return;

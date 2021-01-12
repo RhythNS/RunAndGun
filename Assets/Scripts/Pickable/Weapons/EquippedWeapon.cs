@@ -1,4 +1,5 @@
 ﻿using Mirror;
+using Smooth;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -129,7 +130,7 @@ public class EquippedWeapon : NetworkBehaviour
     /// </summary>
     public bool Reload()
     {
-        if (!IsFiring && !IsReloading)
+        if (weapon && !IsFiring && !IsReloading)
         {
             reloadCoroutine = new ExtendedCoroutine(this, StartReload(weapon.ReloadTime), OnReloaded);
             reloadCoroutine.Start();
@@ -175,13 +176,12 @@ public class EquippedWeapon : NetworkBehaviour
         if (isServer)
         {
             NetworkServer.Spawn(bullet.gameObject);
-            bullet.Ssm.setPosition(BulletSpawnPosition, true);
+            bullet.GetComponent<SmoothSyncMirror>().teleport();
         }
         else
         {
             bullet.Ssm.enabled = false;
             bullet.owningBullet = true;
-            bullet.transform.position = BulletSpawnPosition;
             CmdCreateBullet(BulletSpawnPosition, Direction);
         }
     }
@@ -193,7 +193,7 @@ public class EquippedWeapon : NetworkBehaviour
     /// <returns>The prepared bullet.</returns>
     private Bullet GetBullet(Vector2 direction)
     {
-        Bullet bullet = BulletPool.Instance.GetFromPool().GetComponent<Bullet>();
+        Bullet bullet = Instantiate(PickableDict.Instance.BulletPrefab).GetComponent<Bullet>();
 
         bullet.gameObject.SetActive(true);
 
@@ -204,6 +204,7 @@ public class EquippedWeapon : NetworkBehaviour
         bullet.SpriteRenderer.sprite = info.Sprite;
         Vector2 velocity = direction * Weapon.Speed;
         bullet.Body.velocity = velocity;
+        bullet.transform.position = BulletSpawnPosition;
         bullet.StartCoroutine(bullet.DeleteWhenOutOfRange(velocity, Weapon.Range));
 
         return bullet;
