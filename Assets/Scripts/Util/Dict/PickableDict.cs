@@ -15,6 +15,9 @@ public class PickableDict : MonoBehaviour
     public Sprite MissingTexture => missingTexture;
     [SerializeField] private Sprite missingTexture;
 
+    public GameObject BulletPrefab => bulletPrefab;
+    [SerializeField] private GameObject bulletPrefab;
+
     private readonly Dictionary<int, Weapon> weaponDict = new Dictionary<int, Weapon>();
     private readonly Dictionary<int, Consumable> consumableDict = new Dictionary<int, Consumable>();
     private readonly Dictionary<int, Item> itemDict = new Dictionary<int, Item>();

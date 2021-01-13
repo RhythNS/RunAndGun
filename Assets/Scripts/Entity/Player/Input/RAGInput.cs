@@ -59,19 +59,21 @@ public abstract class RAGInput : MonoBehaviour
 
         // Handle weapon fire input.
         EquippedWeapon weapon = Player.EquippedWeapon;
+
+        bool shouldFire = GetFireInput(out Vector2 fireDirection);
+        weapon.SetDirection(fireDirection);
+
         if (weapon.Weapon)
         {
-            bool shouldFire = GetFireInput(out Vector2 fireDirection);
-            weapon.SetDirection(fireDirection);
 
             if (shouldFire)
             {
-                if (weapon.CanFire && !weapon.Firing)
+                if (weapon.CanFire)
                     weapon.StartFire();
             }
             else
             {
-                if (weapon.Firing && !weapon.RequstStopFire)
+                if (weapon.IsFiring && !weapon.RequstStopFire)
                 {
                     weapon.StopFire();
                 }
@@ -84,7 +86,7 @@ public abstract class RAGInput : MonoBehaviour
         // Handle reload
         if (GetReloadInput())
         {
-            Player.EquippedWeapon.CmdReload();
+            Player.EquippedWeapon.Reload();
         }
     }
 

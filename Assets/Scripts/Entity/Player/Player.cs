@@ -18,6 +18,7 @@ public class Player : NetworkBehaviour
     public Health Health { get; private set; }
     public Inventory Inventory { get; private set; }
     public EquippedWeapon EquippedWeapon { get; private set; }
+    public PlayerAnimationController PlayerAnimationController { get; private set; }
     public SmoothSyncMirror SmoothSync { get; private set; }
 
     private void Awake()
@@ -41,6 +42,7 @@ public class Player : NetworkBehaviour
         Config.Instance.selectedPlayerType = characterType;
         Input = RAGInput.AttachInput(gameObject);
         Camera.main.GetComponent<PlayerCamera>().ToFollow = transform;
+        PlayerAnimationController = gameObject.AddComponent<PlayerAnimationController>();
     }
 
     /// <summary>
@@ -71,9 +73,39 @@ public class Player : NetworkBehaviour
         Destroy(pickup);
     }
 
+    [Command]
+    public void CmdBulletHit(GameObject gameObject, Weapon firedWeapon)
+    {
+        if (!gameObject)
+        {
+            Health health = GetComponent<Health>();
+            for (int i = 0; i < firedWeapon.Effects.Length; i++)
+            {
+                firedWeapon.Effects[i].OnHit(firedWeapon, health);
+            }
+            return;
+        }
+
+        if (gameObject.TryGetComponent(out Bullet bullet) == false)
+            return;
+
+        bullet.HitPlayer(this);
+    }
+
     private void OnNameChanged(string oldName, string newName)
     {
         gameObject.name = newName;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (isLocalPlayer)
+        {
+            if (collision.TryGetComponent(out PickableInWorld pickable) && pickable.Pickable.InstantPickup)
+                CmdPickup(pickable.gameObject);
+            else if (collision.TryGetComponent(out Bullet bullet))
+                CmdBulletHit(bullet.gameObject, bullet.fromWeapon);
+        }
     }
 
     private void OnDestroy()

@@ -3,7 +3,7 @@ using Smooth;
 using System.Collections;
 using UnityEngine;
 
-public class Bullet : NetworkBehaviour, IPoolable
+public class Bullet : NetworkBehaviour
 {
     public SpriteRenderer SpriteRenderer { get; private set; }
     public SmoothSyncMirror Ssm { get; private set; }
@@ -12,7 +12,9 @@ public class Bullet : NetworkBehaviour, IPoolable
     public Health ShooterHealth { get; set; }
     public Collider2D OwnCollider { get; private set; }
 
+    [SyncVar] public Weapon fromWeapon;
     [SyncVar] public int owningPlayer = 0;
+    public bool owningBullet = false;
 
     private void Awake()
     {
@@ -24,10 +26,11 @@ public class Bullet : NetworkBehaviour, IPoolable
 
     public override void OnStartClient()
     {
-        base.OnStartClient();
-
-        if (Player.LocalPlayer?.playerId == owningPlayer)
-            gameObject.SetActive(false);
+        if (!isServer)
+        {
+            if (Player.LocalPlayer?.playerId == owningPlayer)
+                Free();
+        }
         else
             Ssm.enabled = true;
     }
@@ -43,23 +46,41 @@ public class Bullet : NetworkBehaviour, IPoolable
     {
         if (isServer)
         {
-            NetworkServer.UnSpawn(gameObject);
+            NetworkServer.Destroy(gameObject);
         }
-        BulletPool.Instance.Free(gameObject);
     }
 
-    public void Hide()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (ShooterHealth)
+        if (collision.TryGetComponent<Player>(out _))
+            return;
+
+        OnHit(collision.gameObject);
+    }
+
+    public void HitPlayer(Player player)
+    {
+        OnHit(player.gameObject);
+    }
+
+    private void OnHit(GameObject collider)
+    {
+        if (collider.TryGetComponent(out Health health) && isServer)
         {
-            Physics2D.IgnoreCollision(ShooterHealth.GetComponent<Collider2D>(), OwnCollider, false);
-            StopAllCoroutines();
+            for (int i = 0; i < fromWeapon.Effects.Length; i++)
+            {
+                fromWeapon.Effects[i].OnHit(fromWeapon, health);
+            }
         }
-        gameObject.SetActive(false);
-    }
 
-    public void Delete()
-    {
-        Destroy(gameObject);
+        if (isServer || owningBullet)
+        {
+            for (int i = 0; i < fromWeapon.BulletInfo.BulletImpactEffects.Length; i++)
+            {
+                fromWeapon.BulletInfo.BulletImpactEffects[i].OnBulletImpacted(transform.position, health != null);
+            }
+        }
+
+        Free();
     }
 }

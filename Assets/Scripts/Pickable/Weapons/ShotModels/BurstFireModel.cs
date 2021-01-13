@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Pickable/Weapon/ShotModel/BurstFire")]
 public class BurstFireModel : ShotModel
 {
-    protected override IEnumerator InnerShoot(EquippedWeapon equipped)
+    public override IEnumerator Shoot(EquippedWeapon equipped)
     {
         throw new System.NotImplementedException();
     }
