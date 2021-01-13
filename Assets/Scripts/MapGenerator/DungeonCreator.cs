@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+using MapGenerator;
+
 public class DungeonCreator : NetworkBehaviour
 {
     [HideInInspector]
