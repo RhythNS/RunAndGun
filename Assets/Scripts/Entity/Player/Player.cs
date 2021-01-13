@@ -18,6 +18,7 @@ public class Player : NetworkBehaviour
     public Health Health { get; private set; }
     public Inventory Inventory { get; private set; }
     public EquippedWeapon EquippedWeapon { get; private set; }
+    public PlayerAnimationController PlayerAnimationController { get; private set; }
     public SmoothSyncMirror SmoothSync { get; private set; }
 
     private void Awake()
@@ -41,6 +42,7 @@ public class Player : NetworkBehaviour
         Config.Instance.selectedPlayerType = characterType;
         Input = RAGInput.AttachInput(gameObject);
         Camera.main.GetComponent<PlayerCamera>().ToFollow = transform;
+        PlayerAnimationController = gameObject.AddComponent<PlayerAnimationController>();
     }
 
     /// <summary>

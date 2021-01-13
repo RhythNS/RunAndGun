@@ -46,9 +46,8 @@ public class Bullet : NetworkBehaviour
     {
         if (isServer)
         {
-            NetworkServer.UnSpawn(gameObject);
+            NetworkServer.Destroy(gameObject);
         }
-        Destroy(gameObject);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

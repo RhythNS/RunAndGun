@@ -31,7 +31,8 @@ public class ShootAtNode : BNodeAdapter
             health = targetHealth.Get();
             weaponStartedFiring = true;
 
-            SetDirection();
+            if (SetDirection())
+                return;
 
             if (weapon.StartFire() == false)
             {
@@ -39,12 +40,6 @@ public class ShootAtNode : BNodeAdapter
                 return;
             }
 
-            return;
-        }
-
-        if (health == null || health.Alive == false)
-        {
-            CurrentStatus = Status.Success;
             return;
         }
 
@@ -57,10 +52,18 @@ public class ShootAtNode : BNodeAdapter
         SetDirection();
     }
 
-    private void SetDirection()
+    private bool SetDirection()
     {
+
+        if (health == null || !health || health.Alive == false)
+        {
+            CurrentStatus = Status.Success;
+            return true;
+        }
+
         Vector2 healthPos = health.transform.position;
         weapon.SetDirection(healthPos - weapon.BulletSpawnPosition);
+        return false;
     }
 
     protected override BNode InnerClone(Dictionary<Value, Value> originalValueForClonedValue)

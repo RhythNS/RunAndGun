@@ -59,10 +59,12 @@ public abstract class RAGInput : MonoBehaviour
 
         // Handle weapon fire input.
         EquippedWeapon weapon = Player.EquippedWeapon;
+
+        bool shouldFire = GetFireInput(out Vector2 fireDirection);
+        weapon.SetDirection(fireDirection);
+
         if (weapon.Weapon)
         {
-            bool shouldFire = GetFireInput(out Vector2 fireDirection);
-            weapon.SetDirection(fireDirection);
 
             if (shouldFire)
             {
