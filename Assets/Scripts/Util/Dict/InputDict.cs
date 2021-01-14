@@ -20,6 +20,9 @@ public class InputDict : MonoBehaviour
     public Texture2D MouseCursor => mouseCursor;
     [SerializeField] private Texture2D mouseCursor;
 
+    public MobileUIManager MobileUIManagerPrefab => mobileUIManagerPrefab;
+    [SerializeField] private MobileUIManager mobileUIManagerPrefab;
+
     private void OnDestroy()
     {
         if (Instance == this)

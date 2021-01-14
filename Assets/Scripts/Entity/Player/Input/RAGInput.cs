@@ -35,9 +35,9 @@ public abstract class RAGInput : MonoBehaviour
             break;
         case InputType.Controller:
             break;
-        case InputType.Mobile:
-            break;
             */
+            case InputType.Mobile:
+                return gameObject.AddComponent<MobileInput>();
             default:
                 Debug.LogError("InputType " + Config.Instance.selectedInput + " not found!");
                 return null;

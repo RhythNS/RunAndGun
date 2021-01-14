@@ -16,4 +16,30 @@ public abstract class MathUtil
 
     public static float Normalize(float value, float min, float max)
         => min == 0 ? (value / max) : (value - min) / (max - min);
+
+    /// <summary>
+    /// Clamps vector and returns the magnitude. If the vector should only be clamped use Vector.ClampMagnitude instead.
+    /// Taken from:
+    /// https://github.com/Unity-Technologies/UnityCsReference/blob/master/Runtime/Export/Math/Vector3.cs
+    /// </summary>
+    /// <param name="vector">The vector to be clamped.</param>
+    /// <param name="maxLength">The max length/ magnitude the vector can have.</param>
+    /// <param name="magnitude">The magnitude of the vector.</param>
+    /// <returns></returns>
+    public static Vector2 ClampMagnitude(Vector2 vector, float maxLength, out float magnitude)
+    {
+        magnitude = vector.magnitude;
+        if (magnitude > maxLength)
+        {
+            //these intermediate variables force the intermediate result to be
+            //of float precision. without this, the intermediate result can be of higher
+            //precision, which changes behavior.
+            float normalized_x = vector.x / magnitude;
+            float normalized_y = vector.y / magnitude;
+            magnitude = maxLength;
+            return new Vector2(normalized_x * maxLength,
+                normalized_y * maxLength);
+        }
+        return vector;
+    }
 }
