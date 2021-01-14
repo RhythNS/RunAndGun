@@ -2,13 +2,13 @@
 
 namespace MapGenerator
 {
-    public class Room : Structure
+    public class Room_OLD : Structure_OLD
     {
         public Fast2DArray<int> tiles;
 
-        public Room() { }
+        public Room_OLD() { }
 
-        public Room(Fast2DArray<int> tiles, int x, int y) {
+        public Room_OLD(Fast2DArray<int> tiles, int x, int y) {
             this.tiles = tiles;
 
             Position = new Vector2Int(x, y);

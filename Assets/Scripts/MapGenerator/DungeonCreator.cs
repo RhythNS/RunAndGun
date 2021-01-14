@@ -9,7 +9,7 @@ using MapGenerator;
 public class DungeonCreator : NetworkBehaviour
 {
     [HideInInspector]
-    public Dungeon dungeon;
+    public Dungeon_OLD dungeon;
     
     [Header("Tilemaps")]
     [SerializeField]
@@ -79,7 +79,7 @@ public class DungeonCreator : NetworkBehaviour
         if (dungeon != null)
             dungeon.Reset();
 
-        dungeon = new Dungeon(maxSize.x, maxSize.y, seed, minRoomSize, maxRoomSize, minCorridorLength, maxCorridorLength, maxStructures, roomChance);
+        dungeon = new Dungeon_OLD(maxSize.x, maxSize.y, seed, minRoomSize, maxRoomSize, minCorridorLength, maxCorridorLength, maxStructures, roomChance);
 
         // clear tilemaps
         tilemapFloor.ClearAllTiles();
@@ -141,7 +141,7 @@ public class DungeonCreator : NetworkBehaviour
                 xPos = x * 2;
                 yPos = y * 2;
 
-                if (dungeon[x, y] == Map.TileType.Floor) {
+                if (dungeon[x, y] == Map_OLD.TileType.Floor) {
                     positionsFloor[index] = new Vector3Int(xPos, yPos, 0);
                     positionsFloor[index + 1] = new Vector3Int(xPos + 1, yPos, 0);
                     positionsFloor[index + 2] = new Vector3Int(xPos, yPos + 1, 0);
@@ -151,7 +151,7 @@ public class DungeonCreator : NetworkBehaviour
                     tilesFloor[index + 2] = tileset.tileFloor;
                     tilesFloor[index + 3] = tileset.tileFloor;
 
-                    if (y >= 2 && dungeon[x, y - 1] == Map.TileType.Wall) {
+                    if (y >= 2 && dungeon[x, y - 1] == Map_OLD.TileType.Wall) {
                         positionsCeiling[index] = new Vector3Int(xPos, yPos, 0);
                         positionsCeiling[index + 1] = new Vector3Int(xPos + 1, yPos, 0);
                         positionsCeiling[index + 2] = new Vector3Int(xPos, yPos + 1, 0);
@@ -162,7 +162,7 @@ public class DungeonCreator : NetworkBehaviour
                         tilesCeiling[index + 3] = tileset.tileCeiling;
                     }
                 } else {
-                    if (y >= 2 && (dungeon[x, y - 1] == Map.TileType.Floor)) {
+                    if (y >= 2 && (dungeon[x, y - 1] == Map_OLD.TileType.Floor)) {
                         positionsWall[index] = new Vector3Int(xPos, yPos, 0);
                         positionsWall[index + 1] = new Vector3Int(xPos + 1, yPos, 0);
                         positionsWall[index + 2] = new Vector3Int(xPos, yPos + 1, 0);
@@ -172,7 +172,7 @@ public class DungeonCreator : NetworkBehaviour
                         tilesWall[index + 2] = tileset.tileWall;
                         tilesWall[index + 3] = tileset.tileWall;
 
-                        if (dungeon[x, y - 1] == Map.TileType.Wall) {
+                        if (dungeon[x, y - 1] == Map_OLD.TileType.Wall) {
                             positionsCeiling[index] = new Vector3Int(xPos, yPos, 0);
                             positionsCeiling[index + 1] = new Vector3Int(xPos + 1, yPos, 0);
                             positionsCeiling[index + 2] = new Vector3Int(xPos, yPos + 1, 0);
@@ -182,7 +182,7 @@ public class DungeonCreator : NetworkBehaviour
                             tilesCeiling[index + 2] = tileset.tileCeiling;
                             tilesCeiling[index + 3] = tileset.tileCeiling;
                         }
-                    } else if (y >= 2 && dungeon[x, y - 1] != Map.TileType.Floor) {
+                    } else if (y >= 2 && dungeon[x, y - 1] != Map_OLD.TileType.Floor) {
                         positionsCeiling[index] = new Vector3Int(xPos, yPos, 0);
                         positionsCeiling[index + 1] = new Vector3Int(xPos + 1, yPos, 0);
                         positionsCeiling[index + 2] = new Vector3Int(xPos, yPos + 1, 0);

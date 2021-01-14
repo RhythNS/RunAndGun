@@ -21,6 +21,15 @@ public class Fast2DArray<T> : IEnumerable<T>
     }
 
     /// <summary>
+    /// Provides access to the array elements.
+    /// </summary>
+    /// <returns>The element at the specified position.</returns>
+    public T this[int x, int y] {
+        get => array[x * XSize + y];
+        set => array[x * XSize + y] = value;
+    }
+
+    /// <summary>
     /// Returns the element at the specified position of the array.
     /// </summary>
     public T Get(int x, int y) => array[x * XSize + y];
