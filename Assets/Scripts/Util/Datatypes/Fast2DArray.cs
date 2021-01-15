@@ -25,8 +25,16 @@ public class Fast2DArray<T> : IEnumerable<T>
     /// </summary>
     /// <returns>The element at the specified position.</returns>
     public T this[int x, int y] {
-        get => array[x * XSize + y];
-        set => array[x * XSize + y] = value;
+        get {
+            if (x >= XSize || y >= YSize)
+                return default;
+            return array[x * XSize + y];
+        }
+        set {
+            if (x >= XSize || y >= YSize)
+                throw new System.IndexOutOfRangeException("x or y index outside of array size.");
+            array[x * XSize + y] = value;
+        }
     }
 
     /// <summary>

@@ -245,9 +245,9 @@ namespace MapGenerator
 
 
             Room_OLD room = new Room_OLD {
-                Size = new Vector2Int(roomLayouts[roomId].XSize, roomLayouts[roomId].YSize),
+                //Size = new Vector2Int(roomLayouts[roomId].XSize, roomLayouts[roomId].YSize),
                 IsRoom = true,
-                tiles = roomLayouts[roomId]
+                //tiles = roomLayouts[roomId]
             };
 
             switch (dir) {
@@ -269,7 +269,7 @@ namespace MapGenerator
             }
 
             if (IsEmptyInArea(room)) {
-                AddRoom(room, ws.ToArray());
+                //AddRoom(room, ws.ToArray());
 
                 return true;
             }
