@@ -99,7 +99,7 @@ public class Player : NetworkBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (isLocalPlayer)
+        if (isLocalPlayer && !Status.Dashing)
         {
             if (collision.TryGetComponent(out PickableInWorld pickable) && pickable.Pickable.InstantPickup)
                 CmdPickup(pickable.gameObject);

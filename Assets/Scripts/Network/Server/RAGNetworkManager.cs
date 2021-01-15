@@ -1,7 +1,8 @@
 ﻿using Mirror;
+using NobleConnect.Mirror;
 using UnityEngine;
 
-public class RAGNetworkManager : NetworkManager
+public class RAGNetworkManager : NobleNetworkManager
 {
     public override void OnStartServer()
     {

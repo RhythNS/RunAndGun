@@ -975,7 +975,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerName: 
   selectedPlayerType: 0
-  selectedInput: 3
+  selectedInput: 0
 --- !u!1 &1294577617
 GameObject:
   m_ObjectHideFlags: 0
@@ -1702,7 +1702,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4282887407683424663}
   - component: {fileID: 4282887407683424662}
-  - component: {fileID: 4282887407683424661}
+  - component: {fileID: 4282887407683424664}
   - component: {fileID: 4282887407683424660}
   m_Layer: 0
   m_Name: NetworkManager
@@ -1720,33 +1720,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 4282887407683424659}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6442dc8070ceb41f094e44de0bf87274, type: 3}
+  m_Script: {fileID: 11500000, guid: 125d0fa86afeec24bbb1108f25dc446f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  showGUI: 1
-  offsetX: 0
-  offsetY: 0
---- !u!114 &4282887407683424661
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4282887407683424659}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b0fecffa3f624585964b0d0eb21b18e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Port: 7777
-  NoDelay: 1
-  Interval: 10
-  FastResend: 2
-  CongestionWindow: 0
-  SendWindowSize: 128
-  ReceiveWindowSize: 128
-  debugLog: 0
-  debugGUI: 0
 --- !u!114 &4282887407683424662
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1766,7 +1742,7 @@ MonoBehaviour:
   serverTickRate: 30
   offlineScene: 
   onlineScene: 
-  transport: {fileID: 4282887407683424661}
+  transport: {fileID: 4282887407683424664}
   networkAddress: localhost
   maxConnections: 4
   disconnectInactiveConnections: 0
@@ -1783,6 +1759,15 @@ MonoBehaviour:
   - {fileID: 4227666607956230200, guid: e36b630807ad5ab4eb4d62d76da0e60b, type: 3}
   - {fileID: 2834579130591557907, guid: d3fab481d47576b498258ab56332c8f9, type: 3}
   - {fileID: 1324139871316016671, guid: ef07fde5c20031d4ca7a255ad96f5045, type: 3}
+  networkPort: 0
+  region: 0
+  forceRelayConnection: 0
+  logLevel: 2
+  relayRefreshTime: 30
+  relayRefreshTimeout: 0.1
+  maxRelayRefreshAttempts: 3
+  relayLifetime: 30
+  isDisconnecting: 0
 --- !u!4 &4282887407683424663
 Transform:
   m_ObjectHideFlags: 0
@@ -1797,3 +1782,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4282887407683424664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4282887407683424659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86e6b3cd388498e42b6e4af1f17cc12c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  port: 7777
+  updateTime: 15
+  disconnectTimeout: 5000
+  ipv6Enabled: 0
+  maxConnectAttempts: 10
+  serverMaxMessagesPerTick: 10000
+  clientMaxMessagesPerTick: 1000
+  channels: 0204
+  connectKey: MIRROR_LITENETLIB

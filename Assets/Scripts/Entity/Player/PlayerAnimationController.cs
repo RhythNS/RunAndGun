@@ -8,6 +8,7 @@ public class PlayerAnimationController : MonoBehaviour
     private EquippedWeapon weapon;
 
     private static readonly float DEADZONE = 0.1f;
+    private bool prevDashing;
 
     private void Awake()
     {
@@ -15,12 +16,30 @@ public class PlayerAnimationController : MonoBehaviour
         body = GetComponent<Rigidbody2D>();
         status = GetComponent<Status>();
         weapon = GetComponent<EquippedWeapon>();
+        prevDashing = status.Dashing;
     }
 
     private void LateUpdate()
     {
-        Vector2 direction = weapon.Direction;
+        animator.SetFloat("Speed", body.velocity.magnitude);
 
+        if (prevDashing == status.Dashing)
+        {
+            SetDirection(weapon.Direction);
+        }
+        else
+        {
+            prevDashing = !prevDashing;
+
+            SetDirection(body.velocity);
+            animator.Update(0.01f);
+
+            animator.SetBool("Dodging", prevDashing);
+        }
+    }
+
+    private void SetDirection(Vector2 direction)
+    {
         if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
         {
             if (direction.x < -DEADZONE)
@@ -35,8 +54,5 @@ public class PlayerAnimationController : MonoBehaviour
             else if (direction.y > DEADZONE)
                 animator.SetInteger("Direction", 0);
         }
-        animator.SetFloat("Speed", body.velocity.magnitude);
-
-        animator.SetBool("Dodging", status.IsDashing());
     }
 }

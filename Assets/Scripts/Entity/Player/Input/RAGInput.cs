@@ -50,7 +50,7 @@ public abstract class RAGInput : MonoBehaviour
             playerCamera.focusPoint = GetFocusPoint();
 
         // If the player is dashing dont listen to other input.
-        if (Player.Status.IsDashing())
+        if (Player.Status.Dashing)
             return;
 
         // If we want to dash try to dash, if we are able dont listen to other input      .  
@@ -92,7 +92,7 @@ public abstract class RAGInput : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (Player.Status.IsDashing())
+        if (Player.Status.Dashing)
             return;
         Body.AddForce(GetMovementInput() * movementForce);
     }
