@@ -21,6 +21,7 @@ MonoBehaviour:
   bulletInfo: {fileID: 11400000, guid: cff976ac23e0bd84eb1d41e4556d9ea2, type: 2}
   bulletSpawnModel: {fileID: 11400000, guid: 9cce36ab2ab7a954497b8496de02efe8, type: 2}
   animator: {fileID: 0}
+  targetMode: 1
   useLocalSpace: 0
   range: 20
   speed: 6

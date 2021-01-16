@@ -1210,8 +1210,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  enemyPrefab: {fileID: 4227666607956230200, guid: e36b630807ad5ab4eb4d62d76da0e60b,
-    type: 3}
+  enemyObject: {fileID: 11400000, guid: 60054b9fd3d83834193d865819246b87, type: 2}
 --- !u!1 &1567049386
 GameObject:
   m_ObjectHideFlags: 0
@@ -1324,6 +1323,7 @@ GameObject:
   - component: {fileID: 1626197463}
   - component: {fileID: 1626197464}
   - component: {fileID: 1626197465}
+  - component: {fileID: 1626197466}
   m_Layer: 0
   m_Name: Dicts
   m_TagString: Untagged
@@ -1464,6 +1464,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerHealths: []
   enemyHealths: []
+--- !u!114 &1626197466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1626197459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d86f47136028cd04b8291435f03ff82a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletTargetPlayerOnly: 17
+  bulletTargetEnemyOnly: 18
+  bulletTargetPlayerAndEnemy: 19
 --- !u!1 &1774810172
 GameObject:
   m_ObjectHideFlags: 0

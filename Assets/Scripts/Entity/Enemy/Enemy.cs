@@ -1,11 +1,9 @@
-﻿using Mirror;
-using Smooth;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using Smooth;
 
-public class Enemy : NetworkBehaviour
+public class Enemy : Entity
 {
+    public override EntityType EntityType => EntityType.Enemy;
+
     public Brain Brain { get; private set; }
     public Health Health { get; private set; }
     public EquippedWeapon EquippedWeapon { get; private set; }
@@ -17,6 +15,13 @@ public class Enemy : NetworkBehaviour
         Health = GetComponent<Health>();
         EquippedWeapon = GetComponent<EquippedWeapon>();
         SmoothSync = GetComponent<SmoothSyncMirror>();
+    }
+
+    public void Set(EnemyObject enemyObject)
+    {
+        Brain.tree = enemyObject.BehaviourTree;
+        EquippedWeapon.Swap(enemyObject.Weapon);
+        // Set stats
     }
 
     public override void OnStartServer()

@@ -26,13 +26,13 @@ public class Bullet : NetworkBehaviour
 
     public override void OnStartClient()
     {
-        if (!isServer)
+        if (isServer)
+            Ssm.enabled = true;
+        else
         {
             if (Player.LocalPlayer?.playerId == owningPlayer)
                 Free();
         }
-        else
-            Ssm.enabled = true;
     }
 
 

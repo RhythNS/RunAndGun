@@ -13,6 +13,8 @@ TagManager:
   - UI
   - 
   - 
+  - Player
+  - Enemy
   - 
   - 
   - 
@@ -20,6 +22,9 @@ TagManager:
   - 
   - 
   - 
+  - BulletTargetPlayer
+  - BulletTargetEnemy
+  - BulletTargetAll
   - 
   - 
   - 
@@ -27,11 +32,6 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - TestPlayer
   - 
   - 
   - 

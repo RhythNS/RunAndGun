@@ -37,9 +37,9 @@ namespace Rhyth.BTree
                 (tree == null || brain != lastSelectedBrain))
             {
                 lastSelectedBrain = brain;
-                tree = new SerializedObject(brain.Tree);
+                tree = new SerializedObject(brain.tree);
                 List<BNode> nodeList = new List<BNode>();
-                GetChildren(brain.Tree.Root, nodeList);
+                GetChildren(brain.tree.Root, nodeList);
                 allNodes = nodeList.ToArray();
             }
 

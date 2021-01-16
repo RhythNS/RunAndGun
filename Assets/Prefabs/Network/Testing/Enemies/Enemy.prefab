@@ -186,7 +186,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  weapon: {fileID: 11400000, guid: ac7a3d27f5349fc4589c7af1ddc3ad4f, type: 2}
+  weapon: {fileID: 0}
   remainingBullets: 0
   requstStopFire: 0
 --- !u!114 &4227666607956230203
