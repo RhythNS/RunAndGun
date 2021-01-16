@@ -21,6 +21,8 @@ public class DungeonCreator : NetworkBehaviour
 
     [SerializeField]
     private Tileset tileset;
+    [SerializeField]
+    private Tile tilePlaceHolder;
 
     [Header("Settings")]
     [SerializeField]
@@ -110,6 +112,11 @@ public class DungeonCreator : NetworkBehaviour
                 if (dungeon[x, y] == TileType.Floor) {
                     positionsFloor[indexFloor] = new Vector3Int(x, y, 0);
                     tilesFloor[indexFloor] = tileset.tileFloor;
+
+                    indexFloor++;
+                } else {
+                    positionsFloor[indexFloor] = new Vector3Int(x, y, 0);
+                    tilesFloor[indexFloor] = tilePlaceHolder;
 
                     indexFloor++;
                 }
