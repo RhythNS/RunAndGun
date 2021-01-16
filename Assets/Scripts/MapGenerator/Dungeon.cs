@@ -1,210 +1,381 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+
 using UnityEngine;
 
 namespace MapGenerator
 {
-    public enum Direction { Up, Down, Left, Right, None }
-
-    public enum TileTypes { Wall, Floor, CorridorAccess, PlaceHolder, None }
-
-    public struct Room
+    public class Dungeon
     {
-        public Vector2Int Position { get; set; }
-        public Vector2Int Size { get; set; }
+        private const int ITERATIONS = 128;
+        private const float ROOM_CHANCE = 0.4f;
 
-        public Fast2DArray<TileTypes> layout { get; private set; }
-
-        public Dictionary<Vector2Int, Direction> exitDirections;
+        public Vector2Int Size { get; private set; }
+        private Fast2DArray<TileType> mapLayout;
 
         /// <summary>
-        /// Creates a new room at the given position (bottom left corner) with the given layout.
+        /// layouts for the rooms
         /// </summary>
-        /// <param name="posX">The x-Position of the room.</param>
-        /// <param name="posY">The y-Position of the room.</param>
-        /// <param name="layout">The layout of the room.</param>
-        public Room(int posX, int posY, Fast2DArray<TileTypes> layout) {
-            Position = new Vector2Int(posX, posY);
-            Size = new Vector2Int(layout.XSize, layout.YSize);
-            this.layout = layout;
-            exitDirections = new Dictionary<Vector2Int, Direction>();
+        private Fast2DArray<TileType>[] roomLayouts;
+        private List<GameObject>[] roomGameObjects;
 
-            List<Vector2Int> checkedPositions = new List<Vector2Int>();
-            for (int x = 0; x < this.layout.XSize; x++) {
-                for (int y = 0; y < this.layout.YSize; y++) {
-                    if (this.layout[x, y] == TileTypes.CorridorAccess && !checkedPositions.Contains(new Vector2Int(x, y))) {
-                        checkedPositions.Add(new Vector2Int(x, y));
-
-                        if (this.layout[x + 1, y] == TileTypes.CorridorAccess) {
-                            if (this.layout[x, y + 1] == TileTypes.Floor) {
-                                exitDirections.Add(new Vector2Int(x, y), Direction.Down);
-
-                                int delta = 1;
-                                while (this.layout[x + delta, y] == TileTypes.CorridorAccess && this.layout[x + delta + 1, y] == TileTypes.CorridorAccess) {
-                                    checkedPositions.Add(new Vector2Int(x + delta, y));
-
-                                    exitDirections.Add(new Vector2Int(x + delta, y), Direction.Down);
-
-                                    delta++;
-                                }
-                            } else if (this.layout[x, y - 1] == TileTypes.Floor) {
-                                exitDirections.Add(new Vector2Int(x, y), Direction.Up);
-
-                                int delta = 1;
-                                while (this.layout[x + delta, y] == TileTypes.CorridorAccess && this.layout[x + delta + 1, y] == TileTypes.CorridorAccess) {
-                                    checkedPositions.Add(new Vector2Int(x + delta, y));
-
-                                    exitDirections.Add(new Vector2Int(x + delta, y), Direction.Up);
-
-                                    delta++;
-                                }
-                            }
-                        } else if (this.layout[x, y + 1] == TileTypes.CorridorAccess) {
-                            if (this.layout[x + 1, y] == TileTypes.Floor) {
-                                exitDirections.Add(new Vector2Int(x, y), Direction.Left);
-
-                                int delta = 1;
-                                while (this.layout[x, y + delta] == TileTypes.CorridorAccess && this.layout[x, y + delta + 1] == TileTypes.CorridorAccess && this.layout[x, y + delta + 2] == TileTypes.CorridorAccess) {
-                                    checkedPositions.Add(new Vector2Int(x, y + delta));
-
-                                    exitDirections.Add(new Vector2Int(x, y + delta), Direction.Left);
-
-                                    delta++;
-                                }
-                                checkedPositions.Add(new Vector2Int(x, y + delta));
-                            } else if (this.layout[x - 1, y] == TileTypes.Floor) {
-                                exitDirections.Add(new Vector2Int(x, y), Direction.Left);
-
-                                int delta = 1;
-                                while (this.layout[x, y + delta] == TileTypes.CorridorAccess && this.layout[x, y + delta + 1] == TileTypes.CorridorAccess && this.layout[x, y + delta + 2] == TileTypes.CorridorAccess) {
-                                    checkedPositions.Add(new Vector2Int(x, y + delta));
-
-                                    exitDirections.Add(new Vector2Int(x, y + delta), Direction.Left);
-
-                                    delta++;
-                                }
-                                checkedPositions.Add(new Vector2Int(x, y + delta));
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    public struct Corridor
-    {
-        public const int MIN_LENGTH = 10;
-        public const int MAX_LENGTH = 24;
-
-        public Vector2Int Position { get; set; }
-        public Vector2Int Size { get; set; }
-
-        public Dictionary<Vector2Int, Direction> exitDirections;
+        private List<Room> rooms = new List<Room>();
+        private List<Corridor> corridors = new List<Corridor>();
 
         /// <summary>
-        /// Places a new corridor from the given position with the length in the given direction.
+        /// Returns an array with all the generated rooms.
         /// </summary>
-        /// <param name="posX">The x-Position where the corridor should start.</param>
-        /// <param name="posY">The y-Position where the corridor should start.</param>
-        /// <param name="length">The length of the corridor.</param>
-        /// <param name="direction">The direction where the corridor should point to.</param>
-        public Corridor(int posX, int posY, int length, Direction direction) {
-            Position = Vector2Int.zero;
-            Size = Vector2Int.zero;
-            exitDirections = new Dictionary<Vector2Int, Direction>();
-
-            switch (direction) {
-                case Direction.Up:
-                    Size = new Vector2Int(2, length);
-                    Position = new Vector2Int(posX, posY);
-
-                    for (int y = 3; y < Size.y - 6; y++) {
-                        exitDirections.Add(new Vector2Int(-1, y), Direction.Left);
-                        exitDirections.Add(new Vector2Int(Size.x, y), Direction.Right);
-                    }
-
-                    exitDirections.Add(new Vector2Int(0, Size.y), Direction.Up);
-                    break;
-
-                case Direction.Down:
-                    Size = new Vector2Int(2, length);
-                    Position = new Vector2Int(posX, posY - Size.y);
-
-                    for (int y = 3; y < Size.y - 6; y++) {
-                        exitDirections.Add(new Vector2Int(-1, y), Direction.Left);
-                        exitDirections.Add(new Vector2Int(Size.x, y), Direction.Right);
-                    }
-
-                    exitDirections.Add(new Vector2Int(0, -1), Direction.Down);
-                    break;
-
-                case Direction.Left:
-                    Size = new Vector2Int(length, 3);
-                    Position = new Vector2Int(posX, posY);
-
-                    for (int x = 3; x < Size.x - 5; x++) {
-                        exitDirections.Add(new Vector2Int(x, Size.y), Direction.Up);
-                        exitDirections.Add(new Vector2Int(x, -1), Direction.Down);
-                    }
-
-                    exitDirections.Add(new Vector2Int(-1, 0), Direction.Left);
-                    break;
-
-                case Direction.Right:
-                    Size = new Vector2Int(length, 3);
-                    Position = new Vector2Int(posX - Size.x, posY);
-
-                    for (int x = 3; x < Size.x - 5; x++) {
-                        exitDirections.Add(new Vector2Int(x, Size.y), Direction.Up);
-                        exitDirections.Add(new Vector2Int(x, -1), Direction.Down);
-                    }
-
-                    exitDirections.Add(new Vector2Int(Size.x, 0), Direction.Right);
-                    break;
-            }
+        public Room[] Rooms {
+            get => rooms.ToArray();
         }
-    }
 
+        /// <summary>
+        /// Returns an array with all the generated corridors.
+        /// </summary>
+        public Corridor[] Corridors {
+            get => corridors.ToArray();
+        }
 
-
-    class Dungeon
-    {
-        private Vector2Int size;
-        private Fast2DArray<TileTypes>[] roomLayouts;
-
-        private List<Room> rooms;
-        private List<Corridor> corridors;
-
-        public Dungeon(int sizeX, int sizeY, Fast2DArray<int>[] roomLayouts, int maxStructures, int seed) {
-            this.size = new Vector2Int(sizeX, sizeY);
-            this.roomLayouts = new Fast2DArray<TileTypes>[roomLayouts.Length];
+        public Dungeon(int sizeX, int sizeY, Fast2DArray<int>[] roomLayouts, List<GameObject>[] roomGameObjects, int maxStructures, int seed) {
+            this.Size = new Vector2Int(sizeX, sizeY);
+            mapLayout = new Fast2DArray<TileType>(Size.x, Size.y);
+            this.roomLayouts = new Fast2DArray<TileType>[roomLayouts.Length];
             Fast2DArrayIntToTileType(ref roomLayouts, ref this.roomLayouts);
+            this.roomGameObjects = roomGameObjects;
+
+            List<Exit> exits = new List<Exit>();
 
             if (seed != int.MaxValue)
                 Random.InitState(seed);
 
             // generate starting room
+            Room startRoom = new Room((int)(Size.x / 2f - this.roomLayouts[0].XSize / 2f), (int)(Size.y / 2f - this.roomLayouts[0].YSize / 2f), this.roomLayouts[0], this.roomGameObjects[0]);
+            AddRoom(startRoom);
 
-            // start with corridors and then more rooms or corridors
-            // from a room only corridors can be generated
-            // from a corridor corridors and rooms can be generated
+            for (int i = 0; i < ITERATIONS; i++) {
+                GetAllExits(ref exits);
 
-            // if dead ends got created, try to create more rooms
-            // or delete them
+                int rndExit = Random.Range(0, exits.Count);
+                if (exits[rndExit].IsRoomExit) {
+                    GenerateCorridor(exits[rndExit]);
+                } else {
+                    if (exits[rndExit].IntoRoom) {
+                        GenerateRoom(exits[rndExit]);
+                    } else {
+                        GenerateCorridor(exits[rndExit]);
+                    }
+                }
+            }
+
+            int iters = 0;
+            while (rooms.Count < 10 && iters < ITERATIONS) {
+                foreach (var exit in exits) {
+                    if (exit.IntoRoom) {
+                        GenerateRoom(exit);
+                    }
+                }
+
+                iters++;
+            }
+
+            for (int i = 0; i < 5; i++) {
+                DeleteDeadEnds();
+            }
+        }
+
+        public TileType this[int x, int y] {
+            get => mapLayout[x, y];
         }
 
 
+        private void DeleteDeadEnds() {
+            // if dead ends got created, try to create more rooms
+            // or delete them
+            foreach (var corridor in corridors) {
+                if (corridor.Size.x == 2) {
+                    // up down
+                    int delta = 0;
+                    while (mapLayout[corridor.Position.x, corridor.Position.y - 1 + delta] != TileType.Floor
+                        && mapLayout[corridor.Position.x + 1, corridor.Position.y - 1 + delta] != TileType.Floor
+                        && mapLayout[corridor.Position.x - 1, corridor.Position.y + delta] != TileType.Floor
+                        && mapLayout[corridor.Position.x + 2, corridor.Position.y + delta] != TileType.Floor
+                        ) {
+
+                        if (mapLayout.InBounds(corridor.Position.x, corridor.Position.y + delta)) {
+                            mapLayout[corridor.Position.x, corridor.Position.y + delta] = TileType.Wall;
+                            mapLayout[corridor.Position.x + 1, corridor.Position.y + delta] = TileType.Wall;
+                        } else {
+                            break;
+                        }
+
+                        delta++;
+                    }
+                    delta = corridor.Size.y - 1;
+                    while (mapLayout[corridor.Position.x, corridor.Position.y + delta + 1] != TileType.Floor
+                        && mapLayout[corridor.Position.x + 1, corridor.Position.y + delta + 1] != TileType.Floor
+                        && mapLayout[corridor.Position.x - 1, corridor.Position.y + delta] != TileType.Floor
+                        && mapLayout[corridor.Position.x + 2, corridor.Position.y + delta] != TileType.Floor
+                        ) {
+
+                        if (mapLayout.InBounds(corridor.Position.x, corridor.Position.y + delta)) {
+                            mapLayout[corridor.Position.x, corridor.Position.y + delta] = TileType.Wall;
+                            mapLayout[corridor.Position.x + 1, corridor.Position.y + delta] = TileType.Wall;
+                        } else {
+                            break;
+                        }
+
+                        delta--;
+                    }
+                } else if (corridor.Size.y == 3) {
+                    // left right
+                    int delta = 0;
+                    while (mapLayout[corridor.Position.x - 1 + delta, corridor.Position.y] != TileType.Floor
+                        && mapLayout[corridor.Position.x - 1 + delta, corridor.Position.y + 1] != TileType.Floor
+                        && mapLayout[corridor.Position.x - 1 + delta, corridor.Position.y + 2] != TileType.Floor
+                        && mapLayout[corridor.Position.x + delta, corridor.Position.y - 1] != TileType.Floor
+                        && mapLayout[corridor.Position.x + delta, corridor.Position.y + 3] != TileType.Floor
+                        ) {
+
+                        if (mapLayout.InBounds(corridor.Position.x + delta, corridor.Position.y)) {
+                            mapLayout[corridor.Position.x + delta, corridor.Position.y] = TileType.Wall;
+                            mapLayout[corridor.Position.x + delta, corridor.Position.y + 1] = TileType.Wall;
+                            mapLayout[corridor.Position.x + delta, corridor.Position.y + 2] = TileType.Wall;
+                        } else {
+                            break;
+                        }
+
+                        delta++;
+                    }
+
+                    delta = corridor.Size.x - 1;
+                    while (mapLayout[corridor.Position.x + 1 + delta, corridor.Position.y] != TileType.Floor
+                        && mapLayout[corridor.Position.x + 1 + delta, corridor.Position.y + 1] != TileType.Floor
+                        && mapLayout[corridor.Position.x + 1 + delta, corridor.Position.y + 2] != TileType.Floor
+                        && mapLayout[corridor.Position.x + delta, corridor.Position.y - 1] != TileType.Floor
+                        && mapLayout[corridor.Position.x + delta, corridor.Position.y + 3] != TileType.Floor
+                        ) {
+
+                        if (mapLayout.InBounds(corridor.Position.x + delta, corridor.Position.y)) {
+                            mapLayout[corridor.Position.x + delta, corridor.Position.y] = TileType.Wall;
+                            mapLayout[corridor.Position.x + delta, corridor.Position.y + 1] = TileType.Wall;
+                            mapLayout[corridor.Position.x + delta, corridor.Position.y + 2] = TileType.Wall;
+                        } else {
+                            break;
+                        }
+
+                        delta--;
+                    }
+                }
+            }
+        }
+
+        private void GenerateRoom(Exit exit) {
+            int rndRoom = Random.Range(0, roomLayouts.Length);
+            Room room = new Room(0, 0, roomLayouts[rndRoom], roomGameObjects[rndRoom]);
+
+            foreach (var exitDir in room.exitDirections) {
+                if ((exitDir.Value == Direction.Up && exit.Direction == Direction.Down)
+                    || (exitDir.Value == Direction.Down && exit.Direction == Direction.Up)
+                    || (exitDir.Value == Direction.Left && exit.Direction == Direction.Right)
+                    || (exitDir.Value == Direction.Right && exit.Direction == Direction.Left)
+                    ) {
+                    room.Position = exit.Position - exitDir.Key;
+
+                    if (IsEmptyInArea(room, exit.Direction)) {
+                        if (exit.Direction == Direction.Down || exit.Direction == Direction.Up) {
+                            mapLayout[exit.Position.x, exit.Position.y] = TileType.Floor;
+                            mapLayout[exit.Position.x + 1, exit.Position.y] = TileType.Floor;
+                        } else {
+                            mapLayout[exit.Position.x, exit.Position.y] = TileType.Floor;
+                            mapLayout[exit.Position.x, exit.Position.y + 1] = TileType.Floor;
+                            mapLayout[exit.Position.x, exit.Position.y + 2] = TileType.Floor;
+                        }
+
+                        AddRoom(room);
+                    }
+
+                    break;
+                }
+            }
 
 
 
+        }
 
-        public void Fast2DArrayIntToTileType(ref Fast2DArray<int>[] arrayIn, ref Fast2DArray<TileTypes>[] arrayOut) {
+        private void GenerateCorridor(Exit exit) {
+            int length = Random.Range(Corridor.MIN_LENGTH, Corridor.MAX_LENGTH + 1);
+            Corridor corridor = new Corridor(exit.Position.x, exit.Position.y, length, exit.Direction);
+
+            if (IsEmptyInArea(corridor, exit.Direction)) {
+                AddCorridor(corridor);
+            }
+        }
+
+        private bool IsEmptyInArea(Room room, Direction direction) {
+            switch (direction) {
+                case Direction.Up:
+                    for (int x = -2; x < room.Size.x + 2; x++) {
+                        for (int y = 0; y < room.Size.y + 2; y++) {
+                            if ((room[x, y] != TileType.Wall && room[x, y] != TileType.CorridorAccess) && mapLayout[room.Position.x + x, room.Position.y + y] != TileType.Wall) {
+                                return false;
+                            }
+                        }
+                    }
+                    break;
+
+                case Direction.Down:
+                    for (int x = -2; x < room.Size.x + 2; x++) {
+                        for (int y = -2; y < room.Size.y; y++) {
+                            if ((room[x, y] != TileType.Wall && room[x, y] != TileType.CorridorAccess) && mapLayout[room.Position.x + x, room.Position.y + y] != TileType.Wall) {
+                                return false;
+                            }
+                        }
+                    }
+                    break;
+
+                case Direction.Left:
+                    for (int x = -2; x < room.Size.x; x++) {
+                        for (int y = -2; y < room.Size.y + 2; y++) {
+                            if ((room[x, y] != TileType.Wall && room[x, y] != TileType.CorridorAccess) && mapLayout[room.Position.x + x, room.Position.y + y] != TileType.Wall) {
+                                return false;
+                            }
+                        }
+                    }
+                    break;
+
+                case Direction.Right:
+                    for (int x = 0; x < room.Size.x + 2; x++) {
+                        for (int y = -2; y < room.Size.y + 2; y++) {
+                            if ((room[x, y] != TileType.Wall && room[x, y] != TileType.CorridorAccess) && mapLayout[room.Position.x + x, room.Position.y + y] != TileType.Wall) {
+                                return false;
+                            }
+                        }
+                    }
+                    break;
+            }
+
+            return true;
+        }
+
+        private bool IsEmptyInArea(Corridor corridor, Direction direction) {
+            switch (direction) {
+                case Direction.Up:
+                    for (int x = -2; x < corridor.Size.x + 2; x++) {
+                        for (int y = 0; y < corridor.Size.y + 2; y++) {
+                            if (mapLayout[corridor.Position.x + x, corridor.Position.y + y] != TileType.Wall) {
+                                return false;
+                            }
+                        }
+                    }
+                    break;
+
+                case Direction.Down:
+                    for (int x = -2; x < corridor.Size.x + 2; x++) {
+                        for (int y = -2; y < corridor.Size.y; y++) {
+                            if (mapLayout[corridor.Position.x + x, corridor.Position.y + y] != TileType.Wall) {
+                                return false;
+                            }
+                        }
+                    }
+                    break;
+
+                case Direction.Left:
+                    for (int x = -2; x < corridor.Size.x; x++) {
+                        for (int y = -2; y < corridor.Size.y + 3; y++) {
+                            if (mapLayout[corridor.Position.x + x, corridor.Position.y + y] != TileType.Wall) {
+                                return false;
+                            }
+                        }
+                    }
+                    break;
+
+                case Direction.Right:
+                    for (int x = 0; x < corridor.Size.x + 2; x++) {
+                        for (int y = -2; y < corridor.Size.y + 2; y++) {
+                            if (mapLayout[corridor.Position.x + x, corridor.Position.y + y] != TileType.Wall) {
+                                return false;
+                            }
+                        }
+                    }
+                    break;
+            }
+
+            return true;
+        }
+
+        private void AddRoom(Room room) {
+            rooms.Add(room);
+
+            for (int x = 0; x < room.Size.x; x++) {
+                for (int y = 0; y < room.Size.y; y++) {
+                    if (room[x, y] != TileType.Wall && room[x, y] != TileType.CorridorAccess) {
+                        if (mapLayout.InBounds(room.Position.x + x, room.Position.y + y))
+                            mapLayout[room.Position.x + x, room.Position.y + y] = room[x, y];
+                    }
+                }
+            }
+        }
+
+        private void AddCorridor(Corridor corridor) {
+            corridors.Add(corridor);
+
+            for (int x = 0; x < corridor.Size.x; x++) {
+                for (int y = 0; y < corridor.Size.y; y++) {
+                    if (mapLayout.InBounds(corridor.Position.x + x, corridor.Position.y + y))
+                        mapLayout[corridor.Position.x + x, corridor.Position.y + y] = TileType.Floor;
+                }
+            }
+        }
+
+        private void Fast2DArrayIntToTileType(ref Fast2DArray<int>[] arrayIn, ref Fast2DArray<TileType>[] arrayOut) {
             for (int i = 0; i < roomLayouts.Length; i++) {
+                arrayOut[i] = new Fast2DArray<TileType>(arrayIn[i].XSize, arrayIn[i].YSize);
                 for (int x = 0; x < arrayIn[i].XSize; x++) {
                     for (int y = 0; y < arrayIn[i].YSize; y++) {
-                        arrayOut[i][x, y] = (TileTypes)arrayIn[i][x, y];
+                        arrayOut[i][x, y] = (TileType)arrayIn[i][x, y];
                     }
+                }
+            }
+        }
+
+        private void GetAllExits(ref List<Exit> exits) {
+            exits.Clear();
+
+            foreach (Room room in rooms) {
+                foreach (var exit in room.exitDirections) {
+                    exits.Add(new Exit {
+                        Position = new Vector2Int(room.Position.x + exit.Key.x, room.Position.y + exit.Key.y),
+                        Direction = exit.Value,
+                        IsRoomExit = true,
+                        IntoRoom = false
+                    });
+                }
+            }
+
+            foreach (Corridor corridor in corridors) {
+                foreach (var exit in corridor.exitDirections) {
+                    Exit e = new Exit {
+                        Position = new Vector2Int(corridor.Position.x + exit.Key.x, corridor.Position.y + exit.Key.y),
+                        Direction = exit.Value,
+                        IsRoomExit = false
+                    };
+
+                    if (corridor.Size.x == 2) {
+                        // up down
+                        if (exit.Key.x == -1 || exit.Key.x == 2) {
+                            e.IntoRoom = false;
+                        } else {
+                            e.IntoRoom = true;
+                        }
+                    } else if (corridor.Size.y == 3) {
+                        // left right
+                        if (exit.Key.y == -1 || exit.Key.y == 3) {
+                            e.IntoRoom = false;
+                        } else {
+                            e.IntoRoom = true;
+                        }
+                    }
+
+                    exits.Add(e);
                 }
             }
         }

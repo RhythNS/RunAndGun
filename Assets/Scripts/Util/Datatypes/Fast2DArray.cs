@@ -26,26 +26,26 @@ public class Fast2DArray<T> : IEnumerable<T>
     /// <returns>The element at the specified position.</returns>
     public T this[int x, int y] {
         get {
-            if (x >= XSize || y >= YSize)
+            if (x >= XSize || y >= YSize || x < 0 || y < 0)
                 return default;
-            return array[x * XSize + y];
+            return array[x * YSize + y];
         }
         set {
-            if (x >= XSize || y >= YSize)
+            if (x >= XSize || y >= YSize || x < 0 || y < 0)
                 throw new System.IndexOutOfRangeException("x or y index outside of array size.");
-            array[x * XSize + y] = value;
+            array[x * YSize + y] = value;
         }
     }
 
     /// <summary>
     /// Returns the element at the specified position of the array.
     /// </summary>
-    public T Get(int x, int y) => array[x * XSize + y];
+    public T Get(int x, int y) => array[x * YSize + y];
 
     /// <summary>
     /// Sets the element at the specified position of the array.
     /// </summary>
-    public void Set(T element, int x, int y) => array[x * XSize + y] = element;
+    public void Set(T element, int x, int y) => array[x * YSize + y] = element;
 
     /// <summary>
     /// Util method to check if given ints are in the bounds of the array.
