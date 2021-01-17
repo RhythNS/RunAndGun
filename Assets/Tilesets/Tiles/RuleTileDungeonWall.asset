@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d1514134bc4fbd41bb739b1b9a49231, type: 3}
   m_Name: RuleTileDungeonWall
   m_EditorClassIdentifier: 
-  m_DefaultSprite: {fileID: 21300000, guid: 66c39ffd2b79c994ab0c7ab61a8eba5f, type: 3}
+  m_DefaultSprite: {fileID: 0}
   m_DefaultGameObject: {fileID: 0}
   m_DefaultColliderType: 1
   m_TilingRules:
   - m_Id: 0
     m_Sprites:
-    - {fileID: 5690235672735999886, guid: 429c0861aa5a4254f97f01dbfcdb6261, type: 3}
+    - {fileID: -7110137804034162929, guid: 429c0861aa5a4254f97f01dbfcdb6261, type: 3}
     - {fileID: -4535219754890064970, guid: 429c0861aa5a4254f97f01dbfcdb6261, type: 3}
     m_GameObject: {fileID: 0}
     m_AnimationSpeed: 1
@@ -34,7 +34,7 @@ MonoBehaviour:
     m_RuleTransform: 0
   - m_Id: 1
     m_Sprites:
-    - {fileID: 2386206502470627342, guid: 429c0861aa5a4254f97f01dbfcdb6261, type: 3}
+    - {fileID: 3363987959444368220, guid: 429c0861aa5a4254f97f01dbfcdb6261, type: 3}
     m_GameObject: {fileID: 0}
     m_AnimationSpeed: 1
     m_PerlinScale: 0.5
@@ -49,7 +49,7 @@ MonoBehaviour:
     m_RuleTransform: 0
   - m_Id: 2
     m_Sprites:
-    - {fileID: -6351121848520232737, guid: 429c0861aa5a4254f97f01dbfcdb6261, type: 3}
+    - {fileID: -7527513147087577778, guid: 429c0861aa5a4254f97f01dbfcdb6261, type: 3}
     m_GameObject: {fileID: 0}
     m_AnimationSpeed: 1
     m_PerlinScale: 0.5
@@ -64,7 +64,7 @@ MonoBehaviour:
     m_RuleTransform: 0
   - m_Id: 3
     m_Sprites:
-    - {fileID: -4535219754890064970, guid: 429c0861aa5a4254f97f01dbfcdb6261, type: 3}
+    - {fileID: 3579507462472553270, guid: 429c0861aa5a4254f97f01dbfcdb6261, type: 3}
     m_GameObject: {fileID: 0}
     m_AnimationSpeed: 1
     m_PerlinScale: 0.5
