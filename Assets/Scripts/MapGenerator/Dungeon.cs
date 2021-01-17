@@ -379,5 +379,157 @@ namespace MapGenerator
                 }
             }
         }
+
+
+
+
+
+
+        /// <summary>
+        /// Returns the TileType of a given tile
+        /// </summary>
+        /// <param name="x">x-value of the tile to check</param>
+        /// <param name="y">y-value of the tile to check</param>
+        /// <returns>Returns the TileType of the given tile</returns>
+        private TileType GetTileType(int x, int y) {
+            if (x < 0 || y < 0 || x >= mapLayout.XSize || y >= mapLayout.YSize)
+                return TileType.Wall;
+
+            return mapLayout[x, y];
+        }
+
+        /// <summary>
+        /// Returns the positions of the neighbours that are walls of a given tile
+        /// </summary>
+        /// <param name="x">x-value of the tile to check</param>
+        /// <param name="y">y-value of the tile to check</param>
+        /// <returns>Returns the positions of the neighbours that are walls of a given tile</returns>
+        public Vector2Int[] GetNeighbours(int x, int y) {
+            List<Vector2Int> neighbours = new List<Vector2Int>();
+
+            if (GetTileType(x - 1, y) == TileType.Floor)
+                neighbours.Add(new Vector2Int(x - 1, y));
+            if (GetTileType(x, y - 1) == TileType.Floor)
+                neighbours.Add(new Vector2Int(x, y - 1));
+            if (GetTileType(x + 1, y) == TileType.Floor)
+                neighbours.Add(new Vector2Int(x + 1, y));
+            if (GetTileType(x, y + 1) == TileType.Floor)
+                neighbours.Add(new Vector2Int(x, y + 1));
+
+            return neighbours.ToArray();
+        }
+
+        /// <summary>
+        /// Gets the pathfinding cost of a given tile
+        /// </summary>
+        /// <param name="tile"></param>
+        /// <returns>Returns the pathfinding cost of a given tile</returns>
+        public float GetCost(Vector2Int tile) {
+            return 5f;
+            // calculate costs here
+            //return Map[tile.x, tile.y].specialType == SpecialTypes.None || Map[tile.x, tile.y].specialType == SpecialTypes.FloorToWater ? 5f : 20f;
+        }
+
+        /// <summary>
+        /// Tries to find a new path through the cave using A*
+        /// </summary>
+        /// <param name="start">Where the pathfinding should start</param>
+        /// <param name="destination">The destination of the path</param>
+        /// <returns>All tile positions of the path found</returns>
+        public Vector3[] FindPath(Vector2Int start, Vector2Int destination) {
+            Dictionary<Vector2Int, Vector2Int> cameFrom = new Dictionary<Vector2Int, Vector2Int>();
+            Dictionary<Vector2Int, float> costSoFar = new Dictionary<Vector2Int, float>();
+
+            Vector2Int current;
+
+            PriorityQueue<Vector2Int> border = new PriorityQueue<Vector2Int>();
+            border.Enqueue(start, 0f);
+
+            cameFrom.Add(start, start);
+            costSoFar.Add(start, 0f);
+
+            while (border.Count > 0) {
+                current = border.Dequeue();
+
+                if (current.Equals(destination)) break;
+
+                foreach (Vector2Int neighbour in GetNeighbours(current.x, current.y)) {
+                    float newCost = costSoFar[current] + GetCost(neighbour);
+
+                    if (!costSoFar.ContainsKey(neighbour) || newCost < costSoFar[neighbour]) {
+                        if (costSoFar.ContainsKey(neighbour)) {
+                            costSoFar.Remove(neighbour);
+                            cameFrom.Remove(neighbour);
+                        }
+
+                        costSoFar.Add(neighbour, newCost);
+                        cameFrom.Add(neighbour, current);
+                        float priority = newCost + Mathf.Abs(neighbour.x - destination.x) + Mathf.Abs(neighbour.y - destination.y);
+                        border.Enqueue(neighbour, priority);
+                    }
+                }
+            }
+
+            List<Vector3> path = new List<Vector3>();
+            current = destination;
+
+            while (!current.Equals(start)) {
+                if (!cameFrom.ContainsKey(current)) {
+                    //Debug.Log("cameFrom does not contain current"); // no path found
+                    return new Vector3[0];
+                }
+
+                path.Add(new Vector3(current.x, current.y, 0f));
+                current = cameFrom[current];
+            }
+
+            path.Reverse();
+
+            if (path.Count > 1)
+                path.RemoveAt(0);
+
+            return path.ToArray();
+        }
+
+    }
+
+    /// <summary>
+    /// PriorityQueue for use within the A* path finding
+    /// https://gist.github.com/keithcollins/307c3335308fea62db2731265ab44c06
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class PriorityQueue<T>
+    {
+        // From Red Blob: I'm using an unsorted array for this example, but ideally this
+        // would be a binary heap. Find a binary heap class:
+        // * https://bitbucket.org/BlueRaja/high-speed-priority-queue-for-c/wiki/Home
+        // * http://visualstudiomagazine.com/articles/2012/11/01/priority-queues-with-c.aspx
+        // * http://xfleury.github.io/graphsearch.html
+        // * http://stackoverflow.com/questions/102398/priority-queue-in-net
+
+        private List<KeyValuePair<T, float>> elements = new List<KeyValuePair<T, float>>();
+
+        public int Count {
+            get { return elements.Count; }
+        }
+
+        public void Enqueue(T item, float priority) {
+            elements.Add(new KeyValuePair<T, float>(item, priority));
+        }
+
+        // Returns the Location that has the lowest priority
+        public T Dequeue() {
+            int bestIndex = 0;
+
+            for (int i = 0; i < elements.Count; i++) {
+                if (elements[i].Value < elements[bestIndex].Value) {
+                    bestIndex = i;
+                }
+            }
+
+            T bestItem = elements[bestIndex].Key;
+            elements.RemoveAt(bestIndex);
+            return bestItem;
+        }
     }
 }
