@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - GenerateShadowCasters
   layers:
   - Default
   - TransparentFX
@@ -26,9 +27,9 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
-  - 
+  - Floor
+  - Wall
+  - Ceiling
   - 
   - 
   - TestPlayer
@@ -40,4 +41,13 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Floor
+    uniqueID: 4053311029
+    locked: 0
+  - name: Wall
+    uniqueID: 2589566591
+    locked: 0
+  - name: Ceiling
+    uniqueID: 735449647
     locked: 0
