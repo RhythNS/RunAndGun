@@ -8,11 +8,11 @@ public class Status : NetworkBehaviour
 
     private Rigidbody2D body;
 
-    private readonly float dashMuliplier = 1.5f;
+    private readonly float dashMuliplier = 2.0f;
 
     private float dashTimer = 0.0f;
     private float dashCooldown = 1.0f;
-    private float dashDuration = 0.25f;
+    private float dashDuration = 0.5f;
 
     private Vector2 dashVelocity;
 

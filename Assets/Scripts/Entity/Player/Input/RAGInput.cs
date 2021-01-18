@@ -10,6 +10,7 @@ public abstract class RAGInput : MonoBehaviour
     protected Player Player { get; private set; }
 
     private PlayerCamera playerCamera;
+    private bool useFocusPoint;
 
     private void Start()
     {
@@ -17,6 +18,7 @@ public abstract class RAGInput : MonoBehaviour
         Body = GetComponent<Rigidbody2D>();
         Player = GetComponent<Player>();
         playerCamera = Camera.main.GetComponent<PlayerCamera>();
+        useFocusPoint = Config.Instance.useFocusPoint;
         OnStart(); // Call start on child classes.
     }
 
@@ -46,14 +48,14 @@ public abstract class RAGInput : MonoBehaviour
 
     private void Update()
     {
-        if (HasFocusPoint)
+        if (useFocusPoint && HasFocusPoint)
             playerCamera.focusPoint = GetFocusPoint();
 
         // If the player is dashing dont listen to other input.
         if (Player.Status.Dashing)
             return;
 
-        // If we want to dash try to dash, if we are able dont listen to other input      .  
+        // If we want to dash try to dash, if we are able dont listen to other input.  
         if (GetDashInput() == true && Player.Status.TryDashing())
             return;
 

@@ -15,13 +15,13 @@ public class GameManager : NetworkBehaviour
 
     private void Awake()
     {
-        instance = this;
         if (instance)
         {
             Debug.LogWarning("Already a GameManager in the scene. Deleting myself!");
             Destroy(this);
             return;
         }
+        instance = this;
     }
 
     public override void OnStartServer()
@@ -84,6 +84,7 @@ public class GameManager : NetworkBehaviour
     [ClientRpc]
     public void GameOver()
     {
+        Debug.Log("Game Over");
         // Display game over ui etc.
     }
 
@@ -132,7 +133,8 @@ public class GameManager : NetworkBehaviour
     {
         if (instance == this)
         {
-            AliveHealthDict.Instance.OnAllPlayersDied -= OnAllPlayersDied;
+            if (AliveHealthDict.Instance)
+                AliveHealthDict.Instance.OnAllPlayersDied -= OnAllPlayersDied;
             instance = null;
         }
     }

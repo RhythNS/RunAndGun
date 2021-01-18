@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Mirror;
+using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class DungeonRoom : MonoBehaviour
+public abstract class DungeonRoom : NetworkBehaviour
 {
     public abstract bool EventOnRoomEntered { get; }
 
@@ -9,7 +10,7 @@ public abstract class DungeonRoom : MonoBehaviour
 
     [SerializeField] protected Rect bounds;
 
-    private void Start()
+    public override void OnStartServer()
     {
         GameManager.RegisterRoom(this);
     }
@@ -38,6 +39,14 @@ public abstract class DungeonRoom : MonoBehaviour
     protected void OpenDoors()
     {
 
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        float midX = bounds.x + bounds.width / 2;
+        float midY = bounds.y + bounds.height / 2;
+        Gizmos.DrawWireCube(new Vector3(midX, midY), new Vector3(bounds.width, bounds.height));
     }
 
 }

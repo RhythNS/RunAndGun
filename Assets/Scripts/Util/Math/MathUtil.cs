@@ -17,6 +17,12 @@ public abstract class MathUtil
     public static float Normalize(float value, float min, float max)
         => min == 0 ? (value / max) : (value - min) / (max - min);
 
+    public static Vector3 RandomVector3(Vector3 min, Vector3 max)
+        => new Vector3(Random.Range(min.x, max.x), Random.Range(min.y, min.y), Random.Range(min.z, max.z));
+
+    public static Vector2 RandomVector2(Vector2 min, Vector2 max)
+        => new Vector2(Random.Range(min.x, max.x), Random.Range(min.y, min.y));
+
     /// <summary>
     /// Clamps vector and returns the magnitude. If the vector should only be clamped use Vector.ClampMagnitude instead.
     /// Taken from:

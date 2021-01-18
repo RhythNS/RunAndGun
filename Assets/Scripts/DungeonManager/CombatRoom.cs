@@ -1,15 +1,17 @@
-﻿using System.Collections;
+﻿using Mirror;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CombatRoom : DungeonRoom
 {
     public override bool EventOnRoomEntered => true;
+    [SerializeField] private EnemyObject[] enemiesToSpawn;
 
     public override void OnAllPlayersEntered()
     {
         CloseDoors();
-        // SpawnEnemies();
+        SpawnEnemies();
         GameManager.OnCombatStarted(bounds);
 
         AliveHealthDict.Instance.OnAllEnemiesDied += OnAllEnemiesDefeated;
@@ -34,4 +36,15 @@ public class CombatRoom : DungeonRoom
 
         GameManager.OnCombatEnded();
     }
+
+    protected void SpawnEnemies()
+    {
+        for (int i = 0; i < enemiesToSpawn.Length; i++)
+        {
+            GameObject enemyObject = Instantiate(enemiesToSpawn[i].Prefab, MathUtil.RandomVector2(bounds.min, bounds.max), Quaternion.identity);
+            enemyObject.GetComponent<Enemy>().Set(enemiesToSpawn[i]);
+            NetworkServer.Spawn(enemyObject);
+        }
+    }
+
 }

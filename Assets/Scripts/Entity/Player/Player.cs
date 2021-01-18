@@ -97,6 +97,16 @@ public class Player : Entity
         bullet.HitPlayer(this);
     }
 
+    // This is here as a placeholder. Please replace it once revive mechanics are figured out.
+    [Command]
+    public void CmdReviveTeammate(GameObject other, int amount)
+    {
+        if (other.TryGetComponent(out Player player) == false)
+            return;
+
+        player.Health.Revive(amount);
+    }
+
     private void OnNameChanged(string oldName, string newName)
     {
         gameObject.name = newName;
