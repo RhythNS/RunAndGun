@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
-//using UnityEditor;
 using System.Collections.Generic;
-using UnityEditor;
 
 /// <summary>
 /// From: https://www.reddit.com/r/Unity3D/comments/ewpoek/script_for_generating_shadowcaster2ds_for_tilemaps/
@@ -92,7 +90,7 @@ public class GridShadowCastersGenerator : MonoBehaviour
 
                         // create new shadowCasterPrefab instance
 
-                        currentInstance = (GameObject)PrefabUtility.InstantiatePrefab(shadowCasterPrefab, shadowCastersContainer);
+                        currentInstance = Instantiate(shadowCasterPrefab, shadowCastersContainer);
                         currentInstance.transform.position = new Vector3(bottomLeft.x + x + 0.5f, bottomLeft.y + y + 0.5f, 0.0f);
                     } else {
 
