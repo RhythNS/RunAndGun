@@ -34,6 +34,7 @@ public class EquippedWeapon : NetworkBehaviour
     public int RemainingBullets => remainingBullets;
     public Vector2 BulletSpawnPosition => transform.position; // TODO: Change to acctual value
 
+    [SyncVar] private int bulletLayerSpawn;
     [SerializeField] [SyncVar] private Weapon weapon;
     [SerializeField] int remainingBullets;
     [SerializeField] private bool requstStopFire;
@@ -89,6 +90,7 @@ public class EquippedWeapon : NetworkBehaviour
 
         weapon = newWeapon;
         remainingBullets = weapon.MagazineSize;
+        bulletLayerSpawn = LayerDict.Instance.GetBulletLayer(Health.GetComponent<Entity>().EntityType, weapon.TargetMode);
         // Reset all timed values and stuff
     }
 
@@ -196,6 +198,7 @@ public class EquippedWeapon : NetworkBehaviour
         Bullet bullet = Instantiate(PickableDict.Instance.BulletPrefab).GetComponent<Bullet>();
 
         bullet.gameObject.SetActive(true);
+        bullet.gameObject.layer = bulletLayerSpawn;
 
         bullet.ShooterHealth = Health;
         bullet.fromWeapon = weapon;

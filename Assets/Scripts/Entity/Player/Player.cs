@@ -2,10 +2,12 @@
 using Smooth;
 using UnityEngine;
 
-public class Player : NetworkBehaviour
+public class Player : Entity
 {
     public CharacterType CharacterType => characterType;
     [SerializeField] private CharacterType characterType;
+
+    public override EntityType EntityType => EntityType.Player;
 
     [SyncVar(hook = nameof(OnNameChanged))] public string userName;
     [SyncVar] public int playerId;
@@ -20,6 +22,8 @@ public class Player : NetworkBehaviour
     public EquippedWeapon EquippedWeapon { get; private set; }
     public PlayerAnimationController PlayerAnimationController { get; private set; }
     public SmoothSyncMirror SmoothSync { get; private set; }
+    public Collider2D Collider2D { get; private set; }
+
 
     private void Awake()
     {
@@ -29,6 +33,7 @@ public class Player : NetworkBehaviour
         Inventory = GetComponent<Inventory>();
         EquippedWeapon = GetComponent<EquippedWeapon>();
         SmoothSync = GetComponent<SmoothSyncMirror>();
+        Collider2D = GetComponent<Collider2D>();
     }
 
     public override void OnStartClient()
@@ -92,6 +97,16 @@ public class Player : NetworkBehaviour
         bullet.HitPlayer(this);
     }
 
+    // This is here as a placeholder. Please replace it once revive mechanics are figured out.
+    [Command]
+    public void CmdReviveTeammate(GameObject other, int amount)
+    {
+        if (other.TryGetComponent(out Player player) == false)
+            return;
+
+        player.Health.Revive(amount);
+    }
+
     private void OnNameChanged(string oldName, string newName)
     {
         gameObject.name = newName;
@@ -99,7 +114,7 @@ public class Player : NetworkBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (isLocalPlayer)
+        if (isLocalPlayer && !Status.Dashing)
         {
             if (collision.TryGetComponent(out PickableInWorld pickable) && pickable.Pickable.InstantPickup)
                 CmdPickup(pickable.gameObject);

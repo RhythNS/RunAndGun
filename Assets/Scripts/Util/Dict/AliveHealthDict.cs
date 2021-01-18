@@ -3,7 +3,15 @@ using UnityEngine;
 
 public class AliveHealthDict : MonoBehaviour
 {
+    public delegate void PlayerDied(Player player);
+    public delegate void AllPlayersDied();
+    public delegate void AllEnemiesDied();
+
     public static AliveHealthDict Instance { get; private set; }
+
+    public event PlayerDied OnPlayerDied;
+    public event AllPlayersDied OnAllPlayersDied;
+    public event AllEnemiesDied OnAllEnemiesDied;
 
     public List<Health> PlayerHealths => playerHealths;
     [SerializeField] private List<Health> playerHealths;
@@ -31,10 +39,19 @@ public class AliveHealthDict : MonoBehaviour
 
     public void DeRegister(Health health)
     {
-        if (health.TryGetComponent<Player>(out _))
+        if (health.TryGetComponent(out Player player))
+        {
             playerHealths.Remove(health);
+            OnPlayerDied?.Invoke(player);
+            if (playerHealths.Count == 0)
+                OnAllPlayersDied?.Invoke();
+        }
         else if (health.TryGetComponent<Enemy>(out _))
+        {
             enemyHealths.Remove(health);
+            if (enemyHealths.Count == 0)
+                OnAllEnemiesDied?.Invoke();
+        }
     }
 
     private void OnDestroy()

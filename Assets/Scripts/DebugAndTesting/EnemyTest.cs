@@ -3,11 +3,16 @@ using UnityEngine;
 
 public class EnemyTest : NetworkBehaviour
 {
-    [SerializeField] private GameObject enemyPrefab;
+    [SerializeField] private bool shouldSpawn;
+    [SerializeField] private EnemyObject enemyObject;
 
     public override void OnStartServer()
     {
-        GameObject enemy = Instantiate(enemyPrefab, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity);
-        NetworkServer.Spawn(enemy);
+        if (shouldSpawn)
+        {
+            GameObject enemy = Instantiate(enemyObject.Prefab, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity);
+            enemy.GetComponent<Enemy>().Set(enemyObject);
+            NetworkServer.Spawn(enemy);
+        }
     }
 }

@@ -61,7 +61,7 @@ public class Stats : NetworkBehaviour
         if (effect.defence != defence)
         {
             defence = effect.defence;
-
+            player.Health.SetDefence(defence);
         }
         if (effect.speed != speed)
         {

@@ -6,38 +6,45 @@ public class MobileInput : RAGInput
 {
     public override InputType InputType => InputType.Mobile;
 
-    public override void Remove()
+    private MobileUIManager mobileUI;
+
+    protected override void OnStart()
     {
-        throw new System.NotImplementedException();
+        GameObject canvasObj = GameObject.Find("Canvas"); // TOOD: CHANGE THIS ONCE UI IS IMPLEMENTED!
+        mobileUI = Instantiate(InputDict.Instance.MobileUIManagerPrefab, canvasObj.transform);
     }
 
     protected override bool GetDashInput()
     {
-        throw new System.NotImplementedException();
+        // TODO: Implement
+        return false;
     }
 
     protected override bool GetFireInput(out Vector2 fireDirection)
     {
-        throw new System.NotImplementedException();
+        fireDirection = mobileUI.Aim.Output;
+        return mobileUI.Aim.Down;
     }
 
     protected override Vector2 GetMovementInput()
     {
-        throw new System.NotImplementedException();
+        return mobileUI.Move.Output;
     }
 
     protected override bool GetReloadInput()
     {
-        throw new System.NotImplementedException();
-    }
-
-    protected override void OnStart()
-    {
-        throw new System.NotImplementedException();
+        // TODO: Implement
+        return Input.GetKeyDown(KeyCode.R);
     }
 
     protected override void Pickup()
     {
-        throw new System.NotImplementedException();
+        // TODO: Implement
     }
+
+    public override void Remove()
+    {
+        Destroy(mobileUI.gameObject);
+    }
+
 }

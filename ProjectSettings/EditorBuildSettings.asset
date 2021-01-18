@@ -6,6 +6,10 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Imported Libraries/Copyrighted/Noble Connect/Mirror/Examples/NetworkManager/Example
+      Mirror.unity
+    guid: e7237db53eb261e4bbb6f84f09986e06
+  - enabled: 1
     path: Assets/Scenes/RhyTestScenes/LobbyScene.unity
     guid: 72d6bcf05f6220145ab70d64d8b3e23c
   - enabled: 1

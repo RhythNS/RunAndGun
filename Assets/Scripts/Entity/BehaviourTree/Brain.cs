@@ -3,8 +3,7 @@ using UnityEngine;
 
 public class Brain : MonoBehaviour
 {
-    public BTree Tree => tree;
-    [SerializeField] private BTree tree;
+    public BTree tree;
 
     /// <summary>
     /// Set to false every tick. If true the agent will go to the set Destination.
@@ -21,6 +20,7 @@ public class Brain : MonoBehaviour
             didMoveLastFrame = true;
         }
     }
+
     private Vector3 destination;
 
     private void Start()

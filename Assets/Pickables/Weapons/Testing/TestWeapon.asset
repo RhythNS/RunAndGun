@@ -17,10 +17,12 @@ MonoBehaviour:
   instantPickup: 0
   effects:
   - {fileID: 11400000, guid: 2d9bbabe9d4771846a111a28561667b1, type: 2}
+  - {fileID: 11400000, guid: eae9417836af98c4d8e50581cf3990dc, type: 2}
   shotModel: {fileID: 11400000, guid: da8245afe2fd8484da7be94c1cf0550e, type: 2}
   bulletInfo: {fileID: 11400000, guid: cff976ac23e0bd84eb1d41e4556d9ea2, type: 2}
   bulletSpawnModel: {fileID: 11400000, guid: 9cce36ab2ab7a954497b8496de02efe8, type: 2}
   animator: {fileID: 0}
+  targetMode: 1
   useLocalSpace: 0
   range: 20
   speed: 6

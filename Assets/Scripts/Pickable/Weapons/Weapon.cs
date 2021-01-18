@@ -22,6 +22,9 @@ public class Weapon : Pickable
     public RuntimeAnimatorController Animator => animator;
     [SerializeField] private RuntimeAnimatorController animator;
 
+    public TargetMode TargetMode => targetMode;
+    [SerializeField] private TargetMode targetMode;
+
     public bool UseLocalSpace => useLocalSpace;
     [SerializeField] private bool useLocalSpace;
 
