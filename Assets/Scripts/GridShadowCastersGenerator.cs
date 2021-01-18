@@ -1,7 +1,7 @@
-﻿#if UNITY_EDITOR
-using UnityEngine;
-using UnityEditor;
+﻿using UnityEngine;
+//using UnityEditor;
 using System.Collections.Generic;
+using UnityEditor;
 
 /// <summary>
 /// From: https://www.reddit.com/r/Unity3D/comments/ewpoek/script_for_generating_shadowcaster2ds_for_tilemaps/
@@ -175,29 +175,3 @@ public class GridShadowCastersGenerator : MonoBehaviour
         return false;
     }
 }
-
-[CustomEditor(typeof(GridShadowCastersGenerator))]
-public class GridShadowCastersGeneratorEditor : Editor
-{
-
-    public override void OnInspectorGUI() {
-        DrawDefaultInspector();
-
-        if (GUILayout.Button("Generate")) {
-            var generator = (GridShadowCastersGenerator)target;
-
-            Undo.RecordObject(generator.shadowCastersContainer, "GridShadowCastersGenerator.generate"); // this does not work :(
-
-            var casters = generator.Generate();
-
-            // as a hack to make the editor save the shadowcaster instances, we rename them now instead of when theyre generated.
-
-            Undo.RecordObjects(casters, "GridShadowCastersGenerator name prefab instances");
-
-            for (var i = 0; i < casters.Length; i++) {
-                casters[i].name += "_" + i.ToString();
-            }
-        }
-    }
-}
-#endif
