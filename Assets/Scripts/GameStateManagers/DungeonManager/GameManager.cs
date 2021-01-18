@@ -1,9 +1,8 @@
-﻿using Mirror;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : NetworkBehaviour
+public class GameManager : MonoBehaviour
 {
     private static GameManager instance;
 
@@ -24,14 +23,14 @@ public class GameManager : NetworkBehaviour
         instance = this;
     }
 
-    public override void OnStartServer()
+    private void Start()
     {
         AliveHealthDict.Instance.OnAllPlayersDied += instance.OnAllPlayersDied;
     }
 
     public static void OnLevelLoaded()
     {
-        if (!instance.isServer)
+        if (!instance)
             return;
 
         instance.checkForRoomEntered = instance.StartCoroutine(instance.CheckForRoomEnter());
@@ -39,7 +38,7 @@ public class GameManager : NetworkBehaviour
 
     public static void OnLevelCleared()
     {
-        if (!instance.isServer)
+        if (!instance)
             return;
 
         instance.rooms.Clear();
@@ -50,7 +49,7 @@ public class GameManager : NetworkBehaviour
 
     public static void RegisterRoom(DungeonRoom room)
     {
-        if (!instance.isServer)
+        if (!instance)
             return;
 
         instance.rooms.Add(room);
@@ -58,7 +57,7 @@ public class GameManager : NetworkBehaviour
 
     public static void OnCombatStarted(Rect bounds)
     {
-        if (!instance.isServer)
+        if (!instance)
             return;
 
         instance.StopCoroutine(instance.checkForRoomEntered);
@@ -67,7 +66,7 @@ public class GameManager : NetworkBehaviour
 
     public static void OnCombatEnded()
     {
-        if (!instance.isServer)
+        if (!instance)
             return;
 
         instance.checkForRoomEntered = instance.StartCoroutine(instance.CheckForRoomEnter());
@@ -78,14 +77,7 @@ public class GameManager : NetworkBehaviour
     {
         instance.StopAllCoroutines();
 
-        instance.GameOver();
-    }
-
-    [ClientRpc]
-    public void GameOver()
-    {
-        Debug.Log("Game Over");
-        // Display game over ui etc.
+        // for all clients -> send game over
     }
 
     private IEnumerator CheckForRoomEnter()

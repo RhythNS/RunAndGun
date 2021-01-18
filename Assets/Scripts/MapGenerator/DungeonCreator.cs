@@ -52,6 +52,7 @@ public class DungeonCreator : NetworkBehaviour
     [SyncVar]
     private int seed;
 
+    /*
     private void Awake() {
         if (isServer)
             seed = Random.Range(int.MinValue, int.MaxValue);
@@ -62,6 +63,7 @@ public class DungeonCreator : NetworkBehaviour
 
         CreateDungeon(seed);
     }
+     */
 
     private void OnValidate() {
         // clamp maxSize

@@ -12,11 +12,14 @@ public class ExtendedCoroutine : IEnumerator
     private readonly Action onFinished;
     private readonly MonoBehaviour onScript;
 
-    public ExtendedCoroutine(MonoBehaviour onScript, IEnumerator enumerator, Action onFinished = null)
+    public ExtendedCoroutine(MonoBehaviour onScript, IEnumerator enumerator, Action onFinished = null, bool startNow = false)
     {
         this.onScript = onScript;
         this.enumerator = enumerator;
         this.onFinished = onFinished;
+        
+        if (startNow)
+            Start();
     }
 
     public bool MoveNext()
