@@ -407,14 +407,23 @@ namespace MapGenerator
         public Vector2Int[] GetNeighbours(int x, int y) {
             List<Vector2Int> neighbours = new List<Vector2Int>();
 
-            if (GetTileType(x - 1, y) == TileType.Floor)
+            if (GetTileType(x - 1, y) == TileType.Floor) // left
                 neighbours.Add(new Vector2Int(x - 1, y));
-            if (GetTileType(x, y - 1) == TileType.Floor)
+            if (GetTileType(x, y - 1) == TileType.Floor) // down
                 neighbours.Add(new Vector2Int(x, y - 1));
-            if (GetTileType(x + 1, y) == TileType.Floor)
+            if (GetTileType(x + 1, y) == TileType.Floor) // right
                 neighbours.Add(new Vector2Int(x + 1, y));
-            if (GetTileType(x, y + 1) == TileType.Floor)
+            if (GetTileType(x, y + 1) == TileType.Floor) // up
                 neighbours.Add(new Vector2Int(x, y + 1));
+
+            if (GetTileType(x - 1, y - 1) == TileType.Floor) // left down
+                neighbours.Add(new Vector2Int(x - 1, y - 1));
+            if (GetTileType(x + 1, y - 1) == TileType.Floor) // right down
+                neighbours.Add(new Vector2Int(x + 1, y - 1));
+            if (GetTileType(x - 1, y + 1) == TileType.Floor) // left up
+                neighbours.Add(new Vector2Int(x - 1, y + 1));
+            if (GetTileType(x + 1, y + 1) == TileType.Floor) // right up
+                neighbours.Add(new Vector2Int(x + 1, y + 1));
 
             return neighbours.ToArray();
         }
