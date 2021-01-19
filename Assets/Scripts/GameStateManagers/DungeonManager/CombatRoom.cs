@@ -12,7 +12,7 @@ public class CombatRoom : DungeonRoom
     {
         CloseDoors();
         SpawnEnemies();
-        GameManager.OnCombatStarted(bounds);
+        GameManager.OnRoomEventStarted(bounds);
 
         AliveHealthDict.Instance.OnAllEnemiesDied += OnAllEnemiesDefeated;
         AliveHealthDict.Instance.OnAllPlayersDied += OnAllPlayersDied;
@@ -34,7 +34,7 @@ public class CombatRoom : DungeonRoom
         // SpawnLoot();
         AlreadyCleared = true;
 
-        GameManager.OnCombatEnded();
+        GameManager.OnRoomEventEnded();
     }
 
     protected void SpawnEnemies()

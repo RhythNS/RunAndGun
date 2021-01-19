@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,8 +6,6 @@ using UnityEngine;
 public class LobbyManager : MonoBehaviour
 {
     private static LobbyManager instance;
-
-    private List<LobbyPlayer> waitingPlayers = new List<LobbyPlayer>();
 
     private ExtendedCoroutine gameStartCountdown;
 
@@ -22,29 +20,31 @@ public class LobbyManager : MonoBehaviour
         instance = this;
     }
 
-    public static void Register(LobbyPlayer lobbyPlayer)
+    private void Start()
     {
-        instance.waitingPlayers.Add(lobbyPlayer);
+        PlayersDict.Instance.OnPlayerDisconnected += OnPlayerChanged;
+        PlayersDict.Instance.OnPlayerConnected += OnPlayerChanged;
     }
 
-    public static void DeRegister(LobbyPlayer lobbyPlayer)
+    public void OnPlayerChanged(Player player)
     {
-        if (!instance)
-            return;
-
-        instance.waitingPlayers.Remove(lobbyPlayer);
         OnPlayerChangedReady();
     }
 
     public static void OnPlayerChangedReady()
     {
+        if (!instance)
+            return;
+
+        List<Player> players = PlayersDict.Instance.Players;
         // Player set unready during countdown?
         if (instance.gameStartCountdown != null)
         {
-            for (int i = 0; i < instance.waitingPlayers.Count; i++)
+            for (int i = 0; i < players.Count; i++)
             {
-                if (!instance.waitingPlayers[i].isReady)
+                if (!players[i].StateCommunicator.lobbyReady)
                 {
+                    Debug.Log("Player unready! Stopping Countdown!");
                     instance.gameStartCountdown.Stop(false);
                     instance.gameStartCountdown = null;
                     return;
@@ -54,9 +54,9 @@ public class LobbyManager : MonoBehaviour
         // All players are ready?
         else
         {
-            for (int i = 0; i < instance.waitingPlayers.Count; i++)
+            for (int i = 0; i < players.Count; i++)
             {
-                if (!instance.waitingPlayers[i].isReady)
+                if (!players[i].StateCommunicator.lobbyReady)
                 {
                     return;
                 }
@@ -68,19 +68,44 @@ public class LobbyManager : MonoBehaviour
 
     private void OnCountDownFinished()
     {
-        instance = null;
-        for (int i = 0; i < waitingPlayers.Count; i++)
+        List<Player> players = PlayersDict.Instance.Players;
+        for (int i = 0; i < players.Count; i++)
         {
-            Destroy(waitingPlayers[i]);
+            players[i].StateCommunicator.lobbyReady = false;
         }
+
+        instance = null;
         gameObject.AddComponent<GameManager>();
+        GameManager.OnLoadNewLevel();
+
+        // TODO: Maybe seed can be set in the menu?
+        StartGameMessage sgm = new StartGameMessage
+        {
+            levelSeed = Random.Range(int.MinValue, int.MaxValue)
+        };
+
+        NetworkServer.SendToAll(sgm);
         Destroy(this);
     }
 
     private IEnumerator StartGameCountdown()
     {
+        Debug.Log("All players ready! Starting Countdown!");
         // notify ui
-        yield return new WaitForSeconds(3.0f);
-        // do other stuff
+        for (int i = 3; i > 0; i--)
+        {
+            Debug.Log(i + "!");
+            yield return new WaitForSeconds(1.0f);
+        }
+        // disable Lobby
+    }
+
+    private void OnDestroy()
+    {
+        if (PlayersDict.Instance)
+        {
+            PlayersDict.Instance.OnPlayerDisconnected -= OnPlayerChanged;
+            PlayersDict.Instance.OnPlayerConnected -= OnPlayerChanged;
+        }
     }
 }

@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: -5587249916741445024}
   - component: {fileID: 2103416708}
   - component: {fileID: 2103416707}
+  - component: {fileID: 3183416551068131400}
   - component: {fileID: 2103416702}
   - component: {fileID: 2103416701}
   - component: {fileID: 7910413243187173050}
@@ -23,7 +24,7 @@ GameObject:
   - component: {fileID: -6418126549300102399}
   - component: {fileID: 3277487581593560095}
   - component: {fileID: 6008713023922089198}
-  m_Layer: 26
+  m_Layer: 8
   m_Name: TestMelee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -250,6 +251,22 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &3183416551068131400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3992868732581162177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 063b775018e2c7f4888f97eebfc34339, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  lobbyReady: 0
+  levelLoaded: 0
 --- !u!114 &2103416702
 MonoBehaviour:
   m_ObjectHideFlags: 0

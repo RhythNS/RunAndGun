@@ -1,4 +1,4 @@
-﻿using Mirror;
+﻿// using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,8 +6,10 @@ using UnityEngine.Tilemaps;
 
 using MapGenerator;
 
-public class DungeonCreator : NetworkBehaviour
+public class DungeonCreator : MonoBehaviour
 {
+    public static DungeonCreator Instance { get; private set; }
+
     [HideInInspector]
     public Dungeon dungeon;
 
@@ -49,10 +51,27 @@ public class DungeonCreator : NetworkBehaviour
     [Range(0f, 1f)]
     private float roomChance = 0.4f;
 
+    private void Awake()
+    {
+        if (Instance)
+        {
+            Debug.LogWarning("Already a DungeonCreator in scene! Deleting myself!");
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+            Instance = null;
+    }
+
+    /*
     [SyncVar]
     private int seed;
 
-    /*
     private void Awake() {
         if (isServer)
             seed = Random.Range(int.MinValue, int.MaxValue);
@@ -163,5 +182,8 @@ public class DungeonCreator : NetworkBehaviour
 
             }
         }
+
+        if (Player.LocalPlayer) // check to allow for debugging if a localplayer is not scene
+            Player.LocalPlayer.StateCommunicator.CmdLevelSetLoaded(true);
     }
 }

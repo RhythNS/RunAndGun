@@ -17,7 +17,10 @@ public class AddComponentTest : NetworkBehaviour
                 break;
             yield return null;
         }
-
-        gameObject.AddComponent<LoadingPlayer>();
+        Player[] players = FindObjectsOfType<Player>();
+        for (int i = 0; i < players.Length; i++)
+        {
+            players[i].gameObject.AddComponent<LoadingPlayer>();
+        }
     }
 }

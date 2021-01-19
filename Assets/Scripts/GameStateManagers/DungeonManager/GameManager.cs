@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,10 +7,24 @@ public class GameManager : MonoBehaviour
 {
     private static GameManager instance;
 
-    [SerializeField] private int checkRoomsPerIteration = 3;
+    public enum State
+    {
+        LoadingLevel, Wandering, RoomEvent, Cleared, Failed
+    }
+
+    public State CurrentState
+    {
+        get => currentState; private set
+        {
+            currentState = value;
+            Debug.Log("Switch state to " + currentState);
+        }
+    }
+    private State currentState = State.LoadingLevel;
+
+    [SerializeField] private int checkRoomsPerFrame = 3;
 
     private Coroutine checkForRoomEntered;
-
     private readonly List<DungeonRoom> rooms = new List<DungeonRoom>();
 
     private void Awake()
@@ -25,13 +40,62 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        AliveHealthDict.Instance.OnAllPlayersDied += instance.OnAllPlayersDied;
+        if (instance == this)
+        {
+            PlayersDict.Instance.OnPlayerDisconnected += OnPlayerDisconnected;
+            AliveHealthDict.Instance.OnAllPlayersDied += OnAllPlayersDied;
+        }
     }
+
+    private void OnPlayerDisconnected(Player player)
+    {
+        // TODO: Figure out what happens here.
+        // If level is loading =>
+        // If level is not loading => 
+    }
+
+    public static void OnLoadNewLevel()
+    {
+        if (!instance)
+            return;
+
+        instance.CurrentState = State.LoadingLevel;
+    }
+
+    public static void OnPlayerLoadedLevelChanged()
+    {
+        if (!instance)
+            return;
+
+        if (instance.CurrentState != State.LoadingLevel)
+        {
+            Debug.LogWarning("Someone reported level change while playing!");
+            return;
+        }
+
+        List<Player> players = PlayersDict.Instance.Players;
+        for (int i = 0; i < players.Count; i++)
+        {
+            if (players[i].StateCommunicator.levelLoaded == false)
+                return;
+        }
+
+        OnLevelLoaded();
+    }
+
 
     public static void OnLevelLoaded()
     {
         if (!instance)
             return;
+
+        instance.CurrentState = State.Wandering;
+
+        List<Player> players = PlayersDict.Instance.Players;
+        for (int i = 0; i < players.Count; i++)
+        {
+            players[i].StateCommunicator.levelLoaded = false;
+        }
 
         instance.checkForRoomEntered = instance.StartCoroutine(instance.CheckForRoomEnter());
     }
@@ -44,7 +108,8 @@ public class GameManager : MonoBehaviour
         instance.rooms.Clear();
         instance.StopAllCoroutines();
 
-        // load next level
+        instance.CurrentState = State.Cleared;
+        // display dialog to load next level
     }
 
     public static void RegisterRoom(DungeonRoom room)
@@ -55,19 +120,23 @@ public class GameManager : MonoBehaviour
         instance.rooms.Add(room);
     }
 
-    public static void OnCombatStarted(Rect bounds)
+    public static void OnRoomEventStarted(Rect bounds)
     {
         if (!instance)
             return;
+
+        instance.CurrentState = State.RoomEvent;
 
         instance.StopCoroutine(instance.checkForRoomEntered);
         // ui.HideAroundBounds(bounds);
     }
 
-    public static void OnCombatEnded()
+    public static void OnRoomEventEnded()
     {
         if (!instance)
             return;
+
+        instance.CurrentState = State.Wandering;
 
         instance.checkForRoomEntered = instance.StartCoroutine(instance.CheckForRoomEnter());
         // ui.StopHidingAroundBounds();
@@ -77,8 +146,17 @@ public class GameManager : MonoBehaviour
     {
         instance.StopAllCoroutines();
 
+        instance.CurrentState = State.Failed;
+
         // for all clients -> send game over
     }
+
+    private void OnBackToLobby()
+    {
+        gameObject.AddComponent<LobbyManager>();
+        Destroy(this);
+    }
+
 
     private IEnumerator CheckForRoomEnter()
     {
@@ -112,7 +190,7 @@ public class GameManager : MonoBehaviour
                 }
 
                 // Already checked enough rooms?
-                if (counter >= checkRoomsPerIteration)
+                if (counter >= checkRoomsPerFrame)
                     yield return null;
             }
 
@@ -127,6 +205,8 @@ public class GameManager : MonoBehaviour
         {
             if (AliveHealthDict.Instance)
                 AliveHealthDict.Instance.OnAllPlayersDied -= OnAllPlayersDied;
+            if (PlayersDict.Instance)
+                PlayersDict.Instance.OnPlayerDisconnected -= OnPlayerDisconnected;
             instance = null;
         }
     }

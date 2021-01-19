@@ -12,6 +12,13 @@ public class RAGNetworkManager : NobleNetworkManager
         NetworkServer.RegisterHandler<JoinMessage>(OnJoinMessage);
     }
 
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+
+        NetworkClient.RegisterHandler<StartGameMessage>(OnStartGameMessage);
+    }
+
     public override void OnClientConnect(NetworkConnection conn)
     {
         base.OnClientConnect(conn);
@@ -54,6 +61,11 @@ public class RAGNetworkManager : NobleNetworkManager
         }
         newPlayer.userName = joinMessage.name;
 
+    }
+
+    private void OnStartGameMessage(NetworkConnection connection, StartGameMessage startGameMessage)
+    {
+        DungeonCreator.Instance.CreateDungeon(startGameMessage.levelSeed);
     }
 
 }
