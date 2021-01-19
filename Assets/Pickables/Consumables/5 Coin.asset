@@ -15,4 +15,4 @@ MonoBehaviour:
   id: 2
   icon: {fileID: 0}
   instantPickup: 0
-  moneyAmount: 0
+  moneyAmount: 5

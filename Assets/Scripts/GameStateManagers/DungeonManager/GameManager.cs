@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Mirror;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -155,6 +156,7 @@ public class GameManager : MonoBehaviour
     {
         gameObject.AddComponent<LobbyManager>();
         Destroy(this);
+        NetworkServer.SendToAll(new ReturnToLobbyMessage());
     }
 
 

@@ -22,8 +22,10 @@ public class LobbyManager : MonoBehaviour
 
     private void Start()
     {
+        DontDestroyOnLoad(gameObject);
         PlayersDict.Instance.OnPlayerDisconnected += OnPlayerChanged;
         PlayersDict.Instance.OnPlayerConnected += OnPlayerChanged;
+        LobbyLevel.Instance.Show();
     }
 
     public void OnPlayerChanged(Player player)

@@ -17,6 +17,7 @@ public class RAGNetworkManager : NobleNetworkManager
         base.OnStartClient();
 
         NetworkClient.RegisterHandler<StartGameMessage>(OnStartGameMessage);
+        NetworkClient.RegisterHandler<ReturnToLobbyMessage>(OnReturnToLobbyMessage);
     }
 
     public override void OnClientConnect(NetworkConnection conn)
@@ -65,7 +66,13 @@ public class RAGNetworkManager : NobleNetworkManager
 
     private void OnStartGameMessage(NetworkConnection connection, StartGameMessage startGameMessage)
     {
+        LobbyLevel.Instance.Hide();
         DungeonCreator.Instance.CreateDungeon(startGameMessage.levelSeed);
+    }
+
+    private void OnReturnToLobbyMessage(NetworkConnection connection, ReturnToLobbyMessage returnToLobbyMessage)
+    {
+        LobbyLevel.Instance.Show();
     }
 
 }
