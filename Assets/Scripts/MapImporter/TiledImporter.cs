@@ -184,7 +184,7 @@ public class TiledImporter : MonoBehaviour
     /// <summary>
     /// Container for loaded TiledObjects.
     /// </summary>
-    public struct PrefabContainer
+    public struct PrefabLocations
     {
         public GameObject Prefab { get; set; }
         /// <summary>
@@ -202,9 +202,9 @@ public class TiledImporter : MonoBehaviour
     /// <param name="mapName">The name of the map to get the gid values from.</param>
     /// <param name="prefabs">A list of all prefabs and their local position.</param>
     /// <returns>The gid values of the map.</returns>
-    public Fast2DArray<int> GetReplacableMap(string mapName, out PropertyDict properties, out List<PrefabContainer> prefabs)
+    public Fast2DArray<int> GetReplacableMap(string mapName, out PropertyDict properties, out List<PrefabLocations> prefabs)
     {
-        prefabs = new List<PrefabContainer>();
+        prefabs = new List<PrefabLocations>();
 
         TmxMap map = LoadMap(mapName);
         properties = map.Properties;
@@ -240,7 +240,7 @@ public class TiledImporter : MonoBehaviour
                 pos.y = map.Height - ((float)map.ObjectGroups[i].Objects[j].Y / map.TileHeight);
                 pos.z = 0f;
 
-                prefabs.Add(new PrefabContainer { Prefab = obj, Position = pos });
+                prefabs.Add(new PrefabLocations { Prefab = obj, Position = pos });
             }
         }
 

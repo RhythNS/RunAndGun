@@ -15,7 +15,7 @@ namespace MapGenerator
         private readonly Fast2DArray<TileType> mapLayout;
 
         private readonly Fast2DArray<TileType>[] roomLayouts;
-        private readonly List<TiledImporter.PrefabContainer>[] roomGameObjects;
+        private readonly List<TiledImporter.PrefabLocations>[] roomGameObjects;
         private readonly RoomType[] roomTypes;
 
         private readonly List<Room> rooms = new List<Room>();
@@ -44,7 +44,7 @@ namespace MapGenerator
         /// <param name="roomGameObjects">The list of GameObjects that should be spawned.</param>
         /// <param name="minRooms">The minimum amount of rooms that should be generated.</param>
         /// <param name="seed">The seed to use when generating the Dungeon. int.MaxValue uses a random seed.</param>
-        public Dungeon(int sizeX, int sizeY, Fast2DArray<int>[] roomLayouts, List<TiledImporter.PrefabContainer>[] roomGameObjects, RoomType[] roomTypes, int minRooms, int seed) {
+        public Dungeon(int sizeX, int sizeY, Fast2DArray<int>[] roomLayouts, List<TiledImporter.PrefabLocations>[] roomGameObjects, RoomType[] roomTypes, int minRooms, int seed) {
             this.Size = new Vector2Int(sizeX, sizeY);
             mapLayout = new Fast2DArray<TileType>(Size.x, Size.y);
             this.roomLayouts = new Fast2DArray<TileType>[roomLayouts.Length];
@@ -101,38 +101,6 @@ namespace MapGenerator
         public TileType this[int x, int y] {
             get => mapLayout[x, y];
         }
-
-        public struct Door
-        {
-            public Vector2Int Position { get; set; }
-            public bool LeftRight { get; set; }
-        }
-
-        /// <summary>
-        /// Returns all positions for doors and if they are leftRight aligned or upDown
-        /// </summary>
-        /// <returns>An array containing all door locations.</returns>
-        public Door[] GetDoorLocations() {
-            List<Door> doors = new List<Door>();
-
-            foreach (var room in Rooms) {
-                foreach (var exitDir in room.exitDirections) {
-                    if (this[room.Position.x + exitDir.Key.x, room.Position.y + exitDir.Key.y] != TileType.Floor)
-                        continue;
-
-                    if (exitDir.Value == Direction.Left || exitDir.Value == Direction.Right) {
-                        if (this[room.Position.x + exitDir.Key.x, room.Position.y + exitDir.Key.y - 1] != TileType.Floor && this[room.Position.x + exitDir.Key.x, room.Position.y + exitDir.Key.y - 2] != TileType.Floor)
-                            doors.Add(new Door { Position = room.Position + exitDir.Key, LeftRight = true });
-                    } else {
-                        if (this[room.Position.x + exitDir.Key.x - 1, room.Position.y + exitDir.Key.y] != TileType.Floor)
-                            doors.Add(new Door { Position = room.Position + exitDir.Key, LeftRight = false });
-                    }
-                }
-            }
-
-            return doors.ToArray();
-        }
-
 
         private void DeleteDeadEnds() {
             // if dead ends got created, delete them
@@ -218,7 +186,7 @@ namespace MapGenerator
             int rndRoom = Random.Range(1, roomLayouts.Length);
             Room room = new Room(0, 0, roomLayouts[rndRoom], roomGameObjects[rndRoom], roomTypes[rndRoom]);
 
-            foreach (var exitDir in room.exitDirections) {
+            foreach (var exitDir in room.ExitDirections) {
                 if (!mapLayout.InBounds(exit.Position.x - exitDir.Key.x, exit.Position.y - exitDir.Key.y))
                     break;
 
@@ -260,8 +228,8 @@ namespace MapGenerator
         private bool IsEmptyInArea(Room room, Direction direction) {
             switch (direction) {
                 case Direction.Up:
-                    for (int x = -4; x < room.Size.x + 4; x++) {
-                        for (int y = 0; y < room.Size.y + 4; y++) {
+                    for (int x = -4; x < room.Layout.XSize + 4; x++) {
+                        for (int y = 0; y < room.Layout.YSize + 4; y++) {
                             if (/*(room[x, y] != TileType.Wall && room[x, y] != TileType.CorridorAccess) &&*/ mapLayout[room.Position.x + x, room.Position.y + y] != TileType.Wall) {
                                 return false;
                             }
@@ -270,8 +238,8 @@ namespace MapGenerator
                     break;
 
                 case Direction.Down:
-                    for (int x = -4; x < room.Size.x + 4; x++) {
-                        for (int y = -4; y < room.Size.y; y++) {
+                    for (int x = -4; x < room.Layout.XSize + 4; x++) {
+                        for (int y = -4; y < room.Layout.YSize; y++) {
                             if (/*(room[x, y] != TileType.Wall && room[x, y] != TileType.CorridorAccess) &&*/ mapLayout[room.Position.x + x, room.Position.y + y] != TileType.Wall) {
                                 return false;
                             }
@@ -280,8 +248,8 @@ namespace MapGenerator
                     break;
 
                 case Direction.Left:
-                    for (int x = -4; x < room.Size.x; x++) {
-                        for (int y = -4; y < room.Size.y + 4; y++) {
+                    for (int x = -4; x < room.Layout.XSize; x++) {
+                        for (int y = -4; y < room.Layout.YSize + 4; y++) {
                             if (/*(room[x, y] != TileType.Wall && room[x, y] != TileType.CorridorAccess) &&*/ mapLayout[room.Position.x + x, room.Position.y + y] != TileType.Wall) {
                                 return false;
                             }
@@ -290,8 +258,8 @@ namespace MapGenerator
                     break;
 
                 case Direction.Right:
-                    for (int x = 0; x < room.Size.x + 4; x++) {
-                        for (int y = -4; y < room.Size.y + 4; y++) {
+                    for (int x = 0; x < room.Layout.XSize + 4; x++) {
+                        for (int y = -4; y < room.Layout.YSize + 4; y++) {
                             if (/*(room[x, y] != TileType.Wall && room[x, y] != TileType.CorridorAccess) &&*/ mapLayout[room.Position.x + x, room.Position.y + y] != TileType.Wall) {
                                 return false;
                             }
@@ -352,8 +320,8 @@ namespace MapGenerator
         private void AddRoom(Room room) {
             rooms.Add(room);
 
-            for (int x = 0; x < room.Size.x; x++) {
-                for (int y = 0; y < room.Size.y; y++) {
+            for (int x = 0; x < room.Layout.XSize; x++) {
+                for (int y = 0; y < room.Layout.YSize; y++) {
                     if (room[x, y] != TileType.Wall && room[x, y] != TileType.CorridorAccess) {
                         if (mapLayout.InBounds(room.Position.x + x, room.Position.y + y))
                             mapLayout[room.Position.x + x, room.Position.y + y] = room[x, y];
@@ -388,7 +356,7 @@ namespace MapGenerator
             exits.Clear();
 
             foreach (Room room in rooms) {
-                foreach (var exit in room.exitDirections) {
+                foreach (var exit in room.ExitDirections) {
                     exits.Add(new Exit {
                         Position = new Vector2Int(room.Position.x + exit.Key.x, room.Position.y + exit.Key.y),
                         Direction = exit.Value,
@@ -425,6 +393,34 @@ namespace MapGenerator
                     exits.Add(e);
                 }
             }
+        }
+
+        public DoorLocations[] GetDoorsOfRoom(int roomId) {
+            List<DoorLocations> doorLocations = new List<DoorLocations>();
+
+            foreach (var exitDir in rooms[roomId].ExitDirections) {
+                if (mapLayout[rooms[roomId].Position.x + exitDir.Key.x, rooms[roomId].Position.y + exitDir.Key.y] == TileType.Floor) {
+                    if (exitDir.Value == Direction.Left || exitDir.Value == Direction.Right) {
+                        if (mapLayout[rooms[roomId].Position.x + exitDir.Key.x, rooms[roomId].Position.y + exitDir.Key.y - 1] != TileType.Floor)
+                            doorLocations.Add(new DoorLocations { IsLeftRight = true, Position = rooms[roomId].Position + exitDir.Key });
+                    } else {
+                        if (mapLayout[rooms[roomId].Position.x + exitDir.Key.x - 1, rooms[roomId].Position.y + exitDir.Key.y] != TileType.Floor && mapLayout[rooms[roomId].Position.x + exitDir.Key.x - 2, rooms[roomId].Position.y + exitDir.Key.y] != TileType.Floor)
+                            doorLocations.Add(new DoorLocations { IsLeftRight = false, Position = rooms[roomId].Position + exitDir.Key });
+                    }
+                }
+            }
+
+            return doorLocations.ToArray();
+        }
+
+        public List<Vector2Int> GetWalkableTiles(int roomId) {
+            List<Vector2Int> walkableTiles = rooms[roomId].GetWalkableTiles();
+
+            for (int i = 0; i < walkableTiles.Count; i++) {
+                walkableTiles[i] += rooms[roomId].Position;
+            }
+
+            return walkableTiles;
         }
 
         #region Pathfinding
@@ -583,5 +579,11 @@ namespace MapGenerator
             }
         }
         #endregion
+    }
+
+    public struct DoorLocations
+    {
+        public Vector2Int Position { get; set; }
+        public bool IsLeftRight { get; set; }
     }
 }

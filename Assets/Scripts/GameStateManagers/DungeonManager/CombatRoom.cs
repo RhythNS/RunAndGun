@@ -8,11 +8,13 @@ public class CombatRoom : DungeonRoom
     public override bool EventOnRoomEntered => true;
     [SerializeField] private EnemyObject[] enemiesToSpawn;
 
+    public int ThreatLevel { get; set; }
+
     public override void OnAllPlayersEntered()
     {
         CloseDoors();
         SpawnEnemies();
-        GameManager.OnRoomEventStarted(bounds);
+        GameManager.OnRoomEventStarted(Border);
 
         AliveHealthDict.Instance.OnAllEnemiesDied += OnAllEnemiesDefeated;
         AliveHealthDict.Instance.OnAllPlayersDied += OnAllPlayersDied;
@@ -41,7 +43,7 @@ public class CombatRoom : DungeonRoom
     {
         for (int i = 0; i < enemiesToSpawn.Length; i++)
         {
-            GameObject enemyObject = Instantiate(enemiesToSpawn[i].Prefab, MathUtil.RandomVector2(bounds.min, bounds.max), Quaternion.identity);
+            GameObject enemyObject = Instantiate(enemiesToSpawn[i].Prefab, MathUtil.RandomVector2(Border.min, Border.max), Quaternion.identity);
             enemyObject.GetComponent<Enemy>().Set(enemiesToSpawn[i]);
             NetworkServer.Spawn(enemyObject);
         }

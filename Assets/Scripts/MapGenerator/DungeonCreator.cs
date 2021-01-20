@@ -1,5 +1,4 @@
-﻿// using Mirror;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -30,10 +29,10 @@ public class DungeonCreator : MonoBehaviour
     [SerializeField]
     private Transform objectContainer;
     [SerializeField]
-    private Transform roomBoundsContainer;
+    private Transform roomsContainer;
 
     [SerializeField]
-    private GameObject prefabRoomBounds;
+    private GameObject prefabDungeonRoom;
     [SerializeField]
     private GameObject prefabDoorLR;
     [SerializeField]
@@ -43,9 +42,7 @@ public class DungeonCreator : MonoBehaviour
     [SerializeField]
     private Vector2Int maxSize = Vector2Int.one;
 
-    public GameObject[] Doors { get; private set; } = new GameObject[0];
-    public GameObject[] Objects { get; private set; } = new GameObject[0];
-    public GameObject[] RoomBounds { get; private set; } = new GameObject[0];
+    public List<DungeonRoom> dungeonRooms = new List<DungeonRoom>();
 
     private void Awake()
     {
@@ -65,29 +62,26 @@ public class DungeonCreator : MonoBehaviour
     }
 
     public void CreateDungeon(int seed) {
-        if (this.Doors.Length > 0)
-            for (int i = this.Doors.Length - 1; i >= 0; i--)
-                Destroy(this.Doors[i]);
-        if (Objects.Length > 0)
-            for (int i = Objects.Length - 1; i >= 0; i--)
-                Destroy(Objects[i]);
-        if (RoomBounds.Length > 0)
-            for (int i = RoomBounds.Length - 1; i >= 0; i--)
-                Destroy(RoomBounds[i]);
+        if (roomsContainer.childCount > 0) {
+            for (int i = roomsContainer.childCount - 1; i >= 0; i--) {
+                Destroy(roomsContainer.GetChild(i).gameObject);
+            }
+        }
+
+        dungeonRooms = new List<DungeonRoom>();
 
         List<Fast2DArray<int>> roomLayouts = new List<Fast2DArray<int>>();
-        List<List<TiledImporter.PrefabContainer>> roomGameObjects = new List<List<TiledImporter.PrefabContainer>>();
+        List<List<TiledImporter.PrefabLocations>> roomGameObjects = new List<List<TiledImporter.PrefabLocations>>();
         List<RoomType> roomTypes = new List<RoomType>();
 
         int mapCount = 6;
-        List<TiledImporter.PrefabContainer> gos;
         for (int i = 1; i <= mapCount; i++) {
-            roomLayouts.Add(TiledImporter.Instance.GetReplacableMap("room" + i.ToString(), out PropertyDict properties, out gos));
-            
+            roomLayouts.Add(TiledImporter.Instance.GetReplacableMap("room" + i.ToString(), out PropertyDict properties, out List<TiledImporter.PrefabLocations> gos));
+
             // Example:
             if (properties.TryGetValue("roomType", out string value) == false)
                 throw new System.Exception("No room type in map: room" + i + "!");
-            
+
             if (int.TryParse(value, out int roomType) == false)
                 throw new System.Exception("Room type is not an integer in: room" + i + "!");
 
@@ -164,44 +158,84 @@ public class DungeonCreator : MonoBehaviour
         }
         tilemapCeiling.SetTiles(positions.ToArray(), tiles.ToArray());
 
-        // place doors
-        Dungeon.Door[] doors = dungeon.GetDoorLocations();
-        this.Doors = new GameObject[doors.Length];
-        for (int i = 0; i < doors.Length; i++) {
-            if (doors[i].LeftRight) {
-                GameObject d = Instantiate(prefabDoorLR, new Vector3(doors[i].Position.x + 0.5f, doors[i].Position.y + 0.5f, 0f), Quaternion.identity);
-                d.transform.parent = objectContainer;
-                this.Doors[i] = d;
-            } else {
-                GameObject d = Instantiate(prefabDoorUD, new Vector3(doors[i].Position.x + 0.5f, doors[i].Position.y + 0.5f, 0f), Quaternion.identity);
-                d.transform.parent = objectContainer;
-                this.Doors[i] = d;
-            }
-        }
-
-        // place GameObjects
-        List<GameObject> objs = new List<GameObject>();
-        foreach (var room in dungeon.Rooms) {
-            foreach (var prefabContainer in room.gameObjects) {
-                GameObject go = Instantiate(prefabContainer.Prefab);
-                go.transform.position = new Vector3(room.Position.x, room.Position.y, 0f) + prefabContainer.Position;
-                go.transform.parent = objectContainer;
-                objs.Add(go);
-            }
-        }
-        Objects = objs.ToArray();
-
-        // set bounds
-        List<GameObject> rbs = new List<GameObject>();
+        // set rooms
+        dungeonRooms = new List<DungeonRoom>();
         for (int i = 0; i < dungeon.Rooms.Length; i++) {
-            GameObject go = Instantiate(prefabRoomBounds);
-            RoomBounds rb = go.GetComponent<RoomBounds>();
-            rb.Bounds = new Rect(dungeon.Rooms[i].Position, dungeon.Rooms[i].Size);
-            go.transform.parent = roomBoundsContainer;
+            GameObject go = Instantiate(prefabDungeonRoom);
+            go.transform.parent = roomsContainer;
 
-            rbs.Add(go);
+            // set room type
+            DungeonRoom dr = null;
+            switch (dungeon.Rooms[i].Type) {
+                case RoomType.Start:
+                    dr = go.AddComponent<StartRoom>();
+                    break;
+
+                case RoomType.Combat:
+                    dr = go.AddComponent<CombatRoom>();
+                    ((CombatRoom)dr).ThreatLevel = dungeon.Rooms[i].TileCount;
+                    break;
+
+                case RoomType.Loot:
+                    dr = go.AddComponent<LootRoom>();
+                    break;
+
+                case RoomType.Shop:
+                    dr = go.AddComponent<ShopRoom>();
+                    break;
+
+                case RoomType.Boss:
+                    dr = go.AddComponent<BossRoom>();
+                    break;
+
+                default:
+                    break;
+            }
+
+            if (dr != null) {
+                // set room border
+                dr.Border = new Rect(dungeon.Rooms[i].Position.x, dungeon.Rooms[i].Position.y, dungeon.Rooms[i].Layout.XSize, dungeon.Rooms[i].Layout.YSize);
+                dr.walkableTiles = dungeon.GetWalkableTiles(i);
+
+                // set room objects
+                List<GameObject> objs = new List<GameObject>();
+                foreach (var prefabContainer in dungeon.Rooms[i].GameObjects) {
+                    GameObject obj = Instantiate(prefabContainer.Prefab);
+                    obj.transform.position = new Vector3(dungeon.Rooms[i].Position.x, dungeon.Rooms[i].Position.y, 0f) + prefabContainer.Position;
+                    obj.transform.parent = go.transform;
+                    objs.Add(obj);
+                }
+                dr.objects = objs;
+
+                // set room doors
+                DoorLocations[] doorLocs = dungeon.GetDoorsOfRoom(i);
+                foreach (var doorLoc in doorLocs) {
+                    if (doorLoc.IsLeftRight) {
+                        GameObject d = Instantiate(prefabDoorLR, new Vector3(doorLoc.Position.x + 0.5f, doorLoc.Position.y + 0.5f, 0f), Quaternion.identity);
+                        d.transform.parent = go.transform;
+
+                        DungeonDoor dd = d.AddComponent<DungeonDoor>();
+                        dd.IsLeftRight = true;
+                        if (i == 0)
+                            dd.IsLocked = false;
+                        dr.doors.Add(dd);
+                    } else {
+                        GameObject d = Instantiate(prefabDoorUD, new Vector3(doorLoc.Position.x + 0.5f, doorLoc.Position.y + 0.5f, 0f), Quaternion.identity);
+                        d.transform.parent = go.transform;
+
+                        DungeonDoor dd = d.AddComponent<DungeonDoor>();
+                        dd.IsLeftRight = false;
+                        if (i == 0)
+                            dd.IsLocked = false;
+                        dr.doors.Add(dd);
+                    }
+                }
+
+                dungeonRooms.Add(dr);
+            } else {
+                throw new System.Exception("No DungeonRoom designated...");
+            }
         }
-        RoomBounds = rbs.ToArray();
 
         if (Player.LocalPlayer) // check to allow for debugging if a localplayer is not scene
             Player.LocalPlayer.StateCommunicator.CmdLevelSetLoaded(true);

@@ -354,7 +354,7 @@ GameObject:
   - component: {fileID: 255864829474736525}
   - component: {fileID: 255864829474736513}
   m_Layer: 0
-  m_Name: Grid
+  m_Name: DungeonCreator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -410,14 +410,15 @@ MonoBehaviour:
   tileset: {fileID: 11400000, guid: be039a8f3df4ec447a356b438e22320a, type: 2}
   tilePlaceHolder: {fileID: 11400000, guid: 85042821781fa374fbb5e75b909a3590, type: 2}
   objectContainer: {fileID: 255864829148240097}
-  roomBoundsContainer: {fileID: 255864828248015542}
-  prefabRoomBounds: {fileID: 2001813469135215906, guid: a3c3ffd6627ea1549b52a9cab5870543,
+  roomsContainer: {fileID: 255864828248015542}
+  prefabDungeonRoom: {fileID: 2001813469135215906, guid: a3c3ffd6627ea1549b52a9cab5870543,
     type: 3}
   prefabDoorLR: {fileID: 4715358251021290963, guid: 8a7952c49d21107488e9f853c3f469c5,
     type: 3}
   prefabDoorUD: {fileID: 6098499219195057442, guid: b2515d84382afd24796391c735f7120d,
     type: 3}
   maxSize: {x: 256, y: 256}
+  dungeonRooms: []
 --- !u!114 &255864829474736513
 MonoBehaviour:
   m_ObjectHideFlags: 0

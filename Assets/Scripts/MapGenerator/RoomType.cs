@@ -9,7 +9,7 @@ namespace MapGenerator
     public enum RoomType
     {
         Start,
-        Enemy,
+        Combat,
         Loot,
         Shop,
         Boss
