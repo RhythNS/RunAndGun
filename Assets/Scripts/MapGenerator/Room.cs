@@ -9,11 +9,13 @@ namespace MapGenerator
         public Vector2Int Position { get; set; }
         public Vector2Int Size { get; set; }
 
+        public RoomType Type { get; private set; }
+
         public Fast2DArray<TileType> layout { get; private set; }
 
-        public Dictionary<Vector2Int, Direction> exitDirections;
+        public Dictionary<Vector2Int, Direction> exitDirections { get; private set; }
 
-        public List<TiledImporter.PrefabContainer> gameObjects;
+        public List<TiledImporter.PrefabContainer> gameObjects { get; private set; }
 
         /// <summary>
         /// Creates a new room at the given position (bottom left corner) with the given layout.
@@ -21,7 +23,7 @@ namespace MapGenerator
         /// <param name="posX">The x-Position of the room.</param>
         /// <param name="posY">The y-Position of the room.</param>
         /// <param name="layout">The layout of the room.</param>
-        public Room(int posX, int posY, Fast2DArray<TileType> layout, List<TiledImporter.PrefabContainer> gameObjects) {
+        public Room(int posX, int posY, Fast2DArray<TileType> layout, List<TiledImporter.PrefabContainer> gameObjects, RoomType roomType) {
             Position = new Vector2Int(posX, posY);
             Size = new Vector2Int(layout.XSize, layout.YSize);
             this.layout = layout;
@@ -29,6 +31,7 @@ namespace MapGenerator
             exitDirections = new Dictionary<Vector2Int, Direction>();
 
             this.gameObjects = gameObjects;
+            this.Type = roomType;
 
             List<Vector2Int> checkedPositions = new List<Vector2Int>();
             for (int x = 0; x < this.layout.XSize; x++) {

@@ -14,11 +14,9 @@ namespace MapGenerator
         public Vector2Int Size { get; private set; }
         private readonly Fast2DArray<TileType> mapLayout;
 
-        /// <summary>
-        /// layouts for the rooms
-        /// </summary>
         private readonly Fast2DArray<TileType>[] roomLayouts;
         private readonly List<TiledImporter.PrefabContainer>[] roomGameObjects;
+        private readonly RoomType[] roomTypes;
 
         private readonly List<Room> rooms = new List<Room>();
         private readonly List<Corridor> corridors = new List<Corridor>();
@@ -46,12 +44,13 @@ namespace MapGenerator
         /// <param name="roomGameObjects">The list of GameObjects that should be spawned.</param>
         /// <param name="minRooms">The minimum amount of rooms that should be generated.</param>
         /// <param name="seed">The seed to use when generating the Dungeon. int.MaxValue uses a random seed.</param>
-        public Dungeon(int sizeX, int sizeY, Fast2DArray<int>[] roomLayouts, List<TiledImporter.PrefabContainer>[] roomGameObjects, int minRooms, int seed) {
+        public Dungeon(int sizeX, int sizeY, Fast2DArray<int>[] roomLayouts, List<TiledImporter.PrefabContainer>[] roomGameObjects, RoomType[] roomTypes, int minRooms, int seed) {
             this.Size = new Vector2Int(sizeX, sizeY);
             mapLayout = new Fast2DArray<TileType>(Size.x, Size.y);
             this.roomLayouts = new Fast2DArray<TileType>[roomLayouts.Length];
             Fast2DArrayIntToTileType(ref roomLayouts, ref this.roomLayouts);
             this.roomGameObjects = roomGameObjects;
+            this.roomTypes = roomTypes;
 
             List<Exit> exits = new List<Exit>();
 
@@ -59,7 +58,7 @@ namespace MapGenerator
                 Random.InitState(seed);
 
             // generate starting room
-            Room startRoom = new Room((int)(Size.x / 2f - this.roomLayouts[0].XSize / 2f), (int)(Size.y / 2f - this.roomLayouts[0].YSize / 2f), this.roomLayouts[0], this.roomGameObjects[0]);
+            Room startRoom = new Room((int)(Size.x / 2f - this.roomLayouts[0].XSize / 2f), (int)(Size.y / 2f - this.roomLayouts[0].YSize / 2f), this.roomLayouts[0], this.roomGameObjects[0], this.roomTypes[0]);
             AddRoom(startRoom);
 
             for (int i = 0; i < ITERATIONS; i++) {
@@ -216,8 +215,8 @@ namespace MapGenerator
         }
 
         private void GenerateRoom(Exit exit) {
-            int rndRoom = Random.Range(0, roomLayouts.Length);
-            Room room = new Room(0, 0, roomLayouts[rndRoom], roomGameObjects[rndRoom]);
+            int rndRoom = Random.Range(1, roomLayouts.Length);
+            Room room = new Room(0, 0, roomLayouts[rndRoom], roomGameObjects[rndRoom], roomTypes[rndRoom]);
 
             foreach (var exitDir in room.exitDirections) {
                 if (!mapLayout.InBounds(exit.Position.x - exitDir.Key.x, exit.Position.y - exitDir.Key.y))

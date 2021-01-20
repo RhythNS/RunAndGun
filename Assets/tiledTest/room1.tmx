@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="12" height="13" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="7">
+ <properties>
+  <property name="roomType" type="int" value="0"/>
+ </properties>
  <tileset firstgid="1" source="tiledTiles.tsx"/>
  <layer id="1" name="Tile Layer 1" width="12" height="13">
   <data encoding="csv">
@@ -19,16 +22,19 @@
 </data>
  </layer>
  <objectgroup id="2" name="Object Layer 1">
-  <object id="1" name="lightSource1" type="lightSource" x="40.2236" y="40.3204">
+  <object id="1" name="lightSource1" type="lightSource" x="40" y="40">
    <point/>
   </object>
-  <object id="3" name="lightSource2" type="lightSource" x="151.776" y="39.8733">
+  <object id="3" name="lightSource2" type="lightSource" x="152" y="40">
    <point/>
   </object>
-  <object id="4" name="lightSource4" type="lightSource" x="152.35" y="167.97">
+  <object id="4" name="lightSource4" type="lightSource" x="152" y="168">
+   <properties>
+    <property name="roomType" type="int" value="0"/>
+   </properties>
    <point/>
   </object>
-  <object id="5" name="lightSource3" type="lightSource" x="39.8062" y="168.261">
+  <object id="5" name="lightSource3" type="lightSource" x="40" y="168">
    <point/>
   </object>
  </objectgroup>

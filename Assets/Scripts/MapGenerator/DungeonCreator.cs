@@ -29,7 +29,11 @@ public class DungeonCreator : MonoBehaviour
 
     [SerializeField]
     private Transform objectContainer;
+    [SerializeField]
+    private Transform roomBoundsContainer;
 
+    [SerializeField]
+    private GameObject prefabRoomBounds;
     [SerializeField]
     private GameObject prefabDoorLR;
     [SerializeField]
@@ -39,8 +43,9 @@ public class DungeonCreator : MonoBehaviour
     [SerializeField]
     private Vector2Int maxSize = Vector2Int.one;
 
-    private GameObject[] doors = new GameObject[0];
-    private GameObject[] objects = new GameObject[0];
+    public GameObject[] Doors { get; private set; } = new GameObject[0];
+    public GameObject[] Objects { get; private set; } = new GameObject[0];
+    public GameObject[] RoomBounds { get; private set; } = new GameObject[0];
 
     private void Awake()
     {
@@ -59,48 +64,24 @@ public class DungeonCreator : MonoBehaviour
             Instance = null;
     }
 
-    /*
-    [SyncVar]
-    private int seed;
-
-    private void Awake() {
-        if (isServer)
-            seed = Random.Range(int.MinValue, int.MaxValue);
-    }
-
-    public override void OnStartClient() {
-        base.OnStartClient();
-
-        CreateDungeon(seed);
-    }
-     */
-
-    private void OnValidate() {
-        // clamp maxSize
-        if (maxSize.x < 16) maxSize.x = 16;
-        if (maxSize.y < 16) maxSize.y = 16;
-        if (maxSize.x > 1024) maxSize.x = 1024;
-        if (maxSize.y > 1024) maxSize.y = 1024;
-    }
-
     public void CreateDungeon(int seed) {
-        if (this.doors.Length > 0) {
-            for (int i = this.doors.Length - 1; i >= 0; i--) {
-                Destroy(this.doors[i]);
-            }
-        }
-        if (objects.Length > 0) {
-            for (int i = objects.Length - 1; i >= 0; i--) {
-                Destroy(objects[i]);
-            }
-        }
+        if (this.Doors.Length > 0)
+            for (int i = this.Doors.Length - 1; i >= 0; i--)
+                Destroy(this.Doors[i]);
+        if (Objects.Length > 0)
+            for (int i = Objects.Length - 1; i >= 0; i--)
+                Destroy(Objects[i]);
+        if (RoomBounds.Length > 0)
+            for (int i = RoomBounds.Length - 1; i >= 0; i--)
+                Destroy(RoomBounds[i]);
 
         List<Fast2DArray<int>> roomLayouts = new List<Fast2DArray<int>>();
         List<List<TiledImporter.PrefabContainer>> roomGameObjects = new List<List<TiledImporter.PrefabContainer>>();
+        List<RoomType> roomTypes = new List<RoomType>();
 
         int mapCount = 6;
         List<TiledImporter.PrefabContainer> gos;
-        for (int i = 1; i < mapCount; i++) {
+        for (int i = 1; i <= mapCount; i++) {
             roomLayouts.Add(TiledImporter.Instance.GetReplacableMap("room" + i.ToString(), out PropertyDict properties, out gos));
             
             // Example:
@@ -109,13 +90,14 @@ public class DungeonCreator : MonoBehaviour
             
             if (int.TryParse(value, out int roomType) == false)
                 throw new System.Exception("Room type is not an integer in: room" + i + "!");
-            
+
             // do something with the roomType here
+            roomTypes.Add((RoomType)roomType);
 
             roomGameObjects.Add(gos);
         }
 
-        dungeon = new Dungeon(maxSize.x, maxSize.y, roomLayouts.ToArray(), roomGameObjects.ToArray(), 10, seed);
+        dungeon = new Dungeon(maxSize.x, maxSize.y, roomLayouts.ToArray(), roomGameObjects.ToArray(), roomTypes.ToArray(), 10, seed);
 
         // clear tilemaps
         tilemapFloor.ClearAllTiles();
@@ -184,16 +166,16 @@ public class DungeonCreator : MonoBehaviour
 
         // place doors
         Dungeon.Door[] doors = dungeon.GetDoorLocations();
-        this.doors = new GameObject[doors.Length];
+        this.Doors = new GameObject[doors.Length];
         for (int i = 0; i < doors.Length; i++) {
             if (doors[i].LeftRight) {
                 GameObject d = Instantiate(prefabDoorLR, new Vector3(doors[i].Position.x + 0.5f, doors[i].Position.y + 0.5f, 0f), Quaternion.identity);
                 d.transform.parent = objectContainer;
-                this.doors[i] = d;
+                this.Doors[i] = d;
             } else {
                 GameObject d = Instantiate(prefabDoorUD, new Vector3(doors[i].Position.x + 0.5f, doors[i].Position.y + 0.5f, 0f), Quaternion.identity);
                 d.transform.parent = objectContainer;
-                this.doors[i] = d;
+                this.Doors[i] = d;
             }
         }
 
@@ -207,7 +189,19 @@ public class DungeonCreator : MonoBehaviour
                 objs.Add(go);
             }
         }
-        objects = objs.ToArray();
+        Objects = objs.ToArray();
+
+        // set bounds
+        List<GameObject> rbs = new List<GameObject>();
+        for (int i = 0; i < dungeon.Rooms.Length; i++) {
+            GameObject go = Instantiate(prefabRoomBounds);
+            RoomBounds rb = go.GetComponent<RoomBounds>();
+            rb.Bounds = new Rect(dungeon.Rooms[i].Position, dungeon.Rooms[i].Size);
+            go.transform.parent = roomBoundsContainer;
+
+            rbs.Add(go);
+        }
+        RoomBounds = rbs.ToArray();
 
         if (Player.LocalPlayer) // check to allow for debugging if a localplayer is not scene
             Player.LocalPlayer.StateCommunicator.CmdLevelSetLoaded(true);

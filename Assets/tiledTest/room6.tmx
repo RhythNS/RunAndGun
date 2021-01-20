@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="26" height="19" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="5">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="26" height="19" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="9">
+ <properties>
+  <property name="roomType" type="int" value="1"/>
+ </properties>
  <tileset firstgid="1" source="tiledTiles.tsx"/>
  <layer id="1" name="Tile Layer 1" width="26" height="19">
   <data encoding="csv">
@@ -25,16 +28,31 @@
 </data>
  </layer>
  <objectgroup id="2" name="Object Layer 1">
-  <object id="1" name="lightSource1" type="lightSource" x="151.563" y="24.3508">
+  <object id="1" name="lightSource1" type="lightSource" x="152" y="24">
    <point/>
   </object>
-  <object id="2" name="lightSource1" type="lightSource" x="263.66" y="23.0913">
+  <object id="2" name="lightSource1" type="lightSource" x="264" y="24">
    <point/>
   </object>
-  <object id="3" name="lightSource1" type="lightSource" x="151.563" y="280.454">
+  <object id="3" name="lightSource1" type="lightSource" x="152" y="280">
    <point/>
   </object>
-  <object id="4" name="lightSource1" type="lightSource" x="264.5" y="279.195">
+  <object id="4" name="lightSource1" type="lightSource" x="264" y="280">
+   <properties>
+    <property name="roomType" type="int" value="1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="5" name="lightSource1" type="lightSource" x="96" y="104">
+   <point/>
+  </object>
+  <object id="6" name="lightSource1" type="lightSource" x="96" y="200">
+   <point/>
+  </object>
+  <object id="7" name="lightSource1" type="lightSource" x="320" y="104">
+   <point/>
+  </object>
+  <object id="8" name="lightSource1" type="lightSource" x="319.919" y="200.264">
    <point/>
   </object>
  </objectgroup>
