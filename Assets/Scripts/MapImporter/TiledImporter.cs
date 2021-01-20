@@ -181,9 +181,15 @@ public class TiledImporter : MonoBehaviour
         LoadAllObjects(map, x, y, loadedGameobjects);
     }
 
+    /// <summary>
+    /// Container for loaded TiledObjects.
+    /// </summary>
     public struct PrefabContainer
     {
         public GameObject Prefab { get; set; }
+        /// <summary>
+        /// Position in local space
+        /// </summary>
         public Vector3 Position { get; set; }
     }
 
@@ -194,15 +200,15 @@ public class TiledImporter : MonoBehaviour
     /// return array are the same. To put it simply, just use one tileset and one layer for this method.
     /// </summary>
     /// <param name="mapName">The name of the map to get the gid values from.</param>
-    /// <param name="atX">The x position of where the map in the Tilemap will be placed.</param>
-    /// <param name="atY">The y position of where the map in the Tilemap will be placed.</param>
-    /// <param name="loadedGameobjects">A list of all loaded GameObjects.</param>
+    /// <param name="prefabs">A list of all prefabs and their local position.</param>
     /// <returns>The gid values of the map.</returns>
-    public Fast2DArray<int> GetReplacableMap(string mapName, int atX, int atY, out List<PrefabContainer> prefabs)
+    public Fast2DArray<int> GetReplacableMap(string mapName, out PropertyDict properties, out List<PrefabContainer> prefabs)
     {
         prefabs = new List<PrefabContainer>();
 
         TmxMap map = LoadMap(mapName);
+        properties = map.Properties;
+
         Fast2DArray<int> retArr = new Fast2DArray<int>(map.Width, map.Height);
 
         if (map.TileLayers.Count == 0)

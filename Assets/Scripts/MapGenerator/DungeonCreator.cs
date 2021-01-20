@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 using MapGenerator;
+using TiledSharp;
 
 public class DungeonCreator : MonoBehaviour
 {
@@ -100,7 +101,17 @@ public class DungeonCreator : MonoBehaviour
         int mapCount = 6;
         List<TiledImporter.PrefabContainer> gos;
         for (int i = 1; i < mapCount; i++) {
-            roomLayouts.Add(TiledImporter.Instance.GetReplacableMap("room" + i.ToString(), 0, 0, out gos));
+            roomLayouts.Add(TiledImporter.Instance.GetReplacableMap("room" + i.ToString(), out PropertyDict properties, out gos));
+            
+            // Example:
+            if (properties.TryGetValue("roomType", out string value) == false)
+                throw new System.Exception("No room type in map: room" + i + "!");
+            
+            if (int.TryParse(value, out int roomType) == false)
+                throw new System.Exception("Room type is not an integer in: room" + i + "!");
+            
+            // do something with the roomType here
+
             roomGameObjects.Add(gos);
         }
 

@@ -12,7 +12,7 @@ public class TiledTester : MonoBehaviour
     {
         TiledImporter.Instance.ReplaceSection(tilemap, toLoad, x, y, out _);
 
-        var v = TiledImporter.Instance.GetReplacableMap("room1", x, y, out _);
+        var v = TiledImporter.Instance.GetReplacableMap("room1", out _, out _);
     }
 
 }
