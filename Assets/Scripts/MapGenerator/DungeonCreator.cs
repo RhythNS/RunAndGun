@@ -26,30 +26,20 @@ public class DungeonCreator : MonoBehaviour
     [SerializeField]
     private Tile tilePlaceHolder;
 
+    [SerializeField]
+    private Transform objectContainer;
+
+    [SerializeField]
+    private GameObject prefabDoorLR;
+    [SerializeField]
+    private GameObject prefabDoorUD;
+
     [Header("Settings")]
     [SerializeField]
     private Vector2Int maxSize = Vector2Int.one;
 
-    [SerializeField]
-    [Range(3, 24)]
-    private int minRoomSize = 3;
-    [SerializeField]
-    [Range(3, 24)]
-    private int maxRoomSize = 9;
-
-    [SerializeField]
-    [Range(3, 24)]
-    private int minCorridorLength = 3;
-    [SerializeField]
-    [Range(3, 24)]
-    private int maxCorridorLength = 7;
-
-    [SerializeField]
-    [Range(1, 100)]
-    private int maxStructures = 50;
-    [SerializeField]
-    [Range(0f, 1f)]
-    private float roomChance = 0.4f;
+    private GameObject[] doors = new GameObject[0];
+    private GameObject[] objects = new GameObject[0];
 
     private void Awake()
     {
@@ -90,26 +80,31 @@ public class DungeonCreator : MonoBehaviour
         if (maxSize.y < 16) maxSize.y = 16;
         if (maxSize.x > 1024) maxSize.x = 1024;
         if (maxSize.y > 1024) maxSize.y = 1024;
-
-        // make sure min is below max
-        if (minRoomSize > maxRoomSize)
-            minRoomSize = maxRoomSize;
-        if (minCorridorLength > maxCorridorLength)
-            minCorridorLength = maxCorridorLength;
     }
 
     public void CreateDungeon(int seed) {
-        List<Fast2DArray<int>> roomLayouts = new List<Fast2DArray<int>>();
-        List<List<GameObject>> roomGameObjects = new List<List<GameObject>>();
+        if (this.doors.Length > 0) {
+            for (int i = this.doors.Length - 1; i >= 0; i--) {
+                Destroy(this.doors[i]);
+            }
+        }
+        if (objects.Length > 0) {
+            for (int i = objects.Length - 1; i >= 0; i--) {
+                Destroy(objects[i]);
+            }
+        }
 
-        int mapCount = 4;
-        List<GameObject> gos;
+        List<Fast2DArray<int>> roomLayouts = new List<Fast2DArray<int>>();
+        List<List<TiledImporter.PrefabContainer>> roomGameObjects = new List<List<TiledImporter.PrefabContainer>>();
+
+        int mapCount = 6;
+        List<TiledImporter.PrefabContainer> gos;
         for (int i = 1; i < mapCount; i++) {
             roomLayouts.Add(TiledImporter.Instance.GetReplacableMap("room" + i.ToString(), 0, 0, out gos));
             roomGameObjects.Add(gos);
         }
 
-        dungeon = new Dungeon(maxSize.x, maxSize.y, roomLayouts.ToArray(), roomGameObjects.ToArray(), 50, seed);
+        dungeon = new Dungeon(maxSize.x, maxSize.y, roomLayouts.ToArray(), roomGameObjects.ToArray(), 10, seed);
 
         // clear tilemaps
         tilemapFloor.ClearAllTiles();
@@ -176,12 +171,32 @@ public class DungeonCreator : MonoBehaviour
         }
         tilemapCeiling.SetTiles(positions.ToArray(), tiles.ToArray());
 
-        // place GameObjects
-        foreach (var room in dungeon.Rooms) {
-            foreach (var go in room.gameObjects) {
-
+        // place doors
+        Dungeon.Door[] doors = dungeon.GetDoorLocations();
+        this.doors = new GameObject[doors.Length];
+        for (int i = 0; i < doors.Length; i++) {
+            if (doors[i].LeftRight) {
+                GameObject d = Instantiate(prefabDoorLR, new Vector3(doors[i].Position.x + 0.5f, doors[i].Position.y + 0.5f, 0f), Quaternion.identity);
+                d.transform.parent = objectContainer;
+                this.doors[i] = d;
+            } else {
+                GameObject d = Instantiate(prefabDoorUD, new Vector3(doors[i].Position.x + 0.5f, doors[i].Position.y + 0.5f, 0f), Quaternion.identity);
+                d.transform.parent = objectContainer;
+                this.doors[i] = d;
             }
         }
+
+        // place GameObjects
+        List<GameObject> objs = new List<GameObject>();
+        foreach (var room in dungeon.Rooms) {
+            foreach (var prefabContainer in room.gameObjects) {
+                GameObject go = Instantiate(prefabContainer.Prefab);
+                go.transform.position = new Vector3(room.Position.x, room.Position.y, 0f) + prefabContainer.Position;
+                go.transform.parent = objectContainer;
+                objs.Add(go);
+            }
+        }
+        objects = objs.ToArray();
 
         if (Player.LocalPlayer) // check to allow for debugging if a localplayer is not scene
             Player.LocalPlayer.StateCommunicator.CmdLevelSetLoaded(true);

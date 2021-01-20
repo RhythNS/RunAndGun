@@ -7,19 +7,21 @@ namespace MapGenerator
     public class Dungeon
     {
         private const int ITERATIONS = 128;
-        private const float ROOM_CHANCE = 0.4f;
 
+        /// <summary>
+        /// The maximum size of the Dungeon.
+        /// </summary>
         public Vector2Int Size { get; private set; }
-        private Fast2DArray<TileType> mapLayout;
+        private readonly Fast2DArray<TileType> mapLayout;
 
         /// <summary>
         /// layouts for the rooms
         /// </summary>
-        private Fast2DArray<TileType>[] roomLayouts;
-        private List<GameObject>[] roomGameObjects;
+        private readonly Fast2DArray<TileType>[] roomLayouts;
+        private readonly List<TiledImporter.PrefabContainer>[] roomGameObjects;
 
-        private List<Room> rooms = new List<Room>();
-        private List<Corridor> corridors = new List<Corridor>();
+        private readonly List<Room> rooms = new List<Room>();
+        private readonly List<Corridor> corridors = new List<Corridor>();
 
         /// <summary>
         /// Returns an array with all the generated rooms.
@@ -35,7 +37,16 @@ namespace MapGenerator
             get => corridors.ToArray();
         }
 
-        public Dungeon(int sizeX, int sizeY, Fast2DArray<int>[] roomLayouts, List<GameObject>[] roomGameObjects, int maxStructures, int seed) {
+        /// <summary>
+        /// Creates and generates a new Dungeon.
+        /// </summary>
+        /// <param name="sizeX">The maximum size of the Dungeon on the x-axis.</param>
+        /// <param name="sizeY">The maximum size of the Dungeon on the y-axis.</param>
+        /// <param name="roomLayouts">The layouts for the rooms the Dungeon should contain.</param>
+        /// <param name="roomGameObjects">The list of GameObjects that should be spawned.</param>
+        /// <param name="minRooms">The minimum amount of rooms that should be generated.</param>
+        /// <param name="seed">The seed to use when generating the Dungeon. int.MaxValue uses a random seed.</param>
+        public Dungeon(int sizeX, int sizeY, Fast2DArray<int>[] roomLayouts, List<TiledImporter.PrefabContainer>[] roomGameObjects, int minRooms, int seed) {
             this.Size = new Vector2Int(sizeX, sizeY);
             mapLayout = new Fast2DArray<TileType>(Size.x, Size.y);
             this.roomLayouts = new Fast2DArray<TileType>[roomLayouts.Length];
@@ -67,7 +78,7 @@ namespace MapGenerator
             }
 
             int iters = 0;
-            while (rooms.Count < 10 && iters < ITERATIONS) {
+            while (rooms.Count < minRooms && iters < ITERATIONS) {
                 foreach (var exit in exits) {
                     if (exit.IntoRoom) {
                         GenerateRoom(exit);
@@ -82,14 +93,50 @@ namespace MapGenerator
             }
         }
 
+        /// <summary>
+        /// Gets the TileType at the specified location.
+        /// </summary>
+        /// <param name="x">The x-position of the tile.</param>
+        /// <param name="y">The y-position of the tile.</param>
+        /// <returns>Returns the TileType.</returns>
         public TileType this[int x, int y] {
             get => mapLayout[x, y];
         }
 
+        public struct Door
+        {
+            public Vector2Int Position { get; set; }
+            public bool LeftRight { get; set; }
+        }
+
+        /// <summary>
+        /// Returns all positions for doors and if they are leftRight aligned or upDown
+        /// </summary>
+        /// <returns>An array containing all door locations.</returns>
+        public Door[] GetDoorLocations() {
+            List<Door> doors = new List<Door>();
+
+            foreach (var room in Rooms) {
+                foreach (var exitDir in room.exitDirections) {
+                    if (this[room.Position.x + exitDir.Key.x, room.Position.y + exitDir.Key.y] != TileType.Floor)
+                        continue;
+
+                    if (exitDir.Value == Direction.Left || exitDir.Value == Direction.Right) {
+                        if (this[room.Position.x + exitDir.Key.x, room.Position.y + exitDir.Key.y - 1] != TileType.Floor && this[room.Position.x + exitDir.Key.x, room.Position.y + exitDir.Key.y - 2] != TileType.Floor)
+                            doors.Add(new Door { Position = room.Position + exitDir.Key, LeftRight = true });
+                    } else {
+                        if (this[room.Position.x + exitDir.Key.x - 1, room.Position.y + exitDir.Key.y] != TileType.Floor)
+                            doors.Add(new Door { Position = room.Position + exitDir.Key, LeftRight = false });
+                    }
+                }
+            }
+
+            return doors.ToArray();
+        }
+
 
         private void DeleteDeadEnds() {
-            // if dead ends got created, try to create more rooms
-            // or delete them
+            // if dead ends got created, delete them
             foreach (var corridor in corridors) {
                 if (corridor.Size.x == 2) {
                     // up down
@@ -173,11 +220,15 @@ namespace MapGenerator
             Room room = new Room(0, 0, roomLayouts[rndRoom], roomGameObjects[rndRoom]);
 
             foreach (var exitDir in room.exitDirections) {
+                if (!mapLayout.InBounds(exit.Position.x - exitDir.Key.x, exit.Position.y - exitDir.Key.y))
+                    break;
+
                 if ((exitDir.Value == Direction.Up && exit.Direction == Direction.Down)
                     || (exitDir.Value == Direction.Down && exit.Direction == Direction.Up)
                     || (exitDir.Value == Direction.Left && exit.Direction == Direction.Right)
                     || (exitDir.Value == Direction.Right && exit.Direction == Direction.Left)
                     ) {
+
                     room.Position = exit.Position - exitDir.Key;
 
                     if (IsEmptyInArea(room, exit.Direction)) {
@@ -196,9 +247,6 @@ namespace MapGenerator
                     break;
                 }
             }
-
-
-
         }
 
         private void GenerateCorridor(Exit exit) {
@@ -213,9 +261,9 @@ namespace MapGenerator
         private bool IsEmptyInArea(Room room, Direction direction) {
             switch (direction) {
                 case Direction.Up:
-                    for (int x = -2; x < room.Size.x + 2; x++) {
-                        for (int y = 0; y < room.Size.y + 2; y++) {
-                            if ((room[x, y] != TileType.Wall && room[x, y] != TileType.CorridorAccess) && mapLayout[room.Position.x + x, room.Position.y + y] != TileType.Wall) {
+                    for (int x = -4; x < room.Size.x + 4; x++) {
+                        for (int y = 0; y < room.Size.y + 4; y++) {
+                            if (/*(room[x, y] != TileType.Wall && room[x, y] != TileType.CorridorAccess) &&*/ mapLayout[room.Position.x + x, room.Position.y + y] != TileType.Wall) {
                                 return false;
                             }
                         }
@@ -223,9 +271,9 @@ namespace MapGenerator
                     break;
 
                 case Direction.Down:
-                    for (int x = -2; x < room.Size.x + 2; x++) {
-                        for (int y = -2; y < room.Size.y; y++) {
-                            if ((room[x, y] != TileType.Wall && room[x, y] != TileType.CorridorAccess) && mapLayout[room.Position.x + x, room.Position.y + y] != TileType.Wall) {
+                    for (int x = -4; x < room.Size.x + 4; x++) {
+                        for (int y = -4; y < room.Size.y; y++) {
+                            if (/*(room[x, y] != TileType.Wall && room[x, y] != TileType.CorridorAccess) &&*/ mapLayout[room.Position.x + x, room.Position.y + y] != TileType.Wall) {
                                 return false;
                             }
                         }
@@ -233,9 +281,9 @@ namespace MapGenerator
                     break;
 
                 case Direction.Left:
-                    for (int x = -2; x < room.Size.x; x++) {
-                        for (int y = -2; y < room.Size.y + 2; y++) {
-                            if ((room[x, y] != TileType.Wall && room[x, y] != TileType.CorridorAccess) && mapLayout[room.Position.x + x, room.Position.y + y] != TileType.Wall) {
+                    for (int x = -4; x < room.Size.x; x++) {
+                        for (int y = -4; y < room.Size.y + 4; y++) {
+                            if (/*(room[x, y] != TileType.Wall && room[x, y] != TileType.CorridorAccess) &&*/ mapLayout[room.Position.x + x, room.Position.y + y] != TileType.Wall) {
                                 return false;
                             }
                         }
@@ -243,9 +291,9 @@ namespace MapGenerator
                     break;
 
                 case Direction.Right:
-                    for (int x = 0; x < room.Size.x + 2; x++) {
-                        for (int y = -2; y < room.Size.y + 2; y++) {
-                            if ((room[x, y] != TileType.Wall && room[x, y] != TileType.CorridorAccess) && mapLayout[room.Position.x + x, room.Position.y + y] != TileType.Wall) {
+                    for (int x = 0; x < room.Size.x + 4; x++) {
+                        for (int y = -4; y < room.Size.y + 4; y++) {
+                            if (/*(room[x, y] != TileType.Wall && room[x, y] != TileType.CorridorAccess) &&*/ mapLayout[room.Position.x + x, room.Position.y + y] != TileType.Wall) {
                                 return false;
                             }
                         }
@@ -380,17 +428,13 @@ namespace MapGenerator
             }
         }
 
-
-
-
-
-
+        #region Pathfinding
         /// <summary>
         /// Returns the TileType of a given tile
         /// </summary>
         /// <param name="x">x-value of the tile to check</param>
         /// <param name="y">y-value of the tile to check</param>
-        /// <returns>Returns the TileType of the given tile</returns>
+        /// <returns>The TileType of the given tile</returns>
         private TileType GetTileType(int x, int y) {
             if (x < 0 || y < 0 || x >= mapLayout.XSize || y >= mapLayout.YSize)
                 return TileType.Wall;
@@ -399,12 +443,12 @@ namespace MapGenerator
         }
 
         /// <summary>
-        /// Returns the positions of the neighbours that are walls of a given tile
+        /// Returns the positions of the neighbours that are walkable tiles of a given tile.
         /// </summary>
         /// <param name="x">x-value of the tile to check</param>
         /// <param name="y">y-value of the tile to check</param>
-        /// <returns>Returns the positions of the neighbours that are walls of a given tile</returns>
-        public Vector2Int[] GetNeighbours(int x, int y) {
+        /// <returns>The positions of the neighbours that are walkable tiles of a given tile.</returns>
+        private Vector2Int[] GetNeighbours(int x, int y) {
             List<Vector2Int> neighbours = new List<Vector2Int>();
 
             if (GetTileType(x - 1, y) == TileType.Floor) // left
@@ -433,7 +477,7 @@ namespace MapGenerator
         /// </summary>
         /// <param name="tile"></param>
         /// <returns>Returns the pathfinding cost of a given tile</returns>
-        public float GetCost(Vector2Int tile) {
+        private float GetCost(/*Vector2Int tile*/) {
             return 5f;
             // calculate costs here
             //return Map[tile.x, tile.y].specialType == SpecialTypes.None || Map[tile.x, tile.y].specialType == SpecialTypes.FloorToWater ? 5f : 20f;
@@ -463,7 +507,7 @@ namespace MapGenerator
                 if (current.Equals(destination)) break;
 
                 foreach (Vector2Int neighbour in GetNeighbours(current.x, current.y)) {
-                    float newCost = costSoFar[current] + GetCost(neighbour);
+                    float newCost = costSoFar[current] + GetCost(/*neighbour*/);
 
                     if (!costSoFar.ContainsKey(neighbour) || newCost < costSoFar[neighbour]) {
                         if (costSoFar.ContainsKey(neighbour)) {
@@ -500,45 +544,45 @@ namespace MapGenerator
             return path.ToArray();
         }
 
-    }
+        /// <summary>
+        /// PriorityQueue for use within the A* path finding
+        /// https://gist.github.com/keithcollins/307c3335308fea62db2731265ab44c06
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        private class PriorityQueue<T>
+        {
+            // From Red Blob: I'm using an unsorted array for this example, but ideally this
+            // would be a binary heap. Find a binary heap class:
+            // * https://bitbucket.org/BlueRaja/high-speed-priority-queue-for-c/wiki/Home
+            // * http://visualstudiomagazine.com/articles/2012/11/01/priority-queues-with-c.aspx
+            // * http://xfleury.github.io/graphsearch.html
+            // * http://stackoverflow.com/questions/102398/priority-queue-in-net
 
-    /// <summary>
-    /// PriorityQueue for use within the A* path finding
-    /// https://gist.github.com/keithcollins/307c3335308fea62db2731265ab44c06
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    public class PriorityQueue<T>
-    {
-        // From Red Blob: I'm using an unsorted array for this example, but ideally this
-        // would be a binary heap. Find a binary heap class:
-        // * https://bitbucket.org/BlueRaja/high-speed-priority-queue-for-c/wiki/Home
-        // * http://visualstudiomagazine.com/articles/2012/11/01/priority-queues-with-c.aspx
-        // * http://xfleury.github.io/graphsearch.html
-        // * http://stackoverflow.com/questions/102398/priority-queue-in-net
+            private readonly List<KeyValuePair<T, float>> elements = new List<KeyValuePair<T, float>>();
 
-        private List<KeyValuePair<T, float>> elements = new List<KeyValuePair<T, float>>();
-
-        public int Count {
-            get { return elements.Count; }
-        }
-
-        public void Enqueue(T item, float priority) {
-            elements.Add(new KeyValuePair<T, float>(item, priority));
-        }
-
-        // Returns the Location that has the lowest priority
-        public T Dequeue() {
-            int bestIndex = 0;
-
-            for (int i = 0; i < elements.Count; i++) {
-                if (elements[i].Value < elements[bestIndex].Value) {
-                    bestIndex = i;
-                }
+            public int Count {
+                get { return elements.Count; }
             }
 
-            T bestItem = elements[bestIndex].Key;
-            elements.RemoveAt(bestIndex);
-            return bestItem;
+            public void Enqueue(T item, float priority) {
+                elements.Add(new KeyValuePair<T, float>(item, priority));
+            }
+
+            // Returns the Location that has the lowest priority
+            public T Dequeue() {
+                int bestIndex = 0;
+
+                for (int i = 0; i < elements.Count; i++) {
+                    if (elements[i].Value < elements[bestIndex].Value) {
+                        bestIndex = i;
+                    }
+                }
+
+                T bestItem = elements[bestIndex].Key;
+                elements.RemoveAt(bestIndex);
+                return bestItem;
+            }
         }
+        #endregion
     }
 }

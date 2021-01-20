@@ -181,6 +181,12 @@ public class TiledImporter : MonoBehaviour
         LoadAllObjects(map, x, y, loadedGameobjects);
     }
 
+    public struct PrefabContainer
+    {
+        public GameObject Prefab { get; set; }
+        public Vector3 Position { get; set; }
+    }
+
     /// <summary>
     /// Gets the gid values of the tiles in an array. The gid are not the acctual gid values of the map, but the gid
     /// values of the tileset. Assume tileset a has 10 tiles and tileset b has 10 tiles. If at position 1 there is
@@ -192,9 +198,9 @@ public class TiledImporter : MonoBehaviour
     /// <param name="atY">The y position of where the map in the Tilemap will be placed.</param>
     /// <param name="loadedGameobjects">A list of all loaded GameObjects.</param>
     /// <returns>The gid values of the map.</returns>
-    public Fast2DArray<int> GetReplacableMap(string mapName, int atX, int atY, out List<GameObject> loadedGameobjects)
+    public Fast2DArray<int> GetReplacableMap(string mapName, int atX, int atY, out List<PrefabContainer> prefabs)
     {
-        loadedGameobjects = new List<GameObject>();
+        prefabs = new List<PrefabContainer>();
 
         TmxMap map = LoadMap(mapName);
         Fast2DArray<int> retArr = new Fast2DArray<int>(map.Width, map.Height);
@@ -213,7 +219,24 @@ public class TiledImporter : MonoBehaviour
             retArr.Set(gid, layerTile.X, map.Height - layerTile.Y - 1);
         }
 
-        LoadAllObjects(map, atX, atY, loadedGameobjects);
+        //LoadAllObjects(map, atX, atY, loadedGameobjects);
+
+        // Go through each objectlayer and spawn their objects
+        for (int i = 0; i < map.ObjectGroups.Count; i++) {
+            for (int j = 0; j < map.ObjectGroups[i].Objects.Count; j++) {
+                // Try to get the prefab
+                if (TiledDict.Instance.TryGetObject(map.ObjectGroups[i].Objects[j].Type, out GameObject obj) == false)
+                    continue;
+
+                // Instantiate and position the object
+                Vector3 pos;
+                pos.x = ((float)map.ObjectGroups[i].Objects[j].X / map.TileWidth);
+                pos.y = map.Height - ((float)map.ObjectGroups[i].Objects[j].Y / map.TileHeight);
+                pos.z = 0f;
+
+                prefabs.Add(new PrefabContainer { Prefab = obj, Position = pos });
+            }
+        }
 
         return retArr;
     }

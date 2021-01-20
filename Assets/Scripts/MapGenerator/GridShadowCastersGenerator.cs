@@ -51,8 +51,8 @@ public class GridShadowCastersGenerator : MonoBehaviour
             topRight.y = Mathf.Max(topRight.y, Mathf.Ceil(col.bounds.max.y));
         }
 
-        Debug.Log("Bounds: downLeft = (" + bottomLeft.x + ", " + bottomLeft.y + ")");
-        Debug.Log("Bounds: topRight = (" + topRight.x + ", " + topRight.y + ")");
+        //Debug.Log("Bounds: downLeft = (" + bottomLeft.x + ", " + bottomLeft.y + ")");
+        //Debug.Log("Bounds: topRight = (" + topRight.x + ", " + topRight.y + ")");
 
         /* check the area for collisions */
 
@@ -74,7 +74,7 @@ public class GridShadowCastersGenerator : MonoBehaviour
 
         if (removePreviouslyGenerated) {
             foreach (Transform shadowCaster in shadowCastersContainer) {
-                DestroyImmediate(shadowCaster.gameObject);
+                Destroy(shadowCaster.gameObject);
             }
         }
 

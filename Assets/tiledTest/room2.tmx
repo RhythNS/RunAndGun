@@ -22,28 +22,28 @@
 </data>
  </layer>
  <objectgroup id="2" name="Object Layer 1">
-  <object id="1" name="lightSource1" type="LightSource" x="88" y="40">
+  <object id="1" name="lightSource1" type="lightSource" x="88" y="40">
    <point/>
   </object>
-  <object id="5" name="lightSource1" type="LightSource" x="200" y="40">
+  <object id="5" name="lightSource1" type="lightSource" x="200" y="40">
    <point/>
   </object>
-  <object id="6" name="lightSource1" type="LightSource" x="248" y="72">
+  <object id="6" name="lightSource1" type="lightSource" x="248" y="72">
    <point/>
   </object>
-  <object id="7" name="lightSource1" type="LightSource" x="40" y="72">
+  <object id="7" name="lightSource1" type="lightSource" x="40" y="72">
    <point/>
   </object>
-  <object id="8" name="lightSource1" type="LightSource" x="40" y="168">
+  <object id="8" name="lightSource1" type="lightSource" x="40" y="168">
    <point/>
   </object>
-  <object id="9" name="lightSource1" type="LightSource" x="248" y="168">
+  <object id="9" name="lightSource1" type="lightSource" x="248" y="168">
    <point/>
   </object>
-  <object id="10" name="lightSource1" type="LightSource" x="88" y="216">
+  <object id="10" name="lightSource1" type="lightSource" x="88" y="216">
    <point/>
   </object>
-  <object id="11" name="lightSource1" type="LightSource" x="200" y="216">
+  <object id="11" name="lightSource1" type="lightSource" x="200" y="216">
    <point/>
   </object>
  </objectgroup>

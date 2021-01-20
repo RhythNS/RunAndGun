@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="2" nextobjectid="1">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="5">
  <tileset firstgid="1" source="tiledTiles.tsx"/>
  <layer id="1" name="Tile Layer 1" width="20" height="20">
   <data encoding="csv">
@@ -14,7 +14,7 @@
 3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,
 3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,
 3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,
-3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,
+1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,
 1,2,2,2,2,2,2,2,2,2,2,2,1,1,1,2,2,2,2,1,
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,1,
 1,2,2,2,2,2,2,2,2,2,2,2,1,1,1,2,2,2,2,1,
@@ -25,4 +25,18 @@
 1,1,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,1,1
 </data>
  </layer>
+ <objectgroup id="2" name="Object Layer 1">
+  <object id="1" name="lightSource1" type="lightSource" x="23.4746" y="103.586">
+   <point/>
+  </object>
+  <object id="2" name="lightSource1" type="lightSource" x="247.788" y="216.116">
+   <point/>
+  </object>
+  <object id="3" name="lightSource1" type="lightSource" x="216.116" y="87.9367">
+   <point/>
+  </object>
+  <object id="4" name="lightSource1" type="lightSource" x="103.959" y="231.393">
+   <point/>
+  </object>
+ </objectgroup>
 </map>

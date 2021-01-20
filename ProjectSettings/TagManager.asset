@@ -48,6 +48,9 @@ TagManager:
   - name: Wall
     uniqueID: 2589566591
     locked: 0
+  - name: Entities
+    uniqueID: 3972799645
+    locked: 0
   - name: Ceiling
     uniqueID: 735449647
     locked: 0
