@@ -8,6 +8,7 @@ namespace Rhyth.BTree
     /// </summary>
     public class BoolInverter : BoolNode
     {
+        public override string StringToolTip => "Child must be a BoolNode!\nReturns success if the child failed. Returns failure if the child succssedes.";
         public override int MaxNumberOfChildren => 1;
 
         private static readonly Type[] allowedChildrenTypes = { typeof(BoolNode) };

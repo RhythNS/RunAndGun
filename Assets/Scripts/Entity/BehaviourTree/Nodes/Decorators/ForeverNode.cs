@@ -5,6 +5,8 @@ namespace Rhyth.BTree
 {
     public class ForeverNode : BNodeAdapter
     {
+        public override string StringToolTip => "Executes a node forever.\nThere is no return value.";
+
         public override string StringInEditor => "∞";
 
         public override int MaxNumberOfChildren => 1;

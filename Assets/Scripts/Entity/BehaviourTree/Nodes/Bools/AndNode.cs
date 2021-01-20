@@ -8,6 +8,7 @@ namespace Rhyth.BTree
     {
         [SerializeField] private bool inverseResult = false;
 
+        public override string StringToolTip => "Children can only be BoolNodes!\nReturns success if both nodes return success. Otherwise it returns failure.";
         public override int MaxNumberOfChildren => -1;
 
         private static readonly Type[] allowedChildrenTypes = { typeof(BoolNode) };

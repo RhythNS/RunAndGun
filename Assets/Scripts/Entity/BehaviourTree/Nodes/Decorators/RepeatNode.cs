@@ -5,6 +5,8 @@ namespace Rhyth.BTree
 {
     public class RepeatNode : BNodeAdapter
     {
+        public override string StringToolTip => "Repeats a node a given number of times.\nReturns success if the child ran the given amount of times. Wheter the node returns failure and stops the loop when the child returns failure is determined by the failOnNodeFailure bool.";
+
         public override string StringInEditor => "↻";
 
         public override int MaxNumberOfChildren => 1;

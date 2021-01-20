@@ -1,9 +1,15 @@
 ﻿using Smooth;
 
+/// <summary>
+/// Enemies are entity that try to attack player entities.
+/// </summary>
 public class Enemy : Entity
 {
     public override EntityType EntityType => EntityType.Enemy;
 
+    /// <summary>
+    /// Contains the BehaviourTree. This component should only be enabled on the Host.
+    /// </summary>
     public Brain Brain { get; private set; }
     public Health Health { get; private set; }
     public EquippedWeapon EquippedWeapon { get; private set; }

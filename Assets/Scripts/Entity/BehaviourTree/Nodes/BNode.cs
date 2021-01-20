@@ -56,6 +56,8 @@ namespace Rhyth.BTree
         /// </summary>
         public virtual string StringInEditor { get => ""; }
 
+        public virtual string StringToolTip { get => ""; }
+
         protected BTree tree;
 
         /// <summary>

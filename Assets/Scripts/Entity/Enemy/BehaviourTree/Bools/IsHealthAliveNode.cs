@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class IsHealthAliveNode : BoolNode
 {
+    public override string StringToolTip => "This node is a BoolNode!\nReturns true if the given entity is still alive.";
+
     [SerializeField] private HealthValue targetHealth;
 
     protected override BNode InnerClone(Dictionary<Value, Value> originalValueForClonedValue)
@@ -18,6 +20,6 @@ public class IsHealthAliveNode : BoolNode
         if (originalReplace.ContainsKey(targetHealth))
             targetHealth = originalReplace[targetHealth] as HealthValue;
     }
-    protected override bool InnerIsFulfilled() => targetHealth.Get().Alive;
+    protected override bool InnerIsFulfilled() => targetHealth ? targetHealth.Get().Alive : false;
 
 }

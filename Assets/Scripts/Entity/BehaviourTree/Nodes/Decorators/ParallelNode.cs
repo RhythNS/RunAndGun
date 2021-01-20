@@ -9,6 +9,8 @@ namespace Rhyth.BTree
     /// </summary>
     public class ParallelNode : BNodeAdapter
     {
+        public override string StringToolTip => "Runs any number of children in parallel. Return value is determined by the ReturnOperation values.";
+
         public override int MaxNumberOfChildren => -1;
 
         [SerializeField] private BNodeUtil.ReturnOperation childFailed;

@@ -2,8 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Checks to see if an entity can see another entity.
+/// </summary>
 public class CanSeeNode : BoolNode
 {
+    public override string StringToolTip => "This node is a BoolNode!\nReturns success if the entity can see a other given entity.";
+
     [SerializeField] private HealthValue otherHealth;
     [SerializeField] private LayerMask layerMask;
 

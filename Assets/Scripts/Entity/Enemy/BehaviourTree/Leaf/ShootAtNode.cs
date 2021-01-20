@@ -9,6 +9,8 @@ using UnityEngine;
 /// </summary>
 public class ShootAtNode : BNodeAdapter
 {
+    public override string StringToolTip => "Shoots at a target.\nReturns failure when the weapon is empty. Returns success when the target died.";
+
     public override int MaxNumberOfChildren => 0;
 
     [SerializeField] private HealthValue targetHealth;
@@ -36,6 +38,7 @@ public class ShootAtNode : BNodeAdapter
 
             if (weapon.StartFire() == false)
             {
+                // Weapon can not fire for whatever reason.
                 CurrentStatus = Status.Failure;
                 return;
             }
@@ -43,6 +46,7 @@ public class ShootAtNode : BNodeAdapter
             return;
         }
 
+        // Weapon is not firing anymore and entity.
         if (weapon.IsFiring == false)
         {
             CurrentStatus = Status.Failure;
@@ -52,6 +56,10 @@ public class ShootAtNode : BNodeAdapter
         SetDirection();
     }
 
+    /// <summary>
+    /// Sets the direction of the EquippedWeapon.
+    /// </summary>
+    /// <returns>True if the target was killed. False otherwise.</returns>
     private bool SetDirection()
     {
 

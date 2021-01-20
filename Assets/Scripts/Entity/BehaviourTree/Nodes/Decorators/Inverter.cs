@@ -4,6 +4,8 @@ namespace Rhyth.BTree
 {
     public class Inverter : BNodeAdapter
     {
+        public override string StringToolTip => "Inverts the return status.\nReturns success if the child failed. Returns failure if the child succssedes.";
+
         public override int MaxNumberOfChildren => 1;
 
         public override void InnerRestart()

@@ -56,7 +56,8 @@ namespace Rhyth.BTree
                 else // if in editor mode color by breakpoint
                     GUI.color = allNodes[i].BreakPointEnabled ? breakPointEnabled : breakPointDisabled;
 
-                GUI.Box(toDraw, allNodes[i].StringInEditor + "\n" + allNodes[i].name, boxStyle);
+                GUIContent content = new GUIContent(allNodes[i].StringInEditor + "\n" + allNodes[i].name, allNodes[i].StringToolTip);
+                GUI.Box(toDraw, content, boxStyle);
                 GUI.color = oldColor;
 
                 // Get the connection boxes (parent/child connection sockets)

@@ -4,6 +4,8 @@ namespace Rhyth.BTree
 {
     public class Sequence : BNodeAdapter
     {
+        public override string StringToolTip => "Runs its children one by one.\nReturns success if all children returned success. Returns failure if one child return failure.";
+
         public override int MaxNumberOfChildren => -1;
         public override string StringInEditor => "->";
 

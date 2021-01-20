@@ -4,6 +4,7 @@ namespace Rhyth.BTree
 {
     public class AlwaysSuccesed : BNodeAdapter
     {
+        public override string StringToolTip => "Runs a node and always returns success.";
         public override int MaxNumberOfChildren => 1;
 
         public override void InnerRestart()

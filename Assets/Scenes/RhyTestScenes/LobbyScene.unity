@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1636,13 +1636,10 @@ MonoBehaviour:
   tilemapCeiling: {fileID: 1488142615}
   tileset: {fileID: 11400000, guid: be039a8f3df4ec447a356b438e22320a, type: 2}
   tilePlaceHolder: {fileID: 11400000, guid: 85042821781fa374fbb5e75b909a3590, type: 2}
+  objectContainer: {fileID: 0}
+  prefabDoorLR: {fileID: 0}
+  prefabDoorUD: {fileID: 0}
   maxSize: {x: 256, y: 256}
-  minRoomSize: 8
-  maxRoomSize: 13
-  minCorridorLength: 4
-  maxCorridorLength: 6
-  maxStructures: 100
-  roomChance: 0.4
 --- !u!156049354 &1395398730
 Grid:
   m_ObjectHideFlags: 0
@@ -1778,7 +1775,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 735449647
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 2
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0.5, z: 0}

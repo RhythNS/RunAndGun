@@ -5,10 +5,12 @@ namespace Rhyth.BTree
 {
     /// <summary>
     /// Variation of the Guard node. Repeats the second child until either the first child or the second child fails.
-    /// What happens when either node failes is determined by the OnFailure enum.
+    /// What happens when either node failes is determined by the ReturnOperation enum.
     /// </summary>
     public class RepeatUntilFailure : BNodeAdapter
     {
+        public override string StringToolTip => "Repeates the second child until the first child or the second child returns failure.\nWhat happens when either node failes is determined by the ReturnOperation.";
+
         public override string StringInEditor => "↻ until Failure";
 
         public override int MaxNumberOfChildren => 2;

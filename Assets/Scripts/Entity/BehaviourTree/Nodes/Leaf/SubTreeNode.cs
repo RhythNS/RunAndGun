@@ -5,6 +5,7 @@ namespace Rhyth.BTree
 {
     public class SubTreeNode : BNode
     {
+        public override string StringToolTip => "Runs another Behaviour Tree as a node. Be careful not to cause an endless loop.\nReturns status of the ran Behaviour Tree on finish.";
         public override int MaxNumberOfChildren => 0;
 
         [SerializeField] private BTree behaviourTree;

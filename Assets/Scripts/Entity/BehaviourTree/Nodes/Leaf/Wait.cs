@@ -5,6 +5,7 @@ namespace Rhyth.BTree
 {
     public class Wait : BNodeAdapter
     {
+        public override string StringToolTip => "Waits a given amount of seconds.\nReturns success if the value successOnFinish is true.";
         public override int MaxNumberOfChildren => 0;
 
         [SerializeField] private float timeToWait = 1;

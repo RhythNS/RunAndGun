@@ -5,6 +5,7 @@ namespace Rhyth.BTree
 {
     public class WaitRandom : BNodeAdapter
     {
+        public override string StringToolTip => "Waits a random amount of seconds in the given range.\nReturns success if the value successOnFinish is true.";
         public override int MaxNumberOfChildren => 0;
 
         [SerializeField] private Vector2 timeToWaitRange;

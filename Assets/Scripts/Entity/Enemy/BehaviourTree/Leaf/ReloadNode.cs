@@ -7,6 +7,7 @@ using System.Collections.Generic;
 /// </summary>
 public class ReloadNode : BNodeAdapter
 {
+    public override string StringToolTip => "Reloads the equipped weapon.\nReturns failure if something prevented from reloading. Returns success when the weapon reloaded.";
     public override int MaxNumberOfChildren => 0;
 
     private EquippedWeapon weapon;

@@ -5,6 +5,7 @@ namespace Rhyth.BTree
 {
     public class PrintNode : BNodeAdapter
     {
+        public override string StringToolTip => "Prints a string to the console.\nAlways returns success.";
         public override int MaxNumberOfChildren => 0;
 
         [SerializeField] private string toPrint;

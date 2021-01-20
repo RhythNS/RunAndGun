@@ -8,6 +8,8 @@ namespace Rhyth.BTree
     /// </summary>
     public class GuardNode : BNodeAdapter
     {
+        public override string StringToolTip => "Runs the second node until the first node fails.\nReturns success if the second node returns success.\nReturns failure if the first or second node failed.";
+
         [SerializeField] private float checkEverySeconds = 1f;
         private float timer;
 

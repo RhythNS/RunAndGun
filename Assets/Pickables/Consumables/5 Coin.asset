@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 2
   icon: {fileID: 0}
-  instantPickup: 0
+  instantPickup: 1
   moneyAmount: 5
