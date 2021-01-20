@@ -6,7 +6,7 @@ public class BrainMover : MonoBehaviour
 
     public enum PathState // in late update
     {
-        InProgress, Reached, NoPath
+        InProgress, Reached, Unreachable, ConstantDirection
     }
 
     public PathState State { get; private set; }
@@ -23,9 +23,28 @@ public class BrainMover : MonoBehaviour
         get => destination;
         set
         {
+            if (RoomBounds.Contains(value) == false)
+            {
+                State = PathState.Unreachable;
+                return;
+            }
+
             State = PathState.InProgress;
             destination = value;
             didMoveLastFrame = true;
+        }
+    }
+
+    private Vector2 constantDirection;
+    public Vector2 ConstantDirection
+    {
+        get => constantDirection;
+        set
+        {
+            State = PathState.ConstantDirection;
+            // This should normaly be normalized before saving, though I think that pepole will normalize this value
+            // before passing it to here. That is why I am not normalizing it here.
+            constantDirection = value;
         }
     }
 
@@ -45,29 +64,37 @@ public class BrainMover : MonoBehaviour
         // If the should move is different from the last frame then update wheter the AI Agent should move or not
         if (ShouldMove != didMoveLastFrame)
         {
-            // set move to = !ShouldMove;
+            if (!ShouldMove)
+                State = PathState.Reached;
+
             didMoveLastFrame = ShouldMove;
         }
         ShouldMove = false;
-
-        if (ShouldMove)
-        {
-
-        }
     }
 
     private void FixedUpdate()
     {
-        if (State != PathState.InProgress)
-            return;
-
-        Vector2 dir = transform.position;
-        dir = Destination - dir;
-        if (dir.sqrMagnitude <  MAGNITUDE_SQUARED_TO_REACH)
+        switch (State)
         {
+            case PathState.InProgress:
+                {
+                    Vector2 dir = transform.position;
+                    dir = Destination - dir;
+                    if (dir.sqrMagnitude < MAGNITUDE_SQUARED_TO_REACH)
+                    {
+                        State = PathState.Reached;
+                        return;
+                    }
 
+                    Body.AddForce(dir.normalized * movementForce);
+                    break;
+                }
+
+            case PathState.ConstantDirection:
+                {
+                    Body.AddForce(ConstantDirection * movementForce);
+                    break;
+                }
         }
-
-        Body.AddForce(dir.normalized * movementForce);
     }
 }

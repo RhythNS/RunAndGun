@@ -1,12 +1,15 @@
-﻿public class BNodeUtil
+﻿namespace Rhyth.BTree
 {
-    public enum ReturnOperation
+    public class BNodeUtil
     {
-        ReturnFailure, Restart, ReturnSuccess
-    }
+        public enum ReturnOperation
+        {
+            ReturnFailure, Restart, ReturnSuccess
+        }
 
-    public enum Check
-    {
-        EveryRun, EverySeconds
+        public enum Check
+        {
+            EveryRun, EverySeconds
+        }
     }
 }

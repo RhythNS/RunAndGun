@@ -61,6 +61,16 @@ namespace Rhyth.BTree
         protected BTree tree;
 
         /// <summary>
+        /// Shortcut to Brain.
+        /// </summary>
+        public Brain Brain => tree.AttachedBrain;
+
+        /// <summary>
+        /// Shortcut to BrainMover.
+        /// </summary>
+        public BrainMover Mover => tree.AttachedBrain.BrainMover;
+
+        /// <summary>
         /// Called after Restart(). Should be used to get needed values and prep the node for execution.
         /// </summary>
         public virtual void Beginn(BTree tree)
