@@ -14,6 +14,7 @@ public class Bullet : NetworkBehaviour
 
     [SyncVar] public Weapon fromWeapon;
     [SyncVar] public int owningPlayer = 0;
+    [SyncVar] public byte layer;
     public bool owningBullet = false;
 
     private void Awake()
@@ -30,8 +31,9 @@ public class Bullet : NetworkBehaviour
             Ssm.enabled = true;
         else
         {
+            gameObject.layer = layer;
             if (Player.LocalPlayer?.playerId == owningPlayer)
-                Free();
+                gameObject.SetActive(false);
         }
     }
 
@@ -47,6 +49,10 @@ public class Bullet : NetworkBehaviour
         if (isServer)
         {
             NetworkServer.Destroy(gameObject);
+        }
+        else if (owningBullet)
+        {
+            Destroy(gameObject);
         }
     }
 

@@ -1,5 +1,4 @@
 ﻿using Mirror;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,7 +25,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int checkRoomsPerFrame = 3;
 
     private Coroutine checkForRoomEntered;
-    private readonly List<DungeonRoom> rooms = new List<DungeonRoom>();
 
     private void Awake()
     {
@@ -106,19 +104,11 @@ public class GameManager : MonoBehaviour
         if (!instance)
             return;
 
-        instance.rooms.Clear();
+        RoomDict.Instance.ClearRooms();
         instance.StopAllCoroutines();
 
         instance.CurrentState = State.Cleared;
         // display dialog to load next level
-    }
-
-    public static void RegisterRoom(DungeonRoom room)
-    {
-        if (!instance)
-            return;
-
-        instance.rooms.Add(room);
     }
 
     public static void OnRoomEventStarted(Rect bounds)
@@ -176,12 +166,13 @@ public class GameManager : MonoBehaviour
             for (int i = 0; i < playerHealths.Count; i++)
                 playerBounds.Add(playerHealths[i].GetComponent<Player>().Collider2D.bounds);
 
-            for (int i = 0; i < rooms.Count; i++)
+            DungeonRoom[] rooms = RoomDict.Instance.Rooms;
+
+            for (int i = 0; i < rooms.Length; i++)
             {
                 // If the room has no event or has an event but is already cleared, skip this room.
                 if (!rooms[i].EventOnRoomEntered || rooms[i].AlreadyCleared)
                     continue;
-
 
                 ++counter;
 

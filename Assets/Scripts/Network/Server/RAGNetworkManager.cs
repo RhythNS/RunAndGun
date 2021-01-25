@@ -18,6 +18,7 @@ public class RAGNetworkManager : NobleNetworkManager
 
         NetworkClient.RegisterHandler<StartGameMessage>(OnStartGameMessage);
         NetworkClient.RegisterHandler<ReturnToLobbyMessage>(OnReturnToLobbyMessage);
+        NetworkClient.RegisterHandler<DoorMessage>(OnDoorsMessage);
     }
 
     public override void OnClientConnect(NetworkConnection conn)
@@ -73,6 +74,20 @@ public class RAGNetworkManager : NobleNetworkManager
     private void OnReturnToLobbyMessage(NetworkConnection connection, ReturnToLobbyMessage returnToLobbyMessage)
     {
         LobbyLevel.Instance.Show();
+    }
+
+    private void OnDoorsMessage(NetworkConnection connection, DoorMessage doorMessage)
+    {
+        if (!RoomDict.Instance || !RoomDict.Instance.IsIdValid(doorMessage.roomId))
+        {
+            Debug.LogWarning("Recieved door message with invalid id! (" + doorMessage.roomId + ")");
+            return;
+        }
+
+        if (doorMessage.open)
+            RoomDict.Instance.Get(doorMessage.roomId).OnOpenDoors();
+        else
+            RoomDict.Instance.Get(doorMessage.roomId).OnCloseDoors();
     }
 
 }

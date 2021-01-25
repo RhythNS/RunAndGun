@@ -18,21 +18,22 @@ public class FleeFromPlayersNode : BNodeAdapter
         Vector2 ownPos = Brain.transform.position;
 
         Vector2 bestDir = players[0].transform.position;
-        bestDir = bestDir - ownPos;
+        bestDir = ownPos - bestDir;
         float bestDistance = bestDir.sqrMagnitude;
         for (int i = 1; i < players.Count; i++)
         {
-            Vector2 newPos = players[i].transform.position;
-            newPos = newPos - ownPos;
-            float newDistance = newPos.sqrMagnitude;
+            Vector2 newDir = players[i].transform.position;
+            newDir = ownPos - newDir;
+            float newDistance = newDir.sqrMagnitude;
             if (newDistance < bestDistance)
             {
                 bestDistance = newDistance;
-                bestDir = newPos;
+                bestDir = newDir;
             }
         }
 
         Mover.ConstantDirection = bestDir.normalized;
+        Mover.ShouldMove = true;
     }
 
     protected override BNode InnerClone(Dictionary<Value, Value> originalValueForClonedValue)

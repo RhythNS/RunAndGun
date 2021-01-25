@@ -1,16 +1,19 @@
-﻿using Mirror;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 using MapGenerator;
+using Mirror;
 
-public abstract class DungeonRoom : NetworkBehaviour
+public abstract class DungeonRoom : MonoBehaviour
 {
     public abstract bool EventOnRoomEntered { get; }
 
+    public abstract RoomType RoomType { get; }
+
     public bool AlreadyCleared { get; protected set; } = false;
 
-    public Rect Border { get; set; }
+    public Rect Border { get => border; set => border = value; }
+    [SerializeField] private Rect border;
 
     /// <summary>
     /// List of all walkableTiles of the room in worldspace.
@@ -27,9 +30,14 @@ public abstract class DungeonRoom : NetworkBehaviour
     /// </summary>
     public List<DungeonDoor> doors = new List<DungeonDoor>();
 
-    public override void OnStartServer()
+    /// <summary>
+    /// The id of the room.
+    /// </summary>
+    public int id;
+
+    private void Start()
     {
-        GameManager.RegisterRoom(this);
+        RoomDict.Instance.Register(this);
     }
 
     public bool CheckAllPlayersEntered(List<Bounds> playerBounds)
@@ -48,15 +56,42 @@ public abstract class DungeonRoom : NetworkBehaviour
 
     }
 
-    protected void CloseDoors()
+    [Server]
+    public void CloseDoors()
     {
-        foreach (var door in doors) {
+        DoorMessage doorMessage = new DoorMessage()
+        {
+            open = false,
+            roomId = id
+        };
+
+        NetworkServer.SendToAll(doorMessage);
+    }
+
+    public void OnCloseDoors()
+    {
+        foreach (var door in doors)
+        {
             door.IsLocked = true;
         }
     }
 
-    protected void OpenDoors() {
-        foreach (var door in doors) {
+    [Server]
+    public void OpenDoors()
+    {
+        DoorMessage doorMessage = new DoorMessage()
+        {
+            open = true,
+            roomId = id
+        };
+
+        NetworkServer.SendToAll(doorMessage);
+    }
+
+    public void OnOpenDoors()
+    {
+        foreach (var door in doors)
+        {
             door.IsLocked = false;
         }
     }
@@ -69,7 +104,8 @@ public abstract class DungeonRoom : NetworkBehaviour
         Gizmos.DrawWireCube(new Vector3(midX, midY), new Vector3(Border.width, Border.height));
     }
 
-    private void OnDrawGizmosSelected() {
+    private void OnDrawGizmosSelected()
+    {
         Gizmos.color = Color.green;
         float midX = Border.x + Border.width / 2;
         float midY = Border.y + Border.height / 2;

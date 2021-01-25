@@ -11,9 +11,11 @@ GameObject:
   - component: {fileID: 4227666607956230144}
   - component: {fileID: 4227666607956230145}
   - component: {fileID: 4227666607956230206}
+  - component: {fileID: -6145697478830120136}
   - component: {fileID: 5790897775952682549}
   - component: {fileID: 4227666607956230207}
   - component: {fileID: 4227666607956230204}
+  - component: {fileID: -504424227593924387}
   - component: {fileID: 4227666607956230205}
   - component: {fileID: 6102780795063393587}
   - component: {fileID: 4227666607956230202}
@@ -106,6 +108,27 @@ MonoBehaviour:
   serverOnly: 0
   m_AssetId: 
   hasSpawned: 0
+--- !u!50 &-6145697478830120136
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4227666607956230200}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!61 &5790897775952682549
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -123,7 +146,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.875, y: 0.90625}
+    oldSize: {x: 1.75, y: 1.8125}
     newSize: {x: 1.75, y: 1.8125}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -159,6 +182,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tree: {fileID: 11400000, guid: 51b34016b4f0576419ea8fd790ed3f20, type: 2}
+--- !u!114 &-504424227593924387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4227666607956230200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2656fc18465b44c42b3ae1c1ecf0f5c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movementForce: 0
 --- !u!114 &4227666607956230205
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -199,6 +235,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  bulletLayerSpawn: 0
   weapon: {fileID: 0}
   remainingBullets: 0
   requstStopFire: 0

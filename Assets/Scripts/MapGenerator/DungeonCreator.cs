@@ -160,6 +160,8 @@ public class DungeonCreator : MonoBehaviour
 
         // set rooms
         dungeonRooms = new List<DungeonRoom>();
+        RoomDict.Instance.ResetRooms(dungeon.Rooms.Length);
+
         for (int i = 0; i < dungeon.Rooms.Length; i++) {
             GameObject go = Instantiate(prefabDungeonRoom);
             go.transform.parent = roomsContainer;
@@ -193,6 +195,9 @@ public class DungeonCreator : MonoBehaviour
             }
 
             if (dr != null) {
+                // set room id
+                dr.id = i;
+
                 // set room border
                 dr.Border = new Rect(dungeon.Rooms[i].Position.x, dungeon.Rooms[i].Position.y, dungeon.Rooms[i].Layout.XSize, dungeon.Rooms[i].Layout.YSize);
                 dr.walkableTiles = dungeon.GetWalkableTiles(i);

@@ -1,10 +1,28 @@
-﻿using Smooth;
+﻿using Mirror;
+using Smooth;
+using UnityEngine;
 
 /// <summary>
 /// Enemies are entity that try to attack player entities.
 /// </summary>
 public class Enemy : Entity
 {
+    /// <summary>
+    /// Helper method for creating and spawning a enemy.
+    /// </summary>
+    /// <param name="enemyObject">The scriptable object describing the enemy.</param>
+    /// <param name="position">The position to where the enemy should be spawned to.</param>
+    /// <param name="quaternion">The rotation of the enemy.</param>
+    /// <returns>The spawned enemy.</returns>
+    public static Enemy InstantiateAndSpawn(EnemyObject enemyObject, Vector3 position, Quaternion quaternion)
+    {
+        GameObject gameObject = Instantiate(enemyObject.Prefab, position, quaternion);
+        Enemy enemy = gameObject.GetComponent<Enemy>();
+        enemy.Set(enemyObject);
+        NetworkServer.Spawn(gameObject);
+        return enemy;
+    }
+
     public override EntityType EntityType => EntityType.Enemy;
 
     /// <summary>
@@ -28,6 +46,8 @@ public class Enemy : Entity
         Brain.tree = enemyObject.BehaviourTree;
         EquippedWeapon.Swap(enemyObject.Weapon);
         // Set stats
+
+        Brain.BrainMover.movementForce = 100;
     }
 
     public override void OnStartServer()

@@ -1,4 +1,5 @@
-﻿using Mirror;
+﻿using MapGenerator;
+using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,9 +7,11 @@ using UnityEngine;
 public class CombatRoom : DungeonRoom
 {
     public override bool EventOnRoomEntered => true;
-    [SerializeField] private EnemyObject[] enemiesToSpawn;
-
+    public override RoomType RoomType => RoomType.Combat;
+ 
     public int ThreatLevel { get; set; }
+    
+    [SerializeField] private EnemyObject[] enemiesToSpawn;
 
     public override void OnAllPlayersEntered()
     {
@@ -24,7 +27,6 @@ public class CombatRoom : DungeonRoom
     {
         AliveHealthDict.Instance.OnAllEnemiesDied -= OnAllEnemiesDefeated;
         AliveHealthDict.Instance.OnAllPlayersDied -= OnAllPlayersDied;
-
     }
 
     private void OnAllEnemiesDefeated()
@@ -43,9 +45,7 @@ public class CombatRoom : DungeonRoom
     {
         for (int i = 0; i < enemiesToSpawn.Length; i++)
         {
-            GameObject enemyObject = Instantiate(enemiesToSpawn[i].Prefab, MathUtil.RandomVector2(Border.min, Border.max), Quaternion.identity);
-            enemyObject.GetComponent<Enemy>().Set(enemiesToSpawn[i]);
-            NetworkServer.Spawn(enemyObject);
+            Enemy.InstantiateAndSpawn(enemiesToSpawn[i], MathUtil.RandomVector2(Border.min, Border.max), Quaternion.identity);
         }
     }
 
