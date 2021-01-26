@@ -96,6 +96,7 @@ public class GameManager : MonoBehaviour
             players[i].StateCommunicator.levelLoaded = false;
         }
 
+        DungeonDict.Instance.dungeon = DungeonCreator.Instance.dungeon; // TODO: Dungeon creator should set that itself
         instance.checkForRoomEntered = instance.StartCoroutine(instance.CheckForRoomEnter());
     }
 
@@ -104,7 +105,7 @@ public class GameManager : MonoBehaviour
         if (!instance)
             return;
 
-        RoomDict.Instance.ClearRooms();
+        DungeonDict.Instance.ClearRooms();
         instance.StopAllCoroutines();
 
         instance.CurrentState = State.Cleared;
@@ -166,7 +167,7 @@ public class GameManager : MonoBehaviour
             for (int i = 0; i < playerHealths.Count; i++)
                 playerBounds.Add(playerHealths[i].GetComponent<Player>().Collider2D.bounds);
 
-            DungeonRoom[] rooms = RoomDict.Instance.Rooms;
+            DungeonRoom[] rooms = DungeonDict.Instance.Rooms;
 
             for (int i = 0; i < rooms.Length; i++)
             {

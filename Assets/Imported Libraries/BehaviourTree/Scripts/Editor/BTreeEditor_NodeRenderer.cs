@@ -13,17 +13,20 @@ namespace Rhyth.BTree
 
         private void OnEnable()
         {
-            colorForStatus = new Dictionary<BNode.Status, Color>();
-            colorForStatus.Add(BNode.Status.Failure, Color.red);
-            colorForStatus.Add(BNode.Status.Running, Color.yellow);
-            colorForStatus.Add(BNode.Status.Success, Color.green);
-            colorForStatus.Add(BNode.Status.Waiting, Color.white);
+            colorForStatus = new Dictionary<BNode.Status, Color>
+            {
+                { BNode.Status.Failure, Color.red },
+                { BNode.Status.Running, Color.yellow },
+                { BNode.Status.Success, Color.green },
+                { BNode.Status.Waiting, Color.white }
+            };
         }
 
         private void DrawMap()
         {
             GUIStyle boxStyle = skin.GetStyle("boxStyle");
             GUIStyle connectionStyle = skin.GetStyle("connectionStyle");
+            GUIStyle boolStyle = skin.GetStyle("boolStyle");
 
             Vector2 offset = this.offset + new Vector2(mapRect.width / 2, mapRect.height / 2);
             boxStyle.fontSize = (int)(BOX_STYLE_FONT_SIZE * zoomLevel);
@@ -44,7 +47,7 @@ namespace Rhyth.BTree
                     GUI.color = allNodes[i].BreakPointEnabled ? breakPointEnabled : breakPointDisabled;
 
                 GUIContent content = new GUIContent(allNodes[i].StringInEditor + "\n" + allNodes[i].name, allNodes[i].StringToolTip);
-                GUI.Box(toDraw, content, boxStyle);
+                GUI.Box(toDraw, content, allNodes[i].GetType().IsSubclassOf(typeof(BoolNode)) ? boolStyle : boxStyle);
                 GUI.color = oldColor;
 
                 // Get the connection boxes (parent/child connection sockets)
@@ -82,7 +85,5 @@ namespace Rhyth.BTree
                 }
             }
         }
-
-
     }
 }

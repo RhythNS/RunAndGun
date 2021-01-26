@@ -37,7 +37,7 @@ public abstract class DungeonRoom : MonoBehaviour
 
     private void Start()
     {
-        RoomDict.Instance.Register(this);
+        DungeonDict.Instance.Register(this);
     }
 
     public bool CheckAllPlayersEntered(List<Bounds> playerBounds)

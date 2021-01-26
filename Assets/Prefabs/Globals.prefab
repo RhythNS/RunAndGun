@@ -245,6 +245,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d86f47136028cd04b8291435f03ff82a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerLayer: 8
+  enemyLayer: 9
   bulletTargetPlayerOnly: 17
   bulletTargetEnemyOnly: 18
   bulletTargetPlayerAndEnemy: 19
@@ -260,6 +262,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d8e9f93034074f4fbc4c8f453cea6db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debug: 0
 --- !u!1 &1365799234809505999
 GameObject:
   m_ObjectHideFlags: 0

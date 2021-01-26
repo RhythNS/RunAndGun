@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SetClosestHealthNode : BoolNode
 {
-    public override string StringToolTip => "This node is a BoolNode!\nSets the given health value to the closest target. Returns true if another target was found.";
+    public override string StringToolTip => "Sets the given health value to the closest target. Returns true if another target was found.";
 
     [SerializeField] private HealthValue targetHealth;
     [SerializeField] private bool targetPlayers = true;

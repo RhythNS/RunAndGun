@@ -220,7 +220,7 @@ namespace Rhyth.BTree
                                     else
                                         prefix = NODES_WITH_NO_CHILDREN_STRING;
 
-                                    nodeMenu.AddItem(new GUIContent(prefix + "/" + nodeName), false, () =>
+                                    nodeMenu.AddItem(new GUIContent(prefix + "/" + nodeName, allNodesForTypes[i].StringToolTip), false, () =>
                                     {
                                         BNode createNode = (BNode)CreateInstance(type);
                                         createNode.name = "New " + createNode.GetType().Name;

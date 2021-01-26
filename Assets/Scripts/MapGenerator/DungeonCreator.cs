@@ -160,7 +160,7 @@ public class DungeonCreator : MonoBehaviour
 
         // set rooms
         dungeonRooms = new List<DungeonRoom>();
-        RoomDict.Instance.ResetRooms(dungeon.Rooms.Length);
+        DungeonDict.Instance.ResetRooms(dungeon.Rooms.Length);
 
         for (int i = 0; i < dungeon.Rooms.Length; i++) {
             GameObject go = Instantiate(prefabDungeonRoom);

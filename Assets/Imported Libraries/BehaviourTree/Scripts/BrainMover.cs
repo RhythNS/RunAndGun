@@ -50,13 +50,34 @@ public class BrainMover : MonoBehaviour
 
     public Rect RoomBounds { get; set; }
 
-    public Rigidbody2D Body { get; private set; }
+    public float meterPerSecond;
 
-    public float movementForce;
-
-    private void Awake()
+    private void Update()
     {
-        Body = GetComponent<Rigidbody2D>();
+        switch (State)
+        {
+            case PathState.InProgress:
+                {
+                    Vector2 dir = transform.position;
+                    dir = Destination - dir;
+                    if (dir.sqrMagnitude < MAGNITUDE_SQUARED_TO_REACH)
+                    {
+                        State = PathState.Reached;
+                        return;
+                    }
+
+                    Vector3 vec = dir.normalized * (meterPerSecond * Time.deltaTime);
+                    transform.position += vec;
+                    break;
+                }
+
+            case PathState.ConstantDirection:
+                {
+                    Vector3 vec = ConstantDirection * (meterPerSecond * Time.deltaTime);
+                    transform.position += vec;
+                    break;
+                }
+        }
     }
 
     private void LateUpdate()
@@ -74,27 +95,5 @@ public class BrainMover : MonoBehaviour
 
     private void FixedUpdate()
     {
-        switch (State)
-        {
-            case PathState.InProgress:
-                {
-                    Vector2 dir = transform.position;
-                    dir = Destination - dir;
-                    if (dir.sqrMagnitude < MAGNITUDE_SQUARED_TO_REACH)
-                    {
-                        State = PathState.Reached;
-                        return;
-                    }
-
-                    Body.AddForce(dir.normalized * movementForce);
-                    break;
-                }
-
-            case PathState.ConstantDirection:
-                {
-                    Body.AddForce(ConstantDirection * movementForce);
-                    break;
-                }
-        }
     }
 }

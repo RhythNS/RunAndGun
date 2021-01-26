@@ -7,7 +7,7 @@ using UnityEngine;
 /// </summary>
 public class CanSeeNode : BoolNode
 {
-    public override string StringToolTip => "This node is a BoolNode!\nReturns success if the entity can see a other given entity.";
+    public override string StringToolTip => "Returns success if the entity can see a other given entity.";
 
     [SerializeField] private HealthValue otherHealth;
     [SerializeField] private LayerMask layerMask;
@@ -27,6 +27,19 @@ public class CanSeeNode : BoolNode
 
     protected override bool InnerIsFulfilled()
     {
-        throw new System.Exception("Not yet implemented!");
+        Vector2 ownPos, healthPos, dir;
+        Health other;
+
+        if (!otherHealth || !(other = otherHealth.Get()) || !other.Alive)
+            return false;
+
+        healthPos = other.transform.position;
+        ownPos = Brain.transform.position;
+
+        dir = healthPos - ownPos;
+
+        RaycastHit2D hit = Physics2D.Raycast(ownPos, dir, dir.magnitude, LayerDict.Instance.GetBulletCollisionLayerMask());
+
+        return hit.collider == null;
     }
 }

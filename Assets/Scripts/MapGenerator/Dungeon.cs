@@ -483,8 +483,9 @@ namespace MapGenerator
         /// </summary>
         /// <param name="start">Where the pathfinding should start</param>
         /// <param name="destination">The destination of the path</param>
-        /// <returns>All tile positions of the path found</returns>
-        public Vector3[] FindPath(Vector2Int start, Vector2Int destination) {
+        /// <param name="path">All tile positions of the path found</param>
+        /// <returns>Wheter it found a path or not</returns>
+        public bool TryFindPath(Vector2Int start, Vector2Int destination, out List<Vector2> path) {
             Dictionary<Vector2Int, Vector2Int> cameFrom = new Dictionary<Vector2Int, Vector2Int>();
             Dictionary<Vector2Int, float> costSoFar = new Dictionary<Vector2Int, float>();
 
@@ -518,16 +519,16 @@ namespace MapGenerator
                 }
             }
 
-            List<Vector3> path = new List<Vector3>();
+            path = new List<Vector2>();
             current = destination;
 
             while (!current.Equals(start)) {
                 if (!cameFrom.ContainsKey(current)) {
                     //Debug.Log("cameFrom does not contain current"); // no path found
-                    return new Vector3[0];
+                    return false;
                 }
 
-                path.Add(new Vector3(current.x, current.y, 0f));
+                path.Add(new Vector2(current.x, current.y));
                 current = cameFrom[current];
             }
 
@@ -536,7 +537,7 @@ namespace MapGenerator
             if (path.Count > 1)
                 path.RemoveAt(0);
 
-            return path.ToArray();
+            return true;
         }
 
         /// <summary>

@@ -47,7 +47,7 @@ public class Enemy : Entity
         EquippedWeapon.Swap(enemyObject.Weapon);
         // Set stats
 
-        Brain.BrainMover.movementForce = 100;
+        Brain.BrainMover.meterPerSecond = 2;
     }
 
     public override void OnStartServer()

@@ -78,16 +78,16 @@ public class RAGNetworkManager : NobleNetworkManager
 
     private void OnDoorsMessage(NetworkConnection connection, DoorMessage doorMessage)
     {
-        if (!RoomDict.Instance || !RoomDict.Instance.IsIdValid(doorMessage.roomId))
+        if (!DungeonDict.Instance || !DungeonDict.Instance.IsIdValid(doorMessage.roomId))
         {
             Debug.LogWarning("Recieved door message with invalid id! (" + doorMessage.roomId + ")");
             return;
         }
 
         if (doorMessage.open)
-            RoomDict.Instance.Get(doorMessage.roomId).OnOpenDoors();
+            DungeonDict.Instance.Get(doorMessage.roomId).OnOpenDoors();
         else
-            RoomDict.Instance.Get(doorMessage.roomId).OnCloseDoors();
+            DungeonDict.Instance.Get(doorMessage.roomId).OnCloseDoors();
     }
 
 }

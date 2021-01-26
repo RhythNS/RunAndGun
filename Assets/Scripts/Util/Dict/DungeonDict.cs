@@ -1,10 +1,13 @@
-﻿using UnityEngine;
+﻿using MapGenerator;
+using UnityEngine;
 
-public class RoomDict : MonoBehaviour
+public class DungeonDict : MonoBehaviour
 {
-    public static RoomDict Instance { get; private set; }
+    public static DungeonDict Instance { get; private set; }
 
     public DungeonRoom[] Rooms { get; private set; }
+    
+    public Dungeon dungeon;
 
     [SerializeField] private bool debug = false;
 

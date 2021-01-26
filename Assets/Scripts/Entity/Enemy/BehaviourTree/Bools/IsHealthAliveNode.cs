@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class IsHealthAliveNode : BoolNode
 {
-    public override string StringToolTip => "This node is a BoolNode!\nReturns true if the given entity is still alive.";
+    public override string StringToolTip => "Returns true if the given entity is still alive.";
 
     [SerializeField] private HealthValue targetHealth;
 

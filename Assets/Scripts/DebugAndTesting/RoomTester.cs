@@ -25,7 +25,7 @@ public class RoomTester : MonoBehaviour
             for (int i = 0; i < playerHealths.Count; i++)
                 playerBounds.Add(playerHealths[i].GetComponent<Player>().Collider2D.bounds);
 
-            DungeonRoom[] rooms = RoomDict.Instance.Rooms;
+            DungeonRoom[] rooms = DungeonDict.Instance.Rooms;
 
             for (int i = 0; i < rooms.Length; i++)
             {

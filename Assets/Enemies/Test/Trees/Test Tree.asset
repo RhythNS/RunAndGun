@@ -214,7 +214,7 @@ MonoBehaviour:
   children: []
   boundsInEditor:
     serializedVersion: 2
-    x: 43
+    x: 44
     y: -28
     width: 80
     height: 80
