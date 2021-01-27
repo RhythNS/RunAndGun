@@ -29,7 +29,7 @@ namespace Rhyth.BTree
             GUIStyle boolStyle = skin.GetStyle("boolStyle");
 
             Vector2 offset = this.offset + new Vector2(mapRect.width / 2, mapRect.height / 2);
-            boxStyle.fontSize = (int)(BOX_STYLE_FONT_SIZE * zoomLevel);
+            boxStyle.fontSize = boolStyle.fontSize = (int)(BOX_STYLE_FONT_SIZE * zoomLevel);
             for (int i = 0; i < allNodes.Length; i++)
             {
                 // Get and set the position of the node

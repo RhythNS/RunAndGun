@@ -29,17 +29,21 @@ public class EquippedWeapon : NetworkBehaviour
     public bool HasBulletsLeft => remainingBullets > 0;
 
     public Weapon Weapon => weapon;
+    public WeaponAnimator WeaponAnimator { get; private set; }
     public Health Health { get; private set; }
     public Collider2D Collider2D { get; private set; }
-    public Vector2 Direction => direction;
+    public Vector2 LocalDirection => localDirection;
     public int RemainingBullets => remainingBullets;
     public Vector2 BulletSpawnPosition => transform.position; // TODO: Change to acctual value
 
     [SerializeField] [SyncVar] private int bulletLayerSpawn;
-    [SerializeField] [SyncVar] private Weapon weapon;
+    [SerializeField] [SyncVar(hook = nameof(OnWeaponChanged))] private Weapon weapon;
     [SerializeField] int remainingBullets;
     [SerializeField] private bool requstStopFire;
-    Vector2 direction;
+    Vector2 localDirection;
+
+    public Vector2 ServerDirection => serverDirection;
+    [SyncVar(hook = nameof(OnDirectionChanged))] Vector2 serverDirection;
 
     private ExtendedCoroutine fireCoroutine;
     private ExtendedCoroutine reloadCoroutine;
@@ -48,6 +52,8 @@ public class EquippedWeapon : NetworkBehaviour
     {
         Health = GetComponent<Health>();
         Collider2D = GetComponent<Collider2D>();
+
+        WeaponAnimator = GetComponentInChildren<WeaponAnimator>(); // TODO: <-- maybe change this
     }
 
     #region Events
@@ -58,6 +64,8 @@ public class EquippedWeapon : NetworkBehaviour
     public void OnFiredSingleShot()
     {
         --remainingBullets;
+        WeaponAnimator.OnSingleShotFired();
+        CmdSingleShotFired();
     }
 
     /// <summary>
@@ -66,6 +74,8 @@ public class EquippedWeapon : NetworkBehaviour
     public void OnStopFiring()
     {
         requstStopFire = false;
+        CmdStoppedFire();
+        WeaponAnimator.OnStoppedFire();
     }
 
     /// <summary>
@@ -74,8 +84,83 @@ public class EquippedWeapon : NetworkBehaviour
     public void OnReloaded()
     {
         remainingBullets = weapon.MagazineSize;
+        WeaponAnimator.OnStoppedReload();
+        CmdOnStoppedReload();
     }
 
+    #endregion
+
+    #region CallbacksForAnimator
+    [Command]
+    public void CmdStartedFire()
+    {
+        RpcStartedFire();
+    }
+
+    [Command]
+    public void CmdStoppedFire()
+    {
+        RpcStoppedFire();
+    }
+
+    [Command]
+    public void CmdSingleShotFired()
+    {
+        RpcSingleShotFired();
+    }
+
+    [Command]
+    public void CmdOnStartedReload()
+    {
+        RpcOnStartedReload();
+    }
+
+    [Command]
+    public void CmdOnStoppedReload()
+    {
+        RpcOnStoppedReload();
+    }
+
+    [ClientRpc(excludeOwner = true)]
+    public void RpcStartedFire()
+    {
+        WeaponAnimator.OnStartedFire();
+    }
+
+    [ClientRpc(excludeOwner = true)]
+    public void RpcStoppedFire()
+    {
+        WeaponAnimator.OnStoppedFire();
+    }
+
+    [ClientRpc(excludeOwner = true)]
+    public void RpcSingleShotFired()
+    {
+        WeaponAnimator.OnSingleShotFired();
+    }
+
+    [ClientRpc(excludeOwner = true)]
+    public void RpcOnStartedReload()
+    {
+        WeaponAnimator.OnStartedReload();
+    }
+
+    [ClientRpc(excludeOwner = true)]
+    public void RpcOnStoppedReload()
+    {
+        WeaponAnimator.OnStoppedReload();
+    }
+
+    public void OnDirectionChanged(Vector2 oldDir, Vector2 newDir)
+    {
+        if (!isLocalPlayer)
+            WeaponAnimator.SetDirection(newDir);
+    }
+
+    private void OnWeaponChanged(Weapon oldWeapon, Weapon newWeapon)
+    {
+        WeaponAnimator = WeaponAnimator.Replace(WeaponAnimator, newWeapon);
+    }
     #endregion
 
     #region Input
@@ -107,6 +192,8 @@ public class EquippedWeapon : NetworkBehaviour
         // Play shoot animation
         fireCoroutine = new ExtendedCoroutine(this, weapon.Shoot(this), OnStopFiring);
         fireCoroutine.Start();
+        WeaponAnimator.OnStartedFire();
+        CmdStartedFire();
         return true;
     }
 
@@ -118,7 +205,7 @@ public class EquippedWeapon : NetworkBehaviour
         if (direction.x == 0 && direction.y == 0)
             return;
         direction.Normalize();
-        this.direction = direction;
+        localDirection = direction;
     }
 
     /// <summary>
@@ -136,6 +223,8 @@ public class EquippedWeapon : NetworkBehaviour
     {
         if (weapon && !IsFiring && !IsReloading)
         {
+            WeaponAnimator.OnStartedReload();
+            CmdOnStartedReload();
             reloadCoroutine = new ExtendedCoroutine(this, StartReload(weapon.ReloadTime), OnReloaded);
             reloadCoroutine.Start();
             return true;
@@ -150,7 +239,6 @@ public class EquippedWeapon : NetworkBehaviour
 
     #endregion
 
-
     #region CallbackWhenBulletFired
     /// <summary>
     /// Requests a bullet to be spawned from when a player shoots.
@@ -159,7 +247,7 @@ public class EquippedWeapon : NetworkBehaviour
     /// <param name="direction">The direction where the bullet should head to.</param>
     /// <param name="layer">The layer on which the bullet spawns on.</param>
     [Command]
-    public void CmdCreateBullet(Vector3 position, Vector2 direction)
+    private void CmdCreateBullet(Vector3 position, Vector2 direction)
     {
         if (gameObject.TryGetComponent(out Player player) == false)
             return;
@@ -179,7 +267,7 @@ public class EquippedWeapon : NetworkBehaviour
     /// </summary>
     public void SpawnNew()
     {
-        Bullet bullet = GetBullet(Direction);
+        Bullet bullet = GetBullet(LocalDirection);
         if (isServer)
         {
             NetworkServer.Spawn(bullet.gameObject);
@@ -189,7 +277,7 @@ public class EquippedWeapon : NetworkBehaviour
         {
             bullet.Ssm.enabled = false;
             bullet.owningBullet = true;
-            CmdCreateBullet(BulletSpawnPosition, Direction);
+            CmdCreateBullet(BulletSpawnPosition, LocalDirection);
         }
     }
 

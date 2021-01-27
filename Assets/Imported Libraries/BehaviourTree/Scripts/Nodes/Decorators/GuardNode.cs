@@ -11,7 +11,9 @@ namespace Rhyth.BTree
         public override string StringToolTip => "Runs the second node until the first node fails.\nReturns success if the second node returns success.\nReturns failure if the first or second node failed.";
 
         [SerializeField] private float checkEverySeconds = 1f;
+
         private float timer;
+        private BoolNode convertedBoolNode;
 
         public override int MaxNumberOfChildren => 2;
 
@@ -19,11 +21,15 @@ namespace Rhyth.BTree
         {
             for (int i = 0; i < children.Length; i++)
                 children[i].Beginn(tree);
+
+            if (children[0] is BoolNode)
+                convertedBoolNode = children[0] as BoolNode;
         }
 
         public override void InnerRestart()
         {
             timer = 0;
+
             for (int i = 0; i < children.Length; i++)
                 children[i].Restart();
         }
@@ -40,20 +46,16 @@ namespace Rhyth.BTree
             timer -= Time.deltaTime;
             if (timer <= 0)
             {
-                if (children[0] is BoolNode)
+                if (convertedBoolNode != null)
                 {
-                    BoolNode boolNode = children[0] as BoolNode;
-                    boolNode.Restart();
-                    boolNode.Beginn(tree);
-                    if (boolNode.IsFulfilled() == false)
+                    convertedBoolNode.Restart();
+                    convertedBoolNode.Beginn(tree);
+                    if (convertedBoolNode.IsFulfilled() == false)
                     {
                         CurrentStatus = Status.Failure;
                         return;
                     }
-                    else
-                    {
-                        timer = checkEverySeconds;
-                    }
+                    timer = checkEverySeconds;
                 }
                 else // children[0] is not a boolNode
                 {
