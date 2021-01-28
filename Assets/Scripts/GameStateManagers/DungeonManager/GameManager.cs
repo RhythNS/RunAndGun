@@ -1,5 +1,4 @@
 ﻿using Mirror;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -21,10 +20,6 @@ public class GameManager : MonoBehaviour
         }
     }
     private State currentState = State.LoadingLevel;
-
-    [SerializeField] private int checkRoomsPerFrame = 3;
-
-    private Coroutine checkForRoomEntered;
 
     private void Awake()
     {
@@ -51,6 +46,7 @@ public class GameManager : MonoBehaviour
         // TODO: Figure out what happens here.
         // If level is loading =>
         // If level is not loading => 
+        // Trigger onplayerchangedroom
     }
 
     public static void OnLoadNewLevel()
@@ -97,7 +93,6 @@ public class GameManager : MonoBehaviour
         }
 
         DungeonDict.Instance.dungeon = DungeonCreator.Instance.dungeon; // TODO: Dungeon creator should set that itself
-        instance.checkForRoomEntered = instance.StartCoroutine(instance.CheckForRoomEnter());
     }
 
     public static void OnLevelCleared()
@@ -106,7 +101,6 @@ public class GameManager : MonoBehaviour
             return;
 
         DungeonDict.Instance.ClearRooms();
-        instance.StopAllCoroutines();
 
         instance.CurrentState = State.Cleared;
         // display dialog to load next level
@@ -119,7 +113,6 @@ public class GameManager : MonoBehaviour
 
         instance.CurrentState = State.RoomEvent;
 
-        instance.StopCoroutine(instance.checkForRoomEntered);
         // ui.HideAroundBounds(bounds);
     }
 
@@ -130,14 +123,11 @@ public class GameManager : MonoBehaviour
 
         instance.CurrentState = State.Wandering;
 
-        instance.checkForRoomEntered = instance.StartCoroutine(instance.CheckForRoomEnter());
         // ui.StopHidingAroundBounds();
     }
 
     public void OnAllPlayersDied()
     {
-        instance.StopAllCoroutines();
-
         instance.CurrentState = State.Failed;
 
         // for all clients -> send game over
@@ -150,52 +140,41 @@ public class GameManager : MonoBehaviour
         NetworkServer.SendToAll(new ReturnToLobbyMessage());
     }
 
-
-    private IEnumerator CheckForRoomEnter()
+    public static void OnPlayerChangedRoom(Player player)
     {
-        while (true)
+        if (!instance || instance.currentState != State.Wandering)
+            return;
+
+        List<Player> players = PlayersDict.Instance.Players;
+        if (players.Count == 0)
+            return;
+
+        int firstAlivePlayer = -1;
+        for (int i = 0; i < players.Count; i++)
         {
-            int counter = 0;
-
-            List<Health> playerHealths = AliveHealthDict.Instance.PlayerHealths;
-
-            if (playerHealths.Count == 0)
-                yield break;
-
-            List<Bounds> playerBounds = new List<Bounds>(playerHealths.Count);
-
-            for (int i = 0; i < playerHealths.Count; i++)
-                playerBounds.Add(playerHealths[i].GetComponent<Player>().Collider2D.bounds);
-
-            DungeonRoom[] rooms = DungeonDict.Instance.Rooms;
-
-            for (int i = 0; i < rooms.Length; i++)
+            if (players[i].Health.Alive)
             {
-                // if room has a local player event
-                //if (rooms[i].CheckLocalPlayerEntered(Player.LocalPlayer.Collider2D.bounds))
-                //    rooms[i].OnLocalPlayerEntered();
-
-                // If the room has no event or has an event but is already cleared, skip this room.
-                if (!rooms[i].EventOnRoomEntered || rooms[i].AlreadyCleared)
-                    continue;
-
-                ++counter;
-
-                if (rooms[i].CheckAllPlayersEntered(playerBounds))
-                {
-                    rooms[i].OnAllPlayersEntered();
-                    yield break;
-                }
-
-                // Already checked enough rooms?
-                if (counter >= checkRoomsPerFrame)
-                    yield return null;
+                firstAlivePlayer = i;
+                break;
             }
-
-            yield return null;
         }
-    }
 
+        if (firstAlivePlayer == -1)
+            return;
+
+        DungeonRoom room = players[firstAlivePlayer].CurrentRoom;
+
+        if (!room.EventOnRoomEntered || room.AlreadyCleared)
+            return;
+
+        for (int i = firstAlivePlayer + 1; i < players.Count; i++)
+        {
+            if (!players[i].Health.Alive || players[i].CurrentRoom != room)
+                return;
+        }
+
+        room.OnAllPlayersEntered();
+    }
 
     private void OnDestroy()
     {

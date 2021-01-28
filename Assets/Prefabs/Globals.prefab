@@ -247,6 +247,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerLayer: 8
   enemyLayer: 9
+  dungeonRoomLayer: 16
   bulletTargetPlayerOnly: 17
   bulletTargetEnemyOnly: 18
   bulletTargetPlayerAndEnemy: 19

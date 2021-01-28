@@ -22,7 +22,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - DungeonRoom
   - BulletTargetPlayer
   - BulletTargetEnemy
   - BulletTargetAll

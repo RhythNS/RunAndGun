@@ -206,6 +206,7 @@ public class EquippedWeapon : NetworkBehaviour
             return;
         direction.Normalize();
         localDirection = direction;
+        WeaponAnimator.SetDirection(direction);
     }
 
     /// <summary>

@@ -10,13 +10,15 @@ public class SingleHandWeaponAnimator : WeaponAnimator
         {
             transform.localPosition = WeaponPoints.EastHand;
             SpriteRenderer.flipX = false;
+            float angle = Vector2.Angle(Vector2.right, direction);
+            transform.rotation = Quaternion.Euler(0.0f, 0.0f, direction.y > 0 ? angle : -angle);
         }
         else
         {
             transform.localPosition = WeaponPoints.WestHand;
             SpriteRenderer.flipX = true;
+            float angle = Vector2.Angle(Vector2.left, direction);
+            transform.rotation = Quaternion.Euler(0.0f, 0.0f, direction.y > 0 ? -angle : angle);
         }
-        float angle = Vector2.Angle(Vector2.right, direction);
-        transform.rotation = Quaternion.Euler(0.0f, 0.0f, angle);
     }
 }

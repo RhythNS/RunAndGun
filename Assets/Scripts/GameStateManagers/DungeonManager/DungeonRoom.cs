@@ -12,7 +12,15 @@ public abstract class DungeonRoom : MonoBehaviour
 
     public bool AlreadyCleared { get; protected set; } = false;
 
-    public Rect Border { get => border; set => border = value; }
+    public Rect Border
+    {
+        get => border; set
+        {
+            border = value;
+            boxCollider.offset = value.position;
+            boxCollider.size = value.size;
+        }
+    }
     [SerializeField] private Rect border;
 
     /// <summary>
@@ -35,13 +43,18 @@ public abstract class DungeonRoom : MonoBehaviour
     /// </summary>
     public int id;
 
+    private BoxCollider2D boxCollider;
+
+    private void Awake()
+    {
+        boxCollider = gameObject.AddComponent<BoxCollider2D>();
+        boxCollider.isTrigger = true;
+        gameObject.layer = LayerDict.Instance.GetDungeonRoomLayer();
+    }
+
     private void Start()
     {
         DungeonDict.Instance.Register(this);
-    }
-
-    public bool CheckLocalPlayerEntered(Bounds playerBounds) {
-        return Border.Contains(playerBounds.min) || Border.Contains(playerBounds.max);
     }
 
     public bool CheckAllPlayersEntered(List<Bounds> playerBounds)
@@ -59,7 +72,8 @@ public abstract class DungeonRoom : MonoBehaviour
         DungeonCreator.Instance.AdjustMask(new Vector2(border.xMin, border.yMin), border.size);
     }
 
-    public virtual void OnLocalPlayerLeft() {
+    public virtual void OnLocalPlayerLeft()
+    {
         DungeonCreator.Instance.ResetMask();
     }
 

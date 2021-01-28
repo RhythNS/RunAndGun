@@ -24,6 +24,7 @@ public class Player : Entity
     public SmoothSyncMirror SmoothSync { get; private set; }
     public Collider2D Collider2D { get; private set; }
     public StateCommunicator StateCommunicator { get; private set; }
+    public DungeonRoom CurrentRoom { get; private set; }
 
     private void Awake()
     {
@@ -120,12 +121,35 @@ public class Player : Entity
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.TryGetComponent(out CombatRoom combatRoom))
+        {
+            CurrentRoom = combatRoom;
+            if (LocalPlayer)
+                combatRoom.OnLocalPlayerEntered();
+            GameManager.OnPlayerChangedRoom(this);
+
+            return;
+        }
+
         if (isLocalPlayer && !Status.Dashing)
         {
             if (collision.TryGetComponent(out PickableInWorld pickable) && pickable.Pickable.InstantPickup)
                 CmdPickup(pickable.gameObject);
             else if (collision.TryGetComponent(out Bullet bullet))
                 CmdBulletHit(bullet.gameObject, bullet.fromWeapon);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.TryGetComponent(out CombatRoom combatRoom))
+        {
+            CurrentRoom = null;
+            if (LocalPlayer)
+                combatRoom.OnLocalPlayerLeft();
+            GameManager.OnPlayerChangedRoom(this);
+
+            return;
         }
     }
 
