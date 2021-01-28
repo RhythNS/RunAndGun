@@ -171,6 +171,10 @@ public class GameManager : MonoBehaviour
 
             for (int i = 0; i < rooms.Length; i++)
             {
+                // if room has a local player event
+                //if (rooms[i].CheckLocalPlayerEntered(Player.LocalPlayer.Collider2D.bounds))
+                //    rooms[i].OnLocalPlayerEntered();
+
                 // If the room has no event or has an event but is already cleared, skip this room.
                 if (!rooms[i].EventOnRoomEntered || rooms[i].AlreadyCleared)
                     continue;

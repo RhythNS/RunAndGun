@@ -38,6 +38,9 @@ public class DungeonCreator : MonoBehaviour
     [SerializeField]
     private GameObject prefabDoorUD;
 
+    [SerializeField]
+    private Transform mask;
+
     [Header("Settings")]
     [SerializeField]
     private Vector2Int maxSize = Vector2Int.one;
@@ -92,6 +95,10 @@ public class DungeonCreator : MonoBehaviour
         }
 
         dungeon = new Dungeon(maxSize.x, maxSize.y, roomLayouts.ToArray(), roomGameObjects.ToArray(), roomTypes.ToArray(), 10, seed);
+
+        // adjust mask size
+        mask.localScale = new Vector3(dungeon.Size.x, dungeon.Size.y, 1f);
+        mask.position = this.transform.position + (mask.localScale / 2f);
 
         // clear tilemaps
         tilemapFloor.ClearAllTiles();
@@ -244,5 +251,15 @@ public class DungeonCreator : MonoBehaviour
 
         if (Player.LocalPlayer) // check to allow for debugging if a localplayer is not scene
             Player.LocalPlayer.StateCommunicator.CmdLevelSetLoaded(true);
+    }
+
+    public void AdjustMask(Vector3 position, Vector3 scale) {
+        mask.localScale = position;
+        mask.position = scale;
+    }
+
+    public void ResetMask() {
+        mask.localScale = new Vector3(dungeon.Size.x, dungeon.Size.y, 1f);
+        mask.position = this.transform.position + (mask.localScale / 2f);
     }
 }

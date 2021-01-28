@@ -40,6 +40,10 @@ public abstract class DungeonRoom : MonoBehaviour
         DungeonDict.Instance.Register(this);
     }
 
+    public bool CheckLocalPlayerEntered(Bounds playerBounds) {
+        return Border.Contains(playerBounds.min) || Border.Contains(playerBounds.max);
+    }
+
     public bool CheckAllPlayersEntered(List<Bounds> playerBounds)
     {
         for (int i = 0; i < playerBounds.Count; i++)
@@ -50,6 +54,14 @@ public abstract class DungeonRoom : MonoBehaviour
         return true;
     }
 
+    public virtual void OnLocalPlayerEntered()
+    {
+        DungeonCreator.Instance.AdjustMask(new Vector2(border.xMin, border.yMin), border.size);
+    }
+
+    public virtual void OnLocalPlayerLeft() {
+        DungeonCreator.Instance.ResetMask();
+    }
 
     public virtual void OnAllPlayersEntered()
     {
