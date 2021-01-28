@@ -12,8 +12,10 @@ namespace Rhyth.BTree
         public BNode Root => root;
 
         public BNode.Status Status { get => root.CurrentStatus; }
+        
+        public void Setup() => root.Setup(this);
 
-        public void Beginn() => root.Beginn(this);
+        public void Beginn() => root.Beginn();
 
         public void Update() => root.Update();
 
@@ -40,6 +42,5 @@ namespace Rhyth.BTree
         {
             root.ReplaceValues(originalReplace);
         }
-
     }
 }

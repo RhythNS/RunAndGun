@@ -7,6 +7,8 @@ namespace Rhyth.BTree
     /// </summary>
     public abstract class BNodeAdapter : BNode
     {
+        public override void InnerSetup() { }
+
         public override void InnerRestart() { }
 
         public override void InnerBeginn() { }

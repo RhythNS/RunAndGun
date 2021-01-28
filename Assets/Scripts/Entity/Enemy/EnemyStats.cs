@@ -4,4 +4,6 @@
 [System.Serializable]
 public struct EnemyStats
 {
+    public float metersPerSecond;
+    public int maxHealth;
 }

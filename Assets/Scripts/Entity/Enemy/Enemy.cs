@@ -14,11 +14,11 @@ public class Enemy : Entity
     /// <param name="position">The position to where the enemy should be spawned to.</param>
     /// <param name="quaternion">The rotation of the enemy.</param>
     /// <returns>The spawned enemy.</returns>
-    public static Enemy InstantiateAndSpawn(EnemyObject enemyObject, Vector3 position, Quaternion quaternion)
+    public static Enemy InstantiateAndSpawn(EnemyObject enemyObject, Rect roomBorder, Vector3 position, Quaternion quaternion)
     {
         GameObject gameObject = Instantiate(enemyObject.Prefab, position, quaternion);
         Enemy enemy = gameObject.GetComponent<Enemy>();
-        enemy.Set(enemyObject);
+        enemy.Set(enemyObject, roomBorder);
         NetworkServer.Spawn(gameObject);
         return enemy;
     }
@@ -41,13 +41,15 @@ public class Enemy : Entity
         SmoothSync = GetComponent<SmoothSyncMirror>();
     }
 
-    public void Set(EnemyObject enemyObject)
+    public void Set(EnemyObject enemyObject, Rect roomBorder)
     {
         Brain.tree = enemyObject.BehaviourTree;
         EquippedWeapon.Swap(enemyObject.Weapon);
-        // Set stats
 
-        Brain.BrainMover.meterPerSecond = 2;
+        Brain.BrainMover.meterPerSecond = enemyObject.Stats.metersPerSecond;
+        Brain.BrainMover.RoomBounds = roomBorder;
+
+        Health.Init(enemyObject.Stats.maxHealth);
     }
 
     public override void OnStartServer()

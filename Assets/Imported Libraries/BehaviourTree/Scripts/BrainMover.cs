@@ -9,7 +9,8 @@ public class BrainMover : MonoBehaviour
         InProgress, Reached, Unreachable, ConstantDirection
     }
 
-    public PathState State { get; private set; }
+    public PathState State { get => state; private set => state = value; }
+    [SerializeField] private PathState state;
 
     /// <summary>
     /// Set to false every tick. If true the agent will go to the set Destination.
@@ -17,7 +18,7 @@ public class BrainMover : MonoBehaviour
     public bool ShouldMove { get; set; }
     private bool didMoveLastFrame = false;
 
-    private Vector2 destination;
+    [SerializeField] private Vector2 destination;
     public Vector2 Destination
     {
         get => destination;
@@ -25,8 +26,12 @@ public class BrainMover : MonoBehaviour
         {
             if (RoomBounds.Contains(value) == false)
             {
+                Vector2 min = RoomBounds.min, max = RoomBounds.max;
+                value = MathUtil.VectorClamp(value, min, max);
+                /*
                 State = PathState.Unreachable;
                 return;
+                 */
             }
 
             State = PathState.InProgress;
@@ -35,7 +40,7 @@ public class BrainMover : MonoBehaviour
         }
     }
 
-    private Vector2 constantDirection;
+    [SerializeField] private Vector2 constantDirection;
     public Vector2 ConstantDirection
     {
         get => constantDirection;

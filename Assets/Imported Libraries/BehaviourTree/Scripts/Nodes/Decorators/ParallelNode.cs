@@ -10,18 +10,18 @@ namespace Rhyth.BTree
     public class ParallelNode : BNodeAdapter
     {
         public override string StringToolTip => "Runs any number of children in parallel. Return value is determined by the ReturnOperation values.";
+        public override string StringInEditor => "| |";
 
         public override int MaxNumberOfChildren => -1;
 
         [SerializeField] private BNodeUtil.ReturnOperation childFailed;
         [SerializeField] private BNodeUtil.ReturnOperation childSucceeded;
 
-
         public override void InnerBeginn()
         {
             for (int i = 0; i < children.Length; i++)
             {
-                children[i].Beginn(tree);
+                children[i].Beginn();
             }
         }
 
@@ -66,7 +66,7 @@ namespace Rhyth.BTree
                     return false;
                 case BNodeUtil.ReturnOperation.Restart:
                     children[childIndex].Restart();
-                    children[childIndex].Beginn(tree);
+                    children[childIndex].Beginn();
                     break;
                 case BNodeUtil.ReturnOperation.ReturnSuccess:
                     CurrentStatus = Status.Success;

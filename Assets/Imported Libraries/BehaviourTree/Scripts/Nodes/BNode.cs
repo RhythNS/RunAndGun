@@ -71,11 +71,30 @@ namespace Rhyth.BTree
         public BrainMover Mover => tree.AttachedBrain.BrainMover;
 
         /// <summary>
-        /// Called after Restart(). Should be used to get needed values and prep the node for execution.
+        /// Called after the tree was loaded into memory. This is only called once per lifetime of this object.
+        /// It should be used to set values that are not going to change during execution.
         /// </summary>
-        public virtual void Beginn(BTree tree)
+        /// <param name="tree">The tree that the node is on.</param>
+        public virtual void Setup(BTree tree)
         {
             this.tree = tree;
+            InnerSetup();
+
+            for (int i = 0; i < children.Length; i++)
+                children[i].Setup(tree);
+        }
+
+        /// <summary>
+        /// Called after the tree was loaded into memory. This is only called once per lifetime of this object.
+        /// It should be used to set values that are not going to change during execution.
+        /// </summary>
+        public abstract void InnerSetup();
+
+        /// <summary>
+        /// Called after Restart(). Should be used to get needed values and prep the node for execution.
+        /// </summary>
+        public virtual void Beginn()
+        {
             CurrentStatus = Status.Running;
             InnerBeginn();
 

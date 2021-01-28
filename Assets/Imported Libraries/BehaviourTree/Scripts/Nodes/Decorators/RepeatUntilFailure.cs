@@ -28,6 +28,12 @@ namespace Rhyth.BTree
 
         private bool displayedWarning = false;
 
+        public override void InnerSetup()
+        {
+            if (children[0] is BoolNode)
+                boolNode = children[0] as BoolNode;
+        }
+
         public override void InnerBeginn()
         {
             if (children.Length == 2)
@@ -41,10 +47,7 @@ namespace Rhyth.BTree
                     displayedWarning = true;
                 }
 
-                if (children[0] is BoolNode)
-                    boolNode = children[0] as BoolNode;
-
-                children[1].Beginn(tree);
+                children[1].Beginn();
             }
         }
 
@@ -76,7 +79,7 @@ namespace Rhyth.BTree
                     if (boolNode != null)
                     {
                         boolNode.Restart();
-                        boolNode.Beginn(tree);
+                        boolNode.Beginn();
 
                         // if boolNode failed
                         if (boolNode.IsFulfilled() != true)
@@ -95,7 +98,7 @@ namespace Rhyth.BTree
                         if (restartedFirstChild == false)
                         {
                             children[0].Restart();
-                            children[0].Beginn(tree);
+                            children[0].Beginn();
                             restartedFirstChild = true;
                         }
 
@@ -125,7 +128,7 @@ namespace Rhyth.BTree
                     break;
                 case Status.Success: // restart the node
                     children[1].InnerRestart();
-                    children[1].Beginn(tree);
+                    children[1].Beginn();
                     forceCheck = true;
                     break;
                 case Status.Failure:

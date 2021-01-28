@@ -23,6 +23,13 @@ public abstract class MathUtil
     public static Vector2 RandomVector2(Vector2 min, Vector2 max)
         => new Vector2(Random.Range(min.x, max.x), Random.Range(min.y, min.y));
 
+    public static Vector2 VectorClamp(Vector2 value, Vector2 min, Vector2 max)
+    {
+        value.x = Mathf.Clamp(value.x, min.x, max.x);
+        value.y = Mathf.Clamp(value.y, min.y, max.y);
+        return value;
+    }
+
     /// <summary>
     /// Clamps vector and returns the magnitude. If the vector should only be clamped use Vector.ClampMagnitude instead.
     /// Taken from:

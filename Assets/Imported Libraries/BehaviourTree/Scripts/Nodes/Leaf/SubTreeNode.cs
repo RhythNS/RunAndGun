@@ -14,9 +14,14 @@ namespace Rhyth.BTree
 
         [SerializeField] private ValueToOverwrite[] valuesToOverwrite;
 
-        public override void InnerBeginn()
+        public override void InnerSetup()
         {
             ClonedTree.AttachedBrain = tree.AttachedBrain;
+            ClonedTree.Setup();
+        }
+
+        public override void InnerBeginn()
+        {
             ClonedTree.Beginn();
         }
 

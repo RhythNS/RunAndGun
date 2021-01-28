@@ -20,7 +20,7 @@ namespace Rhyth.BTree
         {
             at = 0;
             if (children.Length == 1)
-                children[0].Beginn(tree);
+                children[0].Beginn();
         }
 
         public override void InnerRestart()
@@ -63,7 +63,7 @@ namespace Rhyth.BTree
             else
             {
                 children[0].Restart();
-                children[0].Beginn(tree);
+                children[0].Beginn();
             }
         }
 

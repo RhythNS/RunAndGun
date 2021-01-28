@@ -16,6 +16,7 @@ public class Brain : MonoBehaviour
     {
         tree = tree.Clone();
         tree.AttachedBrain = this;
+        tree.Setup();
     }
 
     private void Update()

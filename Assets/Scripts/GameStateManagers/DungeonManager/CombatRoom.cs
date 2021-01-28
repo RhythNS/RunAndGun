@@ -45,7 +45,7 @@ public class CombatRoom : DungeonRoom
     {
         for (int i = 0; i < enemiesToSpawn.Length; i++)
         {
-            Enemy.InstantiateAndSpawn(enemiesToSpawn[i], MathUtil.RandomVector2(Border.min, Border.max), Quaternion.identity);
+            Enemy.InstantiateAndSpawn(enemiesToSpawn[i], Border, MathUtil.RandomVector2(Border.min, Border.max), Quaternion.identity);
         }
     }
 

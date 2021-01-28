@@ -17,7 +17,7 @@ namespace Rhyth.BTree
         public override void InnerBeginn()
         {
             for (int i = 0; i < children.Length; i++)
-                children[i].Beginn(tree);
+                children[i].Beginn();
         }
 
         public override void InnerRestart()
