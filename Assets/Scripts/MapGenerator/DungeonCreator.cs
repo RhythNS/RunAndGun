@@ -41,6 +41,9 @@ public class DungeonCreator : MonoBehaviour
     [SerializeField]
     private Transform mask;
 
+    [SerializeField]
+    private EnemyObject[] enemyObjects;
+
     [Header("Settings")]
     [SerializeField]
     private Vector2Int maxSize = Vector2Int.one;
@@ -183,10 +186,13 @@ public class DungeonCreator : MonoBehaviour
                 case RoomType.Combat:
                     CombatRoom cr = go.AddComponent<CombatRoom>();
                     cr.ThreatLevel = dungeon.Rooms[i].TileCount;
-                    cr.enemiesToSpawn = new EnemyObject[0];
+                    cr.enemiesToSpawn = new EnemyObject[cr.ThreatLevel / 48];
+                    for (int j = 0; j < cr.enemiesToSpawn.Length; j++) {
+                        cr.enemiesToSpawn[j] = enemyObjects[Random.Range(0, enemyObjects.Length)];
+                    }
                     dr = cr;
                     break;
-
+                    
                 case RoomType.Loot:
                     dr = go.AddComponent<LootRoom>();
                     break;
@@ -257,12 +263,20 @@ public class DungeonCreator : MonoBehaviour
     }
 
     public void AdjustMask(Vector3 position, Vector3 scale) {
-        mask.localScale = position;
-        mask.position = scale;
+        mask.localScale = scale;
+        mask.position = position + scale / 2f;
     }
 
     public void ResetMask() {
         mask.localScale = new Vector3(dungeon.Size.x, dungeon.Size.y, 1f);
         mask.position = this.transform.position + (mask.localScale / 2f);
+    }
+
+    public Vector3 TilePositionToWorldPosition(Vector2Int pos) {
+        return this.transform.position + new Vector3(pos.x + 0.5f, pos.y + 0.5f, 0f);
+    }
+
+    public Vector2Int WorldPositionToTilePosition(Vector3 pos) {
+        return new Vector2Int((int)(pos.x - this.transform.position.x), (int)(pos.y - this.transform.position.y));
     }
 }

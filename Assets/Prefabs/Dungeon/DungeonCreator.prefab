@@ -419,6 +419,8 @@ MonoBehaviour:
   prefabDoorUD: {fileID: 6098499219195057442, guid: b2515d84382afd24796391c735f7120d,
     type: 3}
   mask: {fileID: 818942727768279276}
+  enemyObjects:
+  - {fileID: 11400000, guid: 60054b9fd3d83834193d865819246b87, type: 2}
   maxSize: {x: 256, y: 256}
   dungeonRooms: []
 --- !u!114 &255864829474736513

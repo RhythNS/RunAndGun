@@ -46,10 +46,34 @@ public class CombatRoom : DungeonRoom
 
     protected void SpawnEnemies()
     {
-        for (int i = 0; i < enemiesToSpawn.Length; i++)
-        {
-            Enemy.InstantiateAndSpawn(enemiesToSpawn[i], Border, MathUtil.RandomVector2(Border.min, Border.max), Quaternion.identity);
+        List<Vector2Int> enemySpawns = new List<Vector2Int>();
+
+        int maxIterations = enemiesToSpawn.Length * 25;
+        int iterations = 0;
+
+        while (enemySpawns.Count < enemiesToSpawn.Length) {
+            int rnd = Random.Range(0, walkableTiles.Count);
+            Vector2Int pos = walkableTiles[rnd];
+
+            bool found = false;
+            for (int x = -2; x < 2; x++) {
+                for (int y = -2; y < 2; y++) {
+                    if (enemySpawns.Contains(new Vector2Int(x, y))) {
+                        found = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!found) {
+                Enemy.InstantiateAndSpawn(enemiesToSpawn[enemySpawns.Count], Border, new Vector3(pos.x, pos.y, 0f), Quaternion.identity);
+
+                enemySpawns.Add(pos);
+            }
+
+            iterations++;
+            if (iterations >= maxIterations)
+                break;
         }
     }
-
 }
