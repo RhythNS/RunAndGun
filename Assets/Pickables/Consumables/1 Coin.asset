@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: 1 Coin
   m_EditorClassIdentifier: 
   id: 1
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: f1fe940ec174f344eaa22a0788eb360f, type: 3}
   instantPickup: 1
   moneyAmount: 1
