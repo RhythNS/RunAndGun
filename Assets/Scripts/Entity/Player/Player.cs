@@ -124,7 +124,7 @@ public class Player : Entity
         if (collision.TryGetComponent(out DungeonRoom dungeonRoom))
         {
             CurrentRoom = dungeonRoom;
-            if (LocalPlayer)
+            if (isLocalPlayer)
                 dungeonRoom.OnLocalPlayerEntered();
             GameManager.OnPlayerChangedRoom(this);
 
@@ -145,7 +145,7 @@ public class Player : Entity
         if (other.TryGetComponent(out DungeonRoom dungeonRoom))
         {
             CurrentRoom = null;
-            if (LocalPlayer)
+            if (isLocalPlayer)
                 dungeonRoom.OnLocalPlayerLeft();
             GameManager.OnPlayerChangedRoom(this);
 
