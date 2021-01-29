@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="5">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="21">
  <properties>
   <property name="roomType" type="int" value="1"/>
  </properties>
@@ -42,6 +42,54 @@
    <point/>
   </object>
   <object id="4" name="lightSource1" type="lightSource" x="104" y="232">
+   <point/>
+  </object>
+  <object id="5" name="randomObject" type="randomObject" x="136.376" y="119.236">
+   <point/>
+  </object>
+  <object id="6" name="randomObject" type="randomObject" x="151.281" y="119.609">
+   <point/>
+  </object>
+  <object id="7" name="randomObject" type="randomObject" x="119.981" y="136.749">
+   <point/>
+  </object>
+  <object id="8" name="randomObject" type="randomObject" x="135.631" y="135.259">
+   <point/>
+  </object>
+  <object id="9" name="randomObject" type="randomObject" x="182.953" y="230.647">
+   <point/>
+  </object>
+  <object id="10" name="randomObject" type="randomObject" x="168.794" y="231.02">
+   <point/>
+  </object>
+  <object id="11" name="randomObject" type="randomObject" x="136.004" y="231.765">
+   <point/>
+  </object>
+  <object id="12" name="randomObject" type="randomObject" x="198.975" y="247.788">
+   <point/>
+  </object>
+  <object id="13" name="randomObject" type="randomObject" x="216.488" y="247.415">
+   <point/>
+  </object>
+  <object id="14" name="randomObject" type="randomObject" x="295.109" y="23.8472">
+   <point/>
+  </object>
+  <object id="15" name="randomObject" type="randomObject" x="23.4746" y="24.2198">
+   <point/>
+  </object>
+  <object id="16" name="randomObject" type="randomObject" x="23.4746" y="232.138">
+   <point/>
+  </object>
+  <object id="17" name="randomObject" type="randomObject" x="200.838" y="119.609">
+   <point/>
+  </object>
+  <object id="18" name="randomObject" type="randomObject" x="215.743" y="119.236">
+   <point/>
+  </object>
+  <object id="19" name="randomObject" type="randomObject" x="247.788" y="117">
+   <point/>
+  </object>
+  <object id="20" name="randomObject" type="randomObject" x="40.2422" y="232.138">
    <point/>
   </object>
  </objectgroup>

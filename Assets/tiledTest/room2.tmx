@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="18" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="12">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="18" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="24">
  <properties>
   <property name="roomType" type="int" value="1"/>
  </properties>
@@ -50,6 +50,36 @@
    <properties>
     <property name="roomType" type="int" value="1"/>
    </properties>
+   <point/>
+  </object>
+  <object id="12" name="randomObject" type="randomObject" x="88.2347" y="71.2436">
+   <point/>
+  </object>
+  <object id="13" name="randomObject" type="randomObject" x="199.721" y="72.1379">
+   <point/>
+  </object>
+  <object id="14" name="randomObject" type="randomObject" x="200.317" y="167.527">
+   <point/>
+  </object>
+  <object id="15" name="randomObject" type="randomObject" x="87.9367" y="168.123">
+   <point/>
+  </object>
+  <object id="16" name="randomObject" type="randomObject" x="55.7429" y="24.4434">
+   <point/>
+  </object>
+  <object id="17" name="randomObject" type="randomObject" x="39.9441" y="23.8472">
+   <point/>
+  </object>
+  <object id="18" name="randomObject" type="randomObject" x="23.251" y="24.4434">
+   <point/>
+  </object>
+  <object id="19" name="randomObject" type="randomObject" x="71.5417" y="24.1453">
+   <point/>
+  </object>
+  <object id="20" name="randomObject" type="randomObject" x="215.817" y="24.4434">
+   <point/>
+  </object>
+  <object id="23" name="randomObject" type="randomObject" x="248.309" y="24.1453">
    <point/>
   </object>
  </objectgroup>
