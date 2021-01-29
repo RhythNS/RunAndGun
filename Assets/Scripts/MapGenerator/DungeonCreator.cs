@@ -43,6 +43,8 @@ public class DungeonCreator : MonoBehaviour
 
     [SerializeField]
     private EnemyObject[] enemyObjects;
+    [SerializeField]
+    private Pickable[] pickableObjects;
 
     [Header("Settings")]
     [SerializeField]
@@ -180,7 +182,13 @@ public class DungeonCreator : MonoBehaviour
             DungeonRoom dr = null;
             switch (dungeon.Rooms[i].Type) {
                 case RoomType.Start:
-                    dr = go.AddComponent<StartRoom>();
+                    StartRoom sr = go.AddComponent<StartRoom>();
+                    if (Player.LocalPlayer.isServer) {
+                        sr.SpawnItems(new Vector3(128, 128, 0));
+                    }
+
+                    dr = sr;
+
                     break;
 
                 case RoomType.Combat:
@@ -194,7 +202,12 @@ public class DungeonCreator : MonoBehaviour
                     break;
                     
                 case RoomType.Loot:
-                    dr = go.AddComponent<LootRoom>();
+                    LootRoom lr = go.AddComponent<LootRoom>();
+                    lr.pickables = new Pickable[dungeon.Rooms[i].TileCount / 48];
+                    for (int j = 0; j < lr.pickables.Length; j++) {
+                        lr.pickables[j] = pickableObjects[Random.Range(0, pickableObjects.Length)];
+                    }
+                    dr = lr;
                     break;
 
                 case RoomType.Shop:

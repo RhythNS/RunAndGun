@@ -176,7 +176,7 @@ public class GameManager : MonoBehaviour
 
         DungeonRoom room = players[firstAlivePlayer].CurrentRoom;
 
-        if (!room.EventOnRoomEntered || room.AlreadyCleared)
+        if (!room || !room.EventOnRoomEntered || room.AlreadyCleared)
             return;
 
         for (int i = firstAlivePlayer + 1; i < players.Count; i++)

@@ -15,7 +15,8 @@ public class DungeonDoor : MonoBehaviour
 
     private BoxCollider2D coll;
 
-    private bool isLocked = true;
+    private bool isLocked = false;
+
     /// <summary>
     /// Gets the current lockstatus. If the door is open and IsLocked is set to true, the door will close.
     /// </summary>
@@ -45,8 +46,13 @@ public class DungeonDoor : MonoBehaviour
         if (IsLocked || IsOpen)
             return;
 
+        IsOpen = true;
+
         coll.enabled = false;
-        transform.position += Vector3.up * 2f;
+        if (IsLeftRight)
+            transform.position += Vector3.up * 3f;
+        else
+            transform.position += Vector3.up * 2f;
     }
 
     /// <summary>
@@ -56,8 +62,13 @@ public class DungeonDoor : MonoBehaviour
         if (!IsOpen)
             return;
 
+        IsOpen = false;
+
         coll.enabled = true;
-        transform.position += Vector3.down * 2f;
+        if (IsLeftRight)
+            transform.position += Vector3.down * 3f;
+        else
+            transform.position += Vector3.down * 2f;
     }
 
     public void OnCollisionEnter2D(Collision2D collision) {

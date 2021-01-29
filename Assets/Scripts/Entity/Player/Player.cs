@@ -121,11 +121,11 @@ public class Player : Entity
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.TryGetComponent(out CombatRoom combatRoom))
+        if (collision.TryGetComponent(out DungeonRoom dungeonRoom))
         {
-            CurrentRoom = combatRoom;
+            CurrentRoom = dungeonRoom;
             if (LocalPlayer)
-                combatRoom.OnLocalPlayerEntered();
+                dungeonRoom.OnLocalPlayerEntered();
             GameManager.OnPlayerChangedRoom(this);
 
             return;
@@ -140,13 +140,13 @@ public class Player : Entity
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.TryGetComponent(out CombatRoom combatRoom))
+        if (other.TryGetComponent(out DungeonRoom dungeonRoom))
         {
             CurrentRoom = null;
             if (LocalPlayer)
-                combatRoom.OnLocalPlayerLeft();
+                dungeonRoom.OnLocalPlayerLeft();
             GameManager.OnPlayerChangedRoom(this);
 
             return;
