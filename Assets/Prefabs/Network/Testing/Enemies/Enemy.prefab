@@ -234,8 +234,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df01f97a8719bc14c9f98fb4e613173e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eastHand: {x: 0, y: 0}
-  westHand: {x: 0, y: 0}
+  eastHand: {x: 0.26, y: -0.36}
+  westHand: {x: -0.32, y: -0.36}
   northPoint: {x: 0, y: 0}
   southPoint: {x: 0, y: 0}
 --- !u!114 &4227666607956230203

@@ -17,8 +17,8 @@ public abstract class DungeonRoom : MonoBehaviour
         get => border; set
         {
             border = value;
-            boxCollider.offset = value.position + Vector2.one + (value.size / 2f - Vector2.one);
-            boxCollider.size = value.size - (Vector2.one * 2f);
+            boxCollider.offset = value.position + (value.size * 0.5f);
+            boxCollider.size = value.size - new Vector2(3, 3); // TODO: Temp placeholder value for shrinking the bounds.
         }
     }
     [SerializeField] private Rect border;

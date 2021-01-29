@@ -26,7 +26,7 @@ MonoBehaviour:
   targetMode: 1
   useLocalSpace: 0
   range: 20
-  speed: 6
+  speed: 10
   baseDamage: 20
   magazineSize: 8
   reloadTime: 1
