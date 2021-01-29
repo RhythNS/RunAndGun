@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 4227666607956230144}
   - component: {fileID: 4227666607956230145}
   - component: {fileID: 4227666607956230206}
-  - component: {fileID: -6145697478830120136}
   - component: {fileID: 5790897775952682549}
   - component: {fileID: 4227666607956230207}
   - component: {fileID: 4227666607956230204}
@@ -110,27 +109,6 @@ MonoBehaviour:
   serverOnly: 0
   m_AssetId: 
   hasSpawned: 0
---- !u!50 &-6145697478830120136
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4227666607956230200}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &5790897775952682549
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -196,6 +174,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2656fc18465b44c42b3ae1c1ecf0f5c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  state: 0
+  destination: {x: 0, y: 0}
+  constantDirection: {x: 0, y: 0}
   meterPerSecond: 0
 --- !u!114 &4227666607956230205
 MonoBehaviour:

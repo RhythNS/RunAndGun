@@ -6,7 +6,7 @@ public class DungeonDict : MonoBehaviour
     public static DungeonDict Instance { get; private set; }
 
     public DungeonRoom[] Rooms { get; private set; }
-    
+
     public Dungeon dungeon;
 
     [SerializeField] private bool debug = false;
@@ -20,9 +20,20 @@ public class DungeonDict : MonoBehaviour
             return;
         }
         Instance = this;
+    }
 
+    private void Start()
+    {
         if (debug)
-            ResetRooms(100);
+        {
+            DungeonRoom[] rooms = FindObjectsOfType<DungeonRoom>();
+            ResetRooms(rooms.Length);
+            for (int i = 0; i < rooms.Length; i++)
+            {
+                rooms[i].id = i;
+                Register(rooms[i]);
+            }
+        }
     }
 
     public void Register(DungeonRoom room)

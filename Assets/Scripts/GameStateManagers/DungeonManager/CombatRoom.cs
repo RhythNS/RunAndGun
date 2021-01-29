@@ -11,10 +11,13 @@ public class CombatRoom : DungeonRoom
  
     public int ThreatLevel { get; set; }
     
-    [SerializeField] private EnemyObject[] enemiesToSpawn;
+    public EnemyObject[] enemiesToSpawn;
 
     public override void OnAllPlayersEntered()
     {
+        if (enemiesToSpawn.Length == 0)
+            return;
+
         CloseDoors();
         SpawnEnemies();
         GameManager.OnRoomEventStarted(Border);

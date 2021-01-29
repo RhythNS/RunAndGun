@@ -155,7 +155,7 @@ public class Player : Entity
 
     private void OnDestroy()
     {
-        if (Camera.main && Camera.main.TryGetComponent(out PlayerCamera camera))
+        if (Camera.main && Camera.main.TryGetComponent(out PlayerCamera camera) && camera.ToFollow == transform)
             camera.ToFollow = null;
         if (PlayersDict.Instance)
             PlayersDict.Instance.DeRegister(this);

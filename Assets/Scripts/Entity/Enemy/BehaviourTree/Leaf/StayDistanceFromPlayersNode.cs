@@ -16,6 +16,7 @@ public class StayDistanceFromPlayersNode : BNodeAdapter
     {
         health = target.Get();
         prefDistance = Brain.GetComponent<Enemy>().EquippedWeapon.Weapon.Range * distancePercent;
+        Debug.Log(prefDistance);
     }
 
     public override void Update()
@@ -26,8 +27,9 @@ public class StayDistanceFromPlayersNode : BNodeAdapter
             return;
         }
         Vector2 ownPos = Brain.transform.position;
-        Vector2 dir = (ownPos - ((Vector2)health.transform.position)).normalized;
-        Mover.Destination = ownPos + (dir * prefDistance);
+        Vector2 targetPos = health.transform.position;
+        Vector2 dir = (ownPos - targetPos).normalized;
+        Mover.Destination = targetPos + (dir * prefDistance);
         Mover.ShouldMove = true;
     }
 

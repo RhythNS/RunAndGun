@@ -86,10 +86,22 @@ public class GameManager : MonoBehaviour
 
         instance.CurrentState = State.Wandering;
 
+        Vector3 toTeleport = new Vector3();
+        DungeonRoom[] rooms = DungeonDict.Instance.Rooms;
+        for (int i = 0; i < rooms.Length; i++)
+        {
+            if (rooms[i].RoomType == MapGenerator.RoomType.Start)
+            {
+                toTeleport = rooms[i].Border.position + (rooms[i].Border.size * 0.5f);
+                break;
+            }
+        }
+
         List<Player> players = PlayersDict.Instance.Players;
         for (int i = 0; i < players.Count; i++)
         {
             players[i].StateCommunicator.levelLoaded = false;
+            players[i].SmoothSync.teleportAnyObjectFromServer(toTeleport, Quaternion.identity, new Vector3(1, 1, 1));
         }
 
         DungeonDict.Instance.dungeon = DungeonCreator.Instance.dungeon; // TODO: Dungeon creator should set that itself

@@ -62,7 +62,7 @@ public class ShootAtNode : BNodeAdapter
     /// <returns>True if the target was killed. False otherwise.</returns>
     private bool SetDirection()
     {
-        if (EnemyNodeUtil.TargetAlive(health))
+        if (EnemyNodeUtil.TargetAlive(health) == false)
         {
             CurrentStatus = Status.Success;
             return true;

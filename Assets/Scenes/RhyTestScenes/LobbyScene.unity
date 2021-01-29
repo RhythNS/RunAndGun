@@ -1085,7 +1085,7 @@ SpriteRenderer:
   m_Size: {x: 4, y: 2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &1149352901
@@ -1843,6 +1843,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1365799234425872916, guid: 51cb51d065c14cd4d8c4ff558239b518,
+        type: 3}
+      propertyPath: weapons.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: ac7a3d27f5349fc4589c7af1ddc3ad4f,
+        type: 2}
+    - target: {fileID: 1365799234425872916, guid: 51cb51d065c14cd4d8c4ff558239b518,
+        type: 3}
+      propertyPath: consumables.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: 381cc669c3963ae42b6c7f3c9cafaef2,
+        type: 2}
     - target: {fileID: 1365799234425872923, guid: 51cb51d065c14cd4d8c4ff558239b518,
         type: 3}
       propertyPath: customObjects.Array.size

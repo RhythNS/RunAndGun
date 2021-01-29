@@ -52,11 +52,6 @@ public abstract class DungeonRoom : MonoBehaviour
         gameObject.layer = LayerDict.Instance.GetDungeonRoomLayer();
     }
 
-    private void Start()
-    {
-        DungeonDict.Instance.Register(this);
-    }
-
     public bool CheckAllPlayersEntered(List<Bounds> playerBounds)
     {
         for (int i = 0; i < playerBounds.Count; i++)

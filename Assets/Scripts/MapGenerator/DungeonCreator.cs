@@ -181,8 +181,10 @@ public class DungeonCreator : MonoBehaviour
                     break;
 
                 case RoomType.Combat:
-                    dr = go.AddComponent<CombatRoom>();
-                    ((CombatRoom)dr).ThreatLevel = dungeon.Rooms[i].TileCount;
+                    CombatRoom cr = go.AddComponent<CombatRoom>();
+                    cr.ThreatLevel = dungeon.Rooms[i].TileCount;
+                    cr.enemiesToSpawn = new EnemyObject[0];
+                    dr = cr;
                     break;
 
                 case RoomType.Loot:
@@ -204,6 +206,7 @@ public class DungeonCreator : MonoBehaviour
             if (dr != null) {
                 // set room id
                 dr.id = i;
+                DungeonDict.Instance.Register(dr);
 
                 // set room border
                 dr.Border = new Rect(dungeon.Rooms[i].Position.x, dungeon.Rooms[i].Position.y, dungeon.Rooms[i].Layout.XSize, dungeon.Rooms[i].Layout.YSize);

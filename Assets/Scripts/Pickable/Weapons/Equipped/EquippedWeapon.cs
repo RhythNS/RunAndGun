@@ -41,6 +41,7 @@ public class EquippedWeapon : NetworkBehaviour
     [SerializeField] int remainingBullets;
     [SerializeField] private bool requstStopFire;
     Vector2 localDirection;
+    private bool serverAuthority;
 
     public Vector2 ServerDirection => serverDirection;
     [SyncVar(hook = nameof(OnDirectionChanged))] Vector2 serverDirection;
@@ -52,6 +53,7 @@ public class EquippedWeapon : NetworkBehaviour
     {
         Health = GetComponent<Health>();
         Collider2D = GetComponent<Collider2D>();
+        serverAuthority = GetComponent<Entity>().EntityType == EntityType.Enemy;
 
         WeaponAnimator = GetComponentInChildren<WeaponAnimator>(); // TODO: <-- maybe change this
     }
@@ -65,7 +67,10 @@ public class EquippedWeapon : NetworkBehaviour
     {
         --remainingBullets;
         WeaponAnimator.OnSingleShotFired();
-        CmdSingleShotFired();
+        if (serverAuthority)
+            RpcSingleShotFired();
+        else
+            CmdSingleShotFired();
     }
 
     /// <summary>
@@ -74,7 +79,10 @@ public class EquippedWeapon : NetworkBehaviour
     public void OnStopFiring()
     {
         requstStopFire = false;
-        CmdStoppedFire();
+        if (serverAuthority)
+            RpcStoppedFire();
+        else
+            CmdStoppedFire();
         WeaponAnimator.OnStoppedFire();
     }
 
@@ -85,7 +93,11 @@ public class EquippedWeapon : NetworkBehaviour
     {
         remainingBullets = weapon.MagazineSize;
         WeaponAnimator.OnStoppedReload();
-        CmdOnStoppedReload();
+
+        if (serverAuthority)
+            RpcOnStoppedReload();
+        else
+            CmdOnStoppedReload();
     }
 
     #endregion
@@ -119,6 +131,12 @@ public class EquippedWeapon : NetworkBehaviour
     public void CmdOnStoppedReload()
     {
         RpcOnStoppedReload();
+    }
+
+    [Command]
+    public void CmdSetDirection(Vector2 direction)
+    {
+        serverDirection = direction;
     }
 
     [ClientRpc(excludeOwner = true)]
@@ -193,7 +211,11 @@ public class EquippedWeapon : NetworkBehaviour
         fireCoroutine = new ExtendedCoroutine(this, weapon.Shoot(this), OnStopFiring);
         fireCoroutine.Start();
         WeaponAnimator.OnStartedFire();
-        CmdStartedFire();
+
+        if (serverAuthority)
+            RpcStartedFire();
+        else
+            CmdStartedFire();
         return true;
     }
 
@@ -206,6 +228,12 @@ public class EquippedWeapon : NetworkBehaviour
             return;
         direction.Normalize();
         localDirection = direction;
+
+        if (serverAuthority)
+            serverDirection = direction;
+        else
+            CmdSetDirection(direction);
+        
         WeaponAnimator.SetDirection(direction);
     }
 
@@ -225,7 +253,11 @@ public class EquippedWeapon : NetworkBehaviour
         if (weapon && !IsFiring && !IsReloading)
         {
             WeaponAnimator.OnStartedReload();
-            CmdOnStartedReload();
+
+            if (serverAuthority)
+                RpcOnStartedReload();
+            else
+                CmdOnStartedReload();
             reloadCoroutine = new ExtendedCoroutine(this, StartReload(weapon.ReloadTime), OnReloaded);
             reloadCoroutine.Start();
             return true;

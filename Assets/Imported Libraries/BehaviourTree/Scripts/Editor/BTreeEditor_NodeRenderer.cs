@@ -65,7 +65,8 @@ namespace Rhyth.BTree
                 // Draw connection boxes
                 if (rootNode != allNodes[i])
                     GUI.Box(upper, "", connectionStyle);
-                GUI.Box(lower, "", connectionStyle);
+                if (allNodes[i].MaxNumberOfChildren != 0)
+                    GUI.Box(lower, "", connectionStyle);
             }
 
             // Draw the connections of each nodes with bezier curves
