@@ -6,8 +6,19 @@ public class RAGNetworkManager : NobleNetworkManager
 {
     public override void OnStartServer()
     {
+        base.OnStartServer();
+
         // Register custom messages
         NetworkServer.RegisterHandler<JoinMessage>(OnJoinMessage);
+    }
+
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+
+        NetworkClient.RegisterHandler<StartGameMessage>(OnStartGameMessage);
+        NetworkClient.RegisterHandler<ReturnToLobbyMessage>(OnReturnToLobbyMessage);
+        NetworkClient.RegisterHandler<DoorMessage>(OnDoorsMessage);
     }
 
     public override void OnClientConnect(NetworkConnection conn)
@@ -52,6 +63,31 @@ public class RAGNetworkManager : NobleNetworkManager
         }
         newPlayer.userName = joinMessage.name;
 
+    }
+
+    private void OnStartGameMessage(NetworkConnection connection, StartGameMessage startGameMessage)
+    {
+        LobbyLevel.Instance.Hide();
+        DungeonCreator.Instance.CreateDungeon(startGameMessage.levelSeed);
+    }
+
+    private void OnReturnToLobbyMessage(NetworkConnection connection, ReturnToLobbyMessage returnToLobbyMessage)
+    {
+        LobbyLevel.Instance.Show();
+    }
+
+    private void OnDoorsMessage(NetworkConnection connection, DoorMessage doorMessage)
+    {
+        if (!DungeonDict.Instance || !DungeonDict.Instance.IsIdValid(doorMessage.roomId))
+        {
+            Debug.LogWarning("Recieved door message with invalid id! (" + doorMessage.roomId + ")");
+            return;
+        }
+
+        if (doorMessage.open)
+            DungeonDict.Instance.Get(doorMessage.roomId).OnOpenDoors();
+        else
+            DungeonDict.Instance.Get(doorMessage.roomId).OnCloseDoors();
     }
 
 }

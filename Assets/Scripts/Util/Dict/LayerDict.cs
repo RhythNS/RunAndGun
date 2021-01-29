@@ -4,6 +4,10 @@ public class LayerDict : MonoBehaviour
 {
     public static LayerDict Instance { get; private set; }
 
+    [SerializeField] private int playerLayer;
+    [SerializeField] private int enemyLayer;
+    [SerializeField] private int dungeonRoomLayer;
+
     [SerializeField] private int bulletTargetPlayerOnly;
     [SerializeField] private int bulletTargetEnemyOnly;
     [SerializeField] private int bulletTargetPlayerAndEnemy;
@@ -18,6 +22,12 @@ public class LayerDict : MonoBehaviour
             return;
         }
         Instance = this;
+    }
+
+    public int GetBulletCollisionLayerMask()
+    {
+        // return objectLayer | someOtherLayerThatBulletsCanHit
+        return ~(1 << enemyLayer | 1 << playerLayer | 1 << bulletTargetPlayerOnly | 1 << bulletTargetEnemyOnly | 1 << bulletTargetPlayerAndEnemy);
     }
 
     public int GetBulletLayer(EntityType entityType, TargetMode targetMode)
@@ -53,6 +63,7 @@ public class LayerDict : MonoBehaviour
         }
     }
 
+    public int GetDungeonRoomLayer() => dungeonRoomLayer;
 
     private void OnDestroy()
     {

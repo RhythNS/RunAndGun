@@ -1,13 +1,15 @@
-﻿using Mirror;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 using MapGenerator;
+using TiledSharp;
 
-public class DungeonCreator : NetworkBehaviour
+public class DungeonCreator : MonoBehaviour
 {
+    public static DungeonCreator Instance { get; private set; }
+
     [HideInInspector]
     public Dungeon dungeon;
 
@@ -24,71 +26,84 @@ public class DungeonCreator : NetworkBehaviour
     [SerializeField]
     private Tile tilePlaceHolder;
 
+    [SerializeField]
+    private Transform objectContainer;
+    [SerializeField]
+    private Transform roomsContainer;
+
+    [SerializeField]
+    private GameObject prefabDungeonRoom;
+    [SerializeField]
+    private GameObject prefabDoorLR;
+    [SerializeField]
+    private GameObject prefabDoorUD;
+
+    [SerializeField]
+    private Transform mask;
+
+    [SerializeField]
+    private EnemyObject[] enemyObjects;
+    [SerializeField]
+    private Pickable[] pickableObjects;
+
     [Header("Settings")]
     [SerializeField]
     private Vector2Int maxSize = Vector2Int.one;
 
-    [SerializeField]
-    [Range(3, 24)]
-    private int minRoomSize = 3;
-    [SerializeField]
-    [Range(3, 24)]
-    private int maxRoomSize = 9;
+    public List<DungeonRoom> dungeonRooms = new List<DungeonRoom>();
 
-    [SerializeField]
-    [Range(3, 24)]
-    private int minCorridorLength = 3;
-    [SerializeField]
-    [Range(3, 24)]
-    private int maxCorridorLength = 7;
-
-    [SerializeField]
-    [Range(1, 100)]
-    private int maxStructures = 50;
-    [SerializeField]
-    [Range(0f, 1f)]
-    private float roomChance = 0.4f;
-
-    [SyncVar]
-    private int seed;
-
-    private void Awake() {
-        if (isServer)
-            seed = Random.Range(int.MinValue, int.MaxValue);
+    private void Awake()
+    {
+        if (Instance)
+        {
+            Debug.LogWarning("Already a DungeonCreator in scene! Deleting myself!");
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
     }
 
-    public override void OnStartClient() {
-        base.OnStartClient();
-
-        CreateDungeon(seed);
-    }
-
-    private void OnValidate() {
-        // clamp maxSize
-        if (maxSize.x < 16) maxSize.x = 16;
-        if (maxSize.y < 16) maxSize.y = 16;
-        if (maxSize.x > 1024) maxSize.x = 1024;
-        if (maxSize.y > 1024) maxSize.y = 1024;
-
-        // make sure min is below max
-        if (minRoomSize > maxRoomSize)
-            minRoomSize = maxRoomSize;
-        if (minCorridorLength > maxCorridorLength)
-            minCorridorLength = maxCorridorLength;
+    private void OnDestroy()
+    {
+        if (Instance == this)
+            Instance = null;
     }
 
     public void CreateDungeon(int seed) {
-        List<Fast2DArray<int>> roomLayouts = new List<Fast2DArray<int>>();
-        List<List<GameObject>> roomGameObjects = new List<List<GameObject>>();
+        if (roomsContainer.childCount > 0) {
+            for (int i = roomsContainer.childCount - 1; i >= 0; i--) {
+                Destroy(roomsContainer.GetChild(i).gameObject);
+            }
+        }
 
-        int mapCount = 4;
-        List<GameObject> gos;
-        for (int i = 1; i < mapCount; i++) {
-            roomLayouts.Add(TiledImporter.Instance.GetReplacableMap("room" + i.ToString(), 0, 0, out gos));
+        dungeonRooms = new List<DungeonRoom>();
+
+        List<Fast2DArray<int>> roomLayouts = new List<Fast2DArray<int>>();
+        List<List<TiledImporter.PrefabLocations>> roomGameObjects = new List<List<TiledImporter.PrefabLocations>>();
+        List<RoomType> roomTypes = new List<RoomType>();
+
+        int mapCount = 6;
+        for (int i = 1; i <= mapCount; i++) {
+            roomLayouts.Add(TiledImporter.Instance.GetReplacableMap("room" + i.ToString(), out PropertyDict properties, out List<TiledImporter.PrefabLocations> gos));
+
+            // Example:
+            if (properties.TryGetValue("roomType", out string value) == false)
+                throw new System.Exception("No room type in map: room" + i + "!");
+
+            if (int.TryParse(value, out int roomType) == false)
+                throw new System.Exception("Room type is not an integer in: room" + i + "!");
+
+            // do something with the roomType here
+            roomTypes.Add((RoomType)roomType);
+
             roomGameObjects.Add(gos);
         }
 
-        dungeon = new Dungeon(maxSize.x, maxSize.y, roomLayouts.ToArray(), roomGameObjects.ToArray(), 50, seed);
+        dungeon = new Dungeon(maxSize.x, maxSize.y, roomLayouts.ToArray(), roomGameObjects.ToArray(), roomTypes.ToArray(), 10, seed);
+
+        // adjust mask size
+        mask.localScale = new Vector3(dungeon.Size.x, dungeon.Size.y, 1f);
+        mask.position = this.transform.position + (mask.localScale / 2f);
 
         // clear tilemaps
         tilemapFloor.ClearAllTiles();
@@ -155,11 +170,126 @@ public class DungeonCreator : NetworkBehaviour
         }
         tilemapCeiling.SetTiles(positions.ToArray(), tiles.ToArray());
 
-        // place GameObjects
-        foreach (var room in dungeon.Rooms) {
-            foreach (var go in room.gameObjects) {
+        // set rooms
+        dungeonRooms = new List<DungeonRoom>();
+        DungeonDict.Instance.ResetRooms(dungeon.Rooms.Length);
 
+        for (int i = 0; i < dungeon.Rooms.Length; i++) {
+            GameObject go = Instantiate(prefabDungeonRoom);
+            go.transform.parent = roomsContainer;
+
+            // set room type
+            DungeonRoom dr = null;
+            switch (dungeon.Rooms[i].Type) {
+                case RoomType.Start:
+                    StartRoom sr = go.AddComponent<StartRoom>();
+                    if (Player.LocalPlayer.isServer) {
+                        sr.SpawnItems(new Vector3(128, 128, 0));
+                    }
+
+                    dr = sr;
+
+                    break;
+
+                case RoomType.Combat:
+                    CombatRoom cr = go.AddComponent<CombatRoom>();
+                    cr.ThreatLevel = dungeon.Rooms[i].TileCount;
+                    cr.enemiesToSpawn = new EnemyObject[cr.ThreatLevel / 48];
+                    for (int j = 0; j < cr.enemiesToSpawn.Length; j++) {
+                        cr.enemiesToSpawn[j] = enemyObjects[Random.Range(0, enemyObjects.Length)];
+                    }
+                    dr = cr;
+                    break;
+                    
+                case RoomType.Loot:
+                    LootRoom lr = go.AddComponent<LootRoom>();
+                    lr.pickables = new Pickable[dungeon.Rooms[i].TileCount / 48];
+                    for (int j = 0; j < lr.pickables.Length; j++) {
+                        lr.pickables[j] = pickableObjects[Random.Range(0, pickableObjects.Length)];
+                    }
+                    dr = lr;
+                    break;
+
+                case RoomType.Shop:
+                    dr = go.AddComponent<ShopRoom>();
+                    break;
+
+                case RoomType.Boss:
+                    dr = go.AddComponent<BossRoom>();
+                    break;
+
+                default:
+                    break;
+            }
+
+            if (dr != null) {
+                // set room id
+                dr.id = i;
+                DungeonDict.Instance.Register(dr);
+
+                // set room border
+                dr.Border = new Rect(dungeon.Rooms[i].Position.x, dungeon.Rooms[i].Position.y, dungeon.Rooms[i].Layout.XSize, dungeon.Rooms[i].Layout.YSize);
+                dr.walkableTiles = dungeon.GetWalkableTiles(i);
+
+                // set room objects
+                List<GameObject> objs = new List<GameObject>();
+                foreach (var prefabContainer in dungeon.Rooms[i].GameObjects) {
+                    GameObject obj = Instantiate(prefabContainer.Prefab);
+                    obj.transform.position = new Vector3(dungeon.Rooms[i].Position.x, dungeon.Rooms[i].Position.y, 0f) + prefabContainer.Position;
+                    obj.transform.parent = go.transform;
+                    objs.Add(obj);
+                }
+                dr.objects = objs;
+
+                // set room doors
+                DoorLocations[] doorLocs = dungeon.GetDoorsOfRoom(i);
+                foreach (var doorLoc in doorLocs) {
+                    if (doorLoc.IsLeftRight) {
+                        GameObject d = Instantiate(prefabDoorLR, new Vector3(doorLoc.Position.x + 0.5f, doorLoc.Position.y + 0.5f, 0f), Quaternion.identity);
+                        d.transform.parent = go.transform;
+
+                        DungeonDoor dd = d.AddComponent<DungeonDoor>();
+                        dd.IsLeftRight = true;
+                        if (i == 0)
+                            dd.IsLocked = false;
+                        dr.doors.Add(dd);
+                    } else {
+                        GameObject d = Instantiate(prefabDoorUD, new Vector3(doorLoc.Position.x + 0.5f, doorLoc.Position.y + 0.5f, 0f), Quaternion.identity);
+                        d.transform.parent = go.transform;
+
+                        DungeonDoor dd = d.AddComponent<DungeonDoor>();
+                        dd.IsLeftRight = false;
+                        if (i == 0)
+                            dd.IsLocked = false;
+                        dr.doors.Add(dd);
+                    }
+                }
+
+                dungeonRooms.Add(dr);
+            } else {
+                throw new System.Exception("No DungeonRoom designated...");
             }
         }
+
+        if (Player.LocalPlayer) // check to allow for debugging if a localplayer is not scene
+            Player.LocalPlayer.StateCommunicator.CmdLevelSetLoaded(true);
+    }
+
+    public void AdjustMask(Vector3 position, Vector3 scale) {
+        mask.localScale = scale;
+        mask.position = position + scale / 2f;
+    }
+
+    public void ResetMask() {
+        mask.localScale = new Vector3(dungeon.Size.x, dungeon.Size.y, 1f);
+        mask.position = this.transform.position + (mask.localScale / 2f);
+    }
+
+    public Vector3 TilePositionToWorldPosition(Vector2Int pos) {
+        return this.transform.position + new Vector3(pos.x + 0.5f, pos.y + 0.5f, 0f);
+    }
+
+    public Vector2Int WorldPositionToTilePosition(Vector3 pos) {
+        return new Vector2Int((int)(pos.x - this.transform.position.x), (int)(pos.y - this.transform.position.y));
     }
 }

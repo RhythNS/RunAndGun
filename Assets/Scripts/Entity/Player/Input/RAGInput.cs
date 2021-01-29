@@ -67,7 +67,6 @@ public abstract class RAGInput : MonoBehaviour
 
         if (weapon.Weapon)
         {
-
             if (shouldFire)
             {
                 if (weapon.CanFire)

@@ -22,7 +22,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - DungeonRoom
   - BulletTargetPlayer
   - BulletTargetEnemy
   - BulletTargetAll
@@ -44,6 +44,9 @@ TagManager:
     locked: 0
   - name: Floor
     uniqueID: 4053311029
+    locked: 0
+  - name: Entities
+    uniqueID: 3972799645
     locked: 0
   - name: Wall
     uniqueID: 2589566591

@@ -23,7 +23,8 @@ public class Player : Entity
     public PlayerAnimationController PlayerAnimationController { get; private set; }
     public SmoothSyncMirror SmoothSync { get; private set; }
     public Collider2D Collider2D { get; private set; }
-
+    public StateCommunicator StateCommunicator { get; private set; }
+    public DungeonRoom CurrentRoom { get; private set; }
 
     private void Awake()
     {
@@ -34,6 +35,12 @@ public class Player : Entity
         EquippedWeapon = GetComponent<EquippedWeapon>();
         SmoothSync = GetComponent<SmoothSyncMirror>();
         Collider2D = GetComponent<Collider2D>();
+        StateCommunicator = GetComponent<StateCommunicator>();
+    }
+
+    private void Start()
+    {
+        PlayersDict.Instance.Register(this);
     }
 
     public override void OnStartClient()
@@ -114,6 +121,16 @@ public class Player : Entity
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.TryGetComponent(out DungeonRoom dungeonRoom))
+        {
+            CurrentRoom = dungeonRoom;
+            if (isLocalPlayer)
+                dungeonRoom.OnLocalPlayerEntered();
+            GameManager.OnPlayerChangedRoom(this);
+
+            return;
+        }
+
         if (isLocalPlayer && !Status.Dashing)
         {
             if (collision.TryGetComponent(out PickableInWorld pickable) && pickable.Pickable.InstantPickup)
@@ -123,9 +140,26 @@ public class Player : Entity
         }
     }
 
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.TryGetComponent(out DungeonRoom dungeonRoom))
+        {
+            CurrentRoom = null;
+            if (isLocalPlayer)
+                dungeonRoom.OnLocalPlayerLeft();
+            GameManager.OnPlayerChangedRoom(this);
+
+            return;
+        }
+    }
+
     private void OnDestroy()
     {
-        if (Camera.main && Camera.main.TryGetComponent(out PlayerCamera camera))
+        if (Camera.main && Camera.main.TryGetComponent(out PlayerCamera camera) && camera.ToFollow == transform)
             camera.ToFollow = null;
+        if (PlayersDict.Instance)
+            PlayersDict.Instance.DeRegister(this);
+        if (LocalPlayer == this)
+            LocalPlayer = null;
     }
 }

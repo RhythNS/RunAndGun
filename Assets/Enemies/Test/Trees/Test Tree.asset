@@ -1,0 +1,203 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8313901214273053053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 848b8cb122d6c584ebf134caeb6c0d99, type: 3}
+  m_Name: Set Target
+  m_EditorClassIdentifier: 
+  breakPointEnabled: 0
+  children: []
+  boundsInEditor:
+    serializedVersion: 2
+    x: 135
+    y: -58
+    width: 80
+    height: 80
+  targetHealth: {fileID: -6520510034418494482}
+  targetPlayers: 1
+--- !u!114 &-7796557103694295432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff2c9638f94bdb548b86ee75c5c259f9, type: 3}
+  m_Name: Reload
+  m_EditorClassIdentifier: 
+  breakPointEnabled: 0
+  children: []
+  boundsInEditor:
+    serializedVersion: 2
+    x: 585
+    y: 341
+    width: 80
+    height: 80
+--- !u!114 &-6520510034418494482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2ae472dc4030164585e8ba5f9a755fb, type: 3}
+  m_Name: TargetHealth
+  m_EditorClassIdentifier: 
+  health: {fileID: 0}
+--- !u!114 &-2603769224053737112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfc898845fd13e748b592e2bdf87632c, type: 3}
+  m_Name: Forever
+  m_EditorClassIdentifier: 
+  breakPointEnabled: 0
+  children:
+  - {fileID: 1267601561765722217}
+  boundsInEditor:
+    serializedVersion: 2
+    x: 484
+    y: 39
+    width: 80
+    height: 80
+--- !u!114 &-1342336485242944345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53577cdb5d1a4794b916806cf5c046d2, type: 3}
+  m_Name: Shoot
+  m_EditorClassIdentifier: 
+  breakPointEnabled: 0
+  children: []
+  boundsInEditor:
+    serializedVersion: 2
+    x: 412
+    y: 338
+    width: 80
+    height: 80
+  targetHealth: {fileID: -6520510034418494482}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dffe61478ed6e7b498c9b997879bf192, type: 3}
+  m_Name: Test Tree
+  m_EditorClassIdentifier: 
+  root: {fileID: 6789554629701887574}
+--- !u!114 &885335971054306553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0020a97ace32e14a995b793c7a86dc5, type: 3}
+  m_Name: Stay away from Target
+  m_EditorClassIdentifier: 
+  breakPointEnabled: 0
+  children: []
+  boundsInEditor:
+    serializedVersion: 2
+    x: 326
+    y: 38
+    width: 80
+    height: 80
+  target: {fileID: -6520510034418494482}
+  distancePercent: 0.5
+--- !u!114 &1267601561765722217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d005b5b901613fd44820becea8e4a31a, type: 3}
+  m_Name: Shoot or Reload
+  m_EditorClassIdentifier: 
+  breakPointEnabled: 0
+  children:
+  - {fileID: -1342336485242944345}
+  - {fileID: -7796557103694295432}
+  boundsInEditor:
+    serializedVersion: 2
+    x: 484
+    y: 195
+    width: 80
+    height: 80
+--- !u!114 &6789554629701887574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ebfb1a116e272644a2b5d0ee9def89e, type: 3}
+  m_Name: Guard Target
+  m_EditorClassIdentifier: 
+  breakPointEnabled: 0
+  children:
+  - {fileID: -8313901214273053053}
+  - {fileID: 7248391693774374799}
+  boundsInEditor:
+    serializedVersion: 2
+    x: 250
+    y: -293
+    width: 80
+    height: 80
+  checkEverySeconds: 1
+--- !u!114 &7248391693774374799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e14c49380ef658440a51306adf88ddd1, type: 3}
+  m_Name: In Parallel
+  m_EditorClassIdentifier: 
+  breakPointEnabled: 0
+  children:
+  - {fileID: 885335971054306553}
+  - {fileID: -2603769224053737112}
+  boundsInEditor:
+    serializedVersion: 2
+    x: 397
+    y: -130
+    width: 80
+    height: 80
+  childFailed: 1
+  childSucceeded: 1

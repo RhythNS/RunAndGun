@@ -1,6 +1,9 @@
 ﻿using Rhyth.BTree;
 using UnityEngine;
 
+/// <summary>
+/// Used for creating an enemy entity.
+/// </summary>
 [CreateAssetMenu(menuName = "Enemy")]
 public class EnemyObject : ScriptableObject
 {

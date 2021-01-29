@@ -1,5 +1,4 @@
-﻿using Mirror;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Pickable/Weapon/Weapon")]
@@ -21,6 +20,9 @@ public class Weapon : Pickable
 
     public RuntimeAnimatorController Animator => animator;
     [SerializeField] private RuntimeAnimatorController animator;
+
+    public WeaponAnimatorType WeaponAnimatorType => weaponAnimatorType;
+    [SerializeField] private WeaponAnimatorType weaponAnimatorType;
 
     public TargetMode TargetMode => targetMode;
     [SerializeField] private TargetMode targetMode;

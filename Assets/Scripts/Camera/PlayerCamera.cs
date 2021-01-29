@@ -18,6 +18,11 @@ public class PlayerCamera : MonoBehaviour
 
     public Vector2 focusPoint = new Vector2(0.0f, 0.0f);
 
+    private void Start()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
+
     private void Update()
     {
         Vector2 pos = ToFollow.position;

@@ -25,7 +25,7 @@ public class PlayerAnimationController : MonoBehaviour
 
         if (prevDashing == status.Dashing)
         {
-            SetDirection(weapon.Direction);
+            SetDirection(weapon.LocalDirection);
         }
         else
         {

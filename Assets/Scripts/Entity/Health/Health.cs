@@ -55,6 +55,12 @@ public class Health : NetworkBehaviour
     }
 
     [Server]
+    public void Init(int maxHealth)
+    {
+        max = current = maxHealth;
+    }
+
+    [Server]
     public void SetMax(int amount)
     {
         max = amount;
