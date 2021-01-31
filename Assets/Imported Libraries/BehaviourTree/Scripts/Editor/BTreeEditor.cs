@@ -27,6 +27,7 @@ namespace Rhyth.BTree
 
         private Vector2 offset = new Vector2();
         private Rect mapRect;
+        private Vector2 scroll1, scroll2;
         private float zoomLevel = 1f;
         private readonly float MIN_ZOOM_LEVEL = 0.5f, MAX_ZOOM_LEVEL = 2f;
 
@@ -88,6 +89,7 @@ namespace Rhyth.BTree
             }
             treeEditor.titleContent = new GUIContent("Behaviour Editor");
             treeEditor.treePath = AssetDatabase.GetAssetPath(tree);
+
             treeEditor.tree = null;
         }
 
@@ -103,53 +105,47 @@ namespace Rhyth.BTree
 
             inPlayMode = EditorApplication.isPlaying;
 
-            if (inPlayMode == true)
+            if (tree == null)
             {
-                SetInPlayModeReferences();
-                if (tree == null)
-                    return;
-            }
-            else
-            { // Not in play mode
-                if (treePath == null || treePath.Length == 0)
-                {
-                    EditorGUILayout.LabelField("I can not find that tree :(");
-                    return;
-                }
-
-                if (tree == null)
-                    ReloadAfterRecompile();
-
-                SetInEditModeReferences();
+                Reload(true);
             }
 
             EditorGUILayout.BeginHorizontal();
 
             float widthOfSides = 250;
 
-            // left side tree info
+            // tree info
             Rect rect = position;
             rect.x = 0;
             rect.y = 0;
             rect.width = widthOfSides;
+            rect.height *= 0.5f;
+
             GUILayout.BeginArea(rect);
+            scroll1 = GUILayout.BeginScrollView(scroll1);
             DrawTreeInfo();
+            GUILayout.EndScrollView();
+            GUILayout.EndArea();
+
+            // inspector
+            rect.y = rect.height;
+            GUILayout.BeginArea(rect);
+            scroll2 = GUILayout.BeginScrollView(scroll2);
+            DrawInspector();
+            GUILayout.EndScrollView();
             GUILayout.EndArea();
 
             // EventProcessor
             ProcessEvents(Event.current);
             tree.Update();
 
-            // right side inspector
-            rect.x = position.width - rect.width;
-            GUILayout.BeginArea(rect);
-            DrawInspector();
-            GUILayout.EndArea();
-
-            // middle node map
+            // node map
             rect.x = widthOfSides;
-            rect.width = position.width - (widthOfSides * 2);
+            rect.y = 0;
+            rect.width = position.width - widthOfSides;
+            rect.height = position.height;
             mapRect = rect;
+
             GUILayout.BeginArea(rect);
             DrawMap();
             GUILayout.EndArea();
@@ -161,6 +157,5 @@ namespace Rhyth.BTree
             if (GUI.changed)
                 Repaint();
         }
-
     }
 }

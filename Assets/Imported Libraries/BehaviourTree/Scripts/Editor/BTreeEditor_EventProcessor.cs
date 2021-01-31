@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -12,24 +11,26 @@ namespace Rhyth.BTree
             None, Node, Position, NodeConnection
         }
 
-        private struct ConnectionConstructor
+        private class ConnectionConstructor
         {
             public BNode origin;
             public bool isTop;
             public Vector2 position;
+            public Vector2 mousePos;
 
-            public ConnectionConstructor(BNode origin, Vector2 position, bool isTop)
+            public ConnectionConstructor(BNode origin, Vector2 position, bool isTop, Vector2 mousePos)
             {
                 this.origin = origin;
                 this.position = position;
                 this.isTop = isTop;
+                this.mousePos = mousePos;
             }
         }
 
         private DragType currentDrag;
         private bool dragged;
         private BNode clickedNode;
-        private ConnectionConstructor? connectionConstructor;
+        private ConnectionConstructor connectionConstructor;
 
         private void ProcessEvents(Event e)
         {
@@ -37,8 +38,7 @@ namespace Rhyth.BTree
                 return;
 
             bool used = true;
-            Vector2 mousePos = (e.mousePosition - offset - mapRect.position
-                - new Vector2(mapRect.width / 2, mapRect.height / 2)) / zoomLevel;
+            Vector2 mousePos = (e.mousePosition - offset - mapRect.position - new Vector2(mapRect.width / 2, mapRect.height / 2)) / zoomLevel;
             switch (e.type)
             {
                 case EventType.MouseDown:
@@ -60,7 +60,7 @@ namespace Rhyth.BTree
 
                             Vector3 connectionMiddlePos = isTop ? GetUpperMiddle(node) : GetLowerMiddle(node);
 
-                            connectionConstructor = new ConnectionConstructor(node, connectionMiddlePos, isTop);
+                            connectionConstructor = new ConnectionConstructor(node, connectionMiddlePos, isTop, mousePos);
                         }
                         else // click was not on the connection boxes
                         {
@@ -90,13 +90,7 @@ namespace Rhyth.BTree
                                 offset += e.delta;
                                 break;
                             case DragType.NodeConnection:
-                                Vector2 nodeOffset = offset + new Vector2(mapRect.width / 2, mapRect.height / 2);
-
-                                BNode node = connectionConstructor.Value.origin;
-                                Vector2 from = (GetUpperMiddle(node)) + nodeOffset;
-                                Vector2 to = from - new Vector2(100, 100);
-
-                                Handles.DrawBezier(from, to, from + Vector2.down * 50f, to - Vector2.down * 50f, Color.black, null, 2f);
+                                connectionConstructor.mousePos = mousePos;
                                 break;
                         }
                         GUI.changed = true;
@@ -131,52 +125,7 @@ namespace Rhyth.BTree
                             }
                             else if (currentDrag == DragType.NodeConnection) // try to connect the node to its new parent
                             {
-                                if (GetNodeFromPosition(mousePos, out BNode newParent)) // if mouse is over hovering over a node
-                                {
-                                    if (newParent == connectionConstructor.Value.origin) // if newParent is self
-                                        goto NodeConnectionFailed;
-
-                                    // if parent already has the maximum number of children
-                                    if (newParent.MaxNumberOfChildren != -1 &&
-                                        newParent.Children.Length >= newParent.MaxNumberOfChildren)
-                                    {
-                                        Debug.LogWarning("Node has already the max number of children!");
-                                        goto NodeConnectionFailed;
-                                    }
-
-                                    BNode child = connectionConstructor.Value.origin;
-                                    if (NodeIsChild(child, newParent)) // If the node is in any way already connected (no loops)
-                                    {
-                                        Debug.LogWarning("Node could not be connected. Connecting these nodes would result in a loop!");
-                                        goto NodeConnectionFailed;
-                                    }
-
-                                    // Check if the child node type is allowed on the parent
-                                    Type[] allowedTypes = newParent.AllowedChildrenTypes;
-                                    if (allowedTypes != null && allowedTypes.Length != 0)
-                                    {
-                                        bool isAllowed = false;
-                                        for (int i = 0; i < allowedTypes.Length; i++)
-                                        {
-                                            if (child.GetType() == allowedTypes[i] || child.GetType().IsSubclassOf(allowedTypes[i]))
-                                            {
-                                                isAllowed = true;
-                                                break;
-                                            }
-                                        }
-                                        if (isAllowed == false)
-                                        {
-                                            Debug.LogWarning("The type " + child.GetType() + " is not allowed to be a child of this node.");
-                                            goto NodeConnectionFailed;
-                                        }
-                                    }
-
-                                    // Everything is fine, add the connection and sort the parents children
-                                    AddToArray(newParent, child, true);
-                                    SortChildren(newParent);
-
-                                NodeConnectionFailed:;
-                                }
+                                TryConnectNodeFromPosition(mousePos);
                             } // end if currentDrag is NodeConnection
                         } // end if dragged
                         dragged = false;
@@ -195,7 +144,11 @@ namespace Rhyth.BTree
                             {
                                 // Show delete menu for node
                                 GenericMenu nodeMenu = new GenericMenu();
-                                nodeMenu.AddItem(new GUIContent("Delete"), false, () => RemoveNode(deleteNode));
+                                nodeMenu.AddItem(new GUIContent("Delete"), false, () =>
+                                {
+                                    RemoveNode(deleteNode);
+                                    Reload();
+                                });
                                 nodeMenu.ShowAsContext();
                             }
                             else // mouse was not over node
@@ -207,7 +160,7 @@ namespace Rhyth.BTree
                                     Type type = nodeTypes[i];
 
                                     int maxNumberOfChilds = allNodesForTypes[i].MaxNumberOfChildren;
-                                    
+
                                     string nodeName = nodeTypes[i].Name;
                                     if (nodeName.EndsWith("node", StringComparison.OrdinalIgnoreCase))
                                         nodeName = nodeName.Substring(0, nodeName.Length - 4);
@@ -227,6 +180,7 @@ namespace Rhyth.BTree
                                         createNode.boundsInEditor = new Rect(mousePos, new Vector2(80, 80));
                                         AssetDatabase.AddObjectToAsset(createNode, tree.targetObject);
                                         AssetDatabase.SaveAssets();
+                                        Reload();
                                     });
                                 }
                                 nodeMenu.ShowAsContext();
@@ -244,6 +198,58 @@ namespace Rhyth.BTree
             }
             if (used) // consume event if used
                 e.Use();
+        }
+
+        /// <summary>
+        /// Trys to connect the node from where the user dragged the mouse from to where the mouse cursor is currently over.
+        /// </summary>
+        /// <param name="mousePos">The current mouse position.</param>
+        private void TryConnectNodeFromPosition(Vector2 mousePos)
+        {
+            if (GetNodeFromPosition(mousePos, out BNode newParent)) // if mouse is over hovering over a node
+            {
+                if (newParent == connectionConstructor.origin) // if newParent is self
+                    return;
+
+                // if parent already has the maximum number of children
+                if (newParent.MaxNumberOfChildren != -1 &&
+                    newParent.Children.Length >= newParent.MaxNumberOfChildren)
+                {
+                    Debug.LogWarning("Node has already the max number of children!");
+                    return;
+                }
+
+                BNode child = connectionConstructor.origin;
+                if (NodeIsChild(child, newParent)) // If the node is in any way already connected (no loops)
+                {
+                    Debug.LogWarning("Node could not be connected. Connecting these nodes would result in a loop!");
+                    return;
+                }
+
+                // Check if the child node type is allowed on the parent
+                Type[] allowedTypes = newParent.AllowedChildrenTypes;
+                if (allowedTypes != null && allowedTypes.Length != 0)
+                {
+                    bool isAllowed = false;
+                    for (int i = 0; i < allowedTypes.Length; i++)
+                    {
+                        if (child.GetType() == allowedTypes[i] || child.GetType().IsSubclassOf(allowedTypes[i]))
+                        {
+                            isAllowed = true;
+                            break;
+                        }
+                    }
+                    if (isAllowed == false)
+                    {
+                        Debug.LogWarning("The type " + child.GetType() + " is not allowed to be a child of this node.");
+                        return;
+                    }
+                }
+
+                // Everything is fine, add the connection and sort the parents children
+                AddToArray(newParent, child, true);
+                SortChildren(newParent);
+            }
         }
     }
 }
