@@ -38,6 +38,18 @@ namespace Rhyth.BTree
             }
         }
 
+        private void ReloadAfterRecompile()
+        {
+            tree = new SerializedObject(AssetDatabase.LoadAssetAtPath<BTree>(treePath));
+            valueTypes = GetDerivedTypes(typeof(Value));
+            nodeTypes = GetDerivedTypes(typeof(BNode));
+            allNodesForTypes = new BNode[nodeTypes.Length];
+            for (int i = 0; i < nodeTypes.Length; i++)
+                allNodesForTypes[i] = (BNode)CreateInstance(nodeTypes[i]);
+
+            GetCustomEditors();
+        }
+
         private void SetInEditModeReferences()
         {
             UnityEngine.Object[] values = AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(tree.targetObject));

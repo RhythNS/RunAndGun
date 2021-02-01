@@ -29,6 +29,12 @@ namespace Rhyth.BTree
         private Rect mapRect;
         private Vector2 scroll1, scroll2;
         private float zoomLevel = 1f;
+
+        private Color breakPointEnabledColor = Color.red;
+        private Color breakPointDisabledColor = Color.white;
+        private Color currentSelectedColor = Color.cyan;
+
+        private readonly float SNAPPING_PIXELS = 20;
         private readonly float MIN_ZOOM_LEVEL = 0.5f, MAX_ZOOM_LEVEL = 2f;
 
         private readonly string NODES_WITH_NO_CHILDREN_STRING = "Leaf Nodes";
@@ -67,18 +73,6 @@ namespace Rhyth.BTree
             lockTreeView = true;
         }
 
-        private void ReloadAfterRecompile()
-        {
-            tree = new SerializedObject(AssetDatabase.LoadAssetAtPath<BTree>(treePath));
-            valueTypes = GetDerivedTypes(typeof(Value));
-            nodeTypes = GetDerivedTypes(typeof(BNode));
-            allNodesForTypes = new BNode[nodeTypes.Length];
-            for (int i = 0; i < nodeTypes.Length; i++)
-                allNodesForTypes[i] = (BNode)CreateInstance(nodeTypes[i]);
-
-            GetCustomEditors();
-        }
-
         public static void OpenWindow(BTree tree)
         {
             BTreeEditor treeEditor = GetWindow<BTreeEditor>();
@@ -91,6 +85,7 @@ namespace Rhyth.BTree
             treeEditor.treePath = AssetDatabase.GetAssetPath(tree);
 
             treeEditor.tree = null;
+            // Debug.Log(EditorPrefs.GetFloat("Snapping Pixels"));
         }
 
         // used to redraw the window even if it is not in focus

@@ -83,13 +83,17 @@ namespace Rhyth.BTree
                 }
             }
 
+            Color prevColor = GUI.contentColor;
             // Display all values in a list
             for (int i = 0; i < allValues.Length; i++)
             {
+                if (allValues[i] == selectedObject)
+                    GUI.contentColor = currentSelectedColor;
                 if (GUILayout.Button(allValues[i].name))
                 {
                     selectedObject = allValues[i];
                 }
+                GUI.contentColor = prevColor;
             }
         }
 

@@ -27,9 +27,21 @@ namespace Rhyth.BTree
             }
         }
 
+        private class NodeMover
+        {
+            public BNode node;
+            public Vector2 clickedPosition;
+
+            public NodeMover(BNode node, Vector2 clickedPosition)
+            {
+                this.node = node;
+                this.clickedPosition = clickedPosition;
+            }
+        }
+
         private DragType currentDrag;
         private bool dragged;
-        private BNode clickedNode;
+        private NodeMover nodeMover;
         private ConnectionConstructor connectionConstructor;
 
         private void ProcessEvents(Event e)
@@ -65,7 +77,7 @@ namespace Rhyth.BTree
                         else // click was not on the connection boxes
                         {
                             currentDrag = DragType.Node;
-                            clickedNode = node;
+                            nodeMover = new NodeMover(node, node.boundsInEditor.position - mousePos);
                         }
                     }
                     break;
@@ -80,11 +92,14 @@ namespace Rhyth.BTree
                                 if (inPlayMode == true)
                                     break;
 
-                                Vector2 toAdd = e.delta;
+                                Rect toChange = nodeMover.node.boundsInEditor;
+                                Vector2 newPos = mousePos + nodeMover.clickedPosition;
+                                newPos /= SNAPPING_PIXELS;
+                                newPos.x = Mathf.Round(newPos.x);
+                                newPos.y = Mathf.Round(newPos.y);
+                                toChange.position = newPos * SNAPPING_PIXELS;
 
-                                Rect toChange = clickedNode.boundsInEditor;
-                                toChange.position += toAdd / zoomLevel;
-                                clickedNode.boundsInEditor = toChange;
+                                nodeMover.node.boundsInEditor = toChange;
                                 break;
                             case DragType.Position:
                                 offset += e.delta;
@@ -94,9 +109,10 @@ namespace Rhyth.BTree
                                 break;
                         }
                         GUI.changed = true;
+
+                    MouseDragFinished:
                         dragged = true;
 
-                    MouseDragFinished:;
                     }
                     break;
                 case EventType.MouseUp:
@@ -104,21 +120,22 @@ namespace Rhyth.BTree
                     {
                         if (dragged == false)
                         {
-                            if (clickedNode != null)
+                            selectedObject = null;
+                            if (nodeMover != null)
                             {
-                                selectedObject = clickedNode;
+                                selectedObject = nodeMover.node;
                             }
                         }
                         else // if dragged == true
                         {
                             if (currentDrag == DragType.Node) // Save the position of the dragged node 
                             {
-                                Rect toChange = clickedNode.boundsInEditor;
+                                Rect toChange = nodeMover.node.boundsInEditor;
                                 ShapesUtil.RectRoundToNextInt(ref toChange);
-                                clickedNode.boundsInEditor = toChange;
+                                nodeMover.node.boundsInEditor = toChange;
 
                                 // The node was moved so the order of the parented children might be wrong
-                                if (GetParentNode(clickedNode, out BNode parent))
+                                if (GetParentNode(nodeMover.node, out BNode parent))
                                     SortChildren(parent);
 
                                 AssetDatabase.SaveAssets();
@@ -130,7 +147,7 @@ namespace Rhyth.BTree
                         } // end if dragged
                         dragged = false;
                         currentDrag = DragType.None;
-                        clickedNode = null;
+                        nodeMover = null;
                         connectionConstructor = null;
                     }
                     else if (e.button == 1) // right click 

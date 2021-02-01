@@ -9,8 +9,7 @@ namespace Rhyth.BTree
         private Rect connectionBox = new Rect(0, 0, 10, 10);
         private readonly int BOX_STYLE_FONT_SIZE = 10;
         private Dictionary<BNode.Status, Color> colorForStatus;
-        private Color breakPointEnabled = Color.cyan, breakPointDisabled = Color.white;
-
+        
         private void OnEnable()
         {
             colorForStatus = new Dictionary<BNode.Status, Color>
@@ -45,8 +44,13 @@ namespace Rhyth.BTree
                 Color oldColor = GUI.color;
                 if (inPlayMode) // if in playmode color by current status
                     GUI.color = colorForStatus[allNodes[i].CurrentStatus];
-                else // if in editor mode color by breakpoint
-                    GUI.color = allNodes[i].BreakPointEnabled ? breakPointEnabled : breakPointDisabled;
+                else if (allNodes[i] == selectedObject)
+                    GUI.color = currentSelectedColor;
+                else if (allNodes[i].BreakPointEnabled)// if in editor mode color by breakpoint
+                    GUI.color = breakPointEnabledColor;
+                else
+                    GUI.color = breakPointDisabledColor;
+
 
                 GUIContent content = new GUIContent(allNodes[i].StringInEditor + "\n" + allNodes[i].name, allNodes[i].StringToolTip);
                 GUI.Box(toDraw, content, allNodes[i].GetType().IsSubclassOf(typeof(BoolNode)) ? boolStyle : boxStyle);
