@@ -15,11 +15,7 @@ namespace Rhyth.BTree
         {
             if (DEBUG)
             {
-                Vector2 changedOffset = offset / zoomLevel;
-                Vector2 newOffset = EditorGUILayout.Vector2Field("Position:", changedOffset);
-                if (changedOffset != newOffset)
-                    offset = newOffset * zoomLevel;
-
+                offset = EditorGUILayout.Vector2Field("Position:", offset);
                 zoomLevel = Mathf.Clamp(EditorGUILayout.FloatField("Zoomlevel", zoomLevel), MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL);
             }
 
@@ -45,7 +41,12 @@ namespace Rhyth.BTree
                 }
 
                 // Update the new root node
+                Color preColor = GUI.color;
+                if (index == 0)
+                    GUI.color = Color.red;
                 int newIndex = EditorGUILayout.Popup("root", index, choices);
+                GUI.color = preColor;
+
                 if (newIndex != index)
                 {
                     if (newIndex == 0)
@@ -54,6 +55,7 @@ namespace Rhyth.BTree
                         rootNode.objectReferenceValue = parentLessNodes[newIndex - 1];
                 }
                 this.rootNode = newIndex == 0 ? null : parentLessNodes[newIndex - 1];
+                
                 // ---Handle root node
 
                 tree.ApplyModifiedProperties();

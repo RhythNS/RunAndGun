@@ -50,9 +50,9 @@ namespace Rhyth.BTree
         public static bool OnOpenAsset(int instanceID, int line)
         {
             UnityEngine.Object tree = Selection.activeObject;
-            if (tree is BTree)
+            if (tree is BTree casted)
             {
-                OpenWindow(tree as BTree);
+                OpenWindow(casted);
                 return true; //catch open file
             }
 

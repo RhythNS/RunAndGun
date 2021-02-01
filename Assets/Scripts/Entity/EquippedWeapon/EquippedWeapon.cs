@@ -1,8 +1,5 @@
 ﻿using Mirror;
 using Smooth;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EquippedWeapon : NetworkBehaviour
@@ -29,22 +26,18 @@ public class EquippedWeapon : NetworkBehaviour
     public bool HasBulletsLeft => remainingBullets > 0;
 
     public Weapon Weapon => weapon;
-    public WeaponAnimator WeaponAnimator { get; private set; }
     public Health Health { get; private set; }
     public Collider2D Collider2D { get; private set; }
     public Vector2 LocalDirection => localDirection;
     public int RemainingBullets => remainingBullets;
     public Vector2 BulletSpawnPosition => transform.position; // TODO: Change to acctual value
+    public NetworkWeaponAnimator NetworkWeaponAnimator;
 
     [SerializeField] [SyncVar] private int bulletLayerSpawn;
     [SerializeField] [SyncVar(hook = nameof(OnWeaponChanged))] private Weapon weapon;
     [SerializeField] int remainingBullets;
     [SerializeField] private bool requstStopFire;
-    Vector2 localDirection;
-    private bool serverAuthority;
-
-    public Vector2 ServerDirection => serverDirection;
-    [SyncVar(hook = nameof(OnDirectionChanged))] Vector2 serverDirection;
+    private Vector2 localDirection;
 
     private ExtendedCoroutine fireCoroutine;
     private ExtendedCoroutine reloadCoroutine;
@@ -53,24 +46,18 @@ public class EquippedWeapon : NetworkBehaviour
     {
         Health = GetComponent<Health>();
         Collider2D = GetComponent<Collider2D>();
-        serverAuthority = GetComponent<Entity>().EntityType == EntityType.Enemy;
 
-        WeaponAnimator = GetComponentInChildren<WeaponAnimator>(); // TODO: <-- maybe change this
+        NetworkWeaponAnimator = GetComponent<NetworkWeaponAnimator>();
     }
 
     #region Events
-
     /// <summary>
     /// Called when a bullet was fired.
     /// </summary>
     public void OnFiredSingleShot()
     {
         --remainingBullets;
-        WeaponAnimator.OnSingleShotFired();
-        if (serverAuthority)
-            RpcSingleShotFired();
-        else
-            CmdSingleShotFired();
+        NetworkWeaponAnimator.OnSingleShotFired();
     }
 
     /// <summary>
@@ -79,11 +66,7 @@ public class EquippedWeapon : NetworkBehaviour
     public void OnStopFiring()
     {
         requstStopFire = false;
-        if (serverAuthority)
-            RpcStoppedFire();
-        else
-            CmdStoppedFire();
-        WeaponAnimator.OnStoppedFire();
+        NetworkWeaponAnimator.OnStoppedFire();
     }
 
     /// <summary>
@@ -92,97 +75,21 @@ public class EquippedWeapon : NetworkBehaviour
     public void OnReloaded()
     {
         remainingBullets = weapon.MagazineSize;
-        WeaponAnimator.OnStoppedReload();
-
-        if (serverAuthority)
-            RpcOnStoppedReload();
-        else
-            CmdOnStoppedReload();
+        NetworkWeaponAnimator.OnStoppedReload();
     }
 
-    #endregion
-
-    #region CallbacksForAnimator
-    [Command]
-    public void CmdStartedFire()
+    /// <summary>
+    /// Called when the weapon changed.
+    /// </summary>
+    /// <param name="_">The old weapon. This can be ignored.</param>
+    /// <param name="newWeapon">The new changed weapon.</param>
+    private void OnWeaponChanged(Weapon _, Weapon newWeapon)
     {
-        RpcStartedFire();
-    }
-
-    [Command]
-    public void CmdStoppedFire()
-    {
-        RpcStoppedFire();
-    }
-
-    [Command]
-    public void CmdSingleShotFired()
-    {
-        RpcSingleShotFired();
-    }
-
-    [Command]
-    public void CmdOnStartedReload()
-    {
-        RpcOnStartedReload();
-    }
-
-    [Command]
-    public void CmdOnStoppedReload()
-    {
-        RpcOnStoppedReload();
-    }
-
-    [Command]
-    public void CmdSetDirection(Vector2 direction)
-    {
-        serverDirection = direction;
-    }
-
-    [ClientRpc(excludeOwner = true)]
-    public void RpcStartedFire()
-    {
-        WeaponAnimator.OnStartedFire();
-    }
-
-    [ClientRpc(excludeOwner = true)]
-    public void RpcStoppedFire()
-    {
-        WeaponAnimator.OnStoppedFire();
-    }
-
-    [ClientRpc(excludeOwner = true)]
-    public void RpcSingleShotFired()
-    {
-        WeaponAnimator.OnSingleShotFired();
-    }
-
-    [ClientRpc(excludeOwner = true)]
-    public void RpcOnStartedReload()
-    {
-        WeaponAnimator.OnStartedReload();
-    }
-
-    [ClientRpc(excludeOwner = true)]
-    public void RpcOnStoppedReload()
-    {
-        WeaponAnimator.OnStoppedReload();
-    }
-
-    public void OnDirectionChanged(Vector2 oldDir, Vector2 newDir)
-    {
-        if (!isLocalPlayer)
-            WeaponAnimator.SetDirection(newDir);
-    }
-
-    private void OnWeaponChanged(Weapon oldWeapon, Weapon newWeapon)
-    {
-        WeaponAnimator = WeaponAnimator.Replace(WeaponAnimator, newWeapon);
+        NetworkWeaponAnimator.OnWeaponChanged(newWeapon);
     }
     #endregion
 
     #region Input
-
     /// <summary>
     /// Swaps the current equipped weapon with a weapon on the level.
     /// </summary>
@@ -208,14 +115,10 @@ public class EquippedWeapon : NetworkBehaviour
             return false;
 
         // Play shoot animation
-        fireCoroutine = new ExtendedCoroutine(this, weapon.Shoot(this), OnStopFiring);
-        fireCoroutine.Start();
-        WeaponAnimator.OnStartedFire();
+        fireCoroutine = new ExtendedCoroutine(this, weapon.Shoot(this), OnStopFiring, true);
 
-        if (serverAuthority)
-            RpcStartedFire();
-        else
-            CmdStartedFire();
+        NetworkWeaponAnimator.OnStartedFire();
+
         return true;
     }
 
@@ -229,12 +132,7 @@ public class EquippedWeapon : NetworkBehaviour
         direction.Normalize();
         localDirection = direction;
 
-        if (serverAuthority)
-            serverDirection = direction;
-        else
-            CmdSetDirection(direction);
-        
-        WeaponAnimator.SetDirection(direction);
+        NetworkWeaponAnimator.SetDirection(direction);
     }
 
     /// <summary>
@@ -252,22 +150,11 @@ public class EquippedWeapon : NetworkBehaviour
     {
         if (weapon && !IsFiring && !IsReloading)
         {
-            WeaponAnimator.OnStartedReload();
-
-            if (serverAuthority)
-                RpcOnStartedReload();
-            else
-                CmdOnStartedReload();
-            reloadCoroutine = new ExtendedCoroutine(this, StartReload(weapon.ReloadTime), OnReloaded);
-            reloadCoroutine.Start();
+            reloadCoroutine = ExtendedCoroutine.ActionAfterSeconds(this, weapon.ReloadTime, OnReloaded, true);
+            NetworkWeaponAnimator.OnStartedReload();
             return true;
         }
         return false;
-    }
-
-    private IEnumerator StartReload(float reloadTime)
-    {
-        yield return new WaitForSeconds(reloadTime);
     }
 
     #endregion
