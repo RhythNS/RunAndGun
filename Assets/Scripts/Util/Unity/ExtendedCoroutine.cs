@@ -23,7 +23,18 @@ public class ExtendedCoroutine
 
     public void Start()
     {
-        Coroutine = onScript.StartCoroutine(enumerator);
+        Coroutine = onScript.StartCoroutine(InnerEnumerator());
+    }
+
+    private IEnumerator InnerEnumerator()
+    {
+        while (enumerator.MoveNext())
+        {
+            yield return enumerator.Current;
+        }
+        IsFinshed = true;
+        if (onFinished != null)
+            onFinished.Invoke();
     }
 
     public void Stop(bool invokeOnFinished = true)

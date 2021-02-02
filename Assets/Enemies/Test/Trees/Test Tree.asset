@@ -39,7 +39,7 @@ MonoBehaviour:
   boundsInEditor:
     serializedVersion: 2
     x: 580
-    y: 300
+    y: 320
     width: 80
     height: 80
 --- !u!114 &-2603769224053737112
@@ -60,7 +60,7 @@ MonoBehaviour:
   boundsInEditor:
     serializedVersion: 2
     x: 520
-    y: 20
+    y: 40
     width: 80
     height: 80
 --- !u!114 &-1342336485242944345
@@ -80,7 +80,7 @@ MonoBehaviour:
   boundsInEditor:
     serializedVersion: 2
     x: 460
-    y: 300
+    y: 320
     width: 80
     height: 80
   targetHealth: {fileID: 6847837665271742355}
@@ -114,7 +114,7 @@ MonoBehaviour:
   boundsInEditor:
     serializedVersion: 2
     x: 360
-    y: 20
+    y: 40
     width: 80
     height: 80
   target: {fileID: 6847837665271742355}
@@ -138,7 +138,7 @@ MonoBehaviour:
   boundsInEditor:
     serializedVersion: 2
     x: 520
-    y: 160
+    y: 180
     width: 80
     height: 80
 --- !u!114 &6789554629701887574

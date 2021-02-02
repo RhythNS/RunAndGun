@@ -191,7 +191,7 @@ public class EquippedWeapon : NetworkBehaviour
         if (isServer)
         {
             NetworkServer.Spawn(bullet.gameObject);
-            bullet.GetComponent<SmoothSyncMirror>().teleport();
+            //bullet.GetComponent<SmoothSyncMirror>().teleportAnyObjectFromServer(bullet.transform.position, bullet.transform.rotation, bullet.transform.localScale);
         }
         else
         {
@@ -208,9 +208,8 @@ public class EquippedWeapon : NetworkBehaviour
     /// <returns>The prepared bullet.</returns>
     private Bullet GetBullet(Vector2 direction)
     {
-        Bullet bullet = Instantiate(PickableDict.Instance.BulletPrefab).GetComponent<Bullet>();
+        Bullet bullet = PoolDict.Instance.BulletPool.GetFromPool(BulletSpawnPosition, Quaternion.identity).GetComponent<Bullet>();
 
-        bullet.gameObject.SetActive(true);
         bullet.gameObject.layer = bulletLayerSpawn;
         bullet.layer = (byte)bulletLayerSpawn;
 
@@ -221,7 +220,7 @@ public class EquippedWeapon : NetworkBehaviour
         bullet.SpriteRenderer.sprite = info.Sprite;
         Vector2 velocity = direction * Weapon.Speed;
         bullet.Body.velocity = velocity;
-        bullet.transform.position = BulletSpawnPosition;
+        //bullet.transform.position = BulletSpawnPosition;
         bullet.StartCoroutine(bullet.DeleteWhenOutOfRange(velocity, Weapon.Range));
 
         return bullet;

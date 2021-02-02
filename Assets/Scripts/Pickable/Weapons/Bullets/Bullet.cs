@@ -3,7 +3,7 @@ using Smooth;
 using System.Collections;
 using UnityEngine;
 
-public class Bullet : NetworkBehaviour
+public class Bullet : NetworkBehaviour, IPoolable
 {
     public SpriteRenderer SpriteRenderer { get; private set; }
     public SmoothSyncMirror Ssm { get; private set; }
@@ -12,6 +12,7 @@ public class Bullet : NetworkBehaviour
     public Health ShooterHealth { get; set; }
     public Collider2D OwnCollider { get; private set; }
 
+    [SyncVar] public Vector2 velocity;
     [SyncVar] public Weapon fromWeapon;
     [SyncVar] public int owningPlayer = 0;
     [SyncVar] public byte layer;
@@ -27,6 +28,7 @@ public class Bullet : NetworkBehaviour
 
     public override void OnStartClient()
     {
+        Debug.Log("Start");
         if (isServer)
             Ssm.enabled = true;
         else
@@ -34,6 +36,13 @@ public class Bullet : NetworkBehaviour
             gameObject.layer = layer;
             if (Player.LocalPlayer?.playerId == owningPlayer)
                 gameObject.SetActive(false);
+            else
+            {
+                StateMirror stateMirror = new StateMirror();
+                stateMirror.copyFromSmoothSync(Ssm);
+                stateMirror.velocity = velocity;
+                Ssm.addState(stateMirror);
+            }
         }
     }
 
@@ -48,11 +57,12 @@ public class Bullet : NetworkBehaviour
     {
         if (isServer)
         {
-            NetworkServer.Destroy(gameObject);
+            NetworkServer.UnSpawn(gameObject);
+            PoolDict.Instance.BulletPool.Free(gameObject);
         }
         else if (owningBullet)
         {
-            Destroy(gameObject);
+            PoolDict.Instance.BulletPool.Free(gameObject);
         }
     }
 
@@ -61,6 +71,7 @@ public class Bullet : NetworkBehaviour
         if (collision.TryGetComponent<Player>(out _))
             return;
 
+        if (isServer)
         OnHit(collision.gameObject);
     }
 
@@ -89,4 +100,22 @@ public class Bullet : NetworkBehaviour
 
         Free();
     }
+
+    public void Show()
+    {
+        gameObject.SetActive(true);
+        Ssm.clearBuffer();
+    }
+
+    public void Hide()
+    {
+        Ssm.clearBuffer();
+        gameObject.SetActive(false);
+    }
+
+    public void Delete()
+    {
+        Destroy(gameObject);
+    }
+
 }
