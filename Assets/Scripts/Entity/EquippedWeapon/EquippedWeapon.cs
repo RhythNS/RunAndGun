@@ -174,12 +174,14 @@ public class EquippedWeapon : NetworkBehaviour
 
         Bullet bullet = GetBullet(direction);
         bullet.gameObject.layer = LayerDict.Instance.GetBulletLayer(Health.EntityType, weapon.TargetMode);
-        Physics2D.IgnoreCollision(Collider2D, bullet.OwnCollider, true);
+        bullet.IgnoreCollision(Collider2D);
         bullet.owningPlayer = player.playerId;
-        NetworkServer.Spawn(bullet.gameObject);
         // if this is set to the given position, then it might look weird for players who are lagging quite badly
         // if this is set to BulletSpawnPosition, then the bullets fly path is different to the player and server
-        bullet.Ssm.setPosition(position, true);
+        //bullet.Ssm.setPosition(position, true);
+        bullet.transform.position = position;
+
+        NetworkServer.Spawn(bullet.gameObject);
     }
 
     /// <summary>
@@ -195,7 +197,7 @@ public class EquippedWeapon : NetworkBehaviour
         }
         else
         {
-            bullet.Ssm.enabled = false;
+            bullet.NetworkTransform.enabled = false;
             bullet.owningBullet = true;
             CmdCreateBullet(BulletSpawnPosition, LocalDirection);
         }
@@ -215,11 +217,12 @@ public class EquippedWeapon : NetworkBehaviour
 
         bullet.ShooterHealth = Health;
         bullet.fromWeapon = weapon;
-        Physics2D.IgnoreCollision(Collider2D, bullet.OwnCollider, true);
+        bullet.IgnoreCollision(Collider2D);
         BulletInfo info = Weapon.BulletInfo;
         bullet.SpriteRenderer.sprite = info.Sprite;
         Vector2 velocity = direction * Weapon.Speed;
         bullet.Body.velocity = velocity;
+        // bullet.velocity = velocity;
         //bullet.transform.position = BulletSpawnPosition;
         bullet.StartCoroutine(bullet.DeleteWhenOutOfRange(velocity, Weapon.Range));
 

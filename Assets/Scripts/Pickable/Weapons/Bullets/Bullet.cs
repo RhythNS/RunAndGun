@@ -6,46 +6,56 @@ using UnityEngine;
 public class Bullet : NetworkBehaviour, IPoolable
 {
     public SpriteRenderer SpriteRenderer { get; private set; }
-    public SmoothSyncMirror Ssm { get; private set; }
     public Rigidbody2D Body { get; private set; }
 
     public Health ShooterHealth { get; set; }
     public Collider2D OwnCollider { get; private set; }
+    public NetworkTransform NetworkTransform { get; private set; }
 
-    [SyncVar] public Vector2 velocity;
+    //[SyncVar(hook = nameof(OnVelocityChanged))] public Vector2 velocity;
     [SyncVar] public Weapon fromWeapon;
     [SyncVar] public int owningPlayer = 0;
     [SyncVar] public byte layer;
     public bool owningBullet = false;
+    private Collider2D ignoringCollider;
 
     private void Awake()
     {
         SpriteRenderer = GetComponent<SpriteRenderer>();
-        Ssm = GetComponent<SmoothSyncMirror>();
         Body = GetComponent<Rigidbody2D>();
         OwnCollider = GetComponent<Collider2D>();
+        NetworkTransform = GetComponent<NetworkTransform>();
     }
 
     public override void OnStartClient()
     {
-        Debug.Log("Start");
         if (isServer)
-            Ssm.enabled = true;
+            return;
+
+        gameObject.layer = layer;
+        if (Player.LocalPlayer?.playerId == owningPlayer)
+            gameObject.SetActive(false);
         else
         {
-            gameObject.layer = layer;
-            if (Player.LocalPlayer?.playerId == owningPlayer)
-                gameObject.SetActive(false);
-            else
-            {
-                StateMirror stateMirror = new StateMirror();
-                stateMirror.copyFromSmoothSync(Ssm);
-                stateMirror.velocity = velocity;
-                Ssm.addState(stateMirror);
-            }
+            /*
+            Debug.Log(velocity);
+            Body.velocity = velocity;
+             */
+            /*
+            Ssm.setPosition(transform.position, true);
+            StateMirror stateMirror = new StateMirror();
+            stateMirror.copyFromSmoothSync(Ssm);
+            stateMirror.velocity = velocity;
+            Debug.Log(Ssm.stateCount);
+            Ssm.addState(stateMirror);
+             */
         }
     }
 
+    private void OnVelocityChanged(Vector2 _, Vector2 newVelocity)
+    {
+        Body.velocity = newVelocity;
+    }
 
     public IEnumerator DeleteWhenOutOfRange(Vector2 velocity, float range)
     {
@@ -71,8 +81,8 @@ public class Bullet : NetworkBehaviour, IPoolable
         if (collision.TryGetComponent<Player>(out _))
             return;
 
-        if (isServer)
-        OnHit(collision.gameObject);
+        if (isServer || owningBullet)
+            OnHit(collision.gameObject);
     }
 
     public void HitPlayer(Player player)
@@ -101,16 +111,23 @@ public class Bullet : NetworkBehaviour, IPoolable
         Free();
     }
 
+    public void IgnoreCollision(Collider2D other)
+    {
+        Physics2D.IgnoreCollision(ignoringCollider = other, OwnCollider, true);
+    }
+
     public void Show()
     {
+        owningBullet = false;
         gameObject.SetActive(true);
-        Ssm.clearBuffer();
+        NetworkTransform.enabled = true;
     }
 
     public void Hide()
     {
-        Ssm.clearBuffer();
         gameObject.SetActive(false);
+        if (ignoringCollider)
+            Physics2D.IgnoreCollision(ignoringCollider, OwnCollider, false);
     }
 
     public void Delete()
