@@ -1,11 +1,12 @@
 ﻿using Rhyth.BTree;
+using System.Collections;
 using UnityEngine;
 
 /// <summary>
-/// Used for creating an enemy entity.
+/// Used for creating an boss entity.
 /// </summary>
-[CreateAssetMenu(menuName = "Entity/Enemy")]
-public class EnemyObject : ScriptableObject
+[CreateAssetMenu(menuName = "Entity/Boss")]
+public class BossObject : ScriptableObject
 {
     public GameObject Prefab => prefab;
     [SerializeField] private GameObject prefab;

@@ -78,7 +78,6 @@ public class GameManager : MonoBehaviour
         OnLevelLoaded();
     }
 
-
     public static void OnLevelLoaded()
     {
         if (!instance)
@@ -124,8 +123,6 @@ public class GameManager : MonoBehaviour
             return;
 
         instance.CurrentState = State.RoomEvent;
-
-        // ui.HideAroundBounds(bounds);
     }
 
     public static void OnRoomEventEnded()
@@ -134,8 +131,6 @@ public class GameManager : MonoBehaviour
             return;
 
         instance.CurrentState = State.Wandering;
-
-        // ui.StopHidingAroundBounds();
     }
 
     public void OnAllPlayersDied()

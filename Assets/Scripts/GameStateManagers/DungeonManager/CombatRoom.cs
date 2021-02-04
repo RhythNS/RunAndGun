@@ -1,8 +1,4 @@
 ﻿using MapGenerator;
-using Mirror;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class CombatRoom : DungeonRoom
 {
@@ -19,7 +15,7 @@ public class CombatRoom : DungeonRoom
             return;
 
         CloseDoors();
-        SpawnEnemies();
+        SpawnEnemies(enemiesToSpawn);
         GameManager.OnRoomEventStarted(Border);
 
         AliveHealthDict.Instance.OnAllEnemiesDied += OnAllEnemiesDefeated;
@@ -42,38 +38,5 @@ public class CombatRoom : DungeonRoom
         AlreadyCleared = true;
 
         GameManager.OnRoomEventEnded();
-    }
-
-    protected void SpawnEnemies()
-    {
-        List<Vector2Int> enemySpawns = new List<Vector2Int>();
-
-        int maxIterations = enemiesToSpawn.Length * 25;
-        int iterations = 0;
-
-        while (enemySpawns.Count < enemiesToSpawn.Length) {
-            int rnd = Random.Range(0, walkableTiles.Count);
-            Vector2Int pos = walkableTiles[rnd];
-
-            bool found = false;
-            for (int x = -2; x < 2; x++) {
-                for (int y = -2; y < 2; y++) {
-                    if (enemySpawns.Contains(new Vector2Int(x, y))) {
-                        found = true;
-                        break;
-                    }
-                }
-            }
-
-            if (!found) {
-                Enemy.InstantiateAndSpawn(enemiesToSpawn[enemySpawns.Count], Border, new Vector3(pos.x, pos.y, 0f), Quaternion.identity);
-
-                enemySpawns.Add(pos);
-            }
-
-            iterations++;
-            if (iterations >= maxIterations)
-                break;
-        }
     }
 }
