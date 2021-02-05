@@ -69,6 +69,11 @@ public class DungeonCreator : MonoBehaviour
             Instance = null;
     }
 
+    public void CreateLevel(int levelNumber)
+    {
+        CreateDungeon(GameManager.gameMode.levelSeeds[levelNumber]);
+    }
+
     public void CreateDungeon(int seed) {
         if (roomsContainer.childCount > 0) {
             for (int i = roomsContainer.childCount - 1; i >= 0; i--) {

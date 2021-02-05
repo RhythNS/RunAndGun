@@ -172,7 +172,7 @@ public abstract class DungeonRoom : MonoBehaviour
             if (!found)
             {
                 Enemy.InstantiateAndSpawn(enemiesToSpawn[enemySpawns.Count], Border, new Vector3(pos.x, pos.y, 0f), Quaternion.identity);
-
+                
                 enemySpawns.Add(pos);
             }
 

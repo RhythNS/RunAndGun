@@ -19,6 +19,16 @@ public class PlayerAnimationController : MonoBehaviour
         prevDashing = status.Dashing;
     }
 
+    public void OnDeath()
+    {
+        animator.SetBool("dead", true);
+    }
+
+    public void OnRevive()
+    {
+        animator.SetBool("dead", false);
+    }
+
     private void LateUpdate()
     {
         animator.SetFloat("Speed", body.velocity.magnitude);

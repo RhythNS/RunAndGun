@@ -1981,6 +1981,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8437b15732481474f9fd53de606fb7e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  testGame: {fileID: 11400000, guid: 06689e7322af36740bc178b3a246cbe7, type: 2}
 --- !u!114 &1843191882
 MonoBehaviour:
   m_ObjectHideFlags: 0

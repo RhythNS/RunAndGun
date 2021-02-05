@@ -21,6 +21,9 @@ public class GameManager : MonoBehaviour
     }
     private State currentState = State.LoadingLevel;
 
+    public static GameMode gameMode;
+    public static int currentLevel;
+
     private void Awake()
     {
         if (instance)
@@ -34,11 +37,12 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        if (instance == this)
-        {
-            PlayersDict.Instance.OnPlayerDisconnected += OnPlayerDisconnected;
-            AliveHealthDict.Instance.OnAllPlayersDied += OnAllPlayersDied;
-        }
+        if (instance != this)
+            return;
+
+        PlayersDict.Instance.OnPlayerDisconnected += OnPlayerDisconnected;
+        AliveHealthDict.Instance.OnAllPlayersDied += OnAllPlayersDied;
+        currentLevel = -1;
     }
 
     private void OnPlayerDisconnected(Player player)
@@ -49,12 +53,39 @@ public class GameManager : MonoBehaviour
         // Trigger onplayerchangedroom
     }
 
+    public static void OnStartNewGame(GameMode gameMode, int seed)
+    {
+        if (!instance)
+            return;
+
+        GameMode copied = Instantiate(gameMode);
+        copied.Init(seed);
+        GameManager.gameMode = copied;
+    }
+
+    public static void OnStartNewGame(GameMode gameMode)
+    {
+        OnStartNewGame(gameMode, Random.Range(int.MinValue, int.MaxValue));
+    }
+
     public static void OnLoadNewLevel()
     {
         if (!instance)
             return;
 
         instance.CurrentState = State.LoadingLevel;
+        ++currentLevel;
+        if (currentLevel == gameMode.levelAmount)
+        {
+            OnDungeonCleared();
+            return;
+        }
+
+        GenerateLevelMessage generateLevelMessage = new GenerateLevelMessage()
+        {
+            levelNumber = currentLevel
+        };
+        NetworkServer.SendToAll(generateLevelMessage);
     }
 
     public static void OnPlayerLoadedLevelChanged()
@@ -106,15 +137,13 @@ public class GameManager : MonoBehaviour
         DungeonDict.Instance.dungeon = DungeonCreator.Instance.dungeon; // TODO: Dungeon creator should set that itself
     }
 
-    public static void OnLevelCleared()
+    public static void OnDungeonCleared()
     {
         if (!instance)
             return;
 
-        DungeonDict.Instance.ClearRooms();
-
         instance.CurrentState = State.Cleared;
-        // display dialog to load next level
+        // display dialog to go back to lobby
     }
 
     public static void OnRoomEventStarted(Rect bounds)
@@ -136,8 +165,9 @@ public class GameManager : MonoBehaviour
     public void OnAllPlayersDied()
     {
         instance.CurrentState = State.Failed;
-
-        // for all clients -> send game over
+        GameOverMessage msg = new GameOverMessage();
+        // set some important stat values to the message
+        NetworkServer.SendToAll(msg);
     }
 
     private void OnBackToLobby()
