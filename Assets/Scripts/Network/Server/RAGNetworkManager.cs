@@ -68,7 +68,7 @@ public class RAGNetworkManager : NobleNetworkManager
     private void OnStartGameMessage(NetworkConnection connection, StartGameMessage startGameMessage)
     {
         LobbyLevel.Instance.Hide();
-        DungeonCreator.Instance.CreateDungeon(startGameMessage.levelSeed);
+        StartCoroutine(DungeonCreator.Instance.CreateDungeon(startGameMessage.levelSeed));
     }
 
     private void OnReturnToLobbyMessage(NetworkConnection connection, ReturnToLobbyMessage returnToLobbyMessage)
