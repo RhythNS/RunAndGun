@@ -16,7 +16,6 @@ public class StayDistanceFromPlayersNode : BNodeAdapter
     {
         health = target.Get();
         prefDistance = Brain.GetComponent<Enemy>().EquippedWeapon.Weapon.Range * distancePercent;
-        Debug.Log(prefDistance);
     }
 
     public override void Update()

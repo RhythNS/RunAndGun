@@ -52,7 +52,7 @@ public abstract class RAGInput : MonoBehaviour
             playerCamera.focusPoint = GetFocusPoint();
 
         // If the player is dashing dont listen to other input.
-        if (Player.Status.Dashing)
+        if (!Player.Status.CanInteract)
             return;
 
         // If we want to dash try to dash, if we are able dont listen to other input.  
@@ -86,14 +86,15 @@ public abstract class RAGInput : MonoBehaviour
 
         // Handle reload
         if (GetReloadInput())
-        {
             Player.EquippedWeapon.Reload();
-        }
+
+        if (GetReviveInput())
+            Player.Status.TryRevive();
     }
 
     private void FixedUpdate()
     {
-        if (Player.Status.Dashing)
+        if (!Player.Status.CanInteract)
             return;
         Body.AddForce(GetMovementInput() * movementForce);
     }
@@ -128,6 +129,8 @@ public abstract class RAGInput : MonoBehaviour
     protected abstract void Pickup();
 
     protected abstract bool GetReloadInput();
+
+    protected abstract bool GetReviveInput();
 
     /// <summary>
     /// Removes the InputMethod from the player.

@@ -21,12 +21,22 @@ public class PlayerAnimationController : MonoBehaviour
 
     public void OnDeath()
     {
-        animator.SetBool("dead", true);
+        animator.SetBool("Dead", true);
     }
 
-    public void OnRevive()
+    public void OnRevived()
     {
-        animator.SetBool("dead", false);
+        animator.SetBool("Dead", false);
+    }
+
+    public void OnRevivingOtherPlayerStarted()
+    {
+        animator.SetBool("Reviving", true);
+    }
+    
+    public void OnRevivingOtherPlayerFinished()
+    {
+        animator.SetBool("Reviving", false);
     }
 
     private void LateUpdate()

@@ -4,8 +4,16 @@ using UnityEngine;
 
 public class Status : NetworkBehaviour
 {
-    public bool Dashing { get; private set; } = false;
+    public bool CanInteract => !Dashing && !Reviving && player.Health.Alive;
 
+    public bool Dashing { get; private set; } = false;
+    public bool Reviving { get; private set; } = false;
+
+    public Player downedPlayerAbleToRevive;
+    private ExtendedCoroutine revivingCoroutine;
+    private float timeForPlayerRevive = 3.0f;
+
+    private Player player;
     private Rigidbody2D body;
 
     private readonly float dashMuliplier = 2.0f;
@@ -18,6 +26,7 @@ public class Status : NetworkBehaviour
 
     private void Awake()
     {
+        player = GetComponent<Player>();
         body = GetComponent<Rigidbody2D>();
     }
 
@@ -25,6 +34,71 @@ public class Status : NetworkBehaviour
     public void SetDashCooldown(float cooldown)
     {
         dashCooldown = cooldown;
+    }
+
+    public void OnDownedPlayerInRangeToRevive(Player player)
+    {
+        downedPlayerAbleToRevive = player;
+        // UI.ShowPlayerCanBeRevived(player);
+    }
+
+    public void OnDownedPlayerNoLongerInRange()
+    {
+        downedPlayerAbleToRevive = null;
+    }
+
+    public void TryRevive()
+    {
+        if (!downedPlayerAbleToRevive || downedPlayerAbleToRevive.Health.Alive)
+            return;
+
+        player.CmdReviveTeammate(downedPlayerAbleToRevive.gameObject);
+    }
+
+    [Server]
+    public void ServerReviving(Player player)
+    {
+        // if player in range
+        if (!player || player.Health.Alive)
+            return;
+
+        downedPlayerAbleToRevive = player;
+        revivingCoroutine = ExtendedCoroutine.ActionAfterSeconds(this, timeForPlayerRevive, OnServerPlayerRevived, true);
+        RpcOnRevivingOtherPlayerStarted();
+    }
+
+    [Server]
+    public void OnServerPlayerRevived()
+    {
+        if (!downedPlayerAbleToRevive || downedPlayerAbleToRevive.Health.Alive)
+            return;
+
+        // TODO: Change the max value to how much the player is revived to.
+        downedPlayerAbleToRevive.Health.Revive(downedPlayerAbleToRevive.Health.Max);
+        downedPlayerAbleToRevive.Status.RpcOnRevived();
+        RpcOnRevivingOtherPlayerFinished();
+    }
+
+    [ClientRpc]
+    public void RpcOnRevived()
+    {
+        player.Collider2D.isTrigger = false;
+        player.gameObject.layer = LayerDict.Instance.GetPlayerLayer();
+        player.PlayerAnimationController?.OnRevived();
+    }
+
+    [ClientRpc]
+    public void RpcOnRevivingOtherPlayerStarted()
+    {
+        Reviving = true;
+        player.PlayerAnimationController?.OnRevivingOtherPlayerStarted();
+    }
+
+    [ClientRpc]
+    public void RpcOnRevivingOtherPlayerFinished()
+    {
+        Reviving = false;
+        player.PlayerAnimationController?.OnRevivingOtherPlayerFinished();
     }
 
     private void Update()
