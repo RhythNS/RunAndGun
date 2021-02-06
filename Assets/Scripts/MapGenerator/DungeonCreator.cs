@@ -91,15 +91,31 @@ public class DungeonCreator : MonoBehaviour
         List<List<TiledImporter.PrefabLocations>> roomGameObjects = new List<List<TiledImporter.PrefabLocations>>();
         List<RoomType> roomTypes = new List<RoomType>();
 
-        int mapCount = 6;
+        roomLayouts.Add(TiledImporter.Instance.GetReplacableMap("startRoom", out PropertyDict properties, out List<TiledImporter.PrefabLocations> gos));
+        if (properties.TryGetValue("roomType", out string value) == false)
+            throw new System.Exception("No room type in map: startRoom!");
+        if (int.TryParse(value, out int roomType) == false)
+            throw new System.Exception("Room type is not an integer in: startRoom!");
+        roomTypes.Add((RoomType)roomType);
+        roomGameObjects.Add(gos);
+
+        roomLayouts.Add(TiledImporter.Instance.GetReplacableMap("bossRoom", out properties, out gos));
+        if (properties.TryGetValue("roomType", out value) == false)
+            throw new System.Exception("No room type in map: bossRoom!");
+        if (int.TryParse(value, out roomType) == false)
+            throw new System.Exception("Room type is not an integer in: bossRoom!");
+        roomTypes.Add((RoomType)roomType);
+        roomGameObjects.Add(gos);
+
+        int mapCount = 7;
         for (int i = 1; i <= mapCount; i++) {
-            roomLayouts.Add(TiledImporter.Instance.GetReplacableMap("room" + i.ToString(), out PropertyDict properties, out List<TiledImporter.PrefabLocations> gos));
+            roomLayouts.Add(TiledImporter.Instance.GetReplacableMap("room" + i.ToString(), out properties, out gos));
 
             // Example:
-            if (properties.TryGetValue("roomType", out string value) == false)
+            if (properties.TryGetValue("roomType", out value) == false)
                 throw new System.Exception("No room type in map: room" + i + "!");
 
-            if (int.TryParse(value, out int roomType) == false)
+            if (int.TryParse(value, out roomType) == false)
                 throw new System.Exception("Room type is not an integer in: room" + i + "!");
 
             // do something with the roomType here
@@ -347,8 +363,8 @@ public class DungeonCreator : MonoBehaviour
     }
 
     public void AdjustMask(Vector3 position, Vector3 scale) {
-        mask.localScale = scale;
-        mask.position = position + scale / 2f;
+        mask.localScale = scale + new Vector3(0f, 1.5f, 0f);
+        mask.position = position + scale / 2f + new Vector3(0f, 1f, 0f);
     }
 
     public void ResetMask() {

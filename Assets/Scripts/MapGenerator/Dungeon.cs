@@ -87,9 +87,46 @@ namespace MapGenerator
                 iters++;
             }
 
-            for (int i = 0; i < 5; i++) {
-                DeleteDeadEnds();
+            iters = 0;
+            bool bossRoom = false;
+            foreach (var exit in exits) {
+                if (exit.IntoRoom) {
+                    if (GenerateRoom(exit, true)) {
+                        bossRoom = true;
+                        break;
+                    }
+                }
             }
+            if (!bossRoom) {
+                Debug.Log("Could not generate BossRoom randomly. Forcing room creation!");
+
+                int y = 0;
+                int index = 0;
+                for (int i = 0; i < exits.Count; i++) {
+                    if (exits[i].Direction != Direction.Down) {
+                        if (GenerateCorridor(exits[index])) {
+                            foreach (var exit in exits) {
+                                if (exit.IntoRoom) {
+                                    if (GenerateRoom(exit, true)) {
+                                        bossRoom = true;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (!bossRoom) {
+                    Debug.Log("Still no BossRoom");
+                } else {
+                    Debug.Log("Created BossRoom!");
+                }
+            }
+
+            //for (int i = 0; i < 5; i++) {
+            DeleteDeadEnds();
+            //}
         }
 
         /// <summary>
@@ -182,8 +219,10 @@ namespace MapGenerator
             }
         }
 
-        private void GenerateRoom(Exit exit) {
-            int rndRoom = Random.Range(1, roomLayouts.Length);
+        private bool GenerateRoom(Exit exit, bool isBossRoom = false) {
+            int rndRoom = Random.Range(2, roomLayouts.Length);
+            if (isBossRoom)
+                rndRoom = 1;
             Room room = new Room(0, 0, roomLayouts[rndRoom], roomGameObjects[rndRoom], roomTypes[rndRoom]);
 
             foreach (var exitDir in room.ExitDirections) {
@@ -209,20 +248,26 @@ namespace MapGenerator
                         }
 
                         AddRoom(room);
-                    }
 
-                    break;
+                        return true;
+                    }
                 }
             }
+
+            return false;
         }
 
-        private void GenerateCorridor(Exit exit) {
+        private bool GenerateCorridor(Exit exit) {
             int length = Random.Range(Corridor.MIN_LENGTH, Corridor.MAX_LENGTH + 1);
             Corridor corridor = new Corridor(exit.Position.x, exit.Position.y, length, exit.Direction);
 
             if (IsEmptyInArea(corridor, exit.Direction)) {
                 AddCorridor(corridor);
+
+                return true;
             }
+
+            return false;
         }
 
         private bool IsEmptyInArea(Room room, Direction direction) {
