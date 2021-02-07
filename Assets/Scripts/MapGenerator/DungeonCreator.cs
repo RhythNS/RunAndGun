@@ -25,6 +25,8 @@ public class DungeonCreator : MonoBehaviour
     private Tileset tileset;
     [SerializeField]
     private Tile tilePlaceHolder;
+    [SerializeField]
+    private Tile tilePlaceHolderHalf;
 
     [SerializeField]
     private Transform objectContainer;
@@ -175,8 +177,10 @@ public class DungeonCreator : MonoBehaviour
 
             for (int y = 0; y < dungeon.Size.y; y++) {
                 positionsFloor[indexFloor] = new Vector3Int(x, y, 0);
-                if (dungeon[x, y] == TileType.Floor)
+                if (dungeon[x, y] == TileType.Floor && dungeon[x, y - 1] == TileType.Floor && dungeon[x, y - 2] == TileType.Floor)
                     tilesFloor[indexFloor] = tileset.tileFloor;
+                else if (dungeon[x, y] == TileType.Floor && dungeon[x, y - 1] == TileType.Floor)
+                    tilesFloor[indexFloor] = tilePlaceHolderHalf;
                 else
                     tilesFloor[indexFloor] = tilePlaceHolder;
                 indexFloor++;
