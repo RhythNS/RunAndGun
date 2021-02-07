@@ -4,8 +4,15 @@ using UnityEngine;
 
 public class RoomTester : MonoBehaviour
 {
+    [SerializeField] private DungeonRoom[] roomsToAdd;
+
     private void Start()
     {
+        DungeonDict.Instance.ResetRooms(roomsToAdd.Length);
+        for (int i = 0; i < roomsToAdd.Length; i++)
+        {
+            DungeonDict.Instance.Register(roomsToAdd[i]);
+        }
         StartCoroutine(CheckForRoomEnter());
     }
 
