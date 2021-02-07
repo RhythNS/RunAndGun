@@ -426,7 +426,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8f9766ed3bc60ff4b87b7e191a1ec6cb, type: 2}
   - {fileID: 11400000, guid: 37b7f573aa1f66d4faa905087592895c, type: 2}
   - {fileID: 11400000, guid: ac7a3d27f5349fc4589c7af1ddc3ad4f, type: 2}
-  maxSize: {x: 256, y: 256}
+  maxSize: {x: 192, y: 192}
   dungeonRooms: []
 --- !u!114 &255864829474736513
 MonoBehaviour:

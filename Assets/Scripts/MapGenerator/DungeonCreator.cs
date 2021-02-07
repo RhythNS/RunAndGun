@@ -52,6 +52,13 @@ public class DungeonCreator : MonoBehaviour
 
     public List<DungeonRoom> dungeonRooms = new List<DungeonRoom>();
 
+    private float loadStatus = 0.0f;
+    public float LoadStatus {
+        get {
+            return loadStatus;
+        }
+    }
+
     private void Awake()
     {
         if (Instance)
@@ -69,17 +76,20 @@ public class DungeonCreator : MonoBehaviour
             Instance = null;
     }
 
-    public void CreateLevel(int levelNumber)
+    public IEnumerator CreateLevel(int levelNumber)
     {
-        CreateDungeon(GameManager.gameMode.levelSeeds[levelNumber]);
+        return CreateDungeon(GameManager.gameMode.levelSeeds[levelNumber]);
     }
 
-    public void CreateDungeon(int seed) {
+    public IEnumerator CreateDungeon(int seed)
+    {
         if (roomsContainer.childCount > 0) {
             for (int i = roomsContainer.childCount - 1; i >= 0; i--) {
                 Destroy(roomsContainer.GetChild(i).gameObject);
             }
         }
+
+        yield return new WaitForEndOfFrame();
 
         dungeonRooms = new List<DungeonRoom>();
 
@@ -87,15 +97,31 @@ public class DungeonCreator : MonoBehaviour
         List<List<TiledImporter.PrefabLocations>> roomGameObjects = new List<List<TiledImporter.PrefabLocations>>();
         List<RoomType> roomTypes = new List<RoomType>();
 
-        int mapCount = 6;
+        roomLayouts.Add(TiledImporter.Instance.GetReplacableMap("startRoom", out PropertyDict properties, out List<TiledImporter.PrefabLocations> gos));
+        if (properties.TryGetValue("roomType", out string value) == false)
+            throw new System.Exception("No room type in map: startRoom!");
+        if (int.TryParse(value, out int roomType) == false)
+            throw new System.Exception("Room type is not an integer in: startRoom!");
+        roomTypes.Add((RoomType)roomType);
+        roomGameObjects.Add(gos);
+
+        roomLayouts.Add(TiledImporter.Instance.GetReplacableMap("bossRoom", out properties, out gos));
+        if (properties.TryGetValue("roomType", out value) == false)
+            throw new System.Exception("No room type in map: bossRoom!");
+        if (int.TryParse(value, out roomType) == false)
+            throw new System.Exception("Room type is not an integer in: bossRoom!");
+        roomTypes.Add((RoomType)roomType);
+        roomGameObjects.Add(gos);
+
+        int mapCount = 7;
         for (int i = 1; i <= mapCount; i++) {
-            roomLayouts.Add(TiledImporter.Instance.GetReplacableMap("room" + i.ToString(), out PropertyDict properties, out List<TiledImporter.PrefabLocations> gos));
+            roomLayouts.Add(TiledImporter.Instance.GetReplacableMap("room" + i.ToString(), out properties, out gos));
 
             // Example:
-            if (properties.TryGetValue("roomType", out string value) == false)
+            if (properties.TryGetValue("roomType", out value) == false)
                 throw new System.Exception("No room type in map: room" + i + "!");
 
-            if (int.TryParse(value, out int roomType) == false)
+            if (int.TryParse(value, out roomType) == false)
                 throw new System.Exception("Room type is not an integer in: room" + i + "!");
 
             // do something with the roomType here
@@ -104,42 +130,56 @@ public class DungeonCreator : MonoBehaviour
             roomGameObjects.Add(gos);
         }
 
+        yield return new WaitForEndOfFrame();
+
         dungeon = new Dungeon(maxSize.x, maxSize.y, roomLayouts.ToArray(), roomGameObjects.ToArray(), roomTypes.ToArray(), 10, seed);
 
         // adjust mask size
         mask.localScale = new Vector3(dungeon.Size.x, dungeon.Size.y, 1f);
         mask.position = this.transform.position + (mask.localScale / 2f);
 
+        yield return new WaitForEndOfFrame();
+
         // clear tilemaps
         tilemapFloor.ClearAllTiles();
+
+        yield return new WaitForEndOfFrame();
+
         tilemapWall.ClearAllTiles();
         tilemapCeiling.ClearAllTiles();
 
+        yield return new WaitForEndOfFrame();
+
         // create new tilemaps
-        int tileCount = dungeon.Size.x * dungeon.Size.y;
-        Vector3Int[] positionsFloor = new Vector3Int[tileCount];
-        Vector3Int[] positionsWall = new Vector3Int[tileCount];
-        Vector3Int[] positionsCeiling = new Vector3Int[tileCount];
-        TileBase[] tilesFloor = new TileBase[tileCount];
-        TileBase[] tilesWall = new TileBase[tileCount];
-        TileBase[] tilesCeiling = new TileBase[tileCount];
+        Vector3Int[] positionsFloor;
+        Vector3Int[] positionsWall;
+        Vector3Int[] positionsCeiling;
+        TileBase[] tilesFloor;
+        TileBase[] tilesWall;
+        TileBase[] tilesCeiling;
 
-        int indexFloor = 0;
-        int indexWall = 0;
-        int indexCeil = 0;
+        int indexFloor;
+        int indexWall;
+        int indexCeil;
+
         for (int x = 0; x < dungeon.Size.x; x++) {
+            positionsFloor = new Vector3Int[dungeon.Size.y];
+            positionsWall = new Vector3Int[dungeon.Size.y];
+            positionsCeiling = new Vector3Int[dungeon.Size.y];
+            tilesFloor = new TileBase[dungeon.Size.y];
+            tilesWall = new TileBase[dungeon.Size.y];
+            tilesCeiling = new TileBase[dungeon.Size.y];
+            indexFloor = 0;
+            indexWall = 0;
+            indexCeil = 0;
+
             for (int y = 0; y < dungeon.Size.y; y++) {
-                if (dungeon[x, y] == TileType.Floor) {
-                    positionsFloor[indexFloor] = new Vector3Int(x, y, 0);
+                positionsFloor[indexFloor] = new Vector3Int(x, y, 0);
+                if (dungeon[x, y] == TileType.Floor)
                     tilesFloor[indexFloor] = tileset.tileFloor;
-
-                    indexFloor++;
-                } else {
-                    positionsFloor[indexFloor] = new Vector3Int(x, y, 0);
+                else
                     tilesFloor[indexFloor] = tilePlaceHolder;
-
-                    indexFloor++;
-                }
+                indexFloor++;
 
                 if (y >= 1 && dungeon[x, y] == TileType.Wall && dungeon[x, y - 1] == TileType.Floor) {
                     positionsWall[indexWall] = new Vector3Int(x, y, 0);
@@ -155,25 +195,68 @@ public class DungeonCreator : MonoBehaviour
                     indexCeil++;
                 }
             }
-        }
 
-        // set tiles
-        tilemapFloor.SetTiles(positionsFloor, tilesFloor);
-        tilemapWall.SetTiles(positionsWall, tilesWall);
-        tilemapCeiling.SetTiles(positionsCeiling, tilesCeiling);
+            // set tiles
+            tilemapFloor.SetTiles(positionsFloor, tilesFloor);
+
+            yield return new WaitForEndOfFrame();
+
+            tilemapWall.SetTiles(positionsWall, tilesWall);
+
+            tilemapCeiling.SetTiles(positionsCeiling, tilesCeiling);
+
+            yield return new WaitForEndOfFrame();
+
+            loadStatus += 1.0f / dungeon.Size.x;
+        }
 
         // set border tiles
         List<Vector3Int> positions = new List<Vector3Int>();
         List<TileBase> tiles = new List<TileBase>();
         for (int x = -10; x < dungeon.Size.x + 10; x++) {
-            for (int y = -10; y < dungeon.Size.y + 10; y++) {
-                if (x < 0 || y < 0 || x >= dungeon.Size.x || y >= dungeon.Size.y) {
-                    positions.Add(new Vector3Int(x, y, 0));
-                    tiles.Add(tileset.tileCeiling);
-                }
+            for (int y = -10; y < 2; y++) {
+                positions.Add(new Vector3Int(x, y, 0));
+                tiles.Add(tileset.tileCeiling);
             }
         }
         tilemapCeiling.SetTiles(positions.ToArray(), tiles.ToArray());
+        positions.Clear();
+        tiles.Clear();
+        yield return new WaitForEndOfFrame();
+
+        for (int x = -10; x < dungeon.Size.x + 10; x++) {
+            for (int y = dungeon.Size.y; y < dungeon.Size.y + 10; y++) {
+                positions.Add(new Vector3Int(x, y, 0));
+                tiles.Add(tileset.tileCeiling);
+            }
+        }
+        tilemapCeiling.SetTiles(positions.ToArray(), tiles.ToArray());
+        positions.Clear();
+        tiles.Clear();
+        yield return new WaitForEndOfFrame();
+
+        for (int x = -10; x < 0; x++) {
+            for (int y = 0; y < dungeon.Size.y; y++) {
+                positions.Add(new Vector3Int(x, y, 0));
+                tiles.Add(tileset.tileCeiling);
+            }
+        }
+        tilemapCeiling.SetTiles(positions.ToArray(), tiles.ToArray());
+        positions.Clear();
+        tiles.Clear();
+        yield return new WaitForEndOfFrame();
+
+        for (int x = dungeon.Size.x; x < dungeon.Size.x + 10; x++) {
+            for (int y = 0; y < dungeon.Size.y; y++) {
+                positions.Add(new Vector3Int(x, y, 0));
+                tiles.Add(tileset.tileCeiling);
+            }
+        }
+        tilemapCeiling.SetTiles(positions.ToArray(), tiles.ToArray());
+        positions.Clear();
+        tiles.Clear();
+        yield return new WaitForEndOfFrame();
+
 
         // set rooms
         dungeonRooms = new List<DungeonRoom>();
@@ -274,15 +357,19 @@ public class DungeonCreator : MonoBehaviour
             } else {
                 throw new System.Exception("No DungeonRoom designated...");
             }
+
+            yield return new WaitForEndOfFrame();
         }
 
         if (Player.LocalPlayer) // check to allow for debugging if a localplayer is not scene
             Player.LocalPlayer.StateCommunicator.CmdLevelSetLoaded(true);
+
+        loadStatus = 1.0f;
     }
 
     public void AdjustMask(Vector3 position, Vector3 scale) {
-        mask.localScale = scale;
-        mask.position = position + scale / 2f;
+        mask.localScale = scale + new Vector3(0f, 1.5f, 0f);
+        mask.position = position + scale / 2f + new Vector3(0f, 1f, 0f);
     }
 
     public void ResetMask() {
