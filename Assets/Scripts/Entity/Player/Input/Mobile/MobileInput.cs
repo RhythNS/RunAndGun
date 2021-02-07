@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MobileInput : RAGInput
 {
@@ -47,4 +45,9 @@ public class MobileInput : RAGInput
         Destroy(mobileUI.gameObject);
     }
 
+    protected override bool GetReviveInput()
+    {
+        // TODO: Implement
+        return false;
+    }
 }

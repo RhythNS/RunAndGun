@@ -88,7 +88,7 @@ public class Player : Entity
     [Command]
     public void CmdBulletHit(GameObject gameObject, Weapon firedWeapon)
     {
-        if (!gameObject)
+        if (gameObject)
         {
             Health health = GetComponent<Health>();
             for (int i = 0; i < firedWeapon.Effects.Length; i++)
@@ -104,14 +104,13 @@ public class Player : Entity
         bullet.HitPlayer(this);
     }
 
-    // This is here as a placeholder. Please replace it once revive mechanics are figured out.
     [Command]
-    public void CmdReviveTeammate(GameObject other, int amount)
+    public void CmdReviveTeammate(GameObject other)
     {
         if (other.TryGetComponent(out Player player) == false)
             return;
 
-        player.Health.Revive(amount);
+        Status.ServerReviving(player);
     }
 
     private void OnNameChanged(string oldName, string newName)
@@ -137,6 +136,11 @@ public class Player : Entity
                 CmdPickup(pickable.gameObject);
             else if (collision.TryGetComponent(out Bullet bullet))
                 CmdBulletHit(bullet.gameObject, bullet.fromWeapon);
+            else if (collision.TryGetComponent(out Player player))
+            {
+                if (!player.Health.Alive)
+                    Status.OnDownedPlayerInRangeToRevive(player);
+            }
         }
     }
 
@@ -151,6 +155,12 @@ public class Player : Entity
 
             return;
         }
+        else if (other.TryGetComponent(out Player player))
+        {
+            if (Status.downedPlayerAbleToRevive == player)
+                Status.OnDownedPlayerNoLongerInRange();
+        }
+
     }
 
     private void OnDestroy()

@@ -15,11 +15,7 @@ namespace Rhyth.BTree
         {
             if (DEBUG)
             {
-                Vector2 changedOffset = offset / zoomLevel;
-                Vector2 newOffset = EditorGUILayout.Vector2Field("Position:", changedOffset);
-                if (changedOffset != newOffset)
-                    offset = newOffset * zoomLevel;
-
+                offset = EditorGUILayout.Vector2Field("Position:", offset);
                 zoomLevel = Mathf.Clamp(EditorGUILayout.FloatField("Zoomlevel", zoomLevel), MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL);
             }
 
@@ -45,7 +41,12 @@ namespace Rhyth.BTree
                 }
 
                 // Update the new root node
+                Color preColor = GUI.color;
+                if (index == 0)
+                    GUI.color = Color.red;
                 int newIndex = EditorGUILayout.Popup("root", index, choices);
+                GUI.color = preColor;
+
                 if (newIndex != index)
                 {
                     if (newIndex == 0)
@@ -54,6 +55,7 @@ namespace Rhyth.BTree
                         rootNode.objectReferenceValue = parentLessNodes[newIndex - 1];
                 }
                 this.rootNode = newIndex == 0 ? null : parentLessNodes[newIndex - 1];
+                
                 // ---Handle root node
 
                 tree.ApplyModifiedProperties();
@@ -76,19 +78,24 @@ namespace Rhyth.BTree
                             AssetDatabase.AddObjectToAsset(newNode, tree.targetObject);
                             selectedObject = newNode;
                             AssetDatabase.SaveAssets();
+                            Reload();
                         });
                     }
                     valueMenu.ShowAsContext();
                 }
             }
 
+            Color prevColor = GUI.contentColor;
             // Display all values in a list
             for (int i = 0; i < allValues.Length; i++)
             {
+                if (allValues[i] == selectedObject)
+                    GUI.contentColor = currentSelectedColor;
                 if (GUILayout.Button(allValues[i].name))
                 {
                     selectedObject = allValues[i];
                 }
+                GUI.contentColor = prevColor;
             }
         }
 
@@ -136,17 +143,7 @@ namespace Rhyth.BTree
                     {
                         do
                         {
-                            for (int i = 0; i < IGNORE_PROPERTIES.Length; i++)
-                                if (prop.name == IGNORE_PROPERTIES[i])
-                                    goto SkipProperty;
-
-                            for (int i = 0; i < DEBUG_PROPERTIES.Length && DEBUG == false; i++)
-                                if (prop.name == DEBUG_PROPERTIES[i])
-                                    goto SkipProperty;
-
-                            EditorGUILayout.PropertyField(serObject.FindProperty(prop.name), true);
-
-                        SkipProperty:;
+                            DrawProperty(serObject, prop);
                         }
                         while (prop.NextVisible(false));
                     }
@@ -166,6 +163,7 @@ namespace Rhyth.BTree
                         AssetDatabase.RemoveObjectFromAsset(selectedObject);
                         AssetDatabase.SaveAssets();
                         selectedObject = null;
+                        changed = true;
                     }
                 }
                 else if (selectedObject is BNode)
@@ -173,14 +171,67 @@ namespace Rhyth.BTree
                     if (GUILayout.Button("Delete"))
                     {
                         RemoveNode(selectedObject as BNode);
+                        changed = true;
                     }
                 }
                 if (changed)
                 {
                     tree.ApplyModifiedProperties();
                     tree.Update();
+                    Reload();
                 }
             }
         }
+
+        /// <summary>
+        /// Draws a single property.
+        /// </summary>
+        /// <param name="serObject">The object where the property is from.</param>
+        /// <param name="prop">The property to be drawn</param>
+        private void DrawProperty(SerializedObject serObject, SerializedProperty prop)
+        {
+            for (int i = 0; i < IGNORE_PROPERTIES.Length; i++)
+                if (prop.name == IGNORE_PROPERTIES[i])
+                    return;
+
+            for (int i = 0; i < DEBUG_PROPERTIES.Length && DEBUG == false; i++)
+                if (prop.name == DEBUG_PROPERTIES[i])
+                    return;
+
+            Type type = GetTypeOfProperty(prop);
+            if (typeof(Value).IsAssignableFrom(type))
+            {
+                List<string> allValuesStrings = new List<string>
+                    {
+                        "Null"
+                    };
+
+                int selected = 0;
+
+                if (prop.objectReferenceValue != null)
+                    for (int i = 0; i < allValues.Length; i++)
+                    {
+                        if (!allValues[i].GetType().IsAssignableFrom(type))
+                            continue;
+
+                        allValuesStrings.Add(allValues[i].name);
+
+                        if (allValues[i] == prop.objectReferenceValue)
+                            selected = allValuesStrings.Count - 1;
+                    }
+
+                int newSelected = EditorGUILayout.Popup(prop.name, selected, allValuesStrings.ToArray());
+
+                if (selected != newSelected)
+                {
+                    prop.objectReferenceValue = newSelected == 0 ? null : (UnityEngine.Object)allValues[newSelected - 1];
+                }
+
+                return;
+            }
+
+            EditorGUILayout.PropertyField(serObject.FindProperty(prop.name), true);
+        }
+
     }
 }

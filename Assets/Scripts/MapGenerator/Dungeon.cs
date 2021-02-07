@@ -87,7 +87,38 @@ namespace MapGenerator
                 iters++;
             }
 
-            for (int i = 0; i < 5; i++) {
+            bool bossRoom = false;
+            foreach (var exit in exits) {
+                if (exit.IntoRoom && GenerateRoom(exit, true)) {
+                    bossRoom = true;
+                    break;
+                }
+            }
+            if (!bossRoom) {
+                Debug.Log("Could not generate BossRoom randomly. Forcing room creation!");
+
+                for (int i = 0; i < exits.Count; i++) {
+                    if (exits[i].Direction != Direction.Down && GenerateCorridor(exits[i])) {
+                        //GetAllExits(ref exits);
+                        foreach (var exit in exits) {
+                            if (exit.IntoRoom && GenerateRoom(exit, true)) {
+                                bossRoom = true;
+                                break;
+                            }
+                        }
+
+                        if (bossRoom)
+                            break;
+                    }
+                }
+
+                if (!bossRoom)
+                    Debug.Log("Still no BossRoom");
+                else
+                    Debug.Log("Created BossRoom!");
+            }
+
+            for (int i = 0; i < 3; i++) {
                 DeleteDeadEnds();
             }
         }
@@ -182,8 +213,10 @@ namespace MapGenerator
             }
         }
 
-        private void GenerateRoom(Exit exit) {
-            int rndRoom = Random.Range(1, roomLayouts.Length);
+        private bool GenerateRoom(Exit exit, bool isBossRoom = false) {
+            int rndRoom = Random.Range(2, roomLayouts.Length);
+            if (isBossRoom)
+                rndRoom = 1;
             Room room = new Room(0, 0, roomLayouts[rndRoom], roomGameObjects[rndRoom], roomTypes[rndRoom]);
 
             foreach (var exitDir in room.ExitDirections) {
@@ -209,28 +242,34 @@ namespace MapGenerator
                         }
 
                         AddRoom(room);
-                    }
 
-                    break;
+                        return true;
+                    }
                 }
             }
+
+            return false;
         }
 
-        private void GenerateCorridor(Exit exit) {
+        private bool GenerateCorridor(Exit exit) {
             int length = Random.Range(Corridor.MIN_LENGTH, Corridor.MAX_LENGTH + 1);
             Corridor corridor = new Corridor(exit.Position.x, exit.Position.y, length, exit.Direction);
 
             if (IsEmptyInArea(corridor, exit.Direction)) {
                 AddCorridor(corridor);
+
+                return true;
             }
+
+            return false;
         }
 
-        private bool IsEmptyInArea(Room room, Direction direction) {
+        private bool IsEmptyInArea(Room room, Direction direction, bool isBossRoom = false) {
             switch (direction) {
                 case Direction.Up:
                     for (int x = -4; x < room.Layout.XSize + 4; x++) {
                         for (int y = 0; y < room.Layout.YSize + 4; y++) {
-                            if (/*(room[x, y] != TileType.Wall && room[x, y] != TileType.CorridorAccess) &&*/ mapLayout[room.Position.x + x, room.Position.y + y] != TileType.Wall) {
+                            if (mapLayout[room.Position.x + x, room.Position.y + y] != TileType.Wall) {
                                 return false;
                             }
                         }
@@ -240,7 +279,7 @@ namespace MapGenerator
                 case Direction.Down:
                     for (int x = -4; x < room.Layout.XSize + 4; x++) {
                         for (int y = -4; y < room.Layout.YSize; y++) {
-                            if (/*(room[x, y] != TileType.Wall && room[x, y] != TileType.CorridorAccess) &&*/ mapLayout[room.Position.x + x, room.Position.y + y] != TileType.Wall) {
+                            if (mapLayout[room.Position.x + x, room.Position.y + y] != TileType.Wall) {
                                 return false;
                             }
                         }
@@ -250,7 +289,7 @@ namespace MapGenerator
                 case Direction.Left:
                     for (int x = -4; x < room.Layout.XSize; x++) {
                         for (int y = -4; y < room.Layout.YSize + 4; y++) {
-                            if (/*(room[x, y] != TileType.Wall && room[x, y] != TileType.CorridorAccess) &&*/ mapLayout[room.Position.x + x, room.Position.y + y] != TileType.Wall) {
+                            if (mapLayout[room.Position.x + x, room.Position.y + y] != TileType.Wall) {
                                 return false;
                             }
                         }
@@ -260,7 +299,7 @@ namespace MapGenerator
                 case Direction.Right:
                     for (int x = 0; x < room.Layout.XSize + 4; x++) {
                         for (int y = -4; y < room.Layout.YSize + 4; y++) {
-                            if (/*(room[x, y] != TileType.Wall && room[x, y] != TileType.CorridorAccess) &&*/ mapLayout[room.Position.x + x, room.Position.y + y] != TileType.Wall) {
+                            if (mapLayout[room.Position.x + x, room.Position.y + y] != TileType.Wall) {
                                 return false;
                             }
                         }

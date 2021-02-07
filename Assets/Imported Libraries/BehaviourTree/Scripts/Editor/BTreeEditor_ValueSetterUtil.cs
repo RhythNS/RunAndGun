@@ -9,6 +9,47 @@ namespace Rhyth.BTree
 {
     public partial class BTreeEditor : EditorWindow
     {
+        private void Reload(bool setMidPoint = false)
+        {
+            if (inPlayMode == true)
+            {
+                SetInPlayModeReferences();
+                if (tree == null)
+                    return;
+            }
+            else
+            { // Not in play mode
+                if (treePath == null || treePath.Length == 0)
+                {
+                    EditorGUILayout.LabelField("I can not find that tree :(");
+                    return;
+                }
+
+                if (tree == null)
+                    ReloadAfterRecompile();
+
+                SetInEditModeReferences();
+            }
+
+            if (setMidPoint)
+            {
+                Rect rect = GetBoundingRectOfNodes();
+                offset = -(rect.position + (rect.size * 0.5f));
+            }
+        }
+
+        private void ReloadAfterRecompile()
+        {
+            tree = new SerializedObject(AssetDatabase.LoadAssetAtPath<BTree>(treePath));
+            valueTypes = GetDerivedTypes(typeof(Value));
+            nodeTypes = GetDerivedTypes(typeof(BNode));
+            allNodesForTypes = new BNode[nodeTypes.Length];
+            for (int i = 0; i < nodeTypes.Length; i++)
+                allNodesForTypes[i] = (BNode)CreateInstance(nodeTypes[i]);
+
+            GetCustomEditors();
+        }
+
         private void SetInEditModeReferences()
         {
             UnityEngine.Object[] values = AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(tree.targetObject));
@@ -61,6 +102,27 @@ namespace Rhyth.BTree
             }
         }
 
+        // Taken from https://answers.unity.com/questions/929293/get-field-type-of-serializedproperty.html
+        private Type GetTypeOfProperty(SerializedProperty property)
+        {
+            string[] splitPropertyPath = property.propertyPath.Split('.');
+            Type type = property.serializedObject.targetObject.GetType();
+
+            for (int i = 0; i < splitPropertyPath.Length; i++)
+            {
+                if (splitPropertyPath[i] == "Array")
+                {
+                    type = type.GetElementType();
+                    i++; //skip "data[x]"
+                }
+                else
+                    type = type.GetField(splitPropertyPath[i], BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.FlattenHierarchy | BindingFlags.Instance).FieldType;
+            }
+
+            return type;
+
+        }
+
         private void GetChildren(BNode root, List<BNode> allNodes)
         {
             BNode[] children = root.Children;
@@ -89,6 +151,27 @@ namespace Rhyth.BTree
                 }
             }
             return types.OrderBy(x => x.Name).ToArray();
+        }
+
+        private Rect GetBoundingRectOfNodes()
+        {
+            if (allNodes.Length == 0)
+                return new Rect(0, 0, 0, 0);
+
+            float minX = float.MaxValue, minY = float.MaxValue, maxX = float.MinValue, maxY = float.MinValue;
+            for (int i = 0; i < allNodes.Length; i++)
+            {
+                Rect rect = allNodes[i].boundsInEditor;
+                if (rect.x < minX)
+                    minX = rect.x;
+                if (rect.y < minY)
+                    minY = rect.y;
+                if (rect.x + rect.width > maxX)
+                    maxX = rect.x + rect.width;
+                if (rect.y + rect.height > maxY)
+                    maxY = rect.y + rect.height;
+            }
+            return new Rect(minX, minY, maxX - minX, maxY - minY);
         }
 
         private bool GetParentNode(BNode child, out BNode parent)

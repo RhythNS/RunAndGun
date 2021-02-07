@@ -122,6 +122,7 @@ public class Health : NetworkBehaviour
         {
             Debug.Log(gameObject.name + " has died!");
             enabled = false;
+            GetComponent<IDieable>().Die();
             RpcOnDied();
         }
     }
@@ -132,7 +133,8 @@ public class Health : NetworkBehaviour
     [ClientRpc]
     private void RpcOnDied()
     {
-        GetComponent<IDieable>().Die();
+        if (!isServer)
+            GetComponent<IDieable>().Die();
     }
 
     /// <summary>

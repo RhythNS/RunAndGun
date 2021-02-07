@@ -1,17 +1,25 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-
 using MapGenerator;
 using Mirror;
 
 public abstract class DungeonRoom : MonoBehaviour
 {
+    /// <summary>
+    /// Wheter the room has an event if all players entered it.
+    /// </summary>
     public abstract bool EventOnRoomEntered { get; }
 
     public abstract RoomType RoomType { get; }
 
+    /// <summary>
+    /// If the room event has already been cleared.
+    /// </summary>
     public bool AlreadyCleared { get; protected set; } = false;
 
+    /// <summary>
+    /// A border around the room. This is used to determine when the players are fully in a room.
+    /// </summary>
     public Rect Border
     {
         get => border; set
@@ -72,11 +80,15 @@ public abstract class DungeonRoom : MonoBehaviour
         DungeonCreator.Instance.ResetMask();
     }
 
-    public virtual void OnAllPlayersEntered()
-    {
+    /// <summary>
+    /// Called when the room has a room event and all players entered the room. Overwrite this to get
+    /// custom behaviour. Make sure to call GameManager.OnRoomEventStarted with the border of the room.
+    /// </summary>
+    public virtual void OnAllPlayersEntered() { }
 
-    }
-
+    /// <summary>
+    /// Sends a message to all connected clients to close the doors of this room.
+    /// </summary>
     [Server]
     public void CloseDoors()
     {
@@ -89,6 +101,10 @@ public abstract class DungeonRoom : MonoBehaviour
         NetworkServer.SendToAll(doorMessage);
     }
 
+    /// <summary>
+    /// Called when the client recieved a message to close the doors. Should not be called
+    /// manually, use CloseDoors() instead.
+    /// </summary>
     public void OnCloseDoors()
     {
         foreach (var door in doors)
@@ -97,6 +113,9 @@ public abstract class DungeonRoom : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Sends a message to all connected clients to open the doors of this room.
+    /// </summary>
     [Server]
     public void OpenDoors()
     {
@@ -109,11 +128,112 @@ public abstract class DungeonRoom : MonoBehaviour
         NetworkServer.SendToAll(doorMessage);
     }
 
+    /// <summary>
+    /// Called when the client recieved a message to open the doors. Should not be called
+    /// manually, use OpenDoors() instead.
+    /// </summary>
     public void OnOpenDoors()
     {
         foreach (var door in doors)
         {
             door.IsLocked = false;
+        }
+    }
+
+    /// <summary>
+    /// Spawns given enemies inside the walkable tiles in the room.
+    /// </summary>
+    /// <param name="enemiesToSpawn">The enemies to be spawned.</param>
+    protected void SpawnEnemies(EnemyObject[] enemiesToSpawn)
+    {
+        List<Vector2Int> enemySpawns = new List<Vector2Int>();
+
+        int maxIterations = enemiesToSpawn.Length * 25;
+        int iterations = 0;
+
+        Vector2Int playerPos = DungeonCreator.Instance.WorldPositionToTilePosition(Player.LocalPlayer.transform.position);
+
+        while (enemySpawns.Count < enemiesToSpawn.Length && iterations < maxIterations)
+        {
+            int rnd = Random.Range(0, walkableTiles.Count);
+            Vector2Int pos = walkableTiles[rnd];
+
+            bool found = false;
+            for (int x = -10; x < 10; x++) {
+                for (int y = -10; y < 10; y++) {
+                    Vector2Int p = pos + new Vector2Int(x, y);
+                    if (x >= -2 && y >= -2 && x <= 2 && y <= 2) {
+                        if (enemySpawns.Contains(p)) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (playerPos == p) {
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (found)
+                    break;
+            }
+
+            if (!found) {
+                Enemy.InstantiateAndSpawn(enemiesToSpawn[enemySpawns.Count], Border, new Vector3(pos.x, pos.y, 0f), Quaternion.identity);
+                
+                enemySpawns.Add(pos);
+            }
+
+            iterations++;
+        }
+    }
+
+    /// <summary>
+    /// Spawns given loot inside the walkable tiles in the room.
+    /// </summary>
+    /// <param name="pickables">The pickables to be spawned.</param>
+    protected void SpawnLoot(Pickable[] pickables)
+    {
+        List<Vector2Int> lootSpawns = new List<Vector2Int>();
+
+        int maxIterations = pickables.Length * 25;
+        int iterations = 0;
+
+        Vector2Int playerPos = DungeonCreator.Instance.WorldPositionToTilePosition(Player.LocalPlayer.transform.position);
+
+        while (lootSpawns.Count < pickables.Length && iterations < maxIterations)
+        {
+            int rnd = Random.Range(0, walkableTiles.Count);
+            Vector2Int pos = walkableTiles[rnd];
+
+            bool found = false;
+            for (int x = -5; x < 5; x++) {
+                for (int y = -5; y < 5; y++) {
+                    Vector2Int p = pos + new Vector2Int(x, y);
+                    if (x >= -2 && y >= -2 && x <= 2 && y <= 2) {
+                        if (lootSpawns.Contains(p)) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (playerPos == p) {
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (found)
+                    break;
+            }
+
+            if (!found)
+            {
+                PickableInWorld.Place(pickables[lootSpawns.Count], new Vector3(pos.x, pos.y, 0f));
+
+                lootSpawns.Add(pos);
+            }
+
+            iterations++;
         }
     }
 

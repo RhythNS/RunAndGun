@@ -107,8 +107,8 @@ namespace MapGenerator
             List<Vector2Int> walkableTiles = new List<Vector2Int>();
 
             for (int x = 0; x < Layout.XSize; x++) {
-                for (int y = 0; y < Layout.YSize; y++) {
-                    if (Layout[x, y] == TileType.Floor)
+                for (int y = 2; y < Layout.YSize; y++) {
+                    if (Layout[x, y] == TileType.Floor && Layout[x, y - 1] == TileType.Floor && Layout[x, y - 2] == TileType.Floor)
                         walkableTiles.Add(new Vector2Int(x, y));
                 }
             }

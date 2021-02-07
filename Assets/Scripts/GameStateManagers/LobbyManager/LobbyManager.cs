@@ -9,6 +9,8 @@ public class LobbyManager : MonoBehaviour
 
     private ExtendedCoroutine gameStartCountdown;
 
+    [SerializeField] private GameMode testGame;
+
     private void Awake()
     {
         if (instance)
@@ -78,15 +80,20 @@ public class LobbyManager : MonoBehaviour
 
         instance = null;
         gameObject.AddComponent<GameManager>();
-        GameManager.OnLoadNewLevel();
+        GameManager.OnStartNewGame(testGame);
+
 
         // TODO: Maybe seed can be set in the menu?
         StartGameMessage sgm = new StartGameMessage
         {
-            levelSeed = Random.Range(int.MinValue, int.MaxValue)
+            levelSeed = Random.Range(int.MinValue, int.MaxValue),
+            gameMode = testGame
         };
 
         NetworkServer.SendToAll(sgm);
+
+        GameManager.OnLoadNewLevel();
+        
         Destroy(this);
     }
 

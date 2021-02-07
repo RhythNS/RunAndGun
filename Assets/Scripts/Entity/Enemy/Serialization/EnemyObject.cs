@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// Used for creating an enemy entity.
 /// </summary>
-[CreateAssetMenu(menuName = "Enemy")]
+[CreateAssetMenu(menuName = "Entity/Enemy")]
 public class EnemyObject : ScriptableObject
 {
     public GameObject Prefab => prefab;

@@ -72,4 +72,8 @@ public class KeyMouseInput : RAGInput
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
     }
 
+    protected override bool GetReviveInput()
+    {
+        return Input.GetKeyDown(KeyCode.X);
+    }
 }

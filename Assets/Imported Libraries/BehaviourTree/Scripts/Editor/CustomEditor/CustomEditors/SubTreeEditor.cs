@@ -27,51 +27,9 @@ public class SubTreeEditor : CustomBNodeEditor
 
         if (GUILayout.Button("Update ValueList"))
         {
-            if (treeProperty.objectReferenceValue == null)
-                goto DrawArrayValues; // skip the button
-
-            UnityEngine.Object[] allObjects = AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(treeProperty.objectReferenceValue));
-
-            List<Value> values = new List<Value>();
-
-            for (int i = 0; i < allObjects.Length; i++)
-                if (allObjects[i] is Value)
-                    values.Add(allObjects[i] as Value);
-
-            for (int i = valuesToOverwrite.arraySize - 1; i > -1; i--)
-            {
-                // Get the element "valuesToOverwrite.toOverwrite"
-                SerializedProperty element = valuesToOverwrite.GetArrayElementAtIndex(i).FindPropertyRelative("toOverwrite");
-
-                // Go through both lists and remove all matching elements and remove elements which are not in allnames from the
-                // serialized array
-                bool found = false;
-                for (int j = 0; j < values.Count; j++)
-                {
-                    if (values[j] == element.objectReferenceValue)
-                    {
-                        values.RemoveAt(j);
-                        found = true;
-                        break;
-                    }
-                }
-                if (found == false)
-                {
-                    SerializableUtil.ArrayRemoveAtIndex(valuesToOverwrite, i);
-                }
-            }
-
-            // save the index and grow the array
-            int index = valuesToOverwrite.arraySize;
-            valuesToOverwrite.arraySize += values.Count;
-
-            for (int i = 0; i < values.Count; i++)
-                valuesToOverwrite.GetArrayElementAtIndex(index++).FindPropertyRelative("toOverwrite").objectReferenceValue = values[i];
-
-            serializedObject.ApplyModifiedProperties();
+            OnUpdateValueList(treeProperty, valuesToOverwrite, serializedObject);
         }
 
-    DrawArrayValues:
         // Draw the array
         for (int i = 0; i < valuesToOverwrite.arraySize; i++)
         {
@@ -82,6 +40,52 @@ public class SubTreeEditor : CustomBNodeEditor
             newValue.objectReferenceValue = EditorGUILayout.ObjectField(toOverwrite.objectReferenceValue.name, newValue.objectReferenceValue, typeof(Value), false);
         }
 
+    }
+
+    private void OnUpdateValueList(SerializedProperty treeProperty, SerializedProperty valuesToOverwrite, SerializedObject serializedObject)
+    {
+        if (treeProperty.objectReferenceValue == null)
+            return; // skip the button
+
+        UnityEngine.Object[] allObjects = AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(treeProperty.objectReferenceValue));
+
+        List<Value> values = new List<Value>();
+
+        for (int i = 0; i < allObjects.Length; i++)
+            if (allObjects[i] is Value)
+                values.Add(allObjects[i] as Value);
+
+        for (int i = valuesToOverwrite.arraySize - 1; i > -1; i--)
+        {
+            // Get the element "valuesToOverwrite.toOverwrite"
+            SerializedProperty element = valuesToOverwrite.GetArrayElementAtIndex(i).FindPropertyRelative("toOverwrite");
+
+            // Go through both lists and remove all matching elements and remove elements which are not in allnames from the
+            // serialized array
+            bool found = false;
+            for (int j = 0; j < values.Count; j++)
+            {
+                if (values[j] == element.objectReferenceValue)
+                {
+                    values.RemoveAt(j);
+                    found = true;
+                    break;
+                }
+            }
+            if (found == false)
+            {
+                SerializableUtil.ArrayRemoveAtIndex(valuesToOverwrite, i);
+            }
+        }
+
+        // save the index and grow the array
+        int index = valuesToOverwrite.arraySize;
+        valuesToOverwrite.arraySize += values.Count;
+
+        for (int i = 0; i < values.Count; i++)
+            valuesToOverwrite.GetArrayElementAtIndex(index++).FindPropertyRelative("toOverwrite").objectReferenceValue = values[i];
+
+        serializedObject.ApplyModifiedProperties();
     }
 
 }

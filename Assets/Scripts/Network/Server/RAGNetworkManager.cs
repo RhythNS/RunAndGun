@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class RAGNetworkManager : NobleNetworkManager
 {
+    // TODO: Check all messages. If something is wrong, return to main menu
+
     public override void OnStartServer()
     {
         base.OnStartServer();
@@ -19,6 +21,7 @@ public class RAGNetworkManager : NobleNetworkManager
         NetworkClient.RegisterHandler<StartGameMessage>(OnStartGameMessage);
         NetworkClient.RegisterHandler<ReturnToLobbyMessage>(OnReturnToLobbyMessage);
         NetworkClient.RegisterHandler<DoorMessage>(OnDoorsMessage);
+        NetworkClient.RegisterHandler<GenerateLevelMessage>(OnGenerateLevelMessage);
     }
 
     public override void OnClientConnect(NetworkConnection conn)
@@ -68,7 +71,14 @@ public class RAGNetworkManager : NobleNetworkManager
     private void OnStartGameMessage(NetworkConnection connection, StartGameMessage startGameMessage)
     {
         LobbyLevel.Instance.Hide();
-        DungeonCreator.Instance.CreateDungeon(startGameMessage.levelSeed);
+        startGameMessage.gameMode.Init(startGameMessage.levelSeed);
+        GameManager.gameMode = startGameMessage.gameMode;
+    }
+
+    private void OnGenerateLevelMessage(NetworkConnection connection, GenerateLevelMessage generateLevelMessage)
+    {
+        DungeonDict.Instance.ClearRooms();
+        StartCoroutine(DungeonCreator.Instance.CreateDungeon(generateLevelMessage.levelNumber));
     }
 
     private void OnReturnToLobbyMessage(NetworkConnection connection, ReturnToLobbyMessage returnToLobbyMessage)

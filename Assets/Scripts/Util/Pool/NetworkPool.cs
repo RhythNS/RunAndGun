@@ -1,9 +1,8 @@
 ﻿using Mirror;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class NetworkPool : NetworkBehaviour
+public class NetworkPool : MonoBehaviour
 {
     [SerializeField] protected GameObject prefab;
     [SerializeField] protected int startingAmount;
@@ -11,21 +10,11 @@ public abstract class NetworkPool : NetworkBehaviour
 
     private Queue<GameObject> poolQueue;
 
-    public override void OnStartServer()
+    private void Start()
     {
-        ClientScene.RegisterPrefab(prefab, Get, Free);
-
         CreateInitialPool();
-    }
-
-    public override void OnStartClient()
-    {
-        if (isServer)
-            return;
 
         ClientScene.RegisterPrefab(prefab, Get, Free);
-
-        CreateInitialPool();
     }
 
     protected virtual void CreateInitialPool()
@@ -41,18 +30,23 @@ public abstract class NetworkPool : NetworkBehaviour
 
     public virtual GameObject Get(SpawnMessage spawnMessage)
     {
-        GameObject obj = GetFromPool();
-        obj.transform.position = spawnMessage.position;
-        obj.transform.rotation = spawnMessage.rotation;
+        GameObject obj = GetFromPool(spawnMessage.position, spawnMessage.rotation);
         return obj;
     }
 
-    public virtual GameObject GetFromPool()
+    public virtual GameObject GetFromPool(Vector3 position, Quaternion rotation)
     {
-        return poolQueue.Count == 0 ? Create() : poolQueue.Dequeue();
+        GameObject obj = poolQueue.Count == 0 ? Create() : poolQueue.Dequeue();
+        obj.transform.position = position;
+        obj.transform.rotation = rotation;
+        obj.GetComponent<IPoolable>().Show();
+        return obj;
     }
 
-    protected abstract GameObject Create();
+    protected virtual GameObject Create()
+    {
+        return Instantiate(prefab, transform);
+    }
 
     public virtual void Free(GameObject t)
     {

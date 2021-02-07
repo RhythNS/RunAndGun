@@ -1,9 +1,4 @@
 ﻿using MapGenerator;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 public class BossRoom : DungeonRoom
 {
@@ -11,7 +6,10 @@ public class BossRoom : DungeonRoom
 
     public override RoomType RoomType => RoomType.Boss;
 
-    public override void OnAllPlayersEntered() {
+    public BossObject[] bossObjects;
+
+    public override void OnAllPlayersEntered()
+    {
         CloseDoors();
         SpawnBoss();
 
@@ -19,12 +17,14 @@ public class BossRoom : DungeonRoom
         AliveHealthDict.Instance.OnAllPlayersDied += OnAllPlayersDied;
     }
 
-    private void OnAllPlayersDied() {
+    private void OnAllPlayersDied()
+    {
         AliveHealthDict.Instance.OnAllEnemiesDied -= OnAllEnemiesDefeated;
         AliveHealthDict.Instance.OnAllPlayersDied -= OnAllPlayersDied;
     }
 
-    private void OnAllEnemiesDefeated() {
+    private void OnAllEnemiesDefeated()
+    {
         AliveHealthDict.Instance.OnAllEnemiesDied -= OnAllEnemiesDefeated;
         AliveHealthDict.Instance.OnAllPlayersDied -= OnAllPlayersDied;
 
@@ -35,11 +35,13 @@ public class BossRoom : DungeonRoom
         GameManager.OnRoomEventEnded();
     }
 
-    private void SpawnBoss() {
+    private void SpawnBoss()
+    {
         // TODO
     }
 
-    private void SpawnLoot() {
+    private void SpawnLoot()
+    {
         // TODO
     }
 }

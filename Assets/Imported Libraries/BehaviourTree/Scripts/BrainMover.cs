@@ -18,6 +18,8 @@ public class BrainMover : MonoBehaviour
     public bool ShouldMove { get; set; }
     private bool didMoveLastFrame = false;
 
+    private Rigidbody2D body;
+
     [SerializeField] private Vector2 destination;
     public Vector2 Destination
     {
@@ -57,6 +59,11 @@ public class BrainMover : MonoBehaviour
 
     public float meterPerSecond;
 
+    private void Awake()
+    {
+        body = GetComponent<Rigidbody2D>();
+    }
+
     private void Update()
     {
         switch (State)
@@ -72,14 +79,14 @@ public class BrainMover : MonoBehaviour
                     }
 
                     Vector3 vec = dir.normalized * (meterPerSecond * Time.deltaTime);
-                    transform.position += vec;
+                    body.MovePosition(transform.position + vec);
                     break;
                 }
 
             case PathState.ConstantDirection:
                 {
                     Vector3 vec = ConstantDirection * (meterPerSecond * Time.deltaTime);
-                    transform.position += vec;
+                    body.MovePosition(transform.position + vec);
                     break;
                 }
         }
@@ -96,9 +103,5 @@ public class BrainMover : MonoBehaviour
             didMoveLastFrame = ShouldMove;
         }
         ShouldMove = false;
-    }
-
-    private void FixedUpdate()
-    {
     }
 }

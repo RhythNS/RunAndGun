@@ -16,7 +16,7 @@ TagManager:
   - 
   - Player
   - Enemy
-  - 
+  - DownedPlayer
   - 
   - 
   - 
@@ -45,11 +45,11 @@ TagManager:
   - name: Floor
     uniqueID: 4053311029
     locked: 0
-  - name: Entities
-    uniqueID: 3972799645
-    locked: 0
   - name: Wall
     uniqueID: 2589566591
+    locked: 0
+  - name: Entities
+    uniqueID: 3972799645
     locked: 0
   - name: Ceiling
     uniqueID: 735449647
