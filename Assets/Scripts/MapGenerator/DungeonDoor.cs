@@ -71,7 +71,7 @@ public class DungeonDoor : MonoBehaviour
             transform.position += Vector3.down * 2f;
     }
 
-    public void OnCollisionEnter2D(Collision2D collision) {
+    public void OnTriggerEnter2D(Collider2D collision) {
         Open();
     }
 }

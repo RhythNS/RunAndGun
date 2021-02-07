@@ -151,34 +151,40 @@ public abstract class DungeonRoom : MonoBehaviour
         int maxIterations = enemiesToSpawn.Length * 25;
         int iterations = 0;
 
-        while (enemySpawns.Count < enemiesToSpawn.Length)
+        Vector2Int playerPos = DungeonCreator.Instance.WorldPositionToTilePosition(Player.LocalPlayer.transform.position);
+
+        while (enemySpawns.Count < enemiesToSpawn.Length || iterations < maxIterations)
         {
             int rnd = Random.Range(0, walkableTiles.Count);
             Vector2Int pos = walkableTiles[rnd];
 
             bool found = false;
-            for (int x = -2; x < 2; x++)
-            {
-                for (int y = -2; y < 2; y++)
-                {
-                    if (enemySpawns.Contains(new Vector2Int(x, y)))
-                    {
+            for (int x = -10; x < 10; x++) {
+                for (int y = -10; y < 10; y++) {
+                    Vector2Int p = pos + new Vector2Int(x, y);
+                    if (x >= -2 && y >= -2 && x <= 2 && y <= 2) {
+                        if (enemySpawns.Contains(p)) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (playerPos == p) {
                         found = true;
                         break;
                     }
                 }
+
+                if (found)
+                    break;
             }
 
-            if (!found)
-            {
+            if (!found) {
                 Enemy.InstantiateAndSpawn(enemiesToSpawn[enemySpawns.Count], Border, new Vector3(pos.x, pos.y, 0f), Quaternion.identity);
 
                 enemySpawns.Add(pos);
             }
 
             iterations++;
-            if (iterations >= maxIterations)
-                break;
         }
     }
 
@@ -193,22 +199,31 @@ public abstract class DungeonRoom : MonoBehaviour
         int maxIterations = pickables.Length * 25;
         int iterations = 0;
 
-        while (lootSpawns.Count < pickables.Length)
+        Vector2Int playerPos = DungeonCreator.Instance.WorldPositionToTilePosition(Player.LocalPlayer.transform.position);
+
+        while (lootSpawns.Count < pickables.Length || iterations < maxIterations)
         {
             int rnd = Random.Range(0, walkableTiles.Count);
             Vector2Int pos = walkableTiles[rnd];
 
             bool found = false;
-            for (int x = -2; x < 2; x++)
-            {
-                for (int y = -2; y < 2; y++)
-                {
-                    if (lootSpawns.Contains(new Vector2Int(x, y)))
-                    {
+            for (int x = -5; x < 5; x++) {
+                for (int y = -5; y < 5; y++) {
+                    Vector2Int p = pos + new Vector2Int(x, y);
+                    if (x >= -2 && y >= -2 && x <= 2 && y <= 2) {
+                        if (lootSpawns.Contains(p)) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (playerPos == p) {
                         found = true;
                         break;
                     }
                 }
+
+                if (found)
+                    break;
             }
 
             if (!found)
@@ -219,8 +234,6 @@ public abstract class DungeonRoom : MonoBehaviour
             }
 
             iterations++;
-            if (iterations >= maxIterations)
-                break;
         }
     }
 
