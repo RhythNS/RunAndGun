@@ -201,8 +201,7 @@ public class DungeonCreator : MonoBehaviour
 
             yield return new WaitForEndOfFrame();
 
-            //loadStatus += 0.00390625f; // step size 1/256
-            loadStatus += 1.0f / dungeon.Size.x; // step size 1/128
+            loadStatus += 1.0f / dungeon.Size.x;
         }
 
         // set border tiles
