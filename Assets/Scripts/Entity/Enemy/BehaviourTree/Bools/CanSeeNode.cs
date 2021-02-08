@@ -10,7 +10,6 @@ public class CanSeeNode : BoolNode
     public override string StringToolTip => "Returns success if the entity can see a other given entity.";
 
     [SerializeField] private HealthValue otherHealth;
-    [SerializeField] private LayerMask layerMask;
 
     protected override BNode InnerClone(Dictionary<Value, Value> originalValueForClonedValue)
     {

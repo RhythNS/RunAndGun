@@ -377,11 +377,22 @@ public class DungeonCreator : MonoBehaviour
         mask.position = this.transform.position + (mask.localScale / 2f);
     }
 
+    public Vector3 TilePositionToWorldPositionMiddle(Vector2Int pos)
+    {
+        return tilemapFloor.CellToWorld((Vector3Int)pos) + tilemapFloor.cellSize * 0.5f;
+    }
+
+    public Vector3 TilePositionToWorldPositionMiddle(int x, int y)
+    {
+        return tilemapFloor.CellToWorld(new Vector3Int(x,y,0)) + tilemapFloor.cellSize * 0.5f;
+    }
     public Vector3 TilePositionToWorldPosition(Vector2Int pos) {
-        return this.transform.position + new Vector3(pos.x + 0.5f, pos.y + 0.5f, 0f);
+        // return this.transform.position + new Vector3(pos.x + 0.5f, pos.y + 0.5f, 0f);
+        return tilemapFloor.CellToWorld((Vector3Int)pos);
     }
 
     public Vector2Int WorldPositionToTilePosition(Vector3 pos) {
-        return new Vector2Int((int)(pos.x - this.transform.position.x), (int)(pos.y - this.transform.position.y));
+        //        return new Vector2Int((int)(pos.x - this.transform.position.x), (int)(pos.y - this.transform.position.y));
+        return (Vector2Int)tilemapFloor.WorldToCell(pos);
     }
 }

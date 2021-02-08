@@ -55,7 +55,7 @@ namespace Rhyth.BTree
                         rootNode.objectReferenceValue = parentLessNodes[newIndex - 1];
                 }
                 this.rootNode = newIndex == 0 ? null : parentLessNodes[newIndex - 1];
-                
+
                 // ---Handle root node
 
                 tree.ApplyModifiedProperties();
@@ -205,26 +205,27 @@ namespace Rhyth.BTree
                     {
                         "Null"
                     };
+                List<Value> allAssignableValues = new List<Value>();
 
                 int selected = 0;
 
-                if (prop.objectReferenceValue != null)
-                    for (int i = 0; i < allValues.Length; i++)
-                    {
-                        if (!allValues[i].GetType().IsAssignableFrom(type))
-                            continue;
+                for (int i = 0; i < allValues.Length; i++)
+                {
+                    if (!allValues[i].GetType().IsAssignableFrom(type))
+                        continue;
 
-                        allValuesStrings.Add(allValues[i].name);
+                    allValuesStrings.Add(allValues[i].name);
+                    allAssignableValues.Add(allValues[i]);
 
-                        if (allValues[i] == prop.objectReferenceValue)
-                            selected = allValuesStrings.Count - 1;
-                    }
+                    if (allValues[i] == prop.objectReferenceValue)
+                        selected = allValuesStrings.Count - 1;
+                }
 
                 int newSelected = EditorGUILayout.Popup(prop.name, selected, allValuesStrings.ToArray());
 
                 if (selected != newSelected)
                 {
-                    prop.objectReferenceValue = newSelected == 0 ? null : (UnityEngine.Object)allValues[newSelected - 1];
+                    prop.objectReferenceValue = newSelected == 0 ? null : (UnityEngine.Object)allAssignableValues[newSelected - 1];
                 }
 
                 return;

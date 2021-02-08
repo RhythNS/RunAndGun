@@ -482,7 +482,7 @@ namespace MapGenerator
         /// <param name="x">x-value of the tile to check</param>
         /// <param name="y">y-value of the tile to check</param>
         /// <returns>The positions of the neighbours that are walkable tiles of a given tile.</returns>
-        private Vector2Int[] GetNeighbours(int x, int y) {
+        private List<Vector2Int> GetNeighbours(int x, int y) {
             List<Vector2Int> neighbours = new List<Vector2Int>();
 
             if (GetTileType(x - 1, y) == TileType.Floor) // left
@@ -503,7 +503,7 @@ namespace MapGenerator
             if (GetTileType(x + 1, y + 1) == TileType.Floor) // right up
                 neighbours.Add(new Vector2Int(x + 1, y + 1));
 
-            return neighbours.ToArray();
+            return neighbours;
         }
 
         /// <summary>
@@ -567,7 +567,8 @@ namespace MapGenerator
                     return false;
                 }
 
-                path.Add(new Vector2(current.x, current.y));
+                //path.Add(new Vector2(current.x, current.y));
+                path.Add(DungeonCreator.Instance.TilePositionToWorldPositionMiddle(current.x, current.y));
                 current = cameFrom[current];
             }
 

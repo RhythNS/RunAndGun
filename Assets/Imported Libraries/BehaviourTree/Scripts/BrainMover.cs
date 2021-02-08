@@ -9,8 +9,9 @@ public class BrainMover : MonoBehaviour
         InProgress, Reached, Unreachable, ConstantDirection
     }
 
-    public PathState State { get => state; private set => state = value; }
-    [SerializeField] private PathState state;
+    public PathState State { get => state; 
+        private set => state = value; }
+    [SerializeField] private PathState state = PathState.Reached;
 
     /// <summary>
     /// Set to false every tick. If true the agent will go to the set Destination.
@@ -39,6 +40,7 @@ public class BrainMover : MonoBehaviour
             State = PathState.InProgress;
             destination = value;
             didMoveLastFrame = true;
+            ShouldMove = true;
         }
     }
 
@@ -64,6 +66,12 @@ public class BrainMover : MonoBehaviour
         body = GetComponent<Rigidbody2D>();
     }
 
+    private void Start()
+    {
+        didMoveLastFrame = false;
+        State = PathState.Reached;
+    }
+
     private void Update()
     {
         switch (State)
@@ -75,7 +83,6 @@ public class BrainMover : MonoBehaviour
                     if (dir.sqrMagnitude < MAGNITUDE_SQUARED_TO_REACH)
                     {
                         State = PathState.Reached;
-                        return;
                     }
 
                     Vector3 vec = dir.normalized * (meterPerSecond * Time.deltaTime);

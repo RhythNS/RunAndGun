@@ -103,6 +103,8 @@ namespace Rhyth.BTree
             if (tree == null)
             {
                 Reload(true);
+                if (tree == null)
+                    return;
             }
 
             EditorGUILayout.BeginHorizontal();

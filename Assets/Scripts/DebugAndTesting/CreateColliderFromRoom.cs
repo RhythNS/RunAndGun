@@ -10,8 +10,26 @@ public class CreateColliderFromRoom : MonoBehaviour
     {
         DungeonRoom room = GetComponent<DungeonRoom>();
 
-        Rect border = room.Border;
+        Tilemap map = GameObject.Find("TilemapFloor").GetComponent<Tilemap>();
+        TileBase tile = tileset.tileFloor;
 
+        Rect border = room.Border;
+        int xSize = Mathf.FloorToInt(border.width), ySize = Mathf.FloorToInt(border.height), xPos = Mathf.FloorToInt(border.x), yPos = Mathf.FloorToInt(border.y);
+
+        List<Vector2Int> walkableTiles = new List<Vector2Int>();
+        for (int x = xPos; x < xPos + xSize; x++)
+        {
+            for (int y = yPos; y < yPos + ySize; y++)
+            {
+                RaycastHit2D hit = Physics2D.BoxCast(new Vector2(x + 0.5f, y + 0.5f), new Vector2(1, 1), 0, new Vector2(0, 0), 0.0f);
+                if (hit.collider == null)
+                    walkableTiles.Add(new Vector2Int(x, y));
+                map.SetTile(new Vector3Int(x, y, 0), tile);
+            }
+        }
+
+        room.walkableTiles = walkableTiles;
+        DebugPathFinder.Instance.SetRoom(xSize, ySize, xPos, yPos, walkableTiles);
 
         BoxCollider2D col;
         col = gameObject.AddComponent<BoxCollider2D>();
@@ -39,23 +57,16 @@ public class CreateColliderFromRoom : MonoBehaviour
         {
             colls[i].offset += colls[i].size * 0.5f;
         }
+    }
 
-        Tilemap map = GameObject.Find("TilemapFloor").GetComponent<Tilemap>();
-        TileBase tile = tileset.tileFloor;
-        int xSize = Mathf.FloorToInt(border.width), ySize = Mathf.FloorToInt(border.height), xPos = Mathf.FloorToInt(border.x), yPos = Mathf.FloorToInt(border.y);
-
-        List<Vector2Int> walkableTiles = new List<Vector2Int>();
-        for (int x = xPos; x < xPos + xSize; x++)
+    private void OnDrawGizmosSelected()
+    {
+        DungeonRoom room = GetComponent<DungeonRoom>();
+        for (int i = 0; i < room.walkableTiles.Count; i++)
         {
-            for (int y = yPos; y < yPos + ySize; y++)
-            {
-                walkableTiles.Add(new Vector2Int(x, y));
-                map.SetTile(new Vector3Int(x, y, 0), tile);
-            }
+            Gizmos.color = Color.white;
+            Vector2Int pos = room.walkableTiles[i];
+            Gizmos.DrawWireCube(new Vector3(pos.x + 0.5f, pos.y + 0.5f, 0), new Vector3(1, 1, 1));
         }
-
-        room.walkableTiles = walkableTiles;
-
-        Destroy(this);
     }
 }
