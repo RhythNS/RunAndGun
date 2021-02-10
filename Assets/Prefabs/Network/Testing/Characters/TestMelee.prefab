@@ -70,7 +70,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -322167651
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -140,6 +140,7 @@ GameObject:
   - component: {fileID: 6008713023922089198}
   - component: {fileID: 4858494623747276611}
   - component: {fileID: 3940138060479419953}
+  - component: {fileID: 4129680484880328122}
   m_Layer: 8
   m_Name: TestMelee
   m_TagString: Untagged
@@ -250,7 +251,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -322167651
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: -1801323016989662738, guid: 597c40df2db09824f9bc256f42715481,
     type: 3}
@@ -465,6 +466,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  downedPlayerAbleToRevive: {fileID: 0}
 --- !u!114 &3277487581593560095
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -529,3 +531,15 @@ MonoBehaviour:
   westHand: {x: -0.3, y: -0.25}
   northPoint: {x: 0, y: 0}
   southPoint: {x: 0, y: -0.25}
+--- !u!114 &4129680484880328122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3992868732581162177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0c268852ccf88a438d2750a778f89b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

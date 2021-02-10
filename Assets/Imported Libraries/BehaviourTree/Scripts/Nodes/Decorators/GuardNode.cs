@@ -27,8 +27,8 @@ namespace Rhyth.BTree
 
         public override void InnerBeginn()
         {
-            for (int i = 0; i < children.Length; i++)
-                children[i].Beginn();
+            children[0].Restart();
+            children[0].Beginn();
         }
 
         public override void InnerRestart()
@@ -83,6 +83,10 @@ namespace Rhyth.BTree
 
             switch (children[1].CurrentStatus)
             {
+                case Status.Waiting:
+                    children[1].Restart();
+                    children[1].Beginn();
+                    goto case Status.Running;
                 case Status.Running:
                     children[1].Update();
                     break;

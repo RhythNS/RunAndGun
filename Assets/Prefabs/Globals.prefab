@@ -84,6 +84,7 @@ GameObject:
   - component: {fileID: 1365799234425872921}
   - component: {fileID: 8554081839076921764}
   - component: {fileID: 1689640206362063293}
+  - component: {fileID: 8153078490237015985}
   m_Layer: 0
   m_Name: Dicts
   m_TagString: Untagged
@@ -288,6 +289,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPool: {fileID: 9109973228441478553}
+--- !u!114 &8153078490237015985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1365799234425872912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edada13d4104ae458ae0a1480a3b741, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitMaterial: {fileID: 2100000, guid: e7de38a0acc09f14180ba920fa120d24, type: 2}
+  healMaterial: {fileID: 2100000, guid: 18f98babd3cb2dc47a8377428aed9a95, type: 2}
 --- !u!1 &1365799234809505999
 GameObject:
   m_ObjectHideFlags: 0

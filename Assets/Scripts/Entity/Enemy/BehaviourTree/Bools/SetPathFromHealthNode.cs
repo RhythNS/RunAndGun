@@ -1,5 +1,6 @@
 ﻿using Rhyth.BTree;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 
 public class SetPathFromHealthNode : BoolNode
@@ -38,7 +39,14 @@ public class SetPathFromHealthNode : BoolNode
         if (DungeonDict.Instance.dungeon.TryFindPath(startPos, endPos, out List<Vector2> path) == false)
             return false;
          */
+
+        bool stop = false;
+        Stopwatch sw = Stopwatch.StartNew();
         if (DebugPathFinder.Instance.TryFindPath(startPos, endPos, out List<Vector2> path) == false)
+            stop = true;
+        UnityEngine.Debug.Log("Pathfinder took " + (sw.ElapsedMilliseconds).ToString() + "ms");
+        sw.Stop();
+        if (stop)
             return false;
 
         // Check if the path is the same, if it is then return true without setting a reference to the new list.

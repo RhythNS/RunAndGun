@@ -35,6 +35,8 @@ public class DebugPathFinder : MonoBehaviour
         {
             for (int y2 = y - 1; y2 < y + 2; y2++)
             {
+                if (x2 == x && y2 == y)
+                    continue;
                 if (x2 >= minX && x2 < maxX && y2 >= minY && y2 < maxY && walkableTiles.Contains(new Vector2Int(x2, y2)))
                     neighbours.Add(new Vector2Int(x2, y2));
             }

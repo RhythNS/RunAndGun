@@ -1,6 +1,8 @@
 ﻿using Mirror;
 using UnityEngine;
 
+public delegate void ValueChanged(int prevValue, int newValue);
+
 public class Health : NetworkBehaviour
 {
     /// <summary>
@@ -15,6 +17,10 @@ public class Health : NetworkBehaviour
     /// The current amount of defence points.
     /// </summary>
     [SyncVar(hook = nameof(OnDefenceChanged))] private int defence = 10;
+
+    public event ValueChanged MaxChanged;
+    public event ValueChanged CurrentChanged;
+    public event ValueChanged DefenceChanged;
 
     /// <summary>
     /// The current amount defence points.
@@ -144,17 +150,17 @@ public class Health : NetworkBehaviour
     /// <param name="currentHealth">The current health amount.</param>
     private void OnCurrentChanged(int prevHealth, int currentHealth)
     {
-        // TODO: Maybe update UI or something
         Debug.Log(gameObject.name + " health changed from " + prevHealth + " to " + currentHealth);
+        CurrentChanged?.Invoke(prevHealth, currentHealth);
     }
 
     private void OnMaxChanged(int prevMax, int currentMax)
     {
-
+        MaxChanged?.Invoke(prevMax, currentMax);
     }
 
     private void OnDefenceChanged(int prevDefence, int currentDefence)
     {
-
+        DefenceChanged?.Invoke(prevDefence, currentDefence);
     }
 }
