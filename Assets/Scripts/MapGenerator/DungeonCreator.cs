@@ -134,7 +134,16 @@ public class DungeonCreator : MonoBehaviour
 
         yield return new WaitForEndOfFrame();
 
-        dungeon = new Dungeon(maxSize.x, maxSize.y, roomLayouts.ToArray(), roomGameObjects.ToArray(), roomTypes.ToArray(), 10, seed);
+        DungeonConfig config = new DungeonConfig {
+            seed = seed,
+            sizeX = maxSize.x,
+            sizeY = maxSize.y,
+            minRooms = 10,
+            maxRooms = 20,
+            corridorMinLength = Corridor.MIN_LENGTH,
+            corridorMaxLength = Corridor.MAX_LENGTH
+        };
+        dungeon = new Dungeon(roomLayouts.ToArray(), roomGameObjects.ToArray(), roomTypes.ToArray(), config);
 
         // adjust mask size
         mask.localScale = new Vector3(dungeon.Size.x, dungeon.Size.y, 1f);

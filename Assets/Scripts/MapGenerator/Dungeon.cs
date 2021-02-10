@@ -38,14 +38,12 @@ namespace MapGenerator
         /// <summary>
         /// Creates and generates a new Dungeon.
         /// </summary>
-        /// <param name="sizeX">The maximum size of the Dungeon on the x-axis.</param>
-        /// <param name="sizeY">The maximum size of the Dungeon on the y-axis.</param>
         /// <param name="roomLayouts">The layouts for the rooms the Dungeon should contain.</param>
-        /// <param name="roomGameObjects">The list of GameObjects that should be spawned.</param>
-        /// <param name="minRooms">The minimum amount of rooms that should be generated.</param>
-        /// <param name="seed">The seed to use when generating the Dungeon. int.MaxValue uses a random seed.</param>
-        public Dungeon(int sizeX, int sizeY, Fast2DArray<int>[] roomLayouts, List<TiledImporter.PrefabLocations>[] roomGameObjects, RoomType[] roomTypes, int minRooms, int seed) {
-            this.Size = new Vector2Int(sizeX, sizeY);
+        /// <param name="roomGameObjects">The list of GameObjects that should be spawned for the rooms.</param>
+        /// <param name="roomTypes">The list of GameObjects that should be spawned.</param>
+        /// <param name="config">The seed to use when generating the Dungeon. int.MaxValue uses a random seed.</param>
+        public Dungeon(Fast2DArray<int>[] roomLayouts, List<TiledImporter.PrefabLocations>[] roomGameObjects, RoomType[] roomTypes, DungeonConfig config) {
+            Size = new Vector2Int(config.sizeX, config.sizeY);
             mapLayout = new Fast2DArray<TileType>(Size.x, Size.y);
             this.roomLayouts = new Fast2DArray<TileType>[roomLayouts.Length];
             Fast2DArrayIntToTileType(ref roomLayouts, ref this.roomLayouts);
@@ -54,8 +52,8 @@ namespace MapGenerator
 
             List<Exit> exits = new List<Exit>();
 
-            if (seed != int.MaxValue)
-                Random.InitState(seed);
+            if (config.seed != int.MaxValue)
+                Random.InitState(config.seed);
 
             // generate starting room
             Room startRoom = new Room((int)(Size.x / 2f - this.roomLayouts[0].XSize / 2f), (int)(Size.y / 2f - this.roomLayouts[0].YSize / 2f), this.roomLayouts[0], this.roomGameObjects[0], this.roomTypes[0]);
@@ -77,7 +75,7 @@ namespace MapGenerator
             }
 
             int iters = 0;
-            while (rooms.Count < minRooms && iters < ITERATIONS) {
+            while (rooms.Count < config.minRooms && iters < ITERATIONS) {
                 foreach (var exit in exits) {
                     if (exit.IntoRoom) {
                         GenerateRoom(exit);
