@@ -137,7 +137,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1705400705
-  m_SortingLayer: 3
+  m_SortingLayer: 2
   m_SortingOrder: 1
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 1, z: 0}
@@ -410,6 +410,8 @@ MonoBehaviour:
   tilemapCeiling: {fileID: 255864829719696091}
   tileset: {fileID: 11400000, guid: be039a8f3df4ec447a356b438e22320a, type: 2}
   tilePlaceHolder: {fileID: 11400000, guid: 85042821781fa374fbb5e75b909a3590, type: 2}
+  tilePlaceHolderHalf: {fileID: 11400000, guid: af9624140553eea4aa034e32acd7e685,
+    type: 2}
   objectContainer: {fileID: 255864829148240097}
   roomsContainer: {fileID: 255864828248015542}
   prefabDungeonRoom: {fileID: 2001813469135215906, guid: a3c3ffd6627ea1549b52a9cab5870543,

@@ -16,7 +16,7 @@ public class DungeonEditor : Editor
         base.OnInspectorGUI();
 
         if (GUILayout.Button("Create new dungeon")) {
-            dungeonCreator.CreateDungeon(int.MaxValue);
+            dungeonCreator.CreateDungeon(int.MaxValue, new MapGenerator.DungeonConfig());
         }
     }
 }

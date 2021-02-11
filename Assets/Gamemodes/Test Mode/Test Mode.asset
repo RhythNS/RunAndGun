@@ -18,3 +18,16 @@ MonoBehaviour:
   startingItems: []
   minPlayers: 1
   maxPlayers: 4
+  dungeonConfig:
+    seed: 0
+    sizeX: 0
+    sizeY: 0
+    minRooms: 0
+    maxRooms: 0
+    corridorMinLength: 0
+    corridorMaxLength: 0
+    itemsToSpawn:
+    - {fileID: 11400000, guid: ac7a3d27f5349fc4589c7af1ddc3ad4f, type: 2}
+    - {fileID: 11400000, guid: ac7a3d27f5349fc4589c7af1ddc3ad4f, type: 2}
+    - {fileID: 11400000, guid: 729f31b81fbabaa4e8cabb459a6cfebe, type: 2}
+    - {fileID: 11400000, guid: 729f31b81fbabaa4e8cabb459a6cfebe, type: 2}

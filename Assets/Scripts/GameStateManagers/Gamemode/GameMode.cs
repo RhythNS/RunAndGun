@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using MapGenerator;
+using UnityEngine;
 
 [CreateAssetMenu(menuName = "Gamemode/Gamemode")]
 public class GameMode : ScriptableObject
@@ -10,8 +11,7 @@ public class GameMode : ScriptableObject
     public int startingDifficulty;
     public Pickable[] startingItems;
     public int minPlayers, maxPlayers;
-    // public DungeonConfig dungeonConfig;
-
+    public DungeonConfig dungeonConfig;
     public void Init(int seed)
     {
         Random.InitState(seed);

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 /// <summary>
 /// A simulated 2D array on a simple 1D array to reduce access time for elements in the arary.
@@ -8,10 +9,11 @@ using System.Collections.Generic;
 /// <typeparam name="T">Type of elements</typeparam>
 public class Fast2DArray<T> : IEnumerable<T>
 {
-    private readonly T[] array;
+    private T[] array;
 
     public int XSize { private set; get; }
     public int YSize { private set; get; }
+    public Vector2Int Size => new Vector2Int(XSize, YSize);
 
     public Fast2DArray(int xSize, int ySize)
     {
@@ -48,9 +50,38 @@ public class Fast2DArray<T> : IEnumerable<T>
     public void Set(T element, int x, int y) => array[x * YSize + y] = element;
 
     /// <summary>
+    /// Returns this Fast2DArray as a standard array.
+    /// </summary>
+    public T[] AsArray {
+        get => array;
+    }
+
+    /// <summary>
     /// Util method to check if given ints are in the bounds of the array.
     /// </summary>
     public bool InBounds(int x, int y) => x > -1 && x < XSize && y > -1 && y < YSize;
+
+    /// <summary>
+    /// Resizes the array to the specified x- and y-values.
+    /// </summary>
+    /// <param name="xSize">The new x-size.</param>
+    /// <param name="ySize">The new y-size.</param>
+    public void Resize(int xSize, int ySize) {
+        Fast2DArray<T> newArray = new Fast2DArray<T>(xSize, ySize);
+
+        for (int x = 0; x < xSize; x++) {
+            for (int y = 0; y < ySize; y++) {
+                if (InBounds(x, y)) {
+                    newArray[x, y] = this[x, y];
+                }
+            }
+        }
+
+        this.XSize = xSize;
+        this.YSize = ySize;
+
+        array = newArray.AsArray;
+    }
 
     public IEnumerator<T> GetEnumerator()
     {
