@@ -5,9 +5,15 @@ using UnityEngine.Tilemaps;
 public class CreateColliderFromRoom : MonoBehaviour
 {
     [SerializeField] private Tileset tileset;
+    [SerializeField] private Transform[] trans;
 
     private void Start()
     {
+        for (int i = 0; i < trans.Length; i++)
+        {
+            trans[i].localScale += new Vector3(2.0f, 2.0f, 2.0f);
+        }
+
         DungeonRoom room = GetComponent<DungeonRoom>();
 
         Tilemap map = GameObject.Find("TilemapFloor").GetComponent<Tilemap>();
@@ -28,6 +34,10 @@ public class CreateColliderFromRoom : MonoBehaviour
             }
         }
 
+        for (int i = 0; i < trans.Length; i++)
+        {
+            trans[i].localScale -= new Vector3(2.0f, 2.0f, 2.0f);
+        }
         room.walkableTiles = walkableTiles;
         DebugPathFinder.Instance.SetRoom(xSize, ySize, xPos, yPos, walkableTiles);
 

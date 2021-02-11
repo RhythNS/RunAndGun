@@ -41,7 +41,7 @@ GameObject:
   - component: {fileID: 255864828388728544}
   - component: {fileID: 255864828388728546}
   - component: {fileID: 255864828388728547}
-  m_Layer: 22
+  m_Layer: 27
   m_Name: TilemapWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -219,7 +219,7 @@ GameObject:
   - component: {fileID: 255864829448563458}
   - component: {fileID: 255864829448563459}
   - component: {fileID: 255864829448563463}
-  m_Layer: 21
+  m_Layer: 26
   m_Name: TilemapFloor
   m_TagString: GenerateShadowCasters
   m_Icon: {fileID: 0}
@@ -458,7 +458,7 @@ GameObject:
   - component: {fileID: 255864829719696089}
   - component: {fileID: 255864829719696091}
   - component: {fileID: 255864829719696088}
-  m_Layer: 23
+  m_Layer: 28
   m_Name: TilemapCeiling
   m_TagString: Untagged
   m_Icon: {fileID: 0}
