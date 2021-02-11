@@ -8,7 +8,7 @@ using System.Collections.Generic;
 /// <typeparam name="T">Type of elements</typeparam>
 public class Fast2DArray<T> : IEnumerable<T>
 {
-    private readonly T[] array;
+    private T[] array;
 
     public int XSize { private set; get; }
     public int YSize { private set; get; }
@@ -18,6 +18,34 @@ public class Fast2DArray<T> : IEnumerable<T>
         XSize = xSize;
         YSize = ySize;
         array = new T[xSize * ySize];
+    }
+
+    /// <summary>
+    /// Resizes the array to the specified x- and y-values.
+    /// </summary>
+    /// <param name="xSize">The new x-size.</param>
+    /// <param name="ySize">The new y-size.</param>
+    public void Resize(int xSize, int ySize) {
+        Fast2DArray<T> newArray = new Fast2DArray<T>(xSize, ySize);
+
+        for (int x = 0; x < xSize; x++) {
+            for (int y = 0; y < ySize; y++) {
+                if (InBounds(x, y)) {
+                    newArray[x, y] = this[x, y];
+                }
+            }
+        }
+
+        this.XSize = xSize;
+        this.YSize = ySize;
+
+        array = newArray.ToArray;
+    }
+
+    public T[] ToArray {
+        get {
+            return array;
+        }
     }
 
     /// <summary>
