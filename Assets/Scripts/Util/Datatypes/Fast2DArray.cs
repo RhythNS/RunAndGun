@@ -21,34 +21,6 @@ public class Fast2DArray<T> : IEnumerable<T>
     }
 
     /// <summary>
-    /// Resizes the array to the specified x- and y-values.
-    /// </summary>
-    /// <param name="xSize">The new x-size.</param>
-    /// <param name="ySize">The new y-size.</param>
-    public void Resize(int xSize, int ySize) {
-        Fast2DArray<T> newArray = new Fast2DArray<T>(xSize, ySize);
-
-        for (int x = 0; x < xSize; x++) {
-            for (int y = 0; y < ySize; y++) {
-                if (InBounds(x, y)) {
-                    newArray[x, y] = this[x, y];
-                }
-            }
-        }
-
-        this.XSize = xSize;
-        this.YSize = ySize;
-
-        array = newArray.ToArray;
-    }
-
-    public T[] ToArray {
-        get {
-            return array;
-        }
-    }
-
-    /// <summary>
     /// Provides access to the array elements.
     /// </summary>
     /// <returns>The element at the specified position.</returns>
@@ -76,9 +48,38 @@ public class Fast2DArray<T> : IEnumerable<T>
     public void Set(T element, int x, int y) => array[x * YSize + y] = element;
 
     /// <summary>
+    /// Returns this Fast2DArray as a standard array.
+    /// </summary>
+    public T[] AsArray {
+        get => array;
+    }
+
+    /// <summary>
     /// Util method to check if given ints are in the bounds of the array.
     /// </summary>
     public bool InBounds(int x, int y) => x > -1 && x < XSize && y > -1 && y < YSize;
+
+    /// <summary>
+    /// Resizes the array to the specified x- and y-values.
+    /// </summary>
+    /// <param name="xSize">The new x-size.</param>
+    /// <param name="ySize">The new y-size.</param>
+    public void Resize(int xSize, int ySize) {
+        Fast2DArray<T> newArray = new Fast2DArray<T>(xSize, ySize);
+
+        for (int x = 0; x < xSize; x++) {
+            for (int y = 0; y < ySize; y++) {
+                if (InBounds(x, y)) {
+                    newArray[x, y] = this[x, y];
+                }
+            }
+        }
+
+        this.XSize = xSize;
+        this.YSize = ySize;
+
+        array = newArray.AsArray;
+    }
 
     public IEnumerator<T> GetEnumerator()
     {
