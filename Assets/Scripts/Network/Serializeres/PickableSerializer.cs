@@ -54,4 +54,14 @@ public static class PickableSerializer
     {
         return PickableDict.Instance.GetWeapon(reader.ReadUInt16());
     }
+
+    public static void WriteStatusEffect(this NetworkWriter writer, StatusEffect statusEffect)
+    {
+        writer.WriteUInt16(statusEffect == null ? (ushort)0 : statusEffect.Id);
+    }
+
+    public static StatusEffect ReadStatusEffect(this NetworkReader reader)
+    {
+        return PickableDict.Instance.GetStatusEffect(reader.ReadUInt16());
+    }
 }

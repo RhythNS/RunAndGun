@@ -32,6 +32,7 @@ public class Enemy : Entity
     public Health Health { get; private set; }
     public EquippedWeapon EquippedWeapon { get; private set; }
     public SmoothSyncMirror SmoothSync { get; private set; }
+    public StatusEffectList StatusEffectList { get; private set; }
 
     private void Awake()
     {
@@ -39,6 +40,7 @@ public class Enemy : Entity
         Health = GetComponent<Health>();
         EquippedWeapon = GetComponent<EquippedWeapon>();
         SmoothSync = GetComponent<SmoothSyncMirror>();
+        StatusEffectList = GetComponent<StatusEffectList>();
     }
 
     public void Set(EnemyObject enemyObject, Rect roomBorder)

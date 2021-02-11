@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public enum PickableType
 {
-    Consumable, Item, Weapon
+    Consumable, Item, Weapon, StatusEffect
 }
 
 public abstract class Pickable : ScriptableObject

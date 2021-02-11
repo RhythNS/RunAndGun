@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -14,7 +15,7 @@ public class PickableEditor : Editor
         SerializedProperty prop = serializedObject.GetIterator();
 
         if (GUILayout.Button("Fix IDs"))
-            FixIDs(LoadPickables(pickable.PickableType));
+            FixIDsOfType(pickable.PickableType);
 
         while (prop.NextVisible(true))
         {
@@ -37,7 +38,15 @@ public class PickableEditor : Editor
         serializedObject.ApplyModifiedProperties();
     }
 
-    private bool GetNewId(Pickable pickable, out ushort id)
+    public static void FixAllIDs()
+    {
+        foreach (PickableType pickableType in Enum.GetValues(typeof(PickableType)))
+            FixIDsOfType(pickableType);
+    }
+
+    public static void FixIDsOfType(PickableType pickableType) => FixIDs(LoadPickables(pickableType));
+
+    private static bool GetNewId(Pickable pickable, out ushort id)
     {
         List<Pickable> pickables = LoadPickables(pickable.PickableType);
 
@@ -90,7 +99,7 @@ public class PickableEditor : Editor
     /// Gets all pickables and assignes them new ids.
     /// </summary>
     /// <param name="pickables">The pickables which ids needs fixing.</param>
-    private void FixIDs(List<Pickable> pickables)
+    private static void FixIDs(List<Pickable> pickables)
     {
         for (int i = 0; i < pickables.Count; i++)
         {
@@ -110,6 +119,8 @@ public class PickableEditor : Editor
                 return "t:Item";
             case PickableType.Weapon:
                 return "t:Weapon";
+            case PickableType.StatusEffect:
+                return "t:StatusEffect";
         }
         throw new System.Exception("Could not find that type" + pickable);
     }

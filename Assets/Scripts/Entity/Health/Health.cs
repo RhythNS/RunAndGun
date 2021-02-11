@@ -44,10 +44,12 @@ public class Health : NetworkBehaviour
     public bool Alive => current > 0;
 
     public EntityType EntityType { get; private set; }
+    public StatusEffectList StatusEffectList { get; private set; }
 
     private void Awake()
     {
         EntityType = GetComponent<Entity>().EntityType;
+        StatusEffectList = GetComponent<StatusEffectList>();
     }
 
     private void OnEnable()
@@ -119,7 +121,7 @@ public class Health : NetworkBehaviour
     [Server]
     private void ServerDamage(int amount)
     {
-        if (!enabled)
+        if (!this || !enabled)
             return;
 
         // TODO: Add defence to this

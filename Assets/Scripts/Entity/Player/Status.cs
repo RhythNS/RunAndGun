@@ -58,7 +58,16 @@ public class Status : NetworkBehaviour
         if (!downedPlayerAbleToRevive || downedPlayerAbleToRevive.Health.Alive)
             return;
 
-        player.CmdReviveTeammate(downedPlayerAbleToRevive.gameObject);
+        CmdReviveTeammate(downedPlayerAbleToRevive.gameObject);
+    }
+
+    [Command]
+    public void CmdReviveTeammate(GameObject other)
+    {
+        if (other.TryGetComponent(out Player player) == false)
+            return;
+
+        ServerReviving(player);
     }
 
     [Server]
