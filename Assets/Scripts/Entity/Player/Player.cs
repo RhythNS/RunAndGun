@@ -25,6 +25,7 @@ public class Player : Entity
     public Collider2D Collider2D { get; private set; }
     public StateCommunicator StateCommunicator { get; private set; }
     public DungeonRoom CurrentRoom { get; private set; }
+    public StatusEffectList StatusEffectList { get; private set; }
 
     private void Awake()
     {
@@ -36,6 +37,7 @@ public class Player : Entity
         SmoothSync = GetComponent<SmoothSyncMirror>();
         Collider2D = GetComponent<Collider2D>();
         StateCommunicator = GetComponent<StateCommunicator>();
+        StatusEffectList = GetComponent<StatusEffectList>();
     }
 
     private void Start()
@@ -78,6 +80,9 @@ public class Player : Entity
             case PickableType.Weapon:
                 EquippedWeapon.Swap((Weapon)pickable);
                 break;
+            case PickableType.StatusEffect:
+                Debug.LogError("Status Effect should not be on the ground... " + pickable.Id);
+                break;
             default:
                 Debug.LogError("Type " + pickable.PickableType + " not implemented!");
                 break;
@@ -102,15 +107,6 @@ public class Player : Entity
             return;
 
         bullet.HitPlayer(this);
-    }
-
-    [Command]
-    public void CmdReviveTeammate(GameObject other)
-    {
-        if (other.TryGetComponent(out Player player) == false)
-            return;
-
-        Status.ServerReviving(player);
     }
 
     private void OnNameChanged(string oldName, string newName)
@@ -160,7 +156,6 @@ public class Player : Entity
             if (Status.downedPlayerAbleToRevive == player)
                 Status.OnDownedPlayerNoLongerInRange();
         }
-
     }
 
     private void OnDestroy()

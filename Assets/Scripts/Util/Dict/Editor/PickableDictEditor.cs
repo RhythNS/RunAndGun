@@ -23,12 +23,18 @@ public class PickableDictEditor : Editor
                     case "items":
                         AddAll(prop, PickableEditor.LoadPickables(PickableType.Item));
                         break;
+                    case "statusEffects":
+                        AddAll(prop, PickableEditor.LoadPickables(PickableType.StatusEffect));
+                        break;
                     default:
                         break;
                 }
             }
             serializedObject.ApplyModifiedProperties();
         }
+
+        if (GUILayout.Button("Fix all IDs"))
+            PickableEditor.FixAllIDs();
 
         base.OnInspectorGUI();
     }

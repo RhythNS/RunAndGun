@@ -25,6 +25,8 @@ public class DungeonCreator : MonoBehaviour
     private Tileset tileset;
     [SerializeField]
     private Tile tilePlaceHolder;
+    [SerializeField]
+    private Tile tilePlaceHolderHalf;
 
     [SerializeField]
     private Transform objectContainer;
@@ -78,10 +80,10 @@ public class DungeonCreator : MonoBehaviour
 
     public IEnumerator CreateLevel(int levelNumber)
     {
-        return CreateDungeon(GameManager.gameMode.levelSeeds[levelNumber]);
+        return CreateDungeon(GameManager.gameMode.levelSeeds[levelNumber], GameManager.gameMode.dungeonConfig);
     }
 
-    public IEnumerator CreateDungeon(int seed)
+    public IEnumerator CreateDungeon(int seed, DungeonConfig config)
     {
         if (roomsContainer.childCount > 0) {
             for (int i = roomsContainer.childCount - 1; i >= 0; i--) {
@@ -132,7 +134,18 @@ public class DungeonCreator : MonoBehaviour
 
         yield return new WaitForEndOfFrame();
 
-        dungeon = new Dungeon(maxSize.x, maxSize.y, roomLayouts.ToArray(), roomGameObjects.ToArray(), roomTypes.ToArray(), 10, seed);
+
+        config = new DungeonConfig {
+            seed = seed,
+            sizeX = maxSize.x,
+            sizeY = maxSize.y,
+            minRooms = 10,
+            maxRooms = 20,
+            corridorMinLength = Corridor.MIN_LENGTH,
+            corridorMaxLength = Corridor.MAX_LENGTH,
+            itemsToSpawn = config.itemsToSpawn
+        };
+        dungeon = new Dungeon(roomLayouts.ToArray(), roomGameObjects.ToArray(), roomTypes.ToArray(), config);
 
         // adjust mask size
         mask.localScale = new Vector3(dungeon.Size.x, dungeon.Size.y, 1f);
@@ -175,8 +188,10 @@ public class DungeonCreator : MonoBehaviour
 
             for (int y = 0; y < dungeon.Size.y; y++) {
                 positionsFloor[indexFloor] = new Vector3Int(x, y, 0);
-                if (dungeon[x, y] == TileType.Floor)
+                if (dungeon[x, y] == TileType.Floor && dungeon[x, y - 1] == TileType.Floor && dungeon[x, y - 2] == TileType.Floor)
                     tilesFloor[indexFloor] = tileset.tileFloor;
+                else if (dungeon[x, y] == TileType.Floor && dungeon[x, y - 1] == TileType.Floor)
+                    tilesFloor[indexFloor] = tilePlaceHolderHalf;
                 else
                     tilesFloor[indexFloor] = tilePlaceHolder;
                 indexFloor++;
@@ -272,7 +287,7 @@ public class DungeonCreator : MonoBehaviour
                 case RoomType.Start:
                     StartRoom sr = go.AddComponent<StartRoom>();
                     if (Player.LocalPlayer.isServer) {
-                        sr.SpawnItems(new Vector3(128, 128, 0));
+                        sr.SpawnItems(config.itemsToSpawn, TilePositionToWorldPosition(dungeon.Rooms[i].Position + (dungeon.Rooms[i].Layout.Size / 2)));
                     }
 
                     dr = sr;
@@ -377,11 +392,22 @@ public class DungeonCreator : MonoBehaviour
         mask.position = this.transform.position + (mask.localScale / 2f);
     }
 
+    public Vector3 TilePositionToWorldPositionMiddle(Vector2Int pos)
+    {
+        return tilemapFloor.CellToWorld((Vector3Int)pos) + tilemapFloor.cellSize * 0.5f;
+    }
+
+    public Vector3 TilePositionToWorldPositionMiddle(int x, int y)
+    {
+        return tilemapFloor.CellToWorld(new Vector3Int(x,y,0)) + tilemapFloor.cellSize * 0.5f;
+    }
     public Vector3 TilePositionToWorldPosition(Vector2Int pos) {
-        return this.transform.position + new Vector3(pos.x + 0.5f, pos.y + 0.5f, 0f);
+        // return this.transform.position + new Vector3(pos.x + 0.5f, pos.y + 0.5f, 0f);
+        return tilemapFloor.CellToWorld((Vector3Int)pos);
     }
 
     public Vector2Int WorldPositionToTilePosition(Vector3 pos) {
-        return new Vector2Int((int)(pos.x - this.transform.position.x), (int)(pos.y - this.transform.position.y));
+        //        return new Vector2Int((int)(pos.x - this.transform.position.x), (int)(pos.y - this.transform.position.y));
+        return (Vector2Int)tilemapFloor.WorldToCell(pos);
     }
 }

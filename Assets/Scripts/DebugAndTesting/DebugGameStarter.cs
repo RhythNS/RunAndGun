@@ -1,5 +1,4 @@
 ﻿using MapGenerator;
-using System.Collections;
 using System.Collections.Generic;
 using TiledSharp;
 using UnityEngine;
@@ -48,6 +47,15 @@ public class DebugGameStarter : MonoBehaviour
             roomGameObjects.Add(gos);
         }
 
-        DungeonCreator.Instance.dungeon = new MapGenerator.Dungeon(192, 192, roomLayouts.ToArray(), roomGameObjects.ToArray(), roomTypes.ToArray(), 10, int.MaxValue);
+        DungeonConfig config = new DungeonConfig {
+            seed = int.MaxValue,
+            sizeX = 192,
+            sizeY = 192,
+            minRooms = 10,
+            maxRooms = 20,
+            corridorMinLength = Corridor.MIN_LENGTH,
+            corridorMaxLength = Corridor.MAX_LENGTH
+        };
+        DungeonDict.Instance.dungeon = DungeonCreator.Instance.dungeon = new Dungeon(roomLayouts.ToArray(), roomGameObjects.ToArray(), roomTypes.ToArray(), config);
     }
 }

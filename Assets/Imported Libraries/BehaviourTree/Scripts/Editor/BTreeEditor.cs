@@ -61,6 +61,8 @@ namespace Rhyth.BTree
 
         public void OpenSubTree(BTree originalTree, BTree clonedTree)
         {
+            SetInPlayModeReferences();
+
             if (clonedTree != null)
             {
                 tree = new SerializedObject(clonedTree);
@@ -103,6 +105,8 @@ namespace Rhyth.BTree
             if (tree == null)
             {
                 Reload(true);
+                if (tree == null)
+                    return;
             }
 
             EditorGUILayout.BeginHorizontal();

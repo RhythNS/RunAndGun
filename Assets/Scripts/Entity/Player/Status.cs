@@ -2,12 +2,18 @@
 using System.Collections;
 using UnityEngine;
 
+public delegate void ReviveEvent();
+
 public class Status : NetworkBehaviour
 {
     public bool CanInteract => !Dashing && !Reviving && player.Health.Alive;
 
     public bool Dashing { get; private set; } = false;
     public bool Reviving { get; private set; } = false;
+
+    public ReviveEvent OnRevivingOtherPlayerStarted;
+    public ReviveEvent OnRevivingOtherPlayerFinished;
+    public ReviveEvent OnRevived;
 
     public Player downedPlayerAbleToRevive;
     private ExtendedCoroutine revivingCoroutine;
@@ -52,7 +58,16 @@ public class Status : NetworkBehaviour
         if (!downedPlayerAbleToRevive || downedPlayerAbleToRevive.Health.Alive)
             return;
 
-        player.CmdReviveTeammate(downedPlayerAbleToRevive.gameObject);
+        CmdReviveTeammate(downedPlayerAbleToRevive.gameObject);
+    }
+
+    [Command]
+    public void CmdReviveTeammate(GameObject other)
+    {
+        if (other.TryGetComponent(out Player player) == false)
+            return;
+
+        ServerReviving(player);
     }
 
     [Server]
@@ -84,21 +99,21 @@ public class Status : NetworkBehaviour
     {
         player.Collider2D.isTrigger = false;
         player.gameObject.layer = LayerDict.Instance.GetPlayerLayer();
-        player.PlayerAnimationController?.OnRevived();
+        OnRevived?.Invoke();
     }
 
     [ClientRpc]
     public void RpcOnRevivingOtherPlayerStarted()
     {
         Reviving = true;
-        player.PlayerAnimationController?.OnRevivingOtherPlayerStarted();
+        OnRevivingOtherPlayerStarted?.Invoke();
     }
 
     [ClientRpc]
     public void RpcOnRevivingOtherPlayerFinished()
     {
         Reviving = false;
-        player.PlayerAnimationController?.OnRevivingOtherPlayerFinished();
+        OnRevivingOtherPlayerFinished?.Invoke();
     }
 
     private void Update()

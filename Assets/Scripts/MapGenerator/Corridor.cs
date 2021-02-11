@@ -7,7 +7,7 @@ namespace MapGenerator
     public struct Corridor
     {
         public const int MIN_LENGTH = 10;
-        public const int MAX_LENGTH = 16;
+        public const int MAX_LENGTH = 32;
 
         public Vector2Int Position { get; set; }
         public Vector2Int Size { get; set; }

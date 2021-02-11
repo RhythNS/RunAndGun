@@ -14,6 +14,7 @@ namespace Rhyth.BTree
         public override void InnerBeginn()
         {
             at = 0;
+            children[at].Restart();
             children[at].Beginn();
         }
 
@@ -28,7 +29,10 @@ namespace Rhyth.BTree
                     if (++at == children.Length)
                         CurrentStatus = Status.Success;
                     else
+                    {
+                        children[at].Restart();
                         children[at].Beginn();
+                    }
                     break;
                 case Status.Failure:
                     CurrentStatus = Status.Failure;

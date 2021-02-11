@@ -1,0 +1,180 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7484151814185779705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe8e38a7f4413ea40ae13fecda4cba8e, type: 3}
+  m_Name: Set path
+  m_EditorClassIdentifier: 
+  breakPointEnabled: 0
+  children: []
+  boundsInEditor:
+    serializedVersion: 2
+    x: -60
+    y: 60
+    width: 80
+    height: 80
+  target: {fileID: 4196442815043149761}
+  outPath: {fileID: 1003451598765055846}
+--- !u!114 &-5312032479730921864
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bc2da5b9b910bb4d9d85f8722932c8b, type: 3}
+  m_Name: Go directly or go on path
+  m_EditorClassIdentifier: 
+  breakPointEnabled: 0
+  children:
+  - {fileID: 7749766770379331639}
+  - {fileID: -1390515842250072988}
+  - {fileID: 7970236784242602857}
+  boundsInEditor:
+    serializedVersion: 2
+    x: -120
+    y: -240
+    width: 80
+    height: 80
+  checkEverySeconds: 1
+  onNodeChange: 1
+  onIfNodeSuccess: 2
+  onIfNodeFailure: 0
+  onElseNodeSuccess: 2
+  onElseNodeFailure: 0
+--- !u!114 &-1390515842250072988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcd0cc0bf36ea4b42a91cf28f69371a4, type: 3}
+  m_Name: Go directly
+  m_EditorClassIdentifier: 
+  breakPointEnabled: 0
+  children: []
+  boundsInEditor:
+    serializedVersion: 2
+    x: -120
+    y: -80
+    width: 80
+    height: 80
+  target: {fileID: 4196442815043149761}
+  distanceReference: 1
+  distance: 0.7
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dffe61478ed6e7b498c9b997879bf192, type: 3}
+  m_Name: Walk Path Tree
+  m_EditorClassIdentifier: 
+  root: {fileID: -5312032479730921864}
+--- !u!114 &1003451598765055846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff3044d31e7d3f241a4c7d42168cf232, type: 3}
+  m_Name: Path to target
+  m_EditorClassIdentifier: 
+  path: []
+--- !u!114 &4196442815043149761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2ae472dc4030164585e8ba5f9a755fb, type: 3}
+  m_Name: Target Health
+  m_EditorClassIdentifier: 
+  health: {fileID: 0}
+--- !u!114 &4624284341402164318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c65146faa4255fe4181a9f71ad373861, type: 3}
+  m_Name: Go on path
+  m_EditorClassIdentifier: 
+  breakPointEnabled: 0
+  children: []
+  boundsInEditor:
+    serializedVersion: 2
+    x: 60
+    y: 60
+    width: 80
+    height: 80
+  path: {fileID: 1003451598765055846}
+--- !u!114 &7749766770379331639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b5b999548115214eb4200f46752dad8, type: 3}
+  m_Name: Can see?
+  m_EditorClassIdentifier: 
+  breakPointEnabled: 0
+  children: []
+  boundsInEditor:
+    serializedVersion: 2
+    x: -238.5
+    y: -81.5
+    width: 80
+    height: 80
+  otherHealth: {fileID: 4196442815043149761}
+--- !u!114 &7970236784242602857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ebfb1a116e272644a2b5d0ee9def89e, type: 3}
+  m_Name: Set path Guard
+  m_EditorClassIdentifier: 
+  breakPointEnabled: 0
+  children:
+  - {fileID: -7484151814185779705}
+  - {fileID: 4624284341402164318}
+  boundsInEditor:
+    serializedVersion: 2
+    x: 0
+    y: -80
+    width: 80
+    height: 80
+  checkEverySeconds: 1

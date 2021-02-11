@@ -78,7 +78,7 @@ public class RAGNetworkManager : NobleNetworkManager
     private void OnGenerateLevelMessage(NetworkConnection connection, GenerateLevelMessage generateLevelMessage)
     {
         DungeonDict.Instance.ClearRooms();
-        StartCoroutine(DungeonCreator.Instance.CreateDungeon(generateLevelMessage.levelNumber));
+        StartCoroutine(DungeonCreator.Instance.CreateLevel(generateLevelMessage.levelNumber));
     }
 
     private void OnReturnToLobbyMessage(NetworkConnection connection, ReturnToLobbyMessage returnToLobbyMessage)

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Rhyth.BTree
 {
-    [CreateAssetMenu(menuName = "BehaviourTree")]
+    [CreateAssetMenu(menuName = "Entity/BehaviourTree")]
     public class BTree : ScriptableObject
     {
         public Brain AttachedBrain { get; set; }

@@ -41,6 +41,10 @@ public class LobbyManager : MonoBehaviour
             return;
 
         List<Player> players = PlayersDict.Instance.Players;
+
+        if (players.Count == 0)
+            return;
+
         // Player set unready during countdown?
         if (instance.gameStartCountdown != null)
         {
@@ -93,7 +97,7 @@ public class LobbyManager : MonoBehaviour
         NetworkServer.SendToAll(sgm);
 
         GameManager.OnLoadNewLevel();
-        
+
         Destroy(this);
     }
 

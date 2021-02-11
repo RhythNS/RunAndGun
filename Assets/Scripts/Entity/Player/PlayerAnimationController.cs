@@ -19,6 +19,13 @@ public class PlayerAnimationController : MonoBehaviour
         prevDashing = status.Dashing;
     }
 
+    private void Start()
+    {
+        status.OnRevived += OnRevived;
+        status.OnRevivingOtherPlayerFinished += OnRevivingOtherPlayerFinished;
+        status.OnRevivingOtherPlayerStarted += OnRevivingOtherPlayerStarted;
+    }
+
     public void OnDeath()
     {
         animator.SetBool("Dead", true);
@@ -73,6 +80,16 @@ public class PlayerAnimationController : MonoBehaviour
                 animator.SetInteger("Direction", 2);
             else if (direction.y > DEADZONE)
                 animator.SetInteger("Direction", 0);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (status)
+        {
+            status.OnRevived -= OnRevived;
+            status.OnRevivingOtherPlayerFinished -= OnRevivingOtherPlayerFinished;
+            status.OnRevivingOtherPlayerStarted -= OnRevivingOtherPlayerStarted;
         }
     }
 }

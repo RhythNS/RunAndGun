@@ -5,6 +5,7 @@ public abstract class RAGInput : MonoBehaviour
     public abstract InputType InputType { get; }
 
     public float movementForce;
+    public float MovementMultiplicator { get; private set; } = 1.0f;
 
     protected Rigidbody2D Body { get; private set; }
     protected Player Player { get; private set; }
@@ -12,11 +13,16 @@ public abstract class RAGInput : MonoBehaviour
     private PlayerCamera playerCamera;
     private bool useFocusPoint;
 
+    private void Awake()
+    {
+        Body = GetComponent<Rigidbody2D>();
+        Player = GetComponent<Player>();
+        MovementMultiplicator = 1.0f;
+    }
+
     private void Start()
     {
         movementForce = GetComponent<Stats>().GetMovementForce();
-        Body = GetComponent<Rigidbody2D>();
-        Player = GetComponent<Player>();
         playerCamera = Camera.main.GetComponent<PlayerCamera>();
         useFocusPoint = Config.Instance.useFocusPoint;
         OnStart(); // Call start on child classes.
@@ -96,7 +102,16 @@ public abstract class RAGInput : MonoBehaviour
     {
         if (!Player.Status.CanInteract)
             return;
-        Body.AddForce(GetMovementInput() * movementForce);
+        Body.AddForce(GetMovementInput() * (movementForce * MovementMultiplicator));
+    }
+
+    /// <summary>
+    /// Should only be called from Status.
+    /// </summary>
+    /// <param name="newValue">The new movement multiplicator.</param>
+    public void SetMovementMultiplicator(float newValue)
+    {
+        MovementMultiplicator = newValue;
     }
 
     protected virtual bool HasFocusPoint => false;

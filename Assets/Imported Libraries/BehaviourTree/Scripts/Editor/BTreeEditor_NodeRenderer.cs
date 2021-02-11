@@ -88,7 +88,7 @@ namespace Rhyth.BTree
                     Vector2 from = (GetUpperMiddle(children[j]) * zoomLevel) + offset;
                     Vector2 to = (GetLowerMiddle(allNodes[i]) * zoomLevel) + offset;
 
-                    Handles.DrawBezier(from, to, from + Vector2.down * 50f, to - Vector2.down * 50f, Color.black, null, 2f);
+                    Handles.DrawBezier(from, to, from + Vector2.down * 50f * zoomLevel, to - Vector2.down * 50f * zoomLevel, Color.black, null, 2f);
                 }
             }
 
@@ -99,7 +99,7 @@ namespace Rhyth.BTree
                 BNode node = connectionConstructor.origin;
                 Vector2 from = (GetUpperMiddle(node) * zoomLevel) + offset;
                 Vector2 to = (connectionConstructor.mousePos * zoomLevel) + offset;
-                Handles.DrawBezier(from, to, from + Vector2.down * 50f, to - Vector2.down * 50f, Color.black, null, 2f);
+                Handles.DrawBezier(from, to, from + Vector2.down * 50f * zoomLevel, to - Vector2.down * 50f * zoomLevel, Color.black, null, 2f);
             }
         }
 

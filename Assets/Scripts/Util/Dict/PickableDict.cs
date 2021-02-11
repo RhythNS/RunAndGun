@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PickableDict : MonoBehaviour
@@ -8,6 +9,7 @@ public class PickableDict : MonoBehaviour
     [SerializeField] private Weapon[] weapons;
     [SerializeField] private Consumable[] consumables;
     [SerializeField] private Item[] items;
+    [SerializeField] private StatusEffect[] statusEffects;
 
     public GameObject PickableInWorldPrefab => pickableInWorldPrefab;
     [SerializeField] private GameObject pickableInWorldPrefab;
@@ -21,6 +23,7 @@ public class PickableDict : MonoBehaviour
     private readonly Dictionary<int, Weapon> weaponDict = new Dictionary<int, Weapon>();
     private readonly Dictionary<int, Consumable> consumableDict = new Dictionary<int, Consumable>();
     private readonly Dictionary<int, Item> itemDict = new Dictionary<int, Item>();
+    private readonly Dictionary<int, StatusEffect> statusEffectDict = new Dictionary<int, StatusEffect>();
 
     private void Awake()
     {
@@ -38,6 +41,8 @@ public class PickableDict : MonoBehaviour
             consumableDict.Add(consumables[i].Id, consumables[i]);
         for (int i = 0; i < items.Length; i++)
             itemDict.Add(items[i].Id, items[i]);
+        for (int i = 0; i < statusEffects.Length; i++)
+            statusEffectDict.Add(statusEffects[i].Id, statusEffects[i]);
     }
 
     public Pickable Get(PickableType type, int id)
@@ -52,15 +57,19 @@ public class PickableDict : MonoBehaviour
                 return itemDict[id];
             case PickableType.Weapon:
                 return weaponDict[id];
+            case PickableType.StatusEffect:
+                return statusEffects[id];
         }
-        throw new System.Exception("Could not find " + type);
+        throw new Exception("Could not find " + type);
     }
 
     public Consumable GetConsumbale(int id) => id == 0 ? null : consumableDict[id];
 
     public Weapon GetWeapon(int id) => id == 0 ? null : weaponDict[id];
 
-    public Item GetItem(int id) => id == 0 ? null : itemDict[id];
+    public StatusEffect GetStatusEffect(ushort id) => id == 0 ? null :  Instantiate(statusEffects[id]);
+
+    public Item GetItem(int id) => id == 0 ? null : Instantiate(itemDict[id]);
 
     private void OnDestroy()
     {

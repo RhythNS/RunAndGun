@@ -84,6 +84,8 @@ GameObject:
   - component: {fileID: 1365799234425872921}
   - component: {fileID: 8554081839076921764}
   - component: {fileID: 1689640206362063293}
+  - component: {fileID: 8153078490237015985}
+  - component: {fileID: 3119122454284659265}
   m_Layer: 0
   m_Name: Dicts
   m_TagString: Untagged
@@ -157,12 +159,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weapons:
+  - {fileID: 11400000, guid: 2ae5bebfc59d9ba4e9059a549738ebd9, type: 2}
+  - {fileID: 11400000, guid: 729f31b81fbabaa4e8cabb459a6cfebe, type: 2}
   - {fileID: 11400000, guid: ac7a3d27f5349fc4589c7af1ddc3ad4f, type: 2}
   consumables:
   - {fileID: 11400000, guid: 827216994d085974c970de0df9ff11d7, type: 2}
   - {fileID: 11400000, guid: 8f9766ed3bc60ff4b87b7e191a1ec6cb, type: 2}
   - {fileID: 11400000, guid: 37b7f573aa1f66d4faa905087592895c, type: 2}
   items: []
+  statusEffects:
+  - {fileID: 11400000, guid: ade3e77a6eb69ad469442fed7f6668f5, type: 2}
+  - {fileID: 11400000, guid: 9cd7d9b57fceaa94da5185ed5d27dff0, type: 2}
   pickableInWorldPrefab: {fileID: 2834579130591557907, guid: d3fab481d47576b498258ab56332c8f9,
     type: 3}
   missingTexture: {fileID: 21300000, guid: 58e17a9b00c516d40b1c03debbed9feb, type: 3}
@@ -288,6 +295,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPool: {fileID: 9109973228441478553}
+--- !u!114 &8153078490237015985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1365799234425872912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edada13d4104ae458ae0a1480a3b741, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitMaterial: {fileID: 2100000, guid: e7de38a0acc09f14180ba920fa120d24, type: 2}
+  healMaterial: {fileID: 2100000, guid: 18f98babd3cb2dc47a8377428aed9a95, type: 2}
+--- !u!114 &3119122454284659265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1365799234425872912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52d66d042d21a7343ba28aabbb7cdba2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  posionParticleSystem: {fileID: 501765941865502532, guid: 1d8853af59c246b4aaee9d3e42775e04,
+    type: 3}
 --- !u!1 &1365799234809505999
 GameObject:
   m_ObjectHideFlags: 0

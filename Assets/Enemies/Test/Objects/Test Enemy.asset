@@ -16,5 +16,5 @@ MonoBehaviour:
   weapon: {fileID: 11400000, guid: ac7a3d27f5349fc4589c7af1ddc3ad4f, type: 2}
   behaviourTree: {fileID: 11400000, guid: 51b34016b4f0576419ea8fd790ed3f20, type: 2}
   stats:
-    metersPerSecond: 3
+    metersPerSecond: 5
     maxHealth: 100

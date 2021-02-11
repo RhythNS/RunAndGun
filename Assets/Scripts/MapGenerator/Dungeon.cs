@@ -36,16 +36,24 @@ namespace MapGenerator
         }
 
         /// <summary>
+        /// Gets the TileType at the specified location.
+        /// </summary>
+        /// <param name="x">The x-position of the tile.</param>
+        /// <param name="y">The y-position of the tile.</param>
+        /// <returns>Returns the TileType.</returns>
+        public TileType this[int x, int y] {
+            get => mapLayout[x, y];
+        }
+
+        /// <summary>
         /// Creates and generates a new Dungeon.
         /// </summary>
-        /// <param name="sizeX">The maximum size of the Dungeon on the x-axis.</param>
-        /// <param name="sizeY">The maximum size of the Dungeon on the y-axis.</param>
         /// <param name="roomLayouts">The layouts for the rooms the Dungeon should contain.</param>
-        /// <param name="roomGameObjects">The list of GameObjects that should be spawned.</param>
-        /// <param name="minRooms">The minimum amount of rooms that should be generated.</param>
-        /// <param name="seed">The seed to use when generating the Dungeon. int.MaxValue uses a random seed.</param>
-        public Dungeon(int sizeX, int sizeY, Fast2DArray<int>[] roomLayouts, List<TiledImporter.PrefabLocations>[] roomGameObjects, RoomType[] roomTypes, int minRooms, int seed) {
-            this.Size = new Vector2Int(sizeX, sizeY);
+        /// <param name="roomGameObjects">The list of GameObjects that should be spawned for the rooms.</param>
+        /// <param name="roomTypes">The list of GameObjects that should be spawned.</param>
+        /// <param name="config">The data to use when generating the Dungeon.</param>
+        public Dungeon(Fast2DArray<int>[] roomLayouts, List<TiledImporter.PrefabLocations>[] roomGameObjects, RoomType[] roomTypes, DungeonConfig config) {
+            Size = new Vector2Int(config.sizeX, config.sizeY);
             mapLayout = new Fast2DArray<TileType>(Size.x, Size.y);
             this.roomLayouts = new Fast2DArray<TileType>[roomLayouts.Length];
             Fast2DArrayIntToTileType(ref roomLayouts, ref this.roomLayouts);
@@ -54,8 +62,8 @@ namespace MapGenerator
 
             List<Exit> exits = new List<Exit>();
 
-            if (seed != int.MaxValue)
-                Random.InitState(seed);
+            if (config.seed != int.MaxValue)
+                Random.InitState(config.seed);
 
             // generate starting room
             Room startRoom = new Room((int)(Size.x / 2f - this.roomLayouts[0].XSize / 2f), (int)(Size.y / 2f - this.roomLayouts[0].YSize / 2f), this.roomLayouts[0], this.roomGameObjects[0], this.roomTypes[0]);
@@ -77,7 +85,7 @@ namespace MapGenerator
             }
 
             int iters = 0;
-            while (rooms.Count < minRooms && iters < ITERATIONS) {
+            while (rooms.Count < config.minRooms && iters < ITERATIONS) {
                 foreach (var exit in exits) {
                     if (exit.IntoRoom) {
                         GenerateRoom(exit);
@@ -121,16 +129,6 @@ namespace MapGenerator
             for (int i = 0; i < 3; i++) {
                 DeleteDeadEnds();
             }
-        }
-
-        /// <summary>
-        /// Gets the TileType at the specified location.
-        /// </summary>
-        /// <param name="x">The x-position of the tile.</param>
-        /// <param name="y">The y-position of the tile.</param>
-        /// <returns>Returns the TileType.</returns>
-        public TileType this[int x, int y] {
-            get => mapLayout[x, y];
         }
 
         private void DeleteDeadEnds() {
@@ -264,7 +262,7 @@ namespace MapGenerator
             return false;
         }
 
-        private bool IsEmptyInArea(Room room, Direction direction, bool isBossRoom = false) {
+        private bool IsEmptyInArea(Room room, Direction direction) {
             switch (direction) {
                 case Direction.Up:
                     for (int x = -4; x < room.Layout.XSize + 4; x++) {
@@ -358,6 +356,21 @@ namespace MapGenerator
 
         private void AddRoom(Room room) {
             rooms.Add(room);
+
+            if (room.Position.x + room.Layout.XSize >= this.Size.x) {
+                int newX = room.Position.x + room.Layout.XSize + 1;
+                Debug.Log("Resizing to x: " + newX);
+                mapLayout.Resize(newX, this.Size.y);
+
+                this.Size = new Vector2Int(newX, this.Size.y);
+            }
+            if (room.Position.y + room.Layout.YSize >= this.Size.y) {
+                int newY = room.Position.y + room.Layout.YSize + 1;
+                Debug.Log("Resizing to y: " + newY);
+                mapLayout.Resize(this.Size.x, newY);
+
+                this.Size = new Vector2Int(this.Size.x, newY);
+            }
 
             for (int x = 0; x < room.Layout.XSize; x++) {
                 for (int y = 0; y < room.Layout.YSize; y++) {
@@ -482,7 +495,7 @@ namespace MapGenerator
         /// <param name="x">x-value of the tile to check</param>
         /// <param name="y">y-value of the tile to check</param>
         /// <returns>The positions of the neighbours that are walkable tiles of a given tile.</returns>
-        private Vector2Int[] GetNeighbours(int x, int y) {
+        private List<Vector2Int> GetNeighbours(int x, int y) {
             List<Vector2Int> neighbours = new List<Vector2Int>();
 
             if (GetTileType(x - 1, y) == TileType.Floor) // left
@@ -503,7 +516,7 @@ namespace MapGenerator
             if (GetTileType(x + 1, y + 1) == TileType.Floor) // right up
                 neighbours.Add(new Vector2Int(x + 1, y + 1));
 
-            return neighbours.ToArray();
+            return neighbours;
         }
 
         /// <summary>
@@ -567,7 +580,8 @@ namespace MapGenerator
                     return false;
                 }
 
-                path.Add(new Vector2(current.x, current.y));
+                //path.Add(new Vector2(current.x, current.y));
+                path.Add(DungeonCreator.Instance.TilePositionToWorldPositionMiddle(current.x, current.y));
                 current = cameFrom[current];
             }
 

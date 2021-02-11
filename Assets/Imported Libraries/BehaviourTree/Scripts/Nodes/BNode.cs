@@ -48,7 +48,7 @@ namespace Rhyth.BTree
         /// <summary>
         /// These are the coordinates, width and height inside the editor.
         /// </summary>
-        [SerializeField] public Rect boundsInEditor;
+        public Rect boundsInEditor;
 
         /// <summary>
         /// This is shown above the name in the editor. A symbol like string should be used for quick identification.
@@ -93,7 +93,7 @@ namespace Rhyth.BTree
         /// <summary>
         /// Called after Restart(). Should be used to get needed values and prep the node for execution.
         /// </summary>
-        public virtual void Beginn()
+        public void Beginn()
         {
             CurrentStatus = Status.Running;
             InnerBeginn();
@@ -179,6 +179,5 @@ namespace Rhyth.BTree
             originalValueForClonedValue.Add(toClone, cloned);
             return cloned;
         }
-
     }
 }
