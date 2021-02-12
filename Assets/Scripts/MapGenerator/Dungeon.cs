@@ -105,25 +105,25 @@ namespace MapGenerator
             if (!bossRoom) {
                 Debug.Log("Could not generate BossRoom randomly. Forcing room creation!");
 
-                for (int i = 0; i < exits.Count; i++) {
-                    if (exits[i].Direction != Direction.Down && GenerateCorridor(exits[i])) {
-                        //GetAllExits(ref exits);
-                        foreach (var exit in exits) {
-                            if (exit.IntoRoom && GenerateRoom(exit, true)) {
-                                bossRoom = true;
-                                break;
-                            }
-                        }
+                while (!bossRoom) {
+                    GetAllExits(ref exits);
 
-                        if (bossRoom)
-                            break;
+                    for (int i = 0; i < exits.Count; i++) {
+                        if (exits[i].Direction != Direction.Down && GenerateCorridor(exits[i])) {
+                            foreach (var exit in exits) {
+                                if (exit.IntoRoom && GenerateRoom(exit, true)) {
+                                    bossRoom = true;
+                                    break;
+                                }
+                            }
+
+                            if (bossRoom)
+                                break;
+                        }
                     }
                 }
 
-                if (!bossRoom)
-                    Debug.Log("Still no BossRoom");
-                else
-                    Debug.Log("Created BossRoom!");
+                Debug.Log("Created BossRoom!");
             }
 
             for (int i = 0; i < 3; i++) {
