@@ -10,7 +10,9 @@ public class DebugPathFinder : MonoBehaviour
         Instance = this;
     }
 
-    private int minX, maxX, minY, maxY; 
+    private int minX, maxX, minY, maxY;
+
+    private Fast2DArray<bool> tileMap;
     private List<Vector2Int> walkableTiles;
 
     public void SetRoom(int xSize, int ySize, int xPos, int yPos, List<Vector2Int> walkableTiles)
@@ -19,6 +21,16 @@ public class DebugPathFinder : MonoBehaviour
         maxX = xPos + xSize;
         minY = yPos;
         maxY = yPos + ySize;
+        tileMap = new Fast2DArray<bool>(xSize, ySize);
+
+        for (int x = 0; x < tileMap.XSize; x++)
+        {
+            for (int y = 0; y < tileMap.YSize; y++)
+            {
+                tileMap.Set(!walkableTiles.Contains(new Vector2Int(x + minX, y + minY)), x, y);
+            }
+        }
+
         this.walkableTiles = walkableTiles;
     }
     /// <summary>
@@ -37,7 +49,7 @@ public class DebugPathFinder : MonoBehaviour
             {
                 if (x2 == x && y2 == y)
                     continue;
-                if (x2 >= minX && x2 < maxX && y2 >= minY && y2 < maxY && walkableTiles.Contains(new Vector2Int(x2, y2)))
+                if (x2 >= minX && x2 < maxX && y2 >= minY && y2 < maxY && !tileMap.Get(x2 - minX, y2 - minY))
                     neighbours.Add(new Vector2Int(x2, y2));
             }
         }

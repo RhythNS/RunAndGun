@@ -8,10 +8,12 @@ public abstract class StatusEffect : Pickable
 
     public StatusEffectList OnList { get; set; }
     public Health OnHealth => OnList.Health;
+    public bool IsInstant => numberOfTicks == 0;
+    public bool IsForever => numberOfTicks == -1;
     public bool IsServer => OnList.isServer;
     public bool IsLocalPlayer => OnList.isLocalPlayer;
-
-    public int NumberOfTicksRemaining { get; set; }
+    public int NumberOfTicksRemaining { get; protected set; }
+    public int NumberOfTicks => numberOfTicks;
 
     public void OnPickup()
     {
@@ -22,6 +24,11 @@ public abstract class StatusEffect : Pickable
     protected abstract void InnerOnPickup();
 
     public abstract void OnDrop();
+
+    /// <summary>
+    /// Instance of this is in list. The other StatusEffect tried to add itself to the list.
+    /// </summary>
+    public abstract void OnEffectAlreadyInList(StatusEffect other);
 
     public void OnTick()
     {
