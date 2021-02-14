@@ -6,10 +6,10 @@ public class MobileInput : RAGInput
 
     private MobileUIManager mobileUI;
 
+    public void SetUI(MobileUIManager ui) => mobileUI = ui;
+
     protected override void OnStart()
     {
-        GameObject canvasObj = GameObject.Find("Canvas"); // TOOD: CHANGE THIS ONCE UI IS IMPLEMENTED!
-        mobileUI = Instantiate(InputDict.Instance.MobileUIManagerPrefab, canvasObj.transform);
     }
 
     protected override bool GetDashInput()

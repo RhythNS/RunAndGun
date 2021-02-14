@@ -18,13 +18,17 @@ public class StickController : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
     public void OnDrag(PointerEventData eventData)
     {
-        Rect rect = rectTransform.rect;
-        Vector2 circleCenter = new Vector2(rectTransform.position.x + rect.width * 0.5f, rectTransform.position.y + rect.height * 0.5f);
-        float circleRadius = rect.width / 2;
+        if (Input.GetKey(KeyCode.S))
+            Debug.Log("f");
 
+        Vector2 circleSize = rectTransform.lossyScale * rectTransform.rect.size;
+        Vector2 circleCenter = (Vector2)rectTransform.transform.position + (circleSize * 0.5f);
+        float circleRadius = rectTransform.rect.width * 0.5f;
+
+        Debug.Log(circleCenter);
+        
         Vector2 v = eventData.position - circleCenter;
         v = MathUtil.ClampMagnitude(v, circleRadius, out float magnitude);
-        Vector2 newLocation = circleCenter + v;
         magnitude /= circleRadius;
 
         if (magnitude > deadzone || magnitude < -deadzone)
@@ -32,14 +36,13 @@ public class StickController : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         else
             Output = new Vector2();
 
-        innerStick.position = newLocation;
+        innerStick.anchoredPosition = v;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
         Down = false;
-        Rect rect = rectTransform.rect;
-        innerStick.transform.position = new Vector3(rectTransform.position.x + rect.width * 0.5f, rectTransform.position.y + rect.height * 0.5f);
+        innerStick.anchoredPosition = new Vector2();
         Output = new Vector2();
     }
 

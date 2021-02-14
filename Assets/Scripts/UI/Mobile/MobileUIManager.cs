@@ -6,7 +6,4 @@ public class MobileUIManager : MonoBehaviour
     [SerializeField] private StickController move;
     public StickController Aim => aim;
     [SerializeField] private StickController aim;
-
-
-
 }
