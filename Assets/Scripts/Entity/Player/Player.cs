@@ -63,6 +63,7 @@ public class Player : Entity
         LocalPlayer = this;
         Config.Instance.selectedPlayerType = characterType;
         Input = RAGInput.AttachInput(gameObject);
+        UIManager.Instance.OnLocalPlayerStarted(this, Input.InputType);
         Camera.main.GetComponent<PlayerCamera>().ToFollow = transform;
         PlayerAnimationController = gameObject.AddComponent<PlayerAnimationController>();
     }
@@ -172,6 +173,8 @@ public class Player : Entity
             camera.ToFollow = null;
         if (PlayersDict.Instance)
             PlayersDict.Instance.DeRegister(this);
+        if (UIManager.Instance)
+            UIManager.Instance.OnLocalPlayerDeleted();
         if (LocalPlayer == this)
             LocalPlayer = null;
     }

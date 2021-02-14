@@ -67,7 +67,7 @@ public class PickableDict : MonoBehaviour
 
     public Weapon GetWeapon(int id) => id == 0 ? null : weaponDict[id];
 
-    public StatusEffect GetStatusEffect(ushort id) => id == 0 ? null :  Instantiate(statusEffects[id]);
+    public StatusEffect GetStatusEffect(ushort id) => id == 0 ? null :  Instantiate(statusEffectDict[id]);
 
     public Item GetItem(int id) => id == 0 ? null : Instantiate(itemDict[id]);
 

@@ -130,8 +130,8 @@ public class Health : NetworkBehaviour
         {
             Debug.Log(gameObject.name + " has died!");
             enabled = false;
-            GetComponent<IDieable>().Die();
             RpcOnDied();
+            GetComponent<IDieable>().Die();
         }
     }
 

@@ -25,6 +25,25 @@ public class StatusEffectList : NetworkBehaviour
     [Server]
     public void ServerAdd(StatusEffect effect)
     {
+        if (effect.IsInstant)
+        {
+            effect.OnList = this;
+            effect.OnPickup();
+            effect.OnDrop();
+            RpcInstantStatusEffect(effect);
+            return;
+        }
+
+        for (int i = 0; i < StatusEffects.Count; i++)
+        {
+            if (StatusEffects[i].GetType() == effect.GetType())
+            {
+                StatusEffects[i].OnEffectAlreadyInList(effect);
+                RpcOnEffectAlreadyInList(i, effect);
+                return;
+            }
+        }
+
         StatusEffects.Add(effect);
         coroutineForEffect.Add(effect, new ExtendedCoroutine(this, DoTick(effect), null, true));
     }
@@ -51,6 +70,27 @@ public class StatusEffectList : NetworkBehaviour
     {
         while (StatusEffects.Count > 0)
             StatusEffects.RemoveAt(0);
+    }
+
+    [ClientRpc]
+    public void RpcInstantStatusEffect(StatusEffect effect)
+    {
+        if (isServer)
+            return;
+
+        effect.OnList = this;
+        effect.OnPickup();
+        effect.OnDrop();
+    }
+
+    [ClientRpc]
+    public void RpcOnEffectAlreadyInList(int index, StatusEffect other)
+    {
+        if (isServer)
+            return;
+
+        other.OnList = this;
+        StatusEffects[index].OnEffectAlreadyInList(other);
     }
 
     private void OnStatusEffectChanged(SyncList<StatusEffect>.Operation op, int itemIndex, StatusEffect oldItem, StatusEffect newItem)

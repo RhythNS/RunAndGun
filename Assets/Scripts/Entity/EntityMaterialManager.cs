@@ -68,6 +68,9 @@ public class EntityMaterialManager : MonoBehaviour
 
     private void StartTempEffect(Material material, float duration)
     {
+        if (currentTempEffect != null && currentTempEffect.IsFinshed == false)
+            return;
+
         spriteRenderer.material = currentEffectMaterial = material;
         currentTempEffect = new ExtendedCoroutine(this, HealthEffect(material, duration), ResetMaterial, true);
     }
