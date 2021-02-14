@@ -45,6 +45,14 @@ namespace MapGenerator
         /// </summary>
         public int corridorMaxLength;
 
+        /// <summary>
+        /// If this floor should have a ShopRoom.
+        /// </summary>
+        public bool generateShopRoom;
+
+        /// <summary>
+        /// The items to spawn at the spawn point.
+        /// </summary>
         public Pickable[] itemsToSpawn;
 
         /// <summary>
@@ -57,7 +65,9 @@ namespace MapGenerator
         /// <param name="maxRooms">The maximum amount of rooms (excluding start-, shop- and bossroom).</param>
         /// <param name="corridorMinLength">The minimum length of a corridor.</param>
         /// <param name="corridorMaxLength">The maximum length of a corridor.</param>
-        public DungeonConfig(int seed, int sizeX, int sizeY, int minRooms, int maxRooms, int corridorMinLength, int corridorMaxLength, Pickable[] itemsToSpawn) {
+        /// <param name="shopRoom">If this floor should have a ShopRoom.</param>
+        /// <param name="itemsToSpawn">The items to spawn at the spawn point.</param>
+        public DungeonConfig(int seed, int sizeX, int sizeY, int minRooms, int maxRooms, int corridorMinLength, int corridorMaxLength, bool shopRoom, Pickable[] itemsToSpawn) {
             this.seed = seed;
 
             this.sizeX = sizeX;
@@ -68,6 +78,8 @@ namespace MapGenerator
 
             this.corridorMinLength = Mathf.Clamp(corridorMinLength, Corridor.MIN_LENGTH, Corridor.MAX_LENGTH);
             this.corridorMaxLength = Mathf.Clamp(corridorMaxLength, Corridor.MIN_LENGTH, Corridor.MAX_LENGTH);
+
+            this.generateShopRoom = shopRoom;
 
             this.itemsToSpawn = itemsToSpawn;
         }

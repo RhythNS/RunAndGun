@@ -69,6 +69,7 @@ namespace MapGenerator
             Room startRoom = new Room((int)(Size.x / 2f - this.roomLayouts[0].XSize / 2f), (int)(Size.y / 2f - this.roomLayouts[0].YSize / 2f), this.roomLayouts[0], this.roomGameObjects[0], this.roomTypes[0]);
             AddRoom(startRoom);
 
+            // generate the initial map structure with corridors and rooms
             for (int i = 0; i < ITERATIONS; i++) {
                 GetAllExits(ref exits);
 
@@ -84,6 +85,7 @@ namespace MapGenerator
                 }
             }
 
+            // try and generate as many rooms as possible
             int iters = 0;
             while (rooms.Count < config.minRooms && iters < ITERATIONS) {
                 foreach (var exit in exits) {
@@ -95,43 +97,87 @@ namespace MapGenerator
                 iters++;
             }
 
-            bool bossRoom = false;
-            foreach (var exit in exits) {
-                if (exit.IntoRoom && GenerateRoom(exit, true)) {
-                    bossRoom = true;
-                    break;
-                }
-            }
-            if (!bossRoom) {
-                Debug.Log("Could not generate BossRoom randomly. Forcing room creation!");
+            // generate shop and bossroom
+            if (config.generateShopRoom)
+                GenerateShopRoom();
+            GenerateBossRoom();
 
-                while (!bossRoom) {
-                    GetAllExits(ref exits);
-
-                    for (int i = 0; i < exits.Count; i++) {
-                        if (exits[i].Direction != Direction.Down && GenerateCorridor(exits[i])) {
-                            foreach (var exit in exits) {
-                                if (exit.IntoRoom && GenerateRoom(exit, true)) {
-                                    bossRoom = true;
-                                    break;
-                                }
-                            }
-
-                            if (bossRoom)
-                                break;
-                        }
-                    }
-                }
-
-                Debug.Log("Created BossRoom!");
-            }
-
+            // delete dead ends from the map
             for (int i = 0; i < 3; i++) {
                 DeleteDeadEnds();
             }
         }
 
+        private void GenerateBossRoom() {
+            List<Exit> exits = new List<Exit>();
+            GetAllExits(ref exits);
+
+            bool roomCreated = false;
+            foreach (var exit in exits) {
+                if (exit.IntoRoom && GenerateRoom(exit, true)) {
+                    roomCreated = true;
+                    break;
+                }
+            }
+            while (!roomCreated) {
+                GetAllExits(ref exits);
+
+                for (int i = 0; i < exits.Count; i++) {
+                    if (exits[i].Direction != Direction.Down && exits[i].Direction != Direction.Left && GenerateCorridor(exits[i])) {
+                        foreach (var exit in exits) {
+                            if (exit.IntoRoom && GenerateRoom(exit, true)) {
+                                roomCreated = true;
+                                break;
+                            }
+                        }
+
+                        if (roomCreated)
+                            break;
+                    }
+                }
+            }
+        }
+
+        private void GenerateShopRoom() {
+            List<Exit> exits = new List<Exit>();
+            GetAllExits(ref exits);
+
+            bool roomCreated = false;
+            foreach (var exit in exits) {
+                if (exit.IntoRoom && GenerateRoom(exit, false, true)) {
+                    roomCreated = true;
+                    break;
+                }
+            }
+            while (!roomCreated) {
+                GetAllExits(ref exits);
+
+                for (int i = 0; i < exits.Count; i++) {
+                    if (exits[i].Direction != Direction.Down && exits[i].Direction != Direction.Left && GenerateCorridor(exits[i])) {
+                        foreach (var exit in exits) {
+                            if (exit.IntoRoom && GenerateRoom(exit, false, true)) {
+                                roomCreated = true;
+                                break;
+                            }
+                        }
+
+                        if (roomCreated)
+                            break;
+                    }
+                }
+            }
+        }
+
         private void DeleteDeadEnds() {
+            for (int x = 0; x < Size.x; x++) {
+                mapLayout[x, 0] = TileType.Wall;
+                mapLayout[x, Size.y - 1] = TileType.Wall;
+            }
+            for (int y = 0; y < Size.y; y++) {
+                mapLayout[0, y] = TileType.Wall;
+                mapLayout[Size.x - 1, y] = TileType.Wall;
+            }
+
             // if dead ends got created, delete them
             foreach (var corridor in corridors) {
                 if (corridor.Size.x == 2) {
@@ -211,10 +257,12 @@ namespace MapGenerator
             }
         }
 
-        private bool GenerateRoom(Exit exit, bool isBossRoom = false) {
-            int rndRoom = Random.Range(2, roomLayouts.Length);
+        private bool GenerateRoom(Exit exit, bool isBossRoom = false, bool isShopRoom = false) {
+            int rndRoom = Random.Range(3, roomLayouts.Length);
             if (isBossRoom)
                 rndRoom = 1;
+            if (isShopRoom)
+                rndRoom = 2;
             Room room = new Room(0, 0, roomLayouts[rndRoom], roomGameObjects[rndRoom], roomTypes[rndRoom]);
 
             foreach (var exitDir in room.ExitDirections) {

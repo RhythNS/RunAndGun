@@ -187,9 +187,10 @@ public class EquippedWeapon : NetworkBehaviour
     /// <summary>
     /// Creates a new bullet. This should only be called from the BulletSpawnModel.
     /// </summary>
-    public void SpawnNew()
+    /// <param name="direction">The direction the bullet should fly in.</param>
+    public void SpawnNew(Vector2 direction)
     {
-        Bullet bullet = GetBullet(LocalDirection);
+        Bullet bullet = GetBullet(direction);
         if (isServer)
         {
             NetworkServer.Spawn(bullet.gameObject);
@@ -199,7 +200,7 @@ public class EquippedWeapon : NetworkBehaviour
         {
             bullet.NetworkTransform.enabled = false;
             bullet.owningBullet = true;
-            CmdCreateBullet(BulletSpawnPosition, LocalDirection);
+            CmdCreateBullet(BulletSpawnPosition, direction);
         }
     }
 

@@ -7,6 +7,6 @@ public class StandardBulletSpawn : BulletSpawnModel
 {
     protected override void InnerShoot(EquippedWeapon weapon)
     {
-        weapon.SpawnNew();
+        weapon.SpawnNew(weapon.LocalDirection);
     }
 }

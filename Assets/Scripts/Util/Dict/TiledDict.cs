@@ -14,6 +14,8 @@ public class TiledDict : MonoBehaviour
     private readonly Dictionary<string, Tilemap> mapDict = new Dictionary<string, Tilemap>();
     private readonly Dictionary<string, GameObject> objectDict = new Dictionary<string, GameObject>();
 
+    public int TileMapCount { get => tileMaps.Length; }
+
     [System.Serializable]
     public struct Tileset
     {
