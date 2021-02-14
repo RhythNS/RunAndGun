@@ -115,7 +115,15 @@ public class DungeonCreator : MonoBehaviour
         roomTypes.Add((RoomType)roomType);
         roomGameObjects.Add(gos);
 
-        int mapCount = 7;
+        roomLayouts.Add(TiledImporter.Instance.GetReplacableMap("shopRoom", out properties, out gos));
+        if (properties.TryGetValue("roomType", out value) == false)
+            throw new System.Exception("No room type in map: shopRoom!");
+        if (int.TryParse(value, out roomType) == false)
+            throw new System.Exception("Room type is not an integer in: shopRoom!");
+        roomTypes.Add((RoomType)roomType);
+        roomGameObjects.Add(gos);
+
+        int mapCount = TiledDict.Instance.TileMapCount - 3;
         for (int i = 1; i <= mapCount; i++) {
             roomLayouts.Add(TiledImporter.Instance.GetReplacableMap("room" + i.ToString(), out properties, out gos));
 
@@ -143,6 +151,7 @@ public class DungeonCreator : MonoBehaviour
             maxRooms = 20,
             corridorMinLength = Corridor.MIN_LENGTH,
             corridorMaxLength = Corridor.MAX_LENGTH,
+            generateShopRoom = true,
             itemsToSpawn = config.itemsToSpawn
         };
         dungeon = new Dungeon(roomLayouts.ToArray(), roomGameObjects.ToArray(), roomTypes.ToArray(), config);
@@ -340,6 +349,8 @@ public class DungeonCreator : MonoBehaviour
                     GameObject obj = Instantiate(prefabContainer.Prefab);
                     obj.transform.position = new Vector3(dungeon.Rooms[i].Position.x, dungeon.Rooms[i].Position.y, 0f) + prefabContainer.Position;
                     obj.transform.parent = go.transform;
+                    if (obj.TryGetComponent(out BreakableObject bo))
+                        bo.index = Random.Range(0, BreakablesDict.Instance.BreakablesCount);
                     objs.Add(obj);
                 }
                 dr.objects = objs;

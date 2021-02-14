@@ -27,6 +27,8 @@ public class Player : Entity
     public DungeonRoom CurrentRoom { get; private set; }
     public StatusEffectList StatusEffectList { get; private set; }
 
+    private SpriteRenderer sr;
+
     private void Awake()
     {
         Stats = GetComponent<Stats>();
@@ -38,6 +40,12 @@ public class Player : Entity
         Collider2D = GetComponent<Collider2D>();
         StateCommunicator = GetComponent<StateCommunicator>();
         StatusEffectList = GetComponent<StatusEffectList>();
+
+        sr = GetComponent<SpriteRenderer>();
+    }
+
+    private void Update() {
+        sr.sortingOrder = (int)transform.position.y * -2 + 1;
     }
 
     private void Start()

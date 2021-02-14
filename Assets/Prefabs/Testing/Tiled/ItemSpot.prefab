@@ -10,9 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7220611660736423719}
   - component: {fileID: 99558278752830739}
-  - component: {fileID: 6725482054760036121}
   m_Layer: 0
-  m_Name: RandomObject
+  m_Name: ItemSpot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -82,37 +81,3 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 1
   m_SpriteSortPoint: 0
---- !u!114 &6725482054760036121
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 630595108234732127}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e98fd3a4c02a414cbf5a178b1d360ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  r: {fileID: 99558278752830739}
-  sprites:
-  - {fileID: -3476656387692287871, guid: 0701bdb4ed5c3c34489c17d3191c3455, type: 3}
-  - {fileID: 2842149653976320316, guid: 0701bdb4ed5c3c34489c17d3191c3455, type: 3}
-  - {fileID: -3610211561472424912, guid: 0701bdb4ed5c3c34489c17d3191c3455, type: 3}
-  - {fileID: -2922597279254187806, guid: 0701bdb4ed5c3c34489c17d3191c3455, type: 3}
-  - {fileID: -4428194978871957011, guid: 0701bdb4ed5c3c34489c17d3191c3455, type: 3}
-  - {fileID: 1521377951843793056, guid: 0701bdb4ed5c3c34489c17d3191c3455, type: 3}
-  - {fileID: -1620893139436827346, guid: 0701bdb4ed5c3c34489c17d3191c3455, type: 3}
-  - {fileID: -5278721687575318638, guid: 0701bdb4ed5c3c34489c17d3191c3455, type: 3}
-  - {fileID: 4922558961281654948, guid: 0701bdb4ed5c3c34489c17d3191c3455, type: 3}
-  - {fileID: -1756259025848019955, guid: 0701bdb4ed5c3c34489c17d3191c3455, type: 3}
-  - {fileID: 320415799070084530, guid: 0701bdb4ed5c3c34489c17d3191c3455, type: 3}
-  - {fileID: 6881084092142125303, guid: 0701bdb4ed5c3c34489c17d3191c3455, type: 3}
-  - {fileID: -4141569016488270831, guid: 0701bdb4ed5c3c34489c17d3191c3455, type: 3}
-  - {fileID: -30910539988732823, guid: 0701bdb4ed5c3c34489c17d3191c3455, type: 3}
-  - {fileID: -6007437689376026156, guid: 0701bdb4ed5c3c34489c17d3191c3455, type: 3}
-  - {fileID: 257848883215580206, guid: 0701bdb4ed5c3c34489c17d3191c3455, type: 3}
-  - {fileID: -5139024786130083942, guid: 0701bdb4ed5c3c34489c17d3191c3455, type: 3}
-  - {fileID: 4308760405571130852, guid: 0701bdb4ed5c3c34489c17d3191c3455, type: 3}
-  - {fileID: 8021170247291545604, guid: 0701bdb4ed5c3c34489c17d3191c3455, type: 3}
-  - {fileID: 5405549063041797323, guid: 0701bdb4ed5c3c34489c17d3191c3455, type: 3}
