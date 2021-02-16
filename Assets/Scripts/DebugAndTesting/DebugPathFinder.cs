@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class DebugPathFinder : MonoBehaviour
@@ -75,8 +76,10 @@ public class DebugPathFinder : MonoBehaviour
     /// <param name="destination">The destination of the path</param>
     /// <param name="path">All tile positions of the path found</param>
     /// <returns>Wheter it found a path or not</returns>
-    public bool TryFindPath(Vector2Int start, Vector2Int destination, out List<Vector2> path)
+    public List<Vector2> TryFindPath(Vector2Int start, Vector2Int destination)
     {
+        List<Vector2> path;
+
         Dictionary<Vector2Int, Vector2Int> cameFrom = new Dictionary<Vector2Int, Vector2Int>();
         Dictionary<Vector2Int, float> costSoFar = new Dictionary<Vector2Int, float>();
 
@@ -122,7 +125,7 @@ public class DebugPathFinder : MonoBehaviour
             if (!cameFrom.ContainsKey(current))
             {
                 //Debug.Log("cameFrom does not contain current"); // no path found
-                return false;
+                return path;
             }
 
             path.Add(new Vector2(current.x + 0.5f, current.y + 0.5f));
@@ -134,7 +137,7 @@ public class DebugPathFinder : MonoBehaviour
         if (path.Count > 1)
             path.RemoveAt(0);
 
-        return true;
+        return path;
     }
 
     /// <summary>
