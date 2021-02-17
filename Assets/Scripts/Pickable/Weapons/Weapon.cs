@@ -33,6 +33,11 @@ public class Weapon : Pickable
     public float Range => range;
     [SerializeField] private float range;
 
+    public float Accuracy => accuracy;
+    [SerializeField][Range(0f, 100f)]
+    [Tooltip("The accuracy for each spawned bullet. 100 = fully accurate, 0 = differs up to 45° from original trajectory")]
+    private float accuracy;
+
     public float Speed => speed;
     [SerializeField] private float speed;
 

@@ -9,6 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06abdaff75d03d94293edf744b734d0c, type: 3}
-  m_Name: New Damage Effect
+  m_Script: {fileID: 11500000, guid: 3836cdd6b82e06a43bd5f7e99b23f4ee, type: 3}
+  m_Name: Single Shot Model
   m_EditorClassIdentifier: 
+  timeBetweenShots: 1

@@ -28,7 +28,8 @@ MonoBehaviour:
     corridorMaxLength: 0
     generateShopRoom: 0
     itemsToSpawn:
-    - {fileID: 11400000, guid: ac7a3d27f5349fc4589c7af1ddc3ad4f, type: 2}
-    - {fileID: 11400000, guid: ac7a3d27f5349fc4589c7af1ddc3ad4f, type: 2}
-    - {fileID: 11400000, guid: 729f31b81fbabaa4e8cabb459a6cfebe, type: 2}
     - {fileID: 11400000, guid: f6f603894041f4d4db8824abc0e9371d, type: 2}
+    - {fileID: 11400000, guid: 6c94d7e1d9a371e4c9b9479a48d76693, type: 2}
+    - {fileID: 11400000, guid: 8f36cc845c82941498d102be15fd04b8, type: 2}
+    - {fileID: 11400000, guid: 729f31b81fbabaa4e8cabb459a6cfebe, type: 2}
+    - {fileID: 11400000, guid: 81f36331199e4e14fad6015f8836335b, type: 2}
