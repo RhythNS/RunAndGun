@@ -398,6 +398,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1365799234425872916, guid: 51cb51d065c14cd4d8c4ff558239b518,
+        type: 3}
+      propertyPath: weapons.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1365799234425872916, guid: 51cb51d065c14cd4d8c4ff558239b518,
+        type: 3}
+      propertyPath: weapons.Array.data[4]
+      value: 
+      objectReference: {fileID: 11400000, guid: a77f1d34bf911184f98774a318ceb2d5,
+        type: 2}
     - target: {fileID: 1365799234809505998, guid: 51cb51d065c14cd4d8c4ff558239b518,
         type: 3}
       propertyPath: m_RootOrder
@@ -768,7 +779,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  weaponToDrop: {fileID: 11400000, guid: 729f31b81fbabaa4e8cabb459a6cfebe, type: 2}
+  weaponToDrop: {fileID: 11400000, guid: a77f1d34bf911184f98774a318ceb2d5, type: 2}
   spawnAt: {x: 18, y: 3}
 --- !u!114 &901832233
 MonoBehaviour:
