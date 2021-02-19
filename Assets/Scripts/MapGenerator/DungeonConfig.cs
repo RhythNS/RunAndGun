@@ -56,6 +56,11 @@ namespace MapGenerator
         public Pickable[] itemsToSpawn;
 
         /// <summary>
+        /// The items that can be bought in the shop if there is one.
+        /// </summary>
+        public Pickable[] shopItems;
+
+        /// <summary>
         /// Creates a new DungeonConfig.
         /// </summary>
         /// <param name="seed">The seed to use for the generation process.</param>
@@ -67,7 +72,7 @@ namespace MapGenerator
         /// <param name="corridorMaxLength">The maximum length of a corridor.</param>
         /// <param name="shopRoom">If this floor should have a ShopRoom.</param>
         /// <param name="itemsToSpawn">The items to spawn at the spawn point.</param>
-        public DungeonConfig(int seed, int sizeX, int sizeY, int minRooms, int maxRooms, int corridorMinLength, int corridorMaxLength, bool shopRoom, Pickable[] itemsToSpawn) {
+        public DungeonConfig(int seed, int sizeX, int sizeY, int minRooms, int maxRooms, int corridorMinLength, int corridorMaxLength, bool shopRoom, Pickable[] itemsToSpawn, Pickable[] shopItems) {
             this.seed = seed;
 
             this.sizeX = sizeX;
@@ -82,6 +87,8 @@ namespace MapGenerator
             this.generateShopRoom = shopRoom;
 
             this.itemsToSpawn = itemsToSpawn;
+
+            this.shopItems = shopItems;
         }
     }
 }

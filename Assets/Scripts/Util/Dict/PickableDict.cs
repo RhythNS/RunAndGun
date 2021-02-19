@@ -25,6 +25,11 @@ public class PickableDict : MonoBehaviour
     private readonly Dictionary<int, Item> itemDict = new Dictionary<int, Item>();
     private readonly Dictionary<int, StatusEffect> statusEffectDict = new Dictionary<int, StatusEffect>();
 
+    public int NumWeapons => weaponDict.Count;
+    public int NumConsumables => consumableDict.Count;
+    public int NumItems => itemDict.Count;
+    public int NumStatusEffects => statusEffectDict.Count;
+
     private void Awake()
     {
         if (Instance)

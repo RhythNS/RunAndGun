@@ -323,7 +323,21 @@ public class DungeonCreator : MonoBehaviour
                     break;
 
                 case RoomType.Shop:
-                    dr = go.AddComponent<ShopRoom>();
+                    ShopRoom shopRoom = go.AddComponent<ShopRoom>();
+                    const int numItems = 4;
+                    shopRoom.shopItems = new Pickable[numItems];
+                    shopRoom.prices = new uint[numItems];
+                    for (int j = 0; j < numItems; j++) {
+                        int rnd = Random.Range(0, PickableDict.Instance.NumWeapons + PickableDict.Instance.NumItems);
+                        if (rnd >= PickableDict.Instance.NumWeapons) {
+                            shopRoom.shopItems[j] = PickableDict.Instance.GetItem(j - PickableDict.Instance.NumWeapons);
+                            shopRoom.prices[j] = 10;
+                        } else {
+                            shopRoom.shopItems[j] = PickableDict.Instance.GetWeapon(j);
+                            shopRoom.prices[j] = 15;
+                        }
+                    }
+                    dr = shopRoom;
                     break;
 
                 case RoomType.Boss:

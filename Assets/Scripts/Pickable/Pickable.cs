@@ -17,4 +17,7 @@ public abstract class Pickable : ScriptableObject
 
     public bool InstantPickup => instantPickup;
     [SerializeField] private bool instantPickup = false;
+
+    public uint Costs => costs;
+    [SerializeField] private uint costs = 0;
 }
