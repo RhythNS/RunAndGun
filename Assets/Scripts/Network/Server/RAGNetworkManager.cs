@@ -22,6 +22,7 @@ public class RAGNetworkManager : NobleNetworkManager
         NetworkClient.RegisterHandler<ReturnToLobbyMessage>(OnReturnToLobbyMessage);
         NetworkClient.RegisterHandler<DoorMessage>(OnDoorsMessage);
         NetworkClient.RegisterHandler<GenerateLevelMessage>(OnGenerateLevelMessage);
+        NetworkClient.RegisterHandler<BossSpawnMessage>(OnBossSpawnMessage);
     }
 
     public override void OnClientConnect(NetworkConnection conn)
@@ -100,4 +101,14 @@ public class RAGNetworkManager : NobleNetworkManager
             DungeonDict.Instance.Get(doorMessage.roomId).OnCloseDoors();
     }
 
+    private void OnBossSpawnMessage(NetworkConnection connection, BossSpawnMessage bossSpawnMessage)
+    {
+        if (!DungeonDict.Instance || !DungeonDict.Instance.IsIdValid(bossSpawnMessage.id))
+        {
+            Debug.LogWarning("Recieved door message with invalid id! (" + bossSpawnMessage.id + ")");
+            return;
+        }
+
+        (DungeonDict.Instance.Get(bossSpawnMessage.id) as BossRoom).StartBossAnimation(bossSpawnMessage);
+    }
 }

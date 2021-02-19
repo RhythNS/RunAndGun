@@ -16,7 +16,7 @@ public class CombatRoom : DungeonRoom
 
         CloseDoors();
         SpawnEnemies(enemiesToSpawn);
-        GameManager.OnRoomEventStarted(Border);
+        GameManager.OnRoomEventStarted();
 
         AliveHealthDict.Instance.OnAllEnemiesDied += OnAllEnemiesDefeated;
         AliveHealthDict.Instance.OnAllPlayersDied += OnAllPlayersDied;

@@ -146,7 +146,7 @@ public class GameManager : MonoBehaviour
         // display dialog to go back to lobby
     }
 
-    public static void OnRoomEventStarted(Rect bounds)
+    public static void OnRoomEventStarted()
     {
         if (!instance)
             return;

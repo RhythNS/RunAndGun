@@ -1,5 +1,4 @@
 ﻿using Rhyth.BTree;
-using System.Collections;
 using UnityEngine;
 
 /// <summary>
@@ -19,4 +18,7 @@ public class BossObject : ScriptableObject
 
     public EnemyStats Stats => stats;
     [SerializeField] private EnemyStats stats;
+
+    public BossEnterAnimation.AnimationType AnimationType => animationType;
+    [SerializeField] private BossEnterAnimation.AnimationType animationType;
 }
