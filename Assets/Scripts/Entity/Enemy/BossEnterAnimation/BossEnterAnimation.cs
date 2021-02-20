@@ -5,7 +5,7 @@ public abstract class BossEnterAnimation : MonoBehaviour
 {
     public enum AnimationType
     {
-        Standard
+        Null, Standard
     }
 
     public static BossEnterAnimation AddAnimationType(GameObject toAddTo, AnimationType type)
@@ -14,6 +14,9 @@ public abstract class BossEnterAnimation : MonoBehaviour
         {
             case AnimationType.Standard:
                 // return toAddTo.AddComponent<StandardBossAnimation>();
+                break;
+            case AnimationType.Null:
+                return toAddTo.AddComponent<NullEnterAnimation>();
                 break;
             default:
                 break;

@@ -95,9 +95,9 @@ public class EquippedWeapon : NetworkBehaviour
     /// </summary>
     /// <param name="newWeapon">The new weapon to be equipped.</param>
     [Server]
-    public void Swap(Weapon newWeapon)
+    public void Swap(Weapon newWeapon, bool dropOldWeapon = true)
     {
-        if (weapon != null)
+        if (weapon != null && dropOldWeapon == true)
             PickableInWorld.Place(weapon, transform.position);
 
         weapon = newWeapon;

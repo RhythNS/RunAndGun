@@ -318,6 +318,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitMaterial: {fileID: 2100000, guid: e7de38a0acc09f14180ba920fa120d24, type: 2}
   healMaterial: {fileID: 2100000, guid: 18f98babd3cb2dc47a8377428aed9a95, type: 2}
+  spawnMaterial: {fileID: 2100000, guid: b42acd373888a7b4e8988fc49ea7d5b4, type: 2}
 --- !u!114 &3119122454284659265
 MonoBehaviour:
   m_ObjectHideFlags: 0

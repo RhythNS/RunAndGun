@@ -33,6 +33,11 @@ public class Enemy : Entity
     public EquippedWeapon EquippedWeapon { get; private set; }
     public SmoothSyncMirror SmoothSync { get; private set; }
     public StatusEffectList StatusEffectList { get; private set; }
+    public EntityMaterialManager EntityMaterialManager { get; private set; }
+
+    public bool IsBoss { get; private set; }
+
+    public Weapon[] carryingWeapons;
 
     private void Awake()
     {
@@ -41,12 +46,19 @@ public class Enemy : Entity
         EquippedWeapon = GetComponent<EquippedWeapon>();
         SmoothSync = GetComponent<SmoothSyncMirror>();
         StatusEffectList = GetComponent<StatusEffectList>();
+        EntityMaterialManager = GetComponent<EntityMaterialManager>();
     }
 
     public void Set(EnemyObject enemyObject, Rect roomBorder)
     {
+        IsBoss = enemyObject.IsBoss;
+        if (IsBoss == false)
+            EntityMaterialManager.PlaySpawnEffect();
+
         Brain.tree = enemyObject.BehaviourTree;
-        EquippedWeapon.Swap(enemyObject.Weapon);
+
+        carryingWeapons = enemyObject.Weapons;
+        EquippedWeapon.Swap(enemyObject.Weapons[0]);
 
         Brain.BrainMover.meterPerSecond = enemyObject.Stats.metersPerSecond;
         Brain.BrainMover.RoomBounds = roomBorder;
@@ -56,6 +68,7 @@ public class Enemy : Entity
 
     public override void OnStartServer()
     {
-        Brain.enabled = true;
+        if (IsBoss == false)
+            Brain.enabled = true;
     }
 }

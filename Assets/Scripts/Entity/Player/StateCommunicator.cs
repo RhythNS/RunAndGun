@@ -1,12 +1,10 @@
 ﻿using Mirror;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class StateCommunicator : NetworkBehaviour
 {
     public bool lobbyReady = false;
     public bool levelLoaded = false;
+    public bool bossAnimationFinished = false;
 
     [Command]
     public void CmdLobbySetReady(bool ready)
@@ -26,5 +24,14 @@ public class StateCommunicator : NetworkBehaviour
 
         levelLoaded = loaded;
         GameManager.OnPlayerLoadedLevelChanged();
+    }
+
+    [Command]
+    public void CmdBossAnimationFinished()
+    {
+        if (bossAnimationFinished)
+            return;
+
+        bossAnimationFinished = true;
     }
 }

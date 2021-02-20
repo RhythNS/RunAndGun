@@ -27,10 +27,14 @@ public class EntityMaterialManager : MonoBehaviour
         if (currentTempEffect != null && !currentTempEffect.IsFinshed)
             return;
 
-        if (prevValue > newValue)
-            StartTempEffect(new Material(MaterialDict.Instance.HitMaterial), healthEffectDuration);
-        else
-            StartTempEffect(new Material(MaterialDict.Instance.HealMaterial), healthEffectDuration);
+        Material material = new Material(prevValue > newValue ? MaterialDict.Instance.HitMaterial : MaterialDict.Instance.HealMaterial);
+        StartTempEffect(HealthEffect(material, healthEffectDuration), material);
+    }
+
+    public void PlaySpawnEffect(float duration = 0.6f)
+    {
+        Material spawnMaterial = new Material(MaterialDict.Instance.SpawnMaterial);
+        StartTempEffect(SpawnEffect(spawnMaterial, duration), spawnMaterial);
     }
 
     private IEnumerator HealthEffect(Material material, float duration)
@@ -66,13 +70,32 @@ public class EntityMaterialManager : MonoBehaviour
         }
     }
 
-    private void StartTempEffect(Material material, float duration)
+    private IEnumerator SpawnEffect(Material material, float duration)
+    {
+        float timer = duration;
+        bool continueExecuting = true;
+        while (continueExecuting)
+        {
+            timer -= Time.deltaTime;
+            float perc = timer / duration;
+            if (perc < 0.0f)
+            {
+                continueExecuting = false;
+                perc = 0.0f;
+            }
+            Debug.Log(perc);
+            material.SetFloat("_FadeAmount", perc);
+            yield return null;
+        }
+    }
+
+    private void StartTempEffect(IEnumerator enumerator, Material material)
     {
         if (currentTempEffect != null && currentTempEffect.IsFinshed == false)
             return;
 
         spriteRenderer.material = currentEffectMaterial = material;
-        currentTempEffect = new ExtendedCoroutine(this, HealthEffect(material, duration), ResetMaterial, true);
+        currentTempEffect = new ExtendedCoroutine(this, enumerator, ResetMaterial, true);
     }
 
     private void ResetMaterial()
