@@ -87,6 +87,7 @@ GameObject:
   - component: {fileID: 8153078490237015985}
   - component: {fileID: 3119122454284659265}
   - component: {fileID: 3031239099702914049}
+  - component: {fileID: 8307653741225969240}
   m_Layer: 0
   m_Name: Dicts
   m_TagString: Untagged
@@ -357,6 +358,22 @@ MonoBehaviour:
   - full: {fileID: -30910539988732823, guid: 0701bdb4ed5c3c34489c17d3191c3455, type: 3}
     broken: {fileID: -6007437689376026156, guid: 0701bdb4ed5c3c34489c17d3191c3455,
       type: 3}
+--- !u!114 &8307653741225969240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1365799234425872912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d63360c7d7947146aaa2e5bb2696439, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bossReadyZone: {fileID: 1622251374757265287, guid: ba43b139c0b717e42865637df1a36c6d,
+    type: 3}
+  advanceFloorZone: {fileID: 6526367521635908522, guid: 58fd2a62261c4bf4aaedf2b060dff28a,
+    type: 3}
 --- !u!1 &1365799234809505999
 GameObject:
   m_ObjectHideFlags: 0

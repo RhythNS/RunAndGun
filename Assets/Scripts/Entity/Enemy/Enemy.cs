@@ -23,6 +23,16 @@ public class Enemy : Entity
         return enemy;
     }
 
+    public static Enemy InstantiateAndSpawn(BossObject bossObject, Rect roomBorder, Vector3 position, Quaternion quaternion)
+    {
+        GameObject gameObject = Instantiate(bossObject.EnemyObject.Prefab, position, quaternion);
+        Enemy enemy = gameObject.GetComponent<Enemy>();
+        enemy.IsBoss = true;
+        enemy.Set(bossObject.EnemyObject, roomBorder);
+        NetworkServer.Spawn(gameObject);
+        return enemy;
+    }
+
     public override EntityType EntityType => EntityType.Enemy;
 
     /// <summary>
@@ -51,7 +61,6 @@ public class Enemy : Entity
 
     public void Set(EnemyObject enemyObject, Rect roomBorder)
     {
-        IsBoss = enemyObject.IsBoss;
         if (IsBoss == false)
             EntityMaterialManager.PlaySpawnEffect();
 

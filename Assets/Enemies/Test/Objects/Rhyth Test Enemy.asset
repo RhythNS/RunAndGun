@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: Rhyth Test Enemy
   m_EditorClassIdentifier: 
   prefab: {fileID: 4227666607956230200, guid: e36b630807ad5ab4eb4d62d76da0e60b, type: 3}
-  weapon: {fileID: 11400000, guid: ac7a3d27f5349fc4589c7af1ddc3ad4f, type: 2}
+  weapons:
+  - {fileID: 11400000, guid: ac7a3d27f5349fc4589c7af1ddc3ad4f, type: 2}
   behaviourTree: {fileID: 11400000, guid: 92bb9b72b31c2344e9f3701e2387a1cc, type: 2}
   stats:
     metersPerSecond: 5
     maxHealth: 100
+  isBoss: 0

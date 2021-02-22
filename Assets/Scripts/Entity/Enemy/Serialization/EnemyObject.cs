@@ -18,7 +18,4 @@ public class EnemyObject : ScriptableObject
 
     public EnemyStats Stats => stats;
     [SerializeField] private EnemyStats stats;
-
-    public bool IsBoss => isBoss;
-    [SerializeField] private bool isBoss; 
 }

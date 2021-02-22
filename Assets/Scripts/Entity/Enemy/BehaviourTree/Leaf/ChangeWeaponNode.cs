@@ -52,6 +52,7 @@ public class ChangeWeaponNode : BNodeAdapter
                     }
                     selectedWeapon = onEnemy.carryingWeapons[weaponIndex];
                 }
+                state = CurrentState.BeforeChange;
                 break;
 
             case CurrentState.BeforeChange:
@@ -61,6 +62,7 @@ public class ChangeWeaponNode : BNodeAdapter
 
                 onEnemy.EquippedWeapon.Swap(selectedWeapon, false);
                 timer = timeAfterChange;
+                state = CurrentState.AfterChange;
                 break;
 
             case CurrentState.AfterChange:

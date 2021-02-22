@@ -327,7 +327,9 @@ public class DungeonCreator : MonoBehaviour
                     break;
 
                 case RoomType.Boss:
-                    dr = go.AddComponent<BossRoom>();
+                    BossRoom br = go.AddComponent<BossRoom>();
+                    DungeonDict.Instance.SetBossRoom(br);
+                    dr = br;
                     break;
 
                 default:
@@ -380,6 +382,7 @@ public class DungeonCreator : MonoBehaviour
                 }
 
                 dungeonRooms.Add(dr);
+                dr.OnFullyCreated();
             } else {
                 throw new System.Exception("No DungeonRoom designated...");
             }

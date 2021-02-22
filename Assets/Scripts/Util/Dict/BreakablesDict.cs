@@ -35,4 +35,10 @@ public class BreakablesDict : MonoBehaviour
 
         return breakables[index];
     }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+            Instance = null;
+    }
 }

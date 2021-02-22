@@ -83,7 +83,6 @@ public class EntityMaterialManager : MonoBehaviour
                 continueExecuting = false;
                 perc = 0.0f;
             }
-            Debug.Log(perc);
             material.SetFloat("_FadeAmount", perc);
             yield return null;
         }

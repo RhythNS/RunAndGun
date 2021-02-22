@@ -13,13 +13,9 @@ public abstract class BossEnterAnimation : MonoBehaviour
         switch (type)
         {
             case AnimationType.Standard:
-                // return toAddTo.AddComponent<StandardBossAnimation>();
-                break;
+                return toAddTo.AddComponent<StandardBossAnimation>();
             case AnimationType.Null:
                 return toAddTo.AddComponent<NullEnterAnimation>();
-                break;
-            default:
-                break;
         }
         throw new System.Exception("Type " + type + " not implemented!");
     }

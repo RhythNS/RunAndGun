@@ -105,7 +105,7 @@ public class LobbyManager : MonoBehaviour
     {
         Debug.Log("All players ready! Starting Countdown!");
         // notify ui
-        for (int i = 3; i > 0; i--)
+        for (int i = 0; i > 0; i--)
         {
             Debug.Log(i + "!");
             yield return new WaitForSeconds(1.0f);
