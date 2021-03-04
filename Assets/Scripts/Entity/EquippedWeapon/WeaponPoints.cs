@@ -23,19 +23,11 @@ public class WeaponPoints : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        DrawGizmoPoint(eastHand);
-        DrawGizmoPoint(westHand);
-        DrawGizmoPoint(northPoint);
-        DrawGizmoPoint(southPoint);
+        GizmosUtil.DrawPoint((Vector2)transform.position + eastHand);
+        GizmosUtil.DrawPoint((Vector2)transform.position + westHand);
+        GizmosUtil.DrawPoint((Vector2)transform.position + northPoint);
+        GizmosUtil.DrawPoint((Vector2)transform.position + southPoint);
 
         Gizmos.DrawWireSphere(transform.position + (Vector3)twoHandedMidPoint, radius);
-    }
-
-    private void DrawGizmoPoint(Vector2 point)
-    {
-        Vector3 position = point;
-        position += transform.position;
-        Gizmos.DrawLine(position + new Vector3(-0.125f, -0.125f), position + new Vector3(0.125f, 0.125f));
-        Gizmos.DrawLine(position + new Vector3(-0.125f, 0.125f), position + new Vector3(0.125f, -0.125f));
     }
 }

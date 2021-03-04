@@ -12,8 +12,7 @@ public class BossRoom : DungeonRoom
     public State CurrentState { get; private set; } = State.ReadyToEnter;
     public Enemy[] SpawnedEnemies { get; private set; }
     public bool IsLocked => CurrentState == State.Locked;
-
-    private readonly List<Player> playersReady = new List<Player>();
+    public Vector2 PlayersStartPos { get; private set; }
 
     public BossObject[] bossObjects;
 
@@ -54,34 +53,19 @@ public class BossRoom : DungeonRoom
 
             Rect rect = new Rect(pos + coll.offset + offset, coll.size * doors[i].transform.lossyScale);
             BossReadyZone brz = Instantiate(readyPrefab, transform);
-            brz.SetBorder(rect);
+            brz.Set(rect, doors[i]);
         }
-    }
-
-    public void OnPlayerReadyToEnterChanged(Player player, bool ready)
-    {
-        if (!ready)
-            playersReady.Remove(player);
-        else
-        {
-            if (playersReady.Contains(player) == false)
-                playersReady.Add(player);
-        }
-
-        if (CurrentState != State.ReadyToEnter)
-            return;
-
-        if (playersReady.Count == PlayersDict.Instance.Players.Count)
-            OnAllPlayersReadyToEnter();
     }
 
     [Server]
-    public void OnAllPlayersReadyToEnter()
+    public void OnAllPlayersReadyToEnter(BossReadyZone bossReadyZone)
     {
         CurrentState = State.InProgress;
 
         GameObject[] objs = SpawnBoss();
         CloseDoors();
+
+        PlayersStartPos = (bossReadyZone.OnDoor.transform.position - bossReadyZone.transform.position) * 2 + bossReadyZone.transform.position;
 
         BossSpawnMessage bossSpawnMessage = new BossSpawnMessage
         {
@@ -97,7 +81,7 @@ public class BossRoom : DungeonRoom
         NetworkServer.SendToAll(bossSpawnMessage);
         List<Player> players = PlayersDict.Instance.Players;
         for (int i = 0; i < players.Count; i++)
-            players[i].canMove = false;
+            players[i].RpcChangeCanMove(false);
 
         enterAnimation = BossEnterAnimation.AddAnimationType(gameObject, bossObjects[0].AnimationType);
         enterAnimationCoroutine = new ExtendedCoroutine(this, enterAnimation.PlayAnimation(objs[0], this),
@@ -126,7 +110,7 @@ public class BossRoom : DungeonRoom
         List<Player> players = PlayersDict.Instance.Players;
         for (int i = 0; i < players.Count; i++)
         {
-            players[i].canMove = true;
+            players[i].RpcChangeCanMove(true);
             players[i].StateCommunicator.bossAnimationFinished = false;
         }
 
@@ -159,7 +143,7 @@ public class BossRoom : DungeonRoom
             bool everyoneReady = true;
             for (int i = 0; i < players.Count; i++)
             {
-                if (players[i].isServer == true || players[i].StateCommunicator.bossAnimationFinished == false)
+                if (players[i].isServer == false && players[i].StateCommunicator.bossAnimationFinished == false)
                 {
                     everyoneReady = false;
                     break;
@@ -202,5 +186,17 @@ public class BossRoom : DungeonRoom
         AdvanceFloorZone afz = Instantiate(DungeonRoomObjectDict.Instance.AdvanceFloorZone, transform);
         afz.transform.position = Border.position + Border.size * 0.5f;
         NetworkServer.Spawn(afz.gameObject);
+    }
+
+    public override void OnLocalPlayerEntered()
+    {
+        if (CurrentState == State.Cleared)
+            base.OnLocalPlayerEntered();
+    }
+
+    public override void OnLocalPlayerLeft()
+    {
+        if (CurrentState == State.Cleared)
+            base.OnLocalPlayerLeft();
     }
 }

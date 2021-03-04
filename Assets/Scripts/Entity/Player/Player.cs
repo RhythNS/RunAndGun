@@ -11,10 +11,10 @@ public class Player : Entity
 
     [SyncVar(hook = nameof(OnNameChanged))] public string userName;
     [SyncVar] public int playerId;
-    [SyncVar(hook = nameof(OnCanMoveChanged))] public bool canMove;
 
     public static Player LocalPlayer { get; private set; }
 
+    public bool CanMove { get; private set; } = true;
     public RAGInput Input { get; private set; }
     public Stats Stats { get; private set; }
     public Status Status { get; private set; }
@@ -128,10 +128,12 @@ public class Player : Entity
         gameObject.name = newName;
     }
 
-    private void OnCanMoveChanged(bool _, bool newCanMove)
+    [TargetRpc]
+    public void RpcChangeCanMove(bool canMove)
     {
-        // ui.CanMove(newCanMove);
-        Input.enabled = newCanMove;
+        CanMove = canMove;
+        // ui.CanMove(canMove);
+        Input.enabled = canMove;
     }
 
     private void OnTriggerEnter2D(Collider2D other)

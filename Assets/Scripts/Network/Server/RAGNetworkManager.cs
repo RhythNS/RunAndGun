@@ -72,8 +72,16 @@ public class RAGNetworkManager : NobleNetworkManager
     private void OnStartGameMessage(NetworkConnection connection, StartGameMessage startGameMessage)
     {
         LobbyLevel.Instance.Hide();
-        startGameMessage.gameMode.Init(startGameMessage.levelSeed);
-        GameManager.gameMode = startGameMessage.gameMode;
+
+        if (!Player.LocalPlayer || Player.LocalPlayer.isServer)
+        {
+            GameManager.gameMode.Init(startGameMessage.levelSeed);
+        }
+        else
+        {
+            startGameMessage.gameMode.Init(startGameMessage.levelSeed);
+            GameManager.gameMode = startGameMessage.gameMode;
+        }
     }
 
     private void OnGenerateLevelMessage(NetworkConnection connection, GenerateLevelMessage generateLevelMessage)

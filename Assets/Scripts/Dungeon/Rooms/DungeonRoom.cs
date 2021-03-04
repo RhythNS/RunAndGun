@@ -51,6 +51,11 @@ public abstract class DungeonRoom : MonoBehaviour
     /// </summary>
     public int id;
 
+    /// <summary>
+    /// Returns the middle of the room as a Vector2. Only works after the border is set!
+    /// </summary>
+    public Vector2 Middle => border.position + (border.size * 0.5f);
+
     private BoxCollider2D boxCollider;
 
     private void Awake()
@@ -164,16 +169,21 @@ public abstract class DungeonRoom : MonoBehaviour
             Vector2Int pos = walkableTiles[rnd];
 
             bool found = false;
-            for (int x = -10; x < 10; x++) {
-                for (int y = -10; y < 10; y++) {
+            for (int x = -10; x < 10; x++)
+            {
+                for (int y = -10; y < 10; y++)
+                {
                     Vector2Int p = pos + new Vector2Int(x, y);
-                    if (x >= -2 && y >= -2 && x <= 2 && y <= 2) {
-                        if (enemySpawns.Contains(p)) {
+                    if (x >= -2 && y >= -2 && x <= 2 && y <= 2)
+                    {
+                        if (enemySpawns.Contains(p))
+                        {
                             found = true;
                             break;
                         }
                     }
-                    if (playerPos == p) {
+                    if (playerPos == p)
+                    {
                         found = true;
                         break;
                     }
@@ -183,9 +193,10 @@ public abstract class DungeonRoom : MonoBehaviour
                     break;
             }
 
-            if (!found) {
+            if (!found)
+            {
                 Enemy.InstantiateAndSpawn(enemiesToSpawn[enemySpawns.Count], Border, new Vector3(pos.x, pos.y, 0f), Quaternion.identity);
-                
+
                 enemySpawns.Add(pos);
             }
 
@@ -212,16 +223,21 @@ public abstract class DungeonRoom : MonoBehaviour
             Vector2Int pos = walkableTiles[rnd];
 
             bool found = false;
-            for (int x = -5; x < 5; x++) {
-                for (int y = -5; y < 5; y++) {
+            for (int x = -5; x < 5; x++)
+            {
+                for (int y = -5; y < 5; y++)
+                {
                     Vector2Int p = pos + new Vector2Int(x, y);
-                    if (x >= -2 && y >= -2 && x <= 2 && y <= 2) {
-                        if (lootSpawns.Contains(p)) {
+                    if (x >= -2 && y >= -2 && x <= 2 && y <= 2)
+                    {
+                        if (lootSpawns.Contains(p))
+                        {
                             found = true;
                             break;
                         }
                     }
-                    if (playerPos == p) {
+                    if (playerPos == p)
+                    {
                         found = true;
                         break;
                     }
@@ -256,5 +272,6 @@ public abstract class DungeonRoom : MonoBehaviour
         float midX = Border.x + Border.width / 2;
         float midY = Border.y + Border.height / 2;
         Gizmos.DrawWireCube(new Vector3(midX, midY), new Vector3(Border.width, Border.height));
+        GizmosUtil.DrawPoint(Middle);
     }
 }

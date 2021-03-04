@@ -152,7 +152,8 @@ public class DungeonCreator : MonoBehaviour
             corridorMinLength = Corridor.MIN_LENGTH,
             corridorMaxLength = Corridor.MAX_LENGTH,
             generateShopRoom = true,
-            itemsToSpawn = config.itemsToSpawn
+            itemsToSpawn = config.itemsToSpawn,
+            bossesToSpawn = config.bossesToSpawn
         };
         dungeon = new Dungeon(roomLayouts.ToArray(), roomGameObjects.ToArray(), roomTypes.ToArray(), config);
 
@@ -312,7 +313,7 @@ public class DungeonCreator : MonoBehaviour
                     }
                     dr = cr;
                     break;
-                    
+
                 case RoomType.Loot:
                     LootRoom lr = go.AddComponent<LootRoom>();
                     lr.pickables = new Pickable[dungeon.Rooms[i].TileCount / 48];
@@ -328,6 +329,7 @@ public class DungeonCreator : MonoBehaviour
 
                 case RoomType.Boss:
                     BossRoom br = go.AddComponent<BossRoom>();
+                    br.bossObjects = new BossObject[] { config.bossesToSpawn[Random.Range(0, config.bossesToSpawn.Length)] };
                     DungeonDict.Instance.SetBossRoom(br);
                     dr = br;
                     break;

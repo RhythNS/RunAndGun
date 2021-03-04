@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace MapGenerator
 {
@@ -56,6 +51,11 @@ namespace MapGenerator
         public Pickable[] itemsToSpawn;
 
         /// <summary>
+        /// The bosses that can be spawned.
+        /// </summary>
+        public BossObject[] bossesToSpawn;
+
+        /// <summary>
         /// Creates a new DungeonConfig.
         /// </summary>
         /// <param name="seed">The seed to use for the generation process.</param>
@@ -67,7 +67,9 @@ namespace MapGenerator
         /// <param name="corridorMaxLength">The maximum length of a corridor.</param>
         /// <param name="shopRoom">If this floor should have a ShopRoom.</param>
         /// <param name="itemsToSpawn">The items to spawn at the spawn point.</param>
-        public DungeonConfig(int seed, int sizeX, int sizeY, int minRooms, int maxRooms, int corridorMinLength, int corridorMaxLength, bool shopRoom, Pickable[] itemsToSpawn) {
+        /// <param name="bossesToSpawn">The bosses that can be spawned.</param>
+        public DungeonConfig(int seed, int sizeX, int sizeY, int minRooms, int maxRooms, int corridorMinLength, int corridorMaxLength, bool shopRoom, Pickable[] itemsToSpawn, BossObject[] bossesToSpawn)
+        {
             this.seed = seed;
 
             this.sizeX = sizeX;
@@ -82,6 +84,7 @@ namespace MapGenerator
             this.generateShopRoom = shopRoom;
 
             this.itemsToSpawn = itemsToSpawn;
+            this.bossesToSpawn = bossesToSpawn;
         }
     }
 }
