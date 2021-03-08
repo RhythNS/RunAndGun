@@ -46,16 +46,6 @@ namespace MapGenerator
         public bool generateShopRoom;
 
         /// <summary>
-        /// The items to spawn at the spawn point.
-        /// </summary>
-        public Pickable[] itemsToSpawn;
-
-        /// <summary>
-        /// The bosses that can be spawned.
-        /// </summary>
-        public BossObject[] bossesToSpawn;
-
-        /// <summary>
         /// Creates a new DungeonConfig.
         /// </summary>
         /// <param name="seed">The seed to use for the generation process.</param>
@@ -68,7 +58,7 @@ namespace MapGenerator
         /// <param name="shopRoom">If this floor should have a ShopRoom.</param>
         /// <param name="itemsToSpawn">The items to spawn at the spawn point.</param>
         /// <param name="bossesToSpawn">The bosses that can be spawned.</param>
-        public DungeonConfig(int seed, int sizeX, int sizeY, int minRooms, int maxRooms, int corridorMinLength, int corridorMaxLength, bool shopRoom, Pickable[] itemsToSpawn, BossObject[] bossesToSpawn)
+        public DungeonConfig(int seed, int sizeX, int sizeY, int minRooms, int maxRooms, int corridorMinLength, int corridorMaxLength, bool shopRoom, Pickable[] itemsToSpawn)
         {
             this.seed = seed;
 
@@ -82,9 +72,6 @@ namespace MapGenerator
             this.corridorMaxLength = Mathf.Clamp(corridorMaxLength, Corridor.MIN_LENGTH, Corridor.MAX_LENGTH);
 
             this.generateShopRoom = shopRoom;
-
-            this.itemsToSpawn = itemsToSpawn;
-            this.bossesToSpawn = bossesToSpawn;
         }
     }
 }

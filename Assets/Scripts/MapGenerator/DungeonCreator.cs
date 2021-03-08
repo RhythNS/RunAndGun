@@ -43,11 +43,6 @@ public class DungeonCreator : MonoBehaviour
     [SerializeField]
     private Transform mask;
 
-    [SerializeField]
-    private EnemyObject[] enemyObjects;
-    [SerializeField]
-    private Pickable[] pickableObjects;
-
     [Header("Settings")]
     [SerializeField]
     private Vector2Int maxSize = Vector2Int.one;
@@ -78,9 +73,9 @@ public class DungeonCreator : MonoBehaviour
             Instance = null;
     }
 
-    public IEnumerator CreateLevel(int levelNumber)
+    public void CreateLevel(int levelNumber)
     {
-        return CreateDungeon(GameManager.gameMode.levelSeeds[levelNumber], GameManager.gameMode.dungeonConfig);
+        StartCoroutine(CreateDungeon(GameManager.gameMode.levelSeeds[levelNumber], GameManager.gameMode.dungeonConfig));
     }
 
     public IEnumerator CreateDungeon(int seed, DungeonConfig config)
@@ -152,8 +147,6 @@ public class DungeonCreator : MonoBehaviour
             corridorMinLength = Corridor.MIN_LENGTH,
             corridorMaxLength = Corridor.MAX_LENGTH,
             generateShopRoom = true,
-            itemsToSpawn = config.itemsToSpawn,
-            bossesToSpawn = config.bossesToSpawn
         };
         dungeon = new Dungeon(roomLayouts.ToArray(), roomGameObjects.ToArray(), roomTypes.ToArray(), config);
 
@@ -296,8 +289,8 @@ public class DungeonCreator : MonoBehaviour
             switch (dungeon.Rooms[i].Type) {
                 case RoomType.Start:
                     StartRoom sr = go.AddComponent<StartRoom>();
-                    if (Player.LocalPlayer.isServer) {
-                        sr.SpawnItems(config.itemsToSpawn, TilePositionToWorldPosition(dungeon.Rooms[i].Position + (dungeon.Rooms[i].Layout.Size / 2)));
+                    if (Player.LocalPlayer.isServer && GameManager.currentLevel == 0) {
+                        sr.SpawnItems(RegionDict.Instance.StartingRoomPickables, TilePositionToWorldPosition(dungeon.Rooms[i].Position + (dungeon.Rooms[i].Layout.Size / 2)));
                     }
 
                     dr = sr;
@@ -309,7 +302,7 @@ public class DungeonCreator : MonoBehaviour
                     cr.ThreatLevel = dungeon.Rooms[i].TileCount;
                     cr.enemiesToSpawn = new EnemyObject[cr.ThreatLevel / 48];
                     for (int j = 0; j < cr.enemiesToSpawn.Length; j++) {
-                        cr.enemiesToSpawn[j] = enemyObjects[Random.Range(0, enemyObjects.Length)];
+                        cr.enemiesToSpawn[j] = RandomUtil.Element(RegionDict.Instance.EnemiesToSpawn);
                     }
                     dr = cr;
                     break;
@@ -318,7 +311,7 @@ public class DungeonCreator : MonoBehaviour
                     LootRoom lr = go.AddComponent<LootRoom>();
                     lr.pickables = new Pickable[dungeon.Rooms[i].TileCount / 48];
                     for (int j = 0; j < lr.pickables.Length; j++) {
-                        lr.pickables[j] = pickableObjects[Random.Range(0, pickableObjects.Length)];
+                        lr.pickables[j] = RandomUtil.Element(RegionDict.Instance.LootingRoomPickables);
                     }
                     dr = lr;
                     break;
@@ -329,7 +322,7 @@ public class DungeonCreator : MonoBehaviour
 
                 case RoomType.Boss:
                     BossRoom br = go.AddComponent<BossRoom>();
-                    br.bossObjects = new BossObject[] { config.bossesToSpawn[Random.Range(0, config.bossesToSpawn.Length)] };
+                    br.bossObjects = new BossObject[] { RandomUtil.Element(RegionDict.Instance.BossesToSpawn) };
                     DungeonDict.Instance.SetBossRoom(br);
                     dr = br;
                     break;

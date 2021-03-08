@@ -88,6 +88,7 @@ GameObject:
   - component: {fileID: 3119122454284659265}
   - component: {fileID: 3031239099702914049}
   - component: {fileID: 8307653741225969240}
+  - component: {fileID: 511879601587473819}
   m_Layer: 0
   m_Name: Dicts
   m_TagString: Untagged
@@ -374,6 +375,21 @@ MonoBehaviour:
     type: 3}
   advanceFloorZone: {fileID: 6526367521635908522, guid: 58fd2a62261c4bf4aaedf2b060dff28a,
     type: 3}
+--- !u!114 &511879601587473819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1365799234425872912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6504c74bf8d1c7041bd6e67b9e921d4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  regionForSceneNames:
+  - region: 0
+    sceneName: DebugRegion
 --- !u!1 &1365799234809505999
 GameObject:
   m_ObjectHideFlags: 0

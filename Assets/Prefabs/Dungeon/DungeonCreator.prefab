@@ -353,6 +353,7 @@ GameObject:
   - component: {fileID: 255864829474736514}
   - component: {fileID: 255864829474736525}
   - component: {fileID: 255864829474736513}
+  - component: {fileID: 1943280074660795868}
   m_Layer: 0
   m_Name: DungeonCreator
   m_TagString: Untagged
@@ -421,8 +422,6 @@ MonoBehaviour:
   prefabDoorUD: {fileID: 6098499219195057442, guid: b2515d84382afd24796391c735f7120d,
     type: 3}
   mask: {fileID: 818942727768279276}
-  enemyObjects:
-  - {fileID: 11400000, guid: 60054b9fd3d83834193d865819246b87, type: 2}
   pickableObjects:
   - {fileID: 11400000, guid: 827216994d085974c970de0df9ff11d7, type: 2}
   - {fileID: 11400000, guid: 8f9766ed3bc60ff4b87b7e191a1ec6cb, type: 2}
@@ -447,6 +446,18 @@ MonoBehaviour:
     type: 3}
   shadowCastersContainer: {fileID: 255864829166144941}
   removePreviouslyGenerated: 1
+--- !u!114 &1943280074660795868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 255864829474736524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8879c1dce90be142aca10a15851840b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &255864829719696090
 GameObject:
   m_ObjectHideFlags: 0

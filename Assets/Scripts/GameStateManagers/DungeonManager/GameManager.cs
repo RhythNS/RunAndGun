@@ -83,7 +83,8 @@ public class GameManager : MonoBehaviour
 
         GenerateLevelMessage generateLevelMessage = new GenerateLevelMessage()
         {
-            levelNumber = currentLevel
+            levelNumber = currentLevel,
+            region = Region.Debug
         };
         NetworkServer.SendToAll(generateLevelMessage);
     }
