@@ -10,26 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a92aee6a0c3882045b681e83aa44bfd7, type: 3}
-  m_Name: Poison Pistol
+  m_Name: Curvy Smg
   m_EditorClassIdentifier: 
-  id: 3
-  icon: {fileID: 7362661061344524757, guid: 4da522509089bb34193f504d220d2956, type: 3}
+  id: 1
+  icon: {fileID: 1425588968670551369, guid: 4da522509089bb34193f504d220d2956, type: 3}
   instantPickup: 0
   costs: 0
   effects:
-  - {fileID: 11400000, guid: 4be70e225fb64434d9d83a29a5003ca5, type: 2}
+  - {fileID: 11400000, guid: 2d9bbabe9d4771846a111a28561667b1, type: 2}
   - {fileID: 11400000, guid: d34676ecb2805ee44b229b5c4562e24f, type: 2}
-  shotModel: {fileID: 11400000, guid: 78a5f0ae289ac3e4da2c5a11bb84d97c, type: 2}
+  shotModel: {fileID: 11400000, guid: c5ead2aab5e56344787621cee262b6eb, type: 2}
   bulletInfo: {fileID: 11400000, guid: ce3f19762d678e841ae30ec551788ab5, type: 2}
-  bulletPath: {fileID: 11400000, guid: fbf2163ea541ca243ad03a2710d7eda0, type: 2}
+  bulletPath: {fileID: 11400000, guid: 5d042356b96b8e344b56f5663aae3751, type: 2}
   bulletSpawnModel: {fileID: 11400000, guid: df098f7661ca9ed4a88a52d7ffdad406, type: 2}
   animator: {fileID: 9100000, guid: e86451f5629bc1f4abc4e94446a7cdd0, type: 2}
   weaponAnimatorType: 0
   targetMode: 1
   useLocalSpace: 0
-  range: 20
-  accuracy: 75
+  range: 25
+  accuracy: 65
   speed: 10
   baseDamage: 5
-  magazineSize: 8
-  reloadTime: 1
+  magazineSize: 30
+  reloadTime: 1.5

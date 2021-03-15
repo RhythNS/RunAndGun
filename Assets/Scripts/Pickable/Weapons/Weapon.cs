@@ -15,6 +15,9 @@ public class Weapon : Pickable
     public BulletInfo BulletInfo => bulletInfo;
     [SerializeField] private BulletInfo bulletInfo;
 
+    public BulletPath BulletPath => bulletPath;
+    [SerializeField] private BulletPath bulletPath;
+    
     public BulletSpawnModel BulletSpawnModel => bulletSpawnModel;
     [SerializeField] private BulletSpawnModel bulletSpawnModel;
 

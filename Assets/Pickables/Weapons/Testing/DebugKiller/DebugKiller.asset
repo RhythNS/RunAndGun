@@ -12,19 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a92aee6a0c3882045b681e83aa44bfd7, type: 3}
   m_Name: DebugKiller
   m_EditorClassIdentifier: 
-  id: 1
+  id: 2
   icon: {fileID: 21300000, guid: e37b296755c8f0f4c9db2dc6cffc928f, type: 3}
   instantPickup: 0
+  costs: 0
   effects:
   - {fileID: 11400000, guid: bba7a1c8066ecad4ca4e6e26ec7029cb, type: 2}
   shotModel: {fileID: 11400000, guid: 14af643d10998aa4b8674f34930fa989, type: 2}
   bulletInfo: {fileID: 11400000, guid: 07387cf88c01775498c8625da6abba71, type: 2}
+  bulletPath: {fileID: 11400000, guid: 6ae02eee6b9440c4dbb3e7ceab369424, type: 2}
   bulletSpawnModel: {fileID: 11400000, guid: e86531dedc6852744a90c07ff557c276, type: 2}
   animator: {fileID: 0}
   weaponAnimatorType: 0
   targetMode: 0
   useLocalSpace: 0
   range: 80
+  accuracy: 0
   speed: 20
   baseDamage: 999999
   magazineSize: 100

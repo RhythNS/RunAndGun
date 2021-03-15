@@ -19,6 +19,8 @@ public class Bullet : NetworkBehaviour, IPoolable
     public bool owningBullet = false;
     private Collider2D ignoringCollider;
 
+    public Vector2 velocity = Vector2.zero;
+
     private void Awake()
     {
         SpriteRenderer = GetComponent<SpriteRenderer>();
@@ -50,6 +52,14 @@ public class Bullet : NetworkBehaviour, IPoolable
             Ssm.addState(stateMirror);
              */
         }
+    }
+
+    private float aliveTime = 0f;
+
+    private void FixedUpdate() {
+        aliveTime += Time.fixedDeltaTime;
+        Vector2 vec = Quaternion.AngleAxis(fromWeapon.BulletPath.GetCurrentAngle(aliveTime), Vector3.forward) * velocity;
+        Body.velocity = vec;
     }
 
     private void OnVelocityChanged(Vector2 _, Vector2 newVelocity)
@@ -118,6 +128,7 @@ public class Bullet : NetworkBehaviour, IPoolable
 
     public void Show()
     {
+        aliveTime = 0f;
         owningBullet = false;
         gameObject.SetActive(true);
         NetworkTransform.enabled = true;
