@@ -25,6 +25,10 @@ fmod_editor.log
 # Ignore plugins folder meta data
 /[Aa]ssets/[Pp]lugins/**/*.meta
 
+# Ignore sound files and build for copyright reasons
+/FMODAssets/Assets/*
+/FMODAssets/Build/*
+
 # Unignore FMOD assts
 !/[Aa]ssets/[Pp]lugins/FMOD.meta
 !/[Aa]ssets/[Pp]lugins/FMOD

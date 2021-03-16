@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3818452586681795020
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3818452586681795026}
+  - component: {fileID: 3818452586681795021}
+  m_Layer: 0
+  m_Name: DebugRegion
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3818452586681795026
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3818452586681795020}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 17.639528, y: 7.9624314, z: -96.23852}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3818452586681795021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3818452586681795020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe1cfbdae089f894fbb9e96618c170f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  region: 0
+  startingRoomPickables:
+  - {fileID: 11400000, guid: a77f1d34bf911184f98774a318ceb2d5, type: 2}
+  - {fileID: 11400000, guid: ac7a3d27f5349fc4589c7af1ddc3ad4f, type: 2}
+  - {fileID: 11400000, guid: 729f31b81fbabaa4e8cabb459a6cfebe, type: 2}
+  - {fileID: 11400000, guid: f6f603894041f4d4db8824abc0e9371d, type: 2}
+  lootingRoomPickables:
+  - {fileID: 11400000, guid: 827216994d085974c970de0df9ff11d7, type: 2}
+  - {fileID: 11400000, guid: 8f9766ed3bc60ff4b87b7e191a1ec6cb, type: 2}
+  - {fileID: 11400000, guid: 37b7f573aa1f66d4faa905087592895c, type: 2}
+  bossesToSpawn:
+  - {fileID: 11400000, guid: 415f447ccd5a84c46a74ed042d639dcf, type: 2}
+  enemiesToSpawn:
+  - {fileID: 11400000, guid: 26f26203365c15a46b4fc0f4a7172ae4, type: 2}
+  - {fileID: 11400000, guid: 60054b9fd3d83834193d865819246b87, type: 2}
