@@ -37,4 +37,19 @@ public static class EnumeratorUtil
             yield return null;
         } while (timer < seconds);
     }
+
+    public static IEnumerator GoToInSecondsCurve(Transform transform, Vector2 position, AnimationCurve curve, float seconds)
+    {
+        Vector3 oldPos = transform.position;
+        Vector3 newPos = position;
+        newPos.z = oldPos.z;
+
+        float timer = 0;
+        do
+        {
+            timer += Time.deltaTime;
+            transform.position = Vector3.LerpUnclamped(oldPos, newPos, curve.Evaluate(timer));
+            yield return null;
+        } while (timer < seconds);
+    }
 }

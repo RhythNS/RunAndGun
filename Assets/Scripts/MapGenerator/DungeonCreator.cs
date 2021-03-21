@@ -49,13 +49,6 @@ public class DungeonCreator : MonoBehaviour
 
     public List<DungeonRoom> dungeonRooms = new List<DungeonRoom>();
 
-    private float loadStatus = 0.0f;
-    public float LoadStatus {
-        get {
-            return loadStatus;
-        }
-    }
-
     private void Awake()
     {
         if (Instance)
@@ -76,6 +69,12 @@ public class DungeonCreator : MonoBehaviour
     public void CreateLevel(int levelNumber)
     {
         StartCoroutine(CreateDungeon(GameManager.gameMode.levelSeeds[levelNumber], levelNumber, GameManager.gameMode.dungeonConfig));
+    }
+
+    private void SetLoadStatus(float currentLoadStatus)
+    {
+        if (Player.LocalPlayer)
+            Player.LocalPlayer.StateCommunicator.CmdSetLevelLoadPercentage(currentLoadStatus);
     }
 
     public IEnumerator CreateDungeon(int seed, int levelNumber, DungeonConfig config)
@@ -225,7 +224,7 @@ public class DungeonCreator : MonoBehaviour
 
             yield return new WaitForEndOfFrame();
 
-            loadStatus += 1.0f / dungeon.Size.x;
+            SetLoadStatus(x * 1.0f / dungeon.Size.x);
         }
 
         // set border tiles
@@ -385,10 +384,10 @@ public class DungeonCreator : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
 
+        SetLoadStatus(1.0f);
+
         if (Player.LocalPlayer) // check to allow for debugging if a localplayer is not scene
             Player.LocalPlayer.StateCommunicator.CmdLevelSetLoaded(true);
-
-        loadStatus = 1.0f;
     }
 
     public void AdjustMask(Vector3 position, Vector3 scale) {

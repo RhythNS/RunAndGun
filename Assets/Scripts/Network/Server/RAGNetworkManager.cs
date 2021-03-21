@@ -23,6 +23,7 @@ public class RAGNetworkManager : NobleNetworkManager
         NetworkClient.RegisterHandler<DoorMessage>(OnDoorsMessage);
         NetworkClient.RegisterHandler<GenerateLevelMessage>(OnGenerateLevelMessage);
         NetworkClient.RegisterHandler<BossSpawnMessage>(OnBossSpawnMessage);
+        NetworkClient.RegisterHandler<EveryoneLoadedMessage>(OnEveryoneLoadedMessage);
     }
 
     public override void OnClientConnect(NetworkConnection conn)
@@ -86,6 +87,7 @@ public class RAGNetworkManager : NobleNetworkManager
 
     private void OnGenerateLevelMessage(GenerateLevelMessage generateLevelMessage)
     {
+        UIManager.Instance.ShowLevelLoadScreen();
         DungeonDict.Instance.ClearRooms();
         RegionSceneLoader loader = RegionSceneLoader.Instance;
         new ExtendedCoroutine(this, loader.LoadScene(generateLevelMessage), loader.LoadLevel, true);
@@ -119,5 +121,10 @@ public class RAGNetworkManager : NobleNetworkManager
         }
 
         (DungeonDict.Instance.Get(bossSpawnMessage.id) as BossRoom).StartBossAnimation(bossSpawnMessage);
+    }
+
+    private void OnEveryoneLoadedMessage(EveryoneLoadedMessage everyoneLoadedMessage)
+    {
+        UIManager.Instance.HideLevelLoadScreen();
     }
 }

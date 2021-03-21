@@ -1,10 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
     [SerializeField] Canvas canvas;
+
+
+    [SerializeField] private LoadingScreenManager loadingScreenManager;
 
     public static UIManager Instance { get; private set; }
     private MobileUIManager mobileUiManager;
@@ -33,6 +34,16 @@ public class UIManager : MonoBehaviour
     public void OnLocalPlayerDeleted()
     {
         // Unregister to all sort of player events
+    }
+
+    public void ShowLevelLoadScreen()
+    {
+        loadingScreenManager.Show();
+    }
+
+    public void HideLevelLoadScreen()
+    {
+        loadingScreenManager.Hide();
     }
 
     private void OnDestroy()
