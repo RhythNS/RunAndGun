@@ -12,6 +12,9 @@ public class PlayersDict : MonoBehaviour
     public event PlayerDisconnected OnPlayerDisconnected;
     public event PlayerConnected OnPlayerConnected;
 
+    public Color[] PlayerColors => playerColors;
+    [SerializeField] private Color[] playerColors;
+
     private void Awake()
     {
         if (Instance)
