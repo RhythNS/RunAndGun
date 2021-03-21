@@ -75,10 +75,10 @@ public class DungeonCreator : MonoBehaviour
 
     public void CreateLevel(int levelNumber)
     {
-        StartCoroutine(CreateDungeon(GameManager.gameMode.levelSeeds[levelNumber], GameManager.gameMode.dungeonConfig));
+        StartCoroutine(CreateDungeon(GameManager.gameMode.levelSeeds[levelNumber], levelNumber, GameManager.gameMode.dungeonConfig));
     }
 
-    public IEnumerator CreateDungeon(int seed, DungeonConfig config)
+    public IEnumerator CreateDungeon(int seed, int levelNumber, DungeonConfig config)
     {
         if (roomsContainer.childCount > 0) {
             for (int i = roomsContainer.childCount - 1; i >= 0; i--) {
@@ -289,7 +289,7 @@ public class DungeonCreator : MonoBehaviour
             switch (dungeon.Rooms[i].Type) {
                 case RoomType.Start:
                     StartRoom sr = go.AddComponent<StartRoom>();
-                    if (Player.LocalPlayer.isServer && GameManager.currentLevel == 0) {
+                    if (Player.LocalPlayer.isServer && levelNumber == 1) {
                         sr.SpawnItems(RegionDict.Instance.StartingRoomPickables, TilePositionToWorldPosition(dungeon.Rooms[i].Position + (dungeon.Rooms[i].Layout.Size / 2)));
                     }
 

@@ -127,31 +127,31 @@ public class NetworkWeaponAnimator : NetworkBehaviour
         serverDirection = direction;
     }
 
-    [ClientRpc(excludeOwner = true)]
+    [ClientRpc(includeOwner = false)]
     private void RpcOnStartedFire()
     {
         WeaponAnimator.OnStartedFire();
     }
 
-    [ClientRpc(excludeOwner = true)]
+    [ClientRpc(includeOwner = false)]
     private void RpcOnStoppedFire()
     {
         WeaponAnimator.OnStoppedFire();
     }
 
-    [ClientRpc(excludeOwner = true)]
+    [ClientRpc(includeOwner = false)]
     private void RpcOnSingleShotFired()
     {
         WeaponAnimator.OnSingleShotFired();
     }
 
-    [ClientRpc(excludeOwner = true)]
+    [ClientRpc(includeOwner = false)]
     private void RpcOnStartedReload()
     {
         WeaponAnimator.OnStartedReload();
     }
 
-    [ClientRpc(excludeOwner = true)]
+    [ClientRpc(includeOwner = false)]
     private void RpcOnStoppedReload()
     {
         WeaponAnimator.OnStoppedReload();

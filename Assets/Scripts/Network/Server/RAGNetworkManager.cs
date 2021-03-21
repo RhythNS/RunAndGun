@@ -69,7 +69,7 @@ public class RAGNetworkManager : NobleNetworkManager
 
     }
 
-    private void OnStartGameMessage(NetworkConnection connection, StartGameMessage startGameMessage)
+    private void OnStartGameMessage(StartGameMessage startGameMessage)
     {
         LobbyLevel.Instance.Hide();
 
@@ -84,19 +84,19 @@ public class RAGNetworkManager : NobleNetworkManager
         }
     }
 
-    private void OnGenerateLevelMessage(NetworkConnection connection, GenerateLevelMessage generateLevelMessage)
+    private void OnGenerateLevelMessage(GenerateLevelMessage generateLevelMessage)
     {
         DungeonDict.Instance.ClearRooms();
         RegionSceneLoader loader = RegionSceneLoader.Instance;
         new ExtendedCoroutine(this, loader.LoadScene(generateLevelMessage), loader.LoadLevel, true);
     }
 
-    private void OnReturnToLobbyMessage(NetworkConnection connection, ReturnToLobbyMessage returnToLobbyMessage)
+    private void OnReturnToLobbyMessage(ReturnToLobbyMessage returnToLobbyMessage)
     {
         LobbyLevel.Instance.Show();
     }
 
-    private void OnDoorsMessage(NetworkConnection connection, DoorMessage doorMessage)
+    private void OnDoorsMessage(DoorMessage doorMessage)
     {
         if (!DungeonDict.Instance || !DungeonDict.Instance.IsIdValid(doorMessage.roomId))
         {
@@ -110,7 +110,7 @@ public class RAGNetworkManager : NobleNetworkManager
             DungeonDict.Instance.Get(doorMessage.roomId).OnCloseDoors();
     }
 
-    private void OnBossSpawnMessage(NetworkConnection connection, BossSpawnMessage bossSpawnMessage)
+    private void OnBossSpawnMessage(BossSpawnMessage bossSpawnMessage)
     {
         if (!DungeonDict.Instance || !DungeonDict.Instance.IsIdValid(bossSpawnMessage.id))
         {

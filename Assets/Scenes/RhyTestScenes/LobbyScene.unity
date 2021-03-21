@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1692,6 +1692,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sceneId: 723691654
   serverOnly: 1
+  visible: 0
   m_AssetId: 
   hasSpawned: 0
 --- !u!1 &1969958880
@@ -1827,22 +1828,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 381cc669c3963ae42b6c7f3c9cafaef2,
         type: 2}
-    - target: {fileID: 1365799234425872923, guid: 51cb51d065c14cd4d8c4ff558239b518,
-        type: 3}
-      propertyPath: customObjects.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1365799234425872923, guid: 51cb51d065c14cd4d8c4ff558239b518,
-        type: 3}
-      propertyPath: customObjects.Array.data[1].name
-      value: randomObject
-      objectReference: {fileID: 0}
-    - target: {fileID: 1365799234425872923, guid: 51cb51d065c14cd4d8c4ff558239b518,
-        type: 3}
-      propertyPath: customObjects.Array.data[1].prefab
-      value: 
-      objectReference: {fileID: 630595108234732127, guid: ce2e6717e2aa0014bae8b61ea979f734,
-        type: 3}
     - target: {fileID: 1365799234809505997, guid: 51cb51d065c14cd4d8c4ff558239b518,
         type: 3}
       propertyPath: selectedInput
