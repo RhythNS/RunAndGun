@@ -140,15 +140,28 @@ MonoBehaviour:
   players:
   - player: {fileID: 2103416702, guid: 63f431cca889dbf42b617e481f43c216, type: 3}
     characterType: 0
+    characterPreviewSprite: {fileID: -1801323016989662738, guid: 597c40df2db09824f9bc256f42715481,
+      type: 3}
   - player: {fileID: 2993631946973848731, guid: 6e1903cbfca72494a819f41729d7a653,
       type: 3}
     characterType: 1
+    characterPreviewSprite: {fileID: 5524089288207099101, guid: 9877aaa799703f8469ccf1b487954bcb,
+      type: 3}
   - player: {fileID: 7664403472604156912, guid: bc73c59a2b64fb241ab5a10bba3397fe,
       type: 3}
     characterType: 2
+    characterPreviewSprite: {fileID: 6082339987025560736, guid: 580bedba5fc12c24bb13641864a9fba6,
+      type: 3}
   - player: {fileID: 9085926947561574475, guid: 35e542e06af903049a5d08f368ec42aa,
       type: 3}
     characterType: 3
+    characterPreviewSprite: {fileID: 316470711418822924, guid: 2585c315b5ada3241973a55cc08276d0,
+      type: 3}
+  playerColors:
+  - {r: 0.80392164, g: 0.19215688, b: 0.19215688, a: 1}
+  - {r: 0.14117648, g: 0.44705886, b: 0.7843138, a: 1}
+  - {r: 0.07450981, g: 0.6313726, b: 0.054901965, a: 1}
+  - {r: 1, g: 1, b: 0, a: 1}
 --- !u!114 &1365799234425872916
 MonoBehaviour:
   m_ObjectHideFlags: 0

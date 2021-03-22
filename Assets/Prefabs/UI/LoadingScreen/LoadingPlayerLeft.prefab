@@ -223,9 +223,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42e5ccfcf8301cc42a354b2df0328b02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  background: {fileID: 3887377393439464725}
   unitIcon: {fileID: 3887377394043893509}
   username: {fileID: 3887377393325782212}
   percentageAsText: {fileID: 3887377394853748029}
+  percentageAsImage: {fileID: 2372097488746401760}
   fadeFromRight: 0
 --- !u!1 &3887377393610306925
 GameObject:
@@ -238,6 +240,7 @@ GameObject:
   - component: {fileID: 3887377393610306924}
   - component: {fileID: 3887377393610306922}
   - component: {fileID: 3887377393610306923}
+  - component: {fileID: 2372097488746401760}
   m_Layer: 5
   m_Name: PercentageBackground
   m_TagString: Untagged
@@ -286,22 +289,35 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.3773585, g: 0.3773585, b: 0.3773585, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: dcce4cd4fb5d347439266be609b42599, type: 3}
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
+  m_FillMethod: 0
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &2372097488746401760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3887377393610306925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a161b2c391f2ec4ca836131e98c62e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  percentageImage: {fileID: 3887377393610306923}
 --- !u!1 &3887377394043893511
 GameObject:
   m_ObjectHideFlags: 0

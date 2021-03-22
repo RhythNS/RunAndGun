@@ -24,6 +24,8 @@ public class LoadingScreenManager : MonoBehaviour
     [SerializeField] private LoadingPlayerElement fromLeftPrefab;
     [SerializeField] private LoadingPlayerElement emptyPrefab;
 
+    [SerializeField] private Color notConnectedColor;
+
     private readonly List<LoadingPlayerElement> playerElements = new List<LoadingPlayerElement>();
 
     public void Show()
@@ -41,11 +43,11 @@ public class LoadingScreenManager : MonoBehaviour
 
         for (int i = 0; i < players.Count; i++)
         {
-            CreateLoadingPlayerElement(i % 2 == 0 ? fromRightPrefab : fromLeftPrefab, -quaterHeight * i, players[i], width, height);
+            CreateLoadingPlayerElement(i % 2 == 0 ? fromRightPrefab : fromLeftPrefab, -quaterHeight * i, players[i], CharacterDict.Instance.PlayerColors[i], width, height);
         }
         for (int i = players.Count; i < 4; i++)
         {
-            CreateLoadingPlayerElement(emptyPrefab, -quaterHeight * i, null, width, height, i % 2 == 0);
+            CreateLoadingPlayerElement(emptyPrefab, -quaterHeight * i, null, notConnectedColor, width, height, i % 2 == 0);
         }
         StartCoroutine(InnerShow());
     }
@@ -60,7 +62,7 @@ public class LoadingScreenManager : MonoBehaviour
         yield return new WaitForSeconds(fadeInTime * 0.75f);
     }
 
-    private void CreateLoadingPlayerElement(LoadingPlayerElement prefab, float y, Player player, float width, float height, bool? overrideFadeFadeFromRight = null)
+    private void CreateLoadingPlayerElement(LoadingPlayerElement prefab, float y, Player player, Color color, float width, float height, bool? overrideFadeFadeFromRight = null)
     {
         LoadingPlayerElement lpe = Instantiate(prefab, transform);
         RectTransform rectTrans = (RectTransform)lpe.transform;
@@ -69,7 +71,7 @@ public class LoadingScreenManager : MonoBehaviour
         rectTrans.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, width);
         rectTrans.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, height * 0.25f);
         rectTrans.localPosition = new Vector3(width, y);
-        lpe.Set(this, player, overrideFadeFadeFromRight);
+        lpe.Set(this, player, color, overrideFadeFadeFromRight);
         playerElements.Add(lpe);
     }
 

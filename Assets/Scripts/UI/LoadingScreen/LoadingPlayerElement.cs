@@ -6,19 +6,23 @@ public class LoadingPlayerElement : MonoBehaviour
 {
     private LoadingScreenManager loadingScreenManager;
 
+    [SerializeField] private Image background;
     [SerializeField] private Image unitIcon;
     [SerializeField] private TMP_Text username;
     [SerializeField] private PercentageAsText percentageAsText;
+    [SerializeField] private PercentageAsImage percentageAsImage;
     [SerializeField] private bool fadeFromRight;
 
     private Player player;
 
-    public void Set(LoadingScreenManager lsm, Player player, bool? overrideFadeFromRight = null)
+    public void Set(LoadingScreenManager lsm, Player player, Color backgroundColor, bool? overrideFadeFromRight = null)
     {
         loadingScreenManager = lsm;
 
         if (overrideFadeFromRight.HasValue)
             fadeFromRight = overrideFadeFromRight.Value;
+
+        background.color = backgroundColor;
 
         if (player == null)
             return;
@@ -27,6 +31,7 @@ public class LoadingPlayerElement : MonoBehaviour
         username.text = player.userName;
         unitIcon.sprite = CharacterDict.Instance.GetSpriteForType(player.CharacterType);
         player.StateCommunicator.OnPercentageChanged += percentageAsText.UpdateValue;
+        player.StateCommunicator.OnPercentageChanged += percentageAsImage.UpdateValue;
     }
 
     public void FadeIn()
@@ -54,6 +59,9 @@ public class LoadingPlayerElement : MonoBehaviour
     private void OnDestroy()
     {
         if (player != null)
+        {
             player.StateCommunicator.OnPercentageChanged -= percentageAsText.UpdateValue;
+            player.StateCommunicator.OnPercentageChanged -= percentageAsImage.UpdateValue;
+        }
     }
 }

@@ -207,55 +207,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8566d06a89efd6142aa7796e5cf97d41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadeInTime: 0.2
+  fadeInTime: 0.3
   fadeInCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 2
-      outSlope: 2
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
-    - serializedVersion: 3
-      time: 0.73470443
-      value: 0.92165494
-      inSlope: 0.9689666
-      outSlope: 0.9689666
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.37942755
-    - serializedVersion: 3
-      time: 0.8241325
-      value: 1.0316834
-      inSlope: 1.7313343
-      outSlope: 1.7313343
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.19928752
-    - serializedVersion: 3
-      time: 0.9284616
-      value: 0.9647497
-      inSlope: 0.89034384
-      outSlope: 0.89034384
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.4112701
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.9833269
-      value: 1.0006405
-      inSlope: -0.014663331
-      outSlope: -0.014663331
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.9399486
     - serializedVersion: 3
       time: 1
       value: 1
@@ -268,25 +232,25 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  fadeOutTime: 0.1
+  fadeOutTime: 0.3
   fadeOutCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
@@ -299,6 +263,7 @@ MonoBehaviour:
     type: 3}
   emptyPrefab: {fileID: 5039350707131606025, guid: d262f22bcdb70f64e9d56390b01ed37d,
     type: 3}
+  notConnectedColor: {r: 0.3584906, g: 0.3584906, b: 0.3584906, a: 1}
 --- !u!1 &6282466602015935128
 GameObject:
   m_ObjectHideFlags: 0
