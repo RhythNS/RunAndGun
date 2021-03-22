@@ -18,7 +18,7 @@ public class ShopRoom : DungeonRoom
 
     public void SpawnItems() {
         for (int i = 0; i < shopItems.Length; i++) {
-
+            PickableInWorld.Place(shopItems[i], locations[i], true);
         }
     }
 }

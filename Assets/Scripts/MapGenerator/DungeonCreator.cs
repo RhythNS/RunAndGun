@@ -326,6 +326,7 @@ public class DungeonCreator : MonoBehaviour
                     ShopRoom shopRoom = go.AddComponent<ShopRoom>();
                     const int numItems = 4;
                     shopRoom.shopItems = new Pickable[numItems];
+                    shopRoom.locations = new Vector2[numItems];
                     shopRoom.prices = new uint[numItems];
                     for (int j = 0; j < numItems; j++) {
                         int rnd = Random.Range(0, PickableDict.Instance.NumWeapons + PickableDict.Instance.NumItems);
@@ -336,7 +337,9 @@ public class DungeonCreator : MonoBehaviour
                             shopRoom.shopItems[j] = PickableDict.Instance.GetWeapon(j);
                             shopRoom.prices[j] = 15;
                         }
+                        shopRoom.locations[j] = Vector3.zero;
                     }
+                    shopRoom.SpawnItems();
                     dr = shopRoom;
                     break;
 
