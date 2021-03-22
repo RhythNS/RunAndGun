@@ -31,6 +31,9 @@ public class Player : Entity
 
     private SpriteRenderer sr;
 
+    private Vector3 lastPosition = Vector3.zero;
+    public Vector3 LastPosition => lastPosition;
+
     private void Awake()
     {
         Stats = GetComponent<Stats>();
@@ -50,6 +53,10 @@ public class Player : Entity
     private void Update()
     {
         sr.sortingOrder = (int)transform.position.y * -2 + 1;
+    }
+
+    private void LateUpdate() {
+        lastPosition = transform.position;
     }
 
     private void Start()
@@ -82,7 +89,17 @@ public class Player : Entity
     {
         if (!pickup.TryGetComponent(out PickableInWorld piw))
             return;
+
         Pickable pickable = piw.Pickable;
+
+        if (piw.IsBuyable) {
+            if (Inventory.money >= pickable.Costs) {
+                Inventory.money -= (int)pickable.Costs;
+            } else {
+                return;
+            }
+        }
+
         switch (pickable.PickableType)
         {
             case PickableType.Consumable:

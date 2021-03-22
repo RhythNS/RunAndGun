@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a92aee6a0c3882045b681e83aa44bfd7, type: 3}
+  m_Name: Orbiter Pistol
+  m_EditorClassIdentifier: 
+  id: 10
+  icon: {fileID: -1169459152763573295, guid: 4da522509089bb34193f504d220d2956, type: 3}
+  instantPickup: 0
+  costs: 0
+  effects:
+  - {fileID: 11400000, guid: 2d9bbabe9d4771846a111a28561667b1, type: 2}
+  - {fileID: 11400000, guid: d34676ecb2805ee44b229b5c4562e24f, type: 2}
+  shotModel: {fileID: 11400000, guid: 6972e6beef87e2b4dba31fa8e1bdad7c, type: 2}
+  bulletInfo: {fileID: 11400000, guid: ce3f19762d678e841ae30ec551788ab5, type: 2}
+  bulletPath: {fileID: 11400000, guid: 9901e7ae158f97d439d1c2ba5a73e8fc, type: 2}
+  bulletSpawnModel: {fileID: 11400000, guid: df098f7661ca9ed4a88a52d7ffdad406, type: 2}
+  animator: {fileID: 9100000, guid: e86451f5629bc1f4abc4e94446a7cdd0, type: 2}
+  weaponAnimatorType: 0
+  targetMode: 1
+  useLocalSpace: 1
+  range: 100
+  accuracy: 85
+  speed: 10
+  baseDamage: 8
+  magazineSize: 4
+  reloadTime: 2

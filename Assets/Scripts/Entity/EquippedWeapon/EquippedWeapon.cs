@@ -223,7 +223,7 @@ public class EquippedWeapon : NetworkBehaviour
         bullet.SpriteRenderer.sprite = info.Sprite;
         Vector2 velocity = direction * Weapon.Speed;
         bullet.Body.velocity = velocity;
-        // bullet.velocity = velocity;
+        bullet.velocity = velocity;
         //bullet.transform.position = BulletSpawnPosition;
         bullet.StartCoroutine(bullet.DeleteWhenOutOfRange(velocity, Weapon.Range));
 
