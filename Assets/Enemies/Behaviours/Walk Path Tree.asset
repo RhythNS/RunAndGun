@@ -16,12 +16,34 @@ MonoBehaviour:
   children: []
   boundsInEditor:
     serializedVersion: 2
-    x: -60
+    x: -40
     y: 60
     width: 80
     height: 80
   target: {fileID: 4196442815043149761}
   outPath: {fileID: 1003451598765055846}
+--- !u!114 &-6677016151475603812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16c43c0470316c743aaf58d5d6a731d9, type: 3}
+  m_Name: Calc and go on path
+  m_EditorClassIdentifier: 
+  breakPointEnabled: 0
+  children:
+  - {fileID: -7484151814185779705}
+  - {fileID: 4624284341402164318}
+  boundsInEditor:
+    serializedVersion: 2
+    x: 20
+    y: -80
+    width: 80
+    height: 80
 --- !u!114 &-5312032479730921864
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38,7 +60,7 @@ MonoBehaviour:
   children:
   - {fileID: 7749766770379331639}
   - {fileID: -1390515842250072988}
-  - {fileID: 7970236784242602857}
+  - {fileID: -6677016151475603812}
   boundsInEditor:
     serializedVersion: 2
     x: -120
@@ -129,7 +151,7 @@ MonoBehaviour:
   children: []
   boundsInEditor:
     serializedVersion: 2
-    x: 60
+    x: 100
     y: 60
     width: 80
     height: 80
@@ -155,26 +177,3 @@ MonoBehaviour:
     width: 80
     height: 80
   otherHealth: {fileID: 4196442815043149761}
---- !u!114 &7970236784242602857
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ebfb1a116e272644a2b5d0ee9def89e, type: 3}
-  m_Name: Set path Guard
-  m_EditorClassIdentifier: 
-  breakPointEnabled: 0
-  children:
-  - {fileID: -7484151814185779705}
-  - {fileID: 4624284341402164318}
-  boundsInEditor:
-    serializedVersion: 2
-    x: 0
-    y: -80
-    width: 80
-    height: 80
-  checkEverySeconds: 1

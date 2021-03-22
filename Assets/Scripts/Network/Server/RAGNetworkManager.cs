@@ -22,6 +22,8 @@ public class RAGNetworkManager : NobleNetworkManager
         NetworkClient.RegisterHandler<ReturnToLobbyMessage>(OnReturnToLobbyMessage);
         NetworkClient.RegisterHandler<DoorMessage>(OnDoorsMessage);
         NetworkClient.RegisterHandler<GenerateLevelMessage>(OnGenerateLevelMessage);
+        NetworkClient.RegisterHandler<BossSpawnMessage>(OnBossSpawnMessage);
+        NetworkClient.RegisterHandler<EveryoneLoadedMessage>(OnEveryoneLoadedMessage);
     }
 
     public override void OnClientConnect(NetworkConnection conn)
@@ -68,25 +70,35 @@ public class RAGNetworkManager : NobleNetworkManager
 
     }
 
-    private void OnStartGameMessage(NetworkConnection connection, StartGameMessage startGameMessage)
+    private void OnStartGameMessage(StartGameMessage startGameMessage)
     {
         LobbyLevel.Instance.Hide();
-        startGameMessage.gameMode.Init(startGameMessage.levelSeed);
-        GameManager.gameMode = startGameMessage.gameMode;
+
+        if (!Player.LocalPlayer || Player.LocalPlayer.isServer)
+        {
+            GameManager.gameMode.Init(startGameMessage.levelSeed);
+        }
+        else
+        {
+            startGameMessage.gameMode.Init(startGameMessage.levelSeed);
+            GameManager.gameMode = startGameMessage.gameMode;
+        }
     }
 
-    private void OnGenerateLevelMessage(NetworkConnection connection, GenerateLevelMessage generateLevelMessage)
+    private void OnGenerateLevelMessage(GenerateLevelMessage generateLevelMessage)
     {
+        UIManager.Instance.ShowLevelLoadScreen();
         DungeonDict.Instance.ClearRooms();
-        StartCoroutine(DungeonCreator.Instance.CreateLevel(generateLevelMessage.levelNumber));
+        RegionSceneLoader loader = RegionSceneLoader.Instance;
+        new ExtendedCoroutine(this, loader.LoadScene(generateLevelMessage), loader.LoadLevel, true);
     }
 
-    private void OnReturnToLobbyMessage(NetworkConnection connection, ReturnToLobbyMessage returnToLobbyMessage)
+    private void OnReturnToLobbyMessage(ReturnToLobbyMessage returnToLobbyMessage)
     {
         LobbyLevel.Instance.Show();
     }
 
-    private void OnDoorsMessage(NetworkConnection connection, DoorMessage doorMessage)
+    private void OnDoorsMessage(DoorMessage doorMessage)
     {
         if (!DungeonDict.Instance || !DungeonDict.Instance.IsIdValid(doorMessage.roomId))
         {
@@ -100,4 +112,19 @@ public class RAGNetworkManager : NobleNetworkManager
             DungeonDict.Instance.Get(doorMessage.roomId).OnCloseDoors();
     }
 
+    private void OnBossSpawnMessage(BossSpawnMessage bossSpawnMessage)
+    {
+        if (!DungeonDict.Instance || !DungeonDict.Instance.IsIdValid(bossSpawnMessage.id))
+        {
+            Debug.LogWarning("Recieved door message with invalid id! (" + bossSpawnMessage.id + ")");
+            return;
+        }
+
+        (DungeonDict.Instance.Get(bossSpawnMessage.id) as BossRoom).StartBossAnimation(bossSpawnMessage);
+    }
+
+    private void OnEveryoneLoadedMessage(EveryoneLoadedMessage everyoneLoadedMessage)
+    {
+        UIManager.Instance.HideLevelLoadScreen();
+    }
 }

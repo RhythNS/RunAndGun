@@ -15,7 +15,8 @@ MonoBehaviour:
   levelSeeds: 
   levelAmount: 100
   startingDifficulty: 10
-  startingItems: []
+  startingItems:
+  - {fileID: 11400000, guid: f6f603894041f4d4db8824abc0e9371d, type: 2}
   minPlayers: 1
   maxPlayers: 4
   dungeonConfig:
@@ -27,8 +28,3 @@ MonoBehaviour:
     corridorMinLength: 0
     corridorMaxLength: 0
     generateShopRoom: 0
-    itemsToSpawn:
-    - {fileID: 11400000, guid: ac7a3d27f5349fc4589c7af1ddc3ad4f, type: 2}
-    - {fileID: 11400000, guid: ac7a3d27f5349fc4589c7af1ddc3ad4f, type: 2}
-    - {fileID: 11400000, guid: 729f31b81fbabaa4e8cabb459a6cfebe, type: 2}
-    - {fileID: 11400000, guid: f6f603894041f4d4db8824abc0e9371d, type: 2}

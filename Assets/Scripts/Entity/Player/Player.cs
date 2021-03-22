@@ -14,6 +14,7 @@ public class Player : Entity
 
     public static Player LocalPlayer { get; private set; }
 
+    public bool CanMove { get; private set; } = true;
     public RAGInput Input { get; private set; }
     public Stats Stats { get; private set; }
     public Status Status { get; private set; }
@@ -26,6 +27,7 @@ public class Player : Entity
     public StateCommunicator StateCommunicator { get; private set; }
     public DungeonRoom CurrentRoom { get; private set; }
     public StatusEffectList StatusEffectList { get; private set; }
+    public EntityMaterialManager EntityMaterialManager { get; private set; }
 
     private SpriteRenderer sr;
 
@@ -40,17 +42,20 @@ public class Player : Entity
         Collider2D = GetComponent<Collider2D>();
         StateCommunicator = GetComponent<StateCommunicator>();
         StatusEffectList = GetComponent<StatusEffectList>();
+        EntityMaterialManager = GetComponent<EntityMaterialManager>();
 
         sr = GetComponent<SpriteRenderer>();
     }
 
-    private void Update() {
+    private void Update()
+    {
         sr.sortingOrder = (int)transform.position.y * -2 + 1;
     }
 
     private void Start()
     {
         PlayersDict.Instance.Register(this);
+        EntityMaterialManager.PlaySpawnEffect();
     }
 
     public override void OnStartClient()
@@ -123,9 +128,17 @@ public class Player : Entity
         gameObject.name = newName;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    [TargetRpc]
+    public void RpcChangeCanMove(bool canMove)
     {
-        if (collision.TryGetComponent(out DungeonRoom dungeonRoom))
+        CanMove = canMove;
+        // ui.CanMove(canMove);
+        Input.enabled = canMove;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.TryGetComponent(out DungeonRoom dungeonRoom))
         {
             CurrentRoom = dungeonRoom;
             if (isLocalPlayer)
@@ -137,11 +150,11 @@ public class Player : Entity
 
         if (isLocalPlayer && !Status.Dashing)
         {
-            if (collision.TryGetComponent(out PickableInWorld pickable) && pickable.Pickable.InstantPickup)
+            if (other.TryGetComponent(out PickableInWorld pickable) && pickable.Pickable.InstantPickup)
                 CmdPickup(pickable.gameObject);
-            else if (collision.TryGetComponent(out Bullet bullet))
+            else if (other.TryGetComponent(out Bullet bullet))
                 CmdBulletHit(bullet.gameObject, bullet.fromWeapon);
-            else if (collision.TryGetComponent(out Player player))
+            else if (other.TryGetComponent(out Player player))
             {
                 if (!player.Health.Alive)
                     Status.OnDownedPlayerInRangeToRevive(player);

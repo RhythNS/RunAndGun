@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.01.00">
+	<object class="AudioFile" id="{a7658cf1-4129-40fc-974a-3fec87055392}">
+		<property name="assetPath">
+			<value>Aqua BGM.mp3</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>698.12244897959181</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{49c338c0-ed80-41ea-a0f8-ae66f0696afb}</destination>
+		</relationship>
+	</object>
+</objects>

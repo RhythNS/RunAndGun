@@ -14,20 +14,20 @@ public class WeaponPoints : MonoBehaviour
     public Vector2 SouthPoint => southPoint;
     [SerializeField] private Vector2 southPoint;
 
+    public Vector2 TwoHandedMidPoint => twoHandedMidPoint;
+    [SerializeField] private Vector2 twoHandedMidPoint;
+
+    public float Radius => radius;
+    [SerializeField] private float radius;
+
     private void OnDrawGizmosSelected()
     {
-        DrawGizmoPoint(eastHand);
-        DrawGizmoPoint(westHand);
-        DrawGizmoPoint(northPoint);
-        DrawGizmoPoint(southPoint);
-    }
-
-    private void DrawGizmoPoint(Vector2 point)
-    {
-        Vector3 position = point;
-        position += transform.position;
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(position + new Vector3(-0.125f, -0.125f), position + new Vector3(0.125f, 0.125f));
-        Gizmos.DrawLine(position + new Vector3(-0.125f, 0.125f), position + new Vector3(0.125f, -0.125f));
+        GizmosUtil.DrawPoint((Vector2)transform.position + eastHand);
+        GizmosUtil.DrawPoint((Vector2)transform.position + westHand);
+        GizmosUtil.DrawPoint((Vector2)transform.position + northPoint);
+        GizmosUtil.DrawPoint((Vector2)transform.position + southPoint);
+
+        Gizmos.DrawWireSphere(transform.position + (Vector3)twoHandedMidPoint, radius);
     }
 }

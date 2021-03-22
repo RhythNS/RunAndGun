@@ -87,6 +87,8 @@ GameObject:
   - component: {fileID: 8153078490237015985}
   - component: {fileID: 3119122454284659265}
   - component: {fileID: 3031239099702914049}
+  - component: {fileID: 8307653741225969240}
+  - component: {fileID: 511879601587473819}
   m_Layer: 0
   m_Name: Dicts
   m_TagString: Untagged
@@ -138,15 +140,28 @@ MonoBehaviour:
   players:
   - player: {fileID: 2103416702, guid: 63f431cca889dbf42b617e481f43c216, type: 3}
     characterType: 0
+    characterPreviewSprite: {fileID: -1801323016989662738, guid: 597c40df2db09824f9bc256f42715481,
+      type: 3}
   - player: {fileID: 2993631946973848731, guid: 6e1903cbfca72494a819f41729d7a653,
       type: 3}
     characterType: 1
+    characterPreviewSprite: {fileID: 5524089288207099101, guid: 9877aaa799703f8469ccf1b487954bcb,
+      type: 3}
   - player: {fileID: 7664403472604156912, guid: bc73c59a2b64fb241ab5a10bba3397fe,
       type: 3}
     characterType: 2
+    characterPreviewSprite: {fileID: 6082339987025560736, guid: 580bedba5fc12c24bb13641864a9fba6,
+      type: 3}
   - player: {fileID: 9085926947561574475, guid: 35e542e06af903049a5d08f368ec42aa,
       type: 3}
     characterType: 3
+    characterPreviewSprite: {fileID: 316470711418822924, guid: 2585c315b5ada3241973a55cc08276d0,
+      type: 3}
+  playerColors:
+  - {r: 0.80392164, g: 0.19215688, b: 0.19215688, a: 1}
+  - {r: 0.14117648, g: 0.44705886, b: 0.7843138, a: 1}
+  - {r: 0.07450981, g: 0.6313726, b: 0.054901965, a: 1}
+  - {r: 1, g: 1, b: 0, a: 1}
 --- !u!114 &1365799234425872916
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -318,6 +333,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitMaterial: {fileID: 2100000, guid: e7de38a0acc09f14180ba920fa120d24, type: 2}
   healMaterial: {fileID: 2100000, guid: 18f98babd3cb2dc47a8377428aed9a95, type: 2}
+  spawnMaterial: {fileID: 2100000, guid: b42acd373888a7b4e8988fc49ea7d5b4, type: 2}
 --- !u!114 &3119122454284659265
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -356,6 +372,37 @@ MonoBehaviour:
   - full: {fileID: -30910539988732823, guid: 0701bdb4ed5c3c34489c17d3191c3455, type: 3}
     broken: {fileID: -6007437689376026156, guid: 0701bdb4ed5c3c34489c17d3191c3455,
       type: 3}
+--- !u!114 &8307653741225969240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1365799234425872912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d63360c7d7947146aaa2e5bb2696439, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bossReadyZone: {fileID: 1622251374757265287, guid: ba43b139c0b717e42865637df1a36c6d,
+    type: 3}
+  advanceFloorZone: {fileID: 6526367521635908522, guid: 58fd2a62261c4bf4aaedf2b060dff28a,
+    type: 3}
+--- !u!114 &511879601587473819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1365799234425872912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6504c74bf8d1c7041bd6e67b9e921d4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  regionForSceneNames:
+  - region: 0
+    sceneName: DebugRegion
 --- !u!1 &1365799234809505999
 GameObject:
   m_ObjectHideFlags: 0

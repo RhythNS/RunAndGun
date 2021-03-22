@@ -46,10 +46,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dontDestroyOnLoad: 1
+  PersistNetworkManagerToOfflineScene: 0
   runInBackground: 1
   autoStartServerBuild: 1
-  showDebugMessages: 0
   serverTickRate: 30
+  serverBatching: 1
+  serverBatchInterval: 0
   offlineScene: 
   onlineScene: 
   transport: {fileID: 2660826429402068680}
@@ -73,6 +75,7 @@ MonoBehaviour:
   region: 0
   forceRelayConnection: 0
   logLevel: 2
+  requestTimeout: 0.2
   relayRefreshTime: 30
   relayRefreshTimeout: 0.1
   maxRelayRefreshAttempts: 3

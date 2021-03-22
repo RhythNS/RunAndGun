@@ -20,15 +20,29 @@ public class CharacterDict : MonoBehaviour
     {
         public Player player;
         public CharacterType characterType;
+        public Sprite characterPreviewSprite;
     }
 
     [SerializeField] private CharacterTypeForPlayer[] players;
+
+    public Color[] PlayerColors => playerColors;
+    [SerializeField] private Color[] playerColors;
 
     public Player GetPlayerForType(CharacterType characterType)
     {
         for (int i = 0; i < players.Length; i++)
             if (players[i].characterType == characterType)
                 return players[i].player;
+
+        Debug.LogError("Could not find " + characterType);
+        return null;
+    }
+
+    public Sprite GetSpriteForType(CharacterType characterType)
+    {
+        for (int i = 0; i < players.Length; i++)
+            if (players[i].characterType == characterType)
+                return players[i].characterPreviewSprite;
 
         Debug.LogError("Could not find " + characterType);
         return null;

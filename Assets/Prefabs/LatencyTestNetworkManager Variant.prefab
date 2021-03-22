@@ -1,0 +1,110 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &1987466605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4380238792966727306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c493b317f91a1bf43a712dfc3a9254a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  port: 7777
+  updateTime: 15
+  disconnectTimeout: 5000
+  ipv6Enabled: 0
+  maxConnectAttempts: 10
+  serverMaxMessagesPerTick: 10000
+  clientMaxMessagesPerTick: 1000
+  channels: 0204
+  connectKey: MIRROR_LITENETLIB
+  latencySpikeMultiplier: 0
+  latencySpikeSpeedMultiplier: 1
+  reliableLatency: 0
+  unreliableLoss: 0
+  unreliableLatency: 0
+  unreliableScramble: 0
+--- !u!1001 &1739687376815509577
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2660826429402068675, guid: ef31ecc06432981469da27e90dd8c541,
+        type: 3}
+      propertyPath: m_Name
+      value: LatencyTestNetworkManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 2660826429402068678, guid: ef31ecc06432981469da27e90dd8c541,
+        type: 3}
+      propertyPath: transport
+      value: 
+      objectReference: {fileID: 1987466605}
+    - target: {fileID: 2660826429402068679, guid: ef31ecc06432981469da27e90dd8c541,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2660826429402068679, guid: ef31ecc06432981469da27e90dd8c541,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2660826429402068679, guid: ef31ecc06432981469da27e90dd8c541,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2660826429402068679, guid: ef31ecc06432981469da27e90dd8c541,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2660826429402068679, guid: ef31ecc06432981469da27e90dd8c541,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2660826429402068679, guid: ef31ecc06432981469da27e90dd8c541,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2660826429402068679, guid: ef31ecc06432981469da27e90dd8c541,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2660826429402068679, guid: ef31ecc06432981469da27e90dd8c541,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2660826429402068679, guid: ef31ecc06432981469da27e90dd8c541,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2660826429402068679, guid: ef31ecc06432981469da27e90dd8c541,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2660826429402068679, guid: ef31ecc06432981469da27e90dd8c541,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 2660826429402068680, guid: ef31ecc06432981469da27e90dd8c541, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: ef31ecc06432981469da27e90dd8c541, type: 3}
+--- !u!1 &4380238792966727306 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2660826429402068675, guid: ef31ecc06432981469da27e90dd8c541,
+    type: 3}
+  m_PrefabInstance: {fileID: 1739687376815509577}
+  m_PrefabAsset: {fileID: 0}

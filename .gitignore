@@ -3,9 +3,12 @@
 # Get latest from https://github.com/github/gitignore/blob/master/Unity.gitignore
 
 # Ignore copyrighted folders
-/[Aa]ssets/[Pp]lugins
+/[Aa]ssets/[Pp]lugins/*
 /[Aa]ssets/[Ii]mported [Aa]ssets
 /[Aa]ssets/[Ii]mported [Ll]ibraries/[Cc]opyrighted/*
+
+# Log files can be ignored.
+fmod_editor.log
 
 # Ignore Unity folders
 /[Ll]ibrary/
@@ -18,8 +21,28 @@
 
 # Never ignore Asset meta data
 !/[Aa]ssets/**/*.meta
+
 # Ignore plugins folder meta data
-/[Aa]ssets/[Pp]lugins.meta
+/[Aa]ssets/[Pp]lugins/**/*.meta
+
+# Ignore sound files and build for copyright reasons
+/FMODAssets/Assets/*
+/FMODAssets/Build/*
+
+# Unignore FMOD assts
+!/[Aa]ssets/[Pp]lugins/FMOD.meta
+!/[Aa]ssets/[Pp]lugins/FMOD
+!/[Aa]ssets/[Pp]lugins/FMOD/**/*.meta
+
+# Never ignore DLLs in the FMOD subfolder.
+!/[Aa]ssets/Plugins/FMOD/libs/*
+
+# Ignore the Cache folder since it is updated locally.
+/[Aa]ssets/Plugins/FMOD/Cache/*
+
+# Ignore bank files in the StreamingAssets folder.
+/[Aa]ssets/StreamingAssets/**/*.bank
+/[Aa]ssets/StreamingAssets/**/*.bank.meta
 
 # Uncomment this line if you wish to ignore the asset store tools plugin
 # /[Aa]ssets/AssetStoreTools*
@@ -68,4 +91,3 @@ sysinfo.txt
 
 # Crashlytics generated file
 crashlytics-build.properties
-

@@ -1,14 +1,18 @@
 ﻿using Rhyth.BTree;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Threading.Tasks;
 using UnityEngine;
 
-public class SetPathFromHealthNode : BoolNode
+public class SetPathFromHealthNode : BNodeAdapter
 {
     public override string StringToolTip => "Tries to generate a path from the entity to the health target.\nReturns success when a path was found. Returns false when the target is invalid, died or no path was found.";
 
+    public override int MaxNumberOfChildren => 0;
+
     [SerializeField] private HealthValue target;
     [SerializeField] private PathValue outPath;
+
+    private Task<List<Vector2>> task;
 
     protected override BNode InnerClone(Dictionary<Value, Value> originalValueForClonedValue)
     {
@@ -26,36 +30,55 @@ public class SetPathFromHealthNode : BoolNode
             outPath = replacePath as PathValue;
     }
 
-    protected override bool InnerIsFulfilled()
+    public override void InnerRestart()
     {
-        Health health;
-        if (!target || !(health = target.Get()) || !health.Alive)
-            return false;
+        task = null;
+    }
 
-        Vector2Int startPos = DungeonCreator.Instance.WorldPositionToTilePosition(Brain.transform.position);
-        Vector2Int endPos = DungeonCreator.Instance.WorldPositionToTilePosition(health.transform.position);
+    public override void Update()
+    {
+        // Are we checking for a path?
+        if (task == null)
+        {
+            Health health;
+            if (!target || !(health = target.Get()) || !health.Alive) // Is the target still alive?
+            {
+                CurrentStatus = Status.Failure;
+                return;
+            }
 
-        /*
-        if (DungeonDict.Instance.dungeon.TryFindPath(startPos, endPos, out List<Vector2> path) == false)
-            return false;
-         */
+            Vector2Int startPos = DungeonCreator.Instance.WorldPositionToTilePosition(Brain.transform.position);
+            Vector2Int endPos = DungeonCreator.Instance.WorldPositionToTilePosition(health.transform.position);
 
-        bool stop = false;
-        Stopwatch sw = Stopwatch.StartNew();
-        if (DebugPathFinder.Instance.TryFindPath(startPos, endPos, out List<Vector2> path) == false)
-            stop = true;
-        UnityEngine.Debug.Log("Pathfinder took " + (sw.ElapsedMilliseconds).ToString() + "ms");
-        sw.Stop();
-        if (stop)
-            return false;
+            //task = Task<List<Vector2>>.Factory.StartNew(() => DebugPathFinder.Instance.TryFindPath(startPos, endPos));
+            //Debug.LogWarning("SetPathFromHealthNode is running with debug path finder! This will only work in the test scene!");
+            task = Task<List<Vector2>>.Factory.StartNew(() => DungeonDict.Instance.dungeon.TryFindPath(startPos, endPos));
+
+            return;
+        }
+
+        if (task.IsCompleted == false) // Is the path calculated yet?
+            return;
+
+        List<Vector2> path = task.Result;
+
+        if (path.Count == 0) // Was there no path found?
+        {
+            CurrentStatus = Status.Failure;
+            outPath.Set(path);
+            return;
+        }
 
         // Check if the path is the same, if it is then return true without setting a reference to the new list.
         // This is because other nodes may use the list reference as a way to check if the path has changed or not.
         if (outPath.IsSame(path))
-            return true;
+        {
+            CurrentStatus = Status.Success;
+            return;
+        }
 
+        // Path found and set
         outPath.Set(path);
-
-        return true;
+        CurrentStatus = Status.Success;
     }
 }

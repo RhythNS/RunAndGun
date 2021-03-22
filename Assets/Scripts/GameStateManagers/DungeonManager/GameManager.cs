@@ -83,9 +83,16 @@ public class GameManager : MonoBehaviour
 
         GenerateLevelMessage generateLevelMessage = new GenerateLevelMessage()
         {
-            levelNumber = currentLevel
+            levelNumber = currentLevel,
+            region = Region.Debug
         };
+
         NetworkServer.SendToAll(generateLevelMessage);
+        List<Player> players = PlayersDict.Instance.Players;
+        for (int i = 0; i < players.Count; i++)
+        {
+            players[i].RpcChangeCanMove(false);
+        }
     }
 
     public static void OnPlayerLoadedLevelChanged()
@@ -132,7 +139,10 @@ public class GameManager : MonoBehaviour
         {
             players[i].StateCommunicator.levelLoaded = false;
             players[i].SmoothSync.teleportAnyObjectFromServer(toTeleport, Quaternion.identity, new Vector3(1, 1, 1));
+            players[i].RpcChangeCanMove(true);
         }
+
+        NetworkServer.SendToAll(new EveryoneLoadedMessage());
 
         DungeonDict.Instance.dungeon = DungeonCreator.Instance.dungeon; // TODO: Dungeon creator should set that itself
     }
@@ -146,7 +156,7 @@ public class GameManager : MonoBehaviour
         // display dialog to go back to lobby
     }
 
-    public static void OnRoomEventStarted(Rect bounds)
+    public static void OnRoomEventStarted()
     {
         if (!instance)
             return;

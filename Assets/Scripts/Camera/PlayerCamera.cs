@@ -6,6 +6,8 @@ public class PlayerCamera : MonoBehaviour
     [SerializeField] private float z;
     [SerializeField] private Transform toFollow;
 
+    public static PlayerCamera Instance { get; private set; }
+
     public Transform ToFollow
     {
         get => toFollow;
@@ -17,6 +19,17 @@ public class PlayerCamera : MonoBehaviour
     }
 
     public Vector2 focusPoint = new Vector2(0.0f, 0.0f);
+
+    private void Awake()
+    {
+        if (Instance)
+        {
+            Debug.LogWarning("PlayerCamera already in scene. Deleting myself!");
+            Destroy(this);
+            return;
+        }
+        Instance = this;
+    }
 
     private void Start()
     {
@@ -30,5 +43,11 @@ public class PlayerCamera : MonoBehaviour
         pos += dir * focusPointStrength;
 
         transform.position = new Vector3(pos.x, pos.y, z);
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+            Instance = null;
     }
 }

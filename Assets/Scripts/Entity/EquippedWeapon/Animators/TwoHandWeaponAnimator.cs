@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class TwoHandWeaponAnimator : WeaponAnimator
 {
@@ -8,6 +6,9 @@ public class TwoHandWeaponAnimator : WeaponAnimator
 
     public override void SetDirection(Vector2 direction)
     {
-        throw new System.NotImplementedException();
+        SpriteRenderer.flipY = direction.x < 0;
+        transform.localPosition = WeaponPoints.TwoHandedMidPoint + WeaponPoints.Radius * direction;
+        float angle = Vector2.Angle(Vector2.right, direction);
+        transform.rotation = Quaternion.Euler(0.0f, 0.0f, direction.y > 0 ? angle : -angle);
     }
 }

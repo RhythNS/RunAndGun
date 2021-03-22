@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d5cadc3af7232942818c6865a5fae0d, type: 3}
+  m_Name: Test Boss
+  m_EditorClassIdentifier: 
+  enemyObject: {fileID: 11400000, guid: 60054b9fd3d83834193d865819246b87, type: 2}
+  animationType: 1

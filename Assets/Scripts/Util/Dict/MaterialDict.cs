@@ -17,9 +17,12 @@ public class MaterialDict : MonoBehaviour
 
     public Material HitMaterial => hitMaterial;
     [SerializeField] private Material hitMaterial;
-    
+
     public Material HealMaterial => healMaterial;
     [SerializeField] private Material healMaterial;
+
+    public Material SpawnMaterial => spawnMaterial;
+    [SerializeField] private Material spawnMaterial;
 
     private void OnDestroy()
     {

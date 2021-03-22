@@ -6,6 +6,7 @@ public class DungeonDict : MonoBehaviour
     public static DungeonDict Instance { get; private set; }
 
     public DungeonRoom[] Rooms { get; private set; }
+    public BossRoom BossRoom { get; private set; }
 
     public Dungeon dungeon;
 
@@ -44,6 +45,11 @@ public class DungeonDict : MonoBehaviour
             return;
         }
         Rooms[room.id] = room;
+    }
+
+    public void SetBossRoom(BossRoom bossRoom)
+    {
+        BossRoom = bossRoom;
     }
 
     public DungeonRoom Get(int i) => Rooms[i];
