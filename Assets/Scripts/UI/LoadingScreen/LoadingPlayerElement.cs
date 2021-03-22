@@ -13,9 +13,12 @@ public class LoadingPlayerElement : MonoBehaviour
 
     private Player player;
 
-    public void Set(LoadingScreenManager lsm, Player player)
+    public void Set(LoadingScreenManager lsm, Player player, bool? overrideFadeFromRight = null)
     {
         loadingScreenManager = lsm;
+
+        if (overrideFadeFromRight.HasValue)
+            fadeFromRight = overrideFadeFromRight.Value;
 
         if (player == null)
             return;
@@ -29,20 +32,20 @@ public class LoadingPlayerElement : MonoBehaviour
     public void FadeIn()
     {
         GetPositions(out Vector2 left, out Vector2 mid, out Vector2 right);
-        transform.position = fadeFromRight ? right : left;
-        StartCoroutine(EnumeratorUtil.GoToInSecondsCurve(transform, mid, loadingScreenManager.FadeInCurve, loadingScreenManager.FadeInTime));
+        transform.localPosition = fadeFromRight ? right : left;
+        StartCoroutine(EnumeratorUtil.GoToInSecondsLocalCurve(transform, mid, loadingScreenManager.FadeInCurve, loadingScreenManager.FadeInTime));
     }
 
     public void FadeOut()
     {
         GetPositions(out Vector2 left, out Vector2 mid, out Vector2 right);
-        transform.position = mid;
-        StartCoroutine(EnumeratorUtil.GoToInSecondsCurve(transform, fadeFromRight ? left : right, loadingScreenManager.FadeOutCurve, loadingScreenManager.FadeOutTime));
+        transform.localPosition = mid;
+        StartCoroutine(EnumeratorUtil.GoToInSecondsLocalCurve(transform, fadeFromRight ? left : right, loadingScreenManager.FadeOutCurve, loadingScreenManager.FadeOutTime));
     }
 
     public void GetPositions(out Vector2 left, out Vector2 mid, out Vector2 right)
     {
-        float y = transform.position.y;
+        float y = transform.localPosition.y;
         left = new Vector2(loadingScreenManager.Left, y);
         right = new Vector2(loadingScreenManager.Right, y);
         mid = new Vector2(loadingScreenManager.Mid, y);

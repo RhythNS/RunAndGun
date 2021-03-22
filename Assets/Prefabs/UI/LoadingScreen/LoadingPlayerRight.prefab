@@ -40,7 +40,7 @@ PrefabInstance:
     - target: {fileID: 3887377393439464726, guid: 3a7c360d24066474d9aafa26bfeadfeb,
         type: 3}
       propertyPath: m_Pivot.y
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3887377393439464726, guid: 3a7c360d24066474d9aafa26bfeadfeb,
         type: 3}
@@ -120,7 +120,7 @@ PrefabInstance:
     - target: {fileID: 3887377393439464726, guid: 3a7c360d24066474d9aafa26bfeadfeb,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -415
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3887377393439464726, guid: 3a7c360d24066474d9aafa26bfeadfeb,
         type: 3}
@@ -140,7 +140,7 @@ PrefabInstance:
     - target: {fileID: 3887377393439464727, guid: 3a7c360d24066474d9aafa26bfeadfeb,
         type: 3}
       propertyPath: m_Name
-      value: FadeFromRight
+      value: LoadingPlayerRight
       objectReference: {fileID: 0}
     - target: {fileID: 3887377393610306924, guid: 3a7c360d24066474d9aafa26bfeadfeb,
         type: 3}

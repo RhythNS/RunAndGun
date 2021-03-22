@@ -48,7 +48,22 @@ public static class EnumeratorUtil
         do
         {
             timer += Time.deltaTime;
-            transform.position = Vector3.LerpUnclamped(oldPos, newPos, curve.Evaluate(timer));
+            transform.position = Vector3.LerpUnclamped(oldPos, newPos, curve.Evaluate(timer / seconds));
+            yield return null;
+        } while (timer < seconds);
+    }
+
+    public static IEnumerator GoToInSecondsLocalCurve(Transform transform, Vector2 position, AnimationCurve curve, float seconds)
+    {
+        Vector3 oldPos = transform.localPosition;
+        Vector3 newPos = position;
+        newPos.z = oldPos.z;
+
+        float timer = 0;
+        do
+        {
+            timer += Time.deltaTime;
+            transform.localPosition = Vector3.LerpUnclamped(oldPos, newPos, curve.Evaluate(timer / seconds));
             yield return null;
         } while (timer < seconds);
     }
