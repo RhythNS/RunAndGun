@@ -47,15 +47,7 @@ public class DebugGameStarter : MonoBehaviour
             roomGameObjects.Add(gos);
         }
 
-        DungeonConfig config = new DungeonConfig {
-            seed = int.MaxValue,
-            sizeX = 192,
-            sizeY = 192,
-            minRooms = 10,
-            maxRooms = 20,
-            corridorMinLength = Corridor.MIN_LENGTH,
-            corridorMaxLength = Corridor.MAX_LENGTH
-        };
-        DungeonDict.Instance.dungeon = DungeonCreator.Instance.dungeon = new Dungeon(roomLayouts.ToArray(), roomGameObjects.ToArray(), roomTypes.ToArray(), config);
+        DungeonConfig config = DungeonConfig.StandardConfig;
+        DungeonDict.Instance.dungeon = DungeonCreator.Instance.dungeon = new Dungeon(roomLayouts.ToArray(), roomGameObjects.ToArray(), roomTypes.ToArray(), int.MaxValue, config);
     }
 }

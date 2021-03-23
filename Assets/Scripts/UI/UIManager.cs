@@ -2,8 +2,8 @@
 
 public class UIManager : MonoBehaviour
 {
+    public Canvas Canvas => canvas;
     [SerializeField] Canvas canvas;
-
 
     [SerializeField] private LoadingScreenManager loadingScreenManager;
 

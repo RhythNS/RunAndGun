@@ -52,7 +52,7 @@ namespace MapGenerator
         /// <param name="roomGameObjects">The list of GameObjects that should be spawned for the rooms.</param>
         /// <param name="roomTypes">The list of GameObjects that should be spawned.</param>
         /// <param name="config">The data to use when generating the Dungeon.</param>
-        public Dungeon(Fast2DArray<int>[] roomLayouts, List<TiledImporter.PrefabLocations>[] roomGameObjects, RoomType[] roomTypes, DungeonConfig config) {
+        public Dungeon(Fast2DArray<int>[] roomLayouts, List<TiledImporter.PrefabLocations>[] roomGameObjects, RoomType[] roomTypes, int seed, DungeonConfig config) {
             Size = new Vector2Int(config.sizeX, config.sizeY);
             mapLayout = new Fast2DArray<TileType>(Size.x, Size.y);
             this.roomLayouts = new Fast2DArray<TileType>[roomLayouts.Length];
@@ -62,8 +62,8 @@ namespace MapGenerator
 
             List<Exit> exits = new List<Exit>();
 
-            if (config.seed != int.MaxValue)
-                Random.InitState(config.seed);
+            if (seed != int.MaxValue)
+                Random.InitState(seed);
 
             // generate starting room
             Room startRoom = new Room((int)(Size.x / 2f - this.roomLayouts[0].XSize / 2f), (int)(Size.y / 2f - this.roomLayouts[0].YSize / 2f), this.roomLayouts[0], this.roomGameObjects[0], this.roomTypes[0]);

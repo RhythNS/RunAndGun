@@ -4,7 +4,7 @@ using UnityEngine;
 public class PickableInWorld : NetworkBehaviour
 {
     public Pickable Pickable => pickable;
-    [SyncVar] private Pickable pickable;
+    [SyncVar] [SerializeField] private Pickable pickable;
 
     public bool IsBuyable => isBuyable;
     [SyncVar] private bool isBuyable;

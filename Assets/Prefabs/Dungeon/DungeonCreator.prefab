@@ -354,6 +354,7 @@ GameObject:
   - component: {fileID: 255864829474736525}
   - component: {fileID: 255864829474736513}
   - component: {fileID: 1943280074660795868}
+  - component: {fileID: 1069201255661392664}
   m_Layer: 0
   m_Name: DungeonCreator
   m_TagString: Untagged
@@ -417,16 +418,8 @@ MonoBehaviour:
   roomsContainer: {fileID: 255864828248015542}
   prefabDungeonRoom: {fileID: 2001813469135215906, guid: a3c3ffd6627ea1549b52a9cab5870543,
     type: 3}
-  prefabDoorLR: {fileID: 4715358251021290963, guid: 8a7952c49d21107488e9f853c3f469c5,
-    type: 3}
-  prefabDoorUD: {fileID: 6098499219195057442, guid: b2515d84382afd24796391c735f7120d,
-    type: 3}
   mask: {fileID: 818942727768279276}
-  pickableObjects:
-  - {fileID: 11400000, guid: 827216994d085974c970de0df9ff11d7, type: 2}
-  - {fileID: 11400000, guid: 8f9766ed3bc60ff4b87b7e191a1ec6cb, type: 2}
-  - {fileID: 11400000, guid: 37b7f573aa1f66d4faa905087592895c, type: 2}
-  - {fileID: 11400000, guid: ac7a3d27f5349fc4589c7af1ddc3ad4f, type: 2}
+  roomCreator: {fileID: 1069201255661392664}
   maxSize: {x: 192, y: 192}
   dungeonRooms: []
 --- !u!114 &255864829474736513
@@ -456,6 +449,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d8879c1dce90be142aca10a15851840b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1069201255661392664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 255864829474736524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7bacbbd3db4bc14d8ede3521ade8610, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &255864829719696090

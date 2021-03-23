@@ -9,7 +9,6 @@ public class GameMode : ScriptableObject
     public int levelAmount;
     //public GameRule[] gameRules;
     public int startingDifficulty;
-    public Pickable[] startingItems;
     public int minPlayers, maxPlayers;
     public DungeonConfig dungeonConfig;
     public void Init(int seed)

@@ -38,4 +38,8 @@ public class FMODTest : NetworkBehaviour
         eventInstance.setParameterByID(eventParameter, paraValue);
     }
 
+    private void OnDestroy()
+    {
+        eventInstance.release();
+    }
 }

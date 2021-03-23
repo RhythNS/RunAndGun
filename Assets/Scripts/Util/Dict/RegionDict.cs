@@ -23,7 +23,7 @@ public class RegionDict : MonoBehaviour
     /// </summary>
     public Pickable[] StartingRoomPickables => startingRoomPickables;
     [SerializeField] private Pickable[] startingRoomPickables;
-    
+
     /// <summary>
     /// The items to spawn at looting rooms.
     /// </summary>
@@ -41,6 +41,13 @@ public class RegionDict : MonoBehaviour
     /// </summary>
     public EnemyObject[] EnemiesToSpawn => enemiesToSpawn;
     [SerializeField] private EnemyObject[] enemiesToSpawn;
+
+    public GameObject PrefabDoorLR => prefabDoorLR;
+    [SerializeField] private GameObject prefabDoorLR;
+
+    public GameObject PrefabDoorUD => prefabDoorUD;
+    [SerializeField] private GameObject prefabDoorUD;
+
 
     private void OnDestroy()
     {

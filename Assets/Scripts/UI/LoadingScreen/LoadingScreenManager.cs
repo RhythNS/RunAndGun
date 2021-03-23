@@ -31,11 +31,11 @@ public class LoadingScreenManager : MonoBehaviour
     public void Show()
     {
         List<Player> players = PlayersDict.Instance.Players;
-        RectTransform parentRect = (RectTransform)transform;
 
-        float height = -parentRect.sizeDelta.y;
+        RectTransform parentRect = (RectTransform)transform;
+        float height = parentRect.rect.height;
         float quaterHeight = height * 0.25f;
-        float width = -parentRect.sizeDelta.x;
+        float width = parentRect.rect.width;
 
         Left = -width;
         Mid = 0.0f;
