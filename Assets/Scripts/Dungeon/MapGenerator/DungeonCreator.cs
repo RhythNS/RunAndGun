@@ -47,7 +47,7 @@ public class DungeonCreator : MonoBehaviour
     [SerializeField]
     private Vector2Int maxSize = Vector2Int.one;
 
-    private DungeonTimer timer = new DungeonTimer();
+    private DungeonTimer timer;
 
     #region UnityEvents
     private void Awake()
@@ -72,6 +72,7 @@ public class DungeonCreator : MonoBehaviour
     {
         Debug.Log("Creating dungeon with seed: " + seed);
 
+        timer = new DungeonTimer();
         timer.Start();
 
         yield return DestroyPreviousGameObjects();

@@ -19,6 +19,10 @@ public class Config : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
+#if !UNITY_EDITOR
+    fmodAudioDebugOverlayEnabled = false;
+#endif
+
         LoadValues();
     }
 
@@ -27,16 +31,37 @@ public class Config : MonoBehaviour
     /// </summary>
     private void LoadValues()
     {
+        switch (Application.platform)
+        {
+            case RuntimePlatform.OSXPlayer:
+            case RuntimePlatform.WindowsPlayer:
+            case RuntimePlatform.LinuxPlayer:
+                
+                targetFramesPerSecondLoadingScreen = 60;
+                break;
+
+            case RuntimePlatform.IPhonePlayer:
+            case RuntimePlatform.Android:
+                
+                targetFramesPerSecondLoadingScreen = 30;
+                break;
+
+            default:
+                break;
+        }
         // TODO: load some stuff
     }
 
-    // --- connection ---
+    // ---- Connection ----
     public string playerName = "Test";
     public CharacterType selectedPlayerType = CharacterType.Melee;
 
     // ---- Input ----
     public InputType selectedInput = InputType.KeyMouse;
     public bool useFocusPoint = true;
+
+    // Graphics
+    public int targetFramesPerSecondLoadingScreen = 60;
 
     private void OnDestroy()
     {
