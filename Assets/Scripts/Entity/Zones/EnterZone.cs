@@ -1,16 +1,20 @@
 ﻿using UnityEngine;
 
-public class ReadyZone : MonoBehaviour
+public abstract class EnterZone : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.TryGetComponent(out Player player) && player == Player.LocalPlayer)
-            player.StateCommunicator.CmdLobbySetReady(true);
+            OnEnter(player);
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.TryGetComponent(out Player player) && player == Player.LocalPlayer)
-            player.StateCommunicator.CmdLobbySetReady(false);
+            OnExit(player);
     }
+
+    public abstract void OnEnter(Player player);
+
+    public abstract void OnExit(Player player);
 }

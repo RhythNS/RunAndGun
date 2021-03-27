@@ -54,4 +54,10 @@ public class StateCommunicator : NetworkBehaviour
 
         bossAnimationFinished = true;
     }
+
+    [Command]
+    public void CmdChangeName(string newName)
+    {
+        GetComponent<Player>().userName = newName;
+    }
 }

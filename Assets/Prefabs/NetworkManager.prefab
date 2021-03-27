@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2660826429402068679}
   - component: {fileID: 2660826429402068678}
   - component: {fileID: 2660826429402068680}
-  - component: {fileID: 2660826429402068676}
+  - component: {fileID: -2718826132637339223}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -102,7 +102,7 @@ MonoBehaviour:
   clientMaxMessagesPerTick: 1000
   channels: 0204
   connectKey: MIRROR_LITENETLIB
---- !u!114 &2660826429402068676
+--- !u!114 &-2718826132637339223
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
