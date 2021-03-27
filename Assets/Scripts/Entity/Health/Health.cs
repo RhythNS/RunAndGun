@@ -2,6 +2,7 @@
 using UnityEngine;
 
 public delegate void ValueChanged(int prevValue, int newValue);
+public delegate void HealthPercentageChanged(float newValue);
 
 public class Health : NetworkBehaviour
 {
@@ -21,6 +22,7 @@ public class Health : NetworkBehaviour
     public event ValueChanged MaxChanged;
     public event ValueChanged CurrentChanged;
     public event ValueChanged DefenceChanged;
+    public event HealthPercentageChanged CurrentChangedAsPercentage;
 
     /// <summary>
     /// The current amount defence points.
@@ -154,6 +156,7 @@ public class Health : NetworkBehaviour
     {
         Debug.Log(gameObject.name + " health changed from " + prevHealth + " to " + currentHealth);
         CurrentChanged?.Invoke(prevHealth, currentHealth);
+        CurrentChangedAsPercentage?.Invoke((float)currentHealth / (float)max);
     }
 
     private void OnMaxChanged(int prevMax, int currentMax)

@@ -1,12 +1,12 @@
 ﻿using TMPro;
 using UnityEngine;
 
-public class PercentageAsText : MonoBehaviour
+public class PercentageAsText : PercentageAs
 {
     [SerializeField] private TMP_Text percentageText;
     [SerializeField] private string appendToValue = "%";
 
-    public void UpdateValue(float value)
+    public override void UpdateValue(float value)
     {
         value = Mathf.Clamp(value, 0.0f, 1.0f);
         percentageText.text = Mathf.RoundToInt(value * 100).ToString() + appendToValue;

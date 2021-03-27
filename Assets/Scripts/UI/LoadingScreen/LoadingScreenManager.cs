@@ -30,6 +30,7 @@ public class LoadingScreenManager : MonoBehaviour
 
     public void Show()
     {
+        gameObject.SetActive(true);
         List<Player> players = PlayersDict.Instance.Players;
 
         RectTransform parentRect = (RectTransform)transform;
@@ -94,5 +95,6 @@ public class LoadingScreenManager : MonoBehaviour
             Destroy(playerElements[i].gameObject);
         }
         playerElements.Clear();
+        gameObject.SetActive(false);
     }
 }
