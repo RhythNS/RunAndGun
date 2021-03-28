@@ -80,7 +80,7 @@ public abstract class RAGInput : MonoBehaviour
             }
             else
             {
-                if (weapon.IsFiring && !weapon.RequstStopFire)
+                if (weapon.IsFiring && !weapon.RequestStopFire)
                 {
                     weapon.StopFire();
                 }

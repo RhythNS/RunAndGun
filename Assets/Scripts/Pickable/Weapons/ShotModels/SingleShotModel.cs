@@ -10,6 +10,6 @@ public class SingleShotModel : ShotModel
     {
         equipped.Weapon.BulletSpawnModel.Shoot(equipped);
         yield return new WaitForSeconds(timeBetweenShots);
-        while (!equipped.RequstStopFire) yield return null;
+        while (!equipped.RequestStopFire) yield return null;
     }
 }

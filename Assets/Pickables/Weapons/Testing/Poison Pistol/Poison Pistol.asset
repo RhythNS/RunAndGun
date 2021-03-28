@@ -21,7 +21,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d34676ecb2805ee44b229b5c4562e24f, type: 2}
   shotModel: {fileID: 11400000, guid: 78a5f0ae289ac3e4da2c5a11bb84d97c, type: 2}
   bulletInfo: {fileID: 11400000, guid: ce3f19762d678e841ae30ec551788ab5, type: 2}
-  bulletPath: {fileID: 11400000, guid: fbf2163ea541ca243ad03a2710d7eda0, type: 2}
+  bulletPath: {fileID: 11400000, guid: 6ae02eee6b9440c4dbb3e7ceab369424, type: 2}
   bulletSpawnModel: {fileID: 11400000, guid: df098f7661ca9ed4a88a52d7ffdad406, type: 2}
   animator: {fileID: 9100000, guid: e86451f5629bc1f4abc4e94446a7cdd0, type: 2}
   weaponAnimatorType: 0
@@ -31,5 +31,5 @@ MonoBehaviour:
   accuracy: 75
   speed: 10
   baseDamage: 5
-  magazineSize: 8
+  magazineSize: 0
   reloadTime: 1

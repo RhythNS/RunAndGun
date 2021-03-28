@@ -8,7 +8,7 @@ public class FullAutomaticModel : ShotModel
 
     public override IEnumerator Shoot(EquippedWeapon equipped)
     {
-        while (!equipped.RequstStopFire && equipped.RemainingBullets > 0)
+        while (!equipped.RequestStopFire && equipped.RemainingBullets > 0)
         {
             equipped.Weapon.BulletSpawnModel.Shoot(equipped);
             yield return new WaitForSeconds(timeBetweenShots);
