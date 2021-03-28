@@ -10,26 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a92aee6a0c3882045b681e83aa44bfd7, type: 3}
-  m_Name: TestWeapon
+  m_Name: Burst Fire Rifle
   m_EditorClassIdentifier: 
-  id: 5
-  icon: {fileID: 7362661061344524757, guid: 4da522509089bb34193f504d220d2956, type: 3}
+  id: 1
+  icon: {fileID: -7903565074922245131, guid: 4da522509089bb34193f504d220d2956, type: 3}
   instantPickup: 0
   costs: 0
   effects:
   - {fileID: 11400000, guid: 2d9bbabe9d4771846a111a28561667b1, type: 2}
-  - {fileID: 11400000, guid: eae9417836af98c4d8e50581cf3990dc, type: 2}
-  shotModel: {fileID: 11400000, guid: da8245afe2fd8484da7be94c1cf0550e, type: 2}
-  bulletInfo: {fileID: 11400000, guid: cff976ac23e0bd84eb1d41e4556d9ea2, type: 2}
+  - {fileID: 11400000, guid: d34676ecb2805ee44b229b5c4562e24f, type: 2}
+  shotModel: {fileID: 11400000, guid: 7d00bbf15591eba49b28b50d0fbdcfc3, type: 2}
+  bulletInfo: {fileID: 11400000, guid: ce3f19762d678e841ae30ec551788ab5, type: 2}
   bulletPath: {fileID: 11400000, guid: 6ae02eee6b9440c4dbb3e7ceab369424, type: 2}
-  bulletSpawnModel: {fileID: 11400000, guid: 9cce36ab2ab7a954497b8496de02efe8, type: 2}
+  bulletSpawnModel: {fileID: 11400000, guid: df098f7661ca9ed4a88a52d7ffdad406, type: 2}
   animator: {fileID: 9100000, guid: e86451f5629bc1f4abc4e94446a7cdd0, type: 2}
   weaponAnimatorType: 0
   targetMode: 1
   useLocalSpace: 0
-  range: 20
-  accuracy: 0
+  range: 25
+  accuracy: 90
   speed: 10
-  baseDamage: 20
-  magazineSize: 8
-  reloadTime: 1
+  baseDamage: 8
+  magazineSize: 21
+  reloadTime: 1.5

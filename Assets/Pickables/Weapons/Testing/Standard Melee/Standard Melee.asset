@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a92aee6a0c3882045b681e83aa44bfd7, type: 3}
   m_Name: Standard Melee
   m_EditorClassIdentifier: 
-  id: 5
-  icon: {fileID: 21300000, guid: 07103c52b3aaeca4da8a83361edd059f, type: 3}
+  id: 6
+  icon: {fileID: -364090565672636624, guid: 0701bdb4ed5c3c34489c17d3191c3455, type: 3}
   instantPickup: 0
   costs: 0
   effects:
