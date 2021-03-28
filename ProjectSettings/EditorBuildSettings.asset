@@ -6,9 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/RhyTestScenes/LobbyScene.unity
+    path: Assets/Scenes/RhyTestScenes/StartScene.unity
     guid: 72d6bcf05f6220145ab70d64d8b3e23c
   - enabled: 1
     path: Assets/Scenes/Regions/DebugRegion.unity
     guid: 1e6e52b2cbbb3cd4fac3262aebeebaf6
+  - enabled: 1
+    path: Assets/Scenes/Regions/LobbyRegion.unity
+    guid: 7d10b00839ca97c40ac7ca1f733f874b
   m_configObjects: {}

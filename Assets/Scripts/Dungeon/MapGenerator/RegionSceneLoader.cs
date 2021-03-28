@@ -24,9 +24,14 @@ public class RegionSceneLoader : MonoBehaviour
     public IEnumerator LoadScene(GenerateLevelMessage generateLevelMessage)
     {
         this.generateLevelMessage = generateLevelMessage;
+        yield return LoadScene(generateLevelMessage.region);
+    }
+
+    public IEnumerator LoadScene(Region region)
+    {
         if (RegionDict.Instance)
         {
-            if (RegionDict.Instance.Region == generateLevelMessage.region)
+            if (RegionDict.Instance.Region == region)
                 yield break;
 
             AsyncOperation unLoad = SceneManager.UnloadSceneAsync(RegionSceneDict.Instance.GetSceneName(RegionDict.Instance.Region));
@@ -34,7 +39,7 @@ public class RegionSceneLoader : MonoBehaviour
             numberOfOperationsNotDone++;
         }
 
-        AsyncOperation load = SceneManager.LoadSceneAsync(RegionSceneDict.Instance.GetSceneName(generateLevelMessage.region), LoadSceneMode.Additive);
+        AsyncOperation load = SceneManager.LoadSceneAsync(RegionSceneDict.Instance.GetSceneName(region), LoadSceneMode.Additive);
         load.completed += OperationFinished;
         numberOfOperationsNotDone++;
 

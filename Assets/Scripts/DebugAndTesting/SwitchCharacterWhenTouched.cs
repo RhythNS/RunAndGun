@@ -15,7 +15,7 @@ public class SwitchCharacterWhenTouched : MonoBehaviour
             JoinMessage joinMessage = new JoinMessage()
             {
                 characterType = toSwitchTo,
-                name = Config.Instance.name
+                name = player.userName
             };
             NetworkClient.Send(joinMessage);
         }

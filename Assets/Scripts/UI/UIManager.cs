@@ -8,6 +8,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private LoadingScreenManager loadingScreenManager;
     [SerializeField] private InGameManager inGameManager;
 
+    public OptionsUIManager OptionsManager => optionsManager;
+    [SerializeField] private OptionsUIManager optionsManager;
+
     public static UIManager Instance { get; private set; }
     private MobileUIManager mobileUiManager;
 
@@ -34,20 +37,11 @@ public class UIManager : MonoBehaviour
         inGameManager.RegisterEvents(player);
     }
 
-    public void OnLocalPlayerDeleted()
-    {
-        inGameManager.UnRegisterEvents();
-    }
+    public void OnLocalPlayerDeleted() => inGameManager.UnRegisterEvents();
 
-    public void ShowLevelLoadScreen()
-    {
-        loadingScreenManager.Show();
-    }
+    public void ShowLevelLoadScreen() => loadingScreenManager.Show();
 
-    public void HideLevelLoadScreen()
-    {
-        loadingScreenManager.Hide();
-    }
+    public void HideLevelLoadScreen() => loadingScreenManager.Hide();
 
     private void OnDestroy()
     {

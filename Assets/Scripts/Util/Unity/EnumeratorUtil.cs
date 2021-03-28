@@ -8,6 +8,14 @@ public static class EnumeratorUtil
         yield return new WaitForSeconds(seconds);
     }
 
+    public static IEnumerator Sequence(params IEnumerator[] enumerators)
+    {
+        for (int i = 0; i < enumerators.Length; i++)
+        {
+            yield return enumerators[i];
+        }
+    }
+
     public static IEnumerator GoToInSecondsLerp(Transform transform, Vector2 position, float seconds)
     {
         Vector3 oldPos = transform.position;
