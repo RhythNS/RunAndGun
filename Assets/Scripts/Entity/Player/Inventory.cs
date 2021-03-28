@@ -1,7 +1,4 @@
 ﻿using Mirror;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class Inventory : NetworkBehaviour
 {
@@ -10,7 +7,9 @@ public class Inventory : NetworkBehaviour
     public SyncList<Item> Items => items;
     private readonly SyncList<Item> items = new SyncList<Item>();
 
-    [SyncVar] public int money;
+    [SyncVar(hook = nameof(OnMoneyChanged))] public int money;
+
+    public event IntChanged OnMoneyAmountChanged;
 
     private void Awake()
     {
@@ -38,4 +37,8 @@ public class Inventory : NetworkBehaviour
             PickableInWorld.Place(item, transform.position);
     }
 
+    private void OnMoneyChanged(int previousMoney, int currentMoney)
+    {
+        OnMoneyAmountChanged?.Invoke(currentMoney);
+    }
 }

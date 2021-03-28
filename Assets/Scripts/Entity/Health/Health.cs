@@ -1,9 +1,6 @@
 ﻿using Mirror;
 using UnityEngine;
 
-public delegate void ValueChanged(int prevValue, int newValue);
-public delegate void HealthPercentageChanged(float newValue);
-
 public class Health : NetworkBehaviour
 {
     /// <summary>
@@ -19,9 +16,9 @@ public class Health : NetworkBehaviour
     /// </summary>
     [SyncVar(hook = nameof(OnDefenceChanged))] private int defence = 10;
 
-    public event ValueChanged MaxChanged;
-    public event ValueChanged CurrentChanged;
-    public event ValueChanged DefenceChanged;
+    public event IntChangedWithPrev MaxChanged;
+    public event IntChangedWithPrev CurrentChanged;
+    public event IntChangedWithPrev DefenceChanged;
     public event HealthPercentageChanged CurrentChangedAsPercentage;
 
     /// <summary>

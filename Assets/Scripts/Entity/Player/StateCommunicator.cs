@@ -1,7 +1,5 @@
 ﻿using Mirror;
 
-public delegate void PercentageChanged(float percentage);
-
 public class StateCommunicator : NetworkBehaviour
 {
     public bool lobbyReady = false;

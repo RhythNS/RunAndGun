@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EquippedWeapon : NetworkBehaviour
 {
+    public delegate void ReloadingWeapon(float reloadTime);
+
     /// <summary>
     /// Checks if the weapon can be fired.
     /// </summary>
@@ -33,6 +35,10 @@ public class EquippedWeapon : NetworkBehaviour
     public Vector2 BulletSpawnPosition => transform.position; // TODO: Change to acctual value
     public NetworkWeaponAnimator NetworkWeaponAnimator;
 
+    public event WeaponChanged WeaponChanged;
+    public event IntChanged BulletCountChanged;
+    public event ReloadingWeapon ReloadingBegins;
+
     [SerializeField] [SyncVar] private int bulletLayerSpawn;
     [SerializeField] [SyncVar(hook = nameof(OnWeaponChanged))] private Weapon weapon;
     [SerializeField] int remainingBullets;
@@ -58,6 +64,7 @@ public class EquippedWeapon : NetworkBehaviour
     {
         --remainingBullets;
         NetworkWeaponAnimator.OnSingleShotFired();
+        BulletCountChanged?.Invoke(remainingBullets);
     }
 
     /// <summary>
@@ -76,6 +83,7 @@ public class EquippedWeapon : NetworkBehaviour
     {
         remainingBullets = weapon.MagazineSize;
         NetworkWeaponAnimator.OnStoppedReload();
+        BulletCountChanged?.Invoke(remainingBullets);
     }
 
     /// <summary>
@@ -86,6 +94,7 @@ public class EquippedWeapon : NetworkBehaviour
     private void OnWeaponChanged(Weapon _, Weapon newWeapon)
     {
         NetworkWeaponAnimator.OnWeaponChanged(newWeapon);
+        WeaponChanged?.Invoke(newWeapon);
     }
     #endregion
 
@@ -152,6 +161,7 @@ public class EquippedWeapon : NetworkBehaviour
         {
             reloadCoroutine = ExtendedCoroutine.ActionAfterSeconds(this, weapon.ReloadTime, OnReloaded, true);
             NetworkWeaponAnimator.OnStartedReload();
+            ReloadingBegins?.Invoke(weapon.ReloadTime);
             return true;
         }
         return false;
