@@ -117,9 +117,9 @@ public abstract class DungeonRoom : MonoBehaviour
     /// </summary>
     public void OnCloseDoors()
     {
-        foreach (var door in doors)
+        for (int i = 0; i < doors.Count; i++)
         {
-            door.IsLocked = true;
+            doors[i].IsLocked = true;
         }
     }
 
@@ -144,9 +144,9 @@ public abstract class DungeonRoom : MonoBehaviour
     /// </summary>
     public void OnOpenDoors()
     {
-        foreach (var door in doors)
+        for (int i = 0; i < doors.Count; i++)
         {
-            door.IsLocked = false;
+            doors[i].IsLocked = false;
         }
     }
 

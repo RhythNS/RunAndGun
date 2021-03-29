@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3990865551002923285}
   - component: {fileID: 3990865551002923282}
   - component: {fileID: 4443589626076728469}
+  - component: {fileID: 3320447146308217081}
   m_Layer: 5
   m_Name: User Interface
   m_TagString: Untagged
@@ -118,6 +119,27 @@ MonoBehaviour:
   loadingScreenManager: {fileID: 2487705255469638035}
   inGameManager: {fileID: 3990865550880839690}
   optionsManager: {fileID: 3990865550715924730}
+--- !u!114 &3320447146308217081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3990865551002923283}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 451a5ff008e3e9e46965169220d9df01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - sound: 0
+    eventName: event:/UI/TextboxTyped
+  - sound: 1
+    eventName: event:/UI/TextboxBackspace
+  - sound: 2
+    eventName: event:/UI/Confirm
+  - sound: 3
+    eventName: event:/UI/Cancel
 --- !u!1001 &778011296847979579
 PrefabInstance:
   m_ObjectHideFlags: 0

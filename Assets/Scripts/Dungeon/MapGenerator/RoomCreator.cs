@@ -112,7 +112,7 @@ namespace MapGenerator
                 GameObject door = Instantiate(doorLoc.IsLeftRight ? prefabDoorLR : prefabDoorUD,
                     new Vector3(doorLoc.Position.x + 0.5f, doorLoc.Position.y + 0.5f, 0f), Quaternion.identity);
 
-                DungeonDoor dungeonDoor = door.AddComponent<DungeonDoor>();
+                DungeonDoor dungeonDoor = door.GetComponent<DungeonDoor>();
                 dungeonDoor.IsLeftRight = doorLoc.IsLeftRight;
 
                 door.transform.parent = dungeonRoomObject.transform;

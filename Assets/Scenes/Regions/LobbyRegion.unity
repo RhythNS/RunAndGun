@@ -836,56 +836,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &907547694
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 907547696}
-  - component: {fileID: 907547695}
-  m_Layer: 0
-  m_Name: LobbyRegion
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &907547695
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 907547694}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe1cfbdae089f894fbb9e96618c170f9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  region: 1
-  startingRoomPickables: []
-  lootingRoomPickables: []
-  bossesToSpawn: []
-  enemiesToSpawn: []
-  prefabDoorLR: {fileID: 0}
-  prefabDoorUD: {fileID: 0}
---- !u!4 &907547696
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 907547694}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &918871866
 GameObject:
   m_ObjectHideFlags: 0
@@ -1284,6 +1234,7 @@ GameObject:
   - component: {fileID: 1667473467}
   - component: {fileID: 1667473470}
   - component: {fileID: 1667473471}
+  - component: {fileID: 1667473472}
   m_Layer: 0
   m_Name: Portal
   m_TagString: Untagged
@@ -1413,6 +1364,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49625a803b4dd0f44af9b9701ddb2575, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1667473472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1667473466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  Event: event:/Weapons/Default/Shoot
+  PlayEvent: 1
+  StopEvent: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 0
+  OverrideMaxDistance: 0
 --- !u!1 &1736331635
 GameObject:
   m_ObjectHideFlags: 0
@@ -6585,3 +6559,72 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
+--- !u!1001 &381073050106263995
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 381073051012754827, guid: f390158e936a5ad43bb0d99a83795b25,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 381073051012754827, guid: f390158e936a5ad43bb0d99a83795b25,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 381073051012754827, guid: f390158e936a5ad43bb0d99a83795b25,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 381073051012754827, guid: f390158e936a5ad43bb0d99a83795b25,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 381073051012754827, guid: f390158e936a5ad43bb0d99a83795b25,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 381073051012754827, guid: f390158e936a5ad43bb0d99a83795b25,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 381073051012754827, guid: f390158e936a5ad43bb0d99a83795b25,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 381073051012754827, guid: f390158e936a5ad43bb0d99a83795b25,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 381073051012754827, guid: f390158e936a5ad43bb0d99a83795b25,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 381073051012754827, guid: f390158e936a5ad43bb0d99a83795b25,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 381073051012754827, guid: f390158e936a5ad43bb0d99a83795b25,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 381073051012754837, guid: f390158e936a5ad43bb0d99a83795b25,
+        type: 3}
+      propertyPath: m_Name
+      value: LobbyRegion
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f390158e936a5ad43bb0d99a83795b25, type: 3}

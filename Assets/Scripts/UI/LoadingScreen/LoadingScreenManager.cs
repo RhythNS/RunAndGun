@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using FMODUnity;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -25,6 +26,9 @@ public class LoadingScreenManager : MonoBehaviour
     [SerializeField] private LoadingPlayerElement emptyPrefab;
 
     [SerializeField] private Color notConnectedColor;
+
+    [SerializeField] [EventRef] private string loadingStartSound;
+    [SerializeField] [EventRef] private string loadingEndSound;
 
     private readonly List<LoadingPlayerElement> playerElements = new List<LoadingPlayerElement>();
 
@@ -55,6 +59,7 @@ public class LoadingScreenManager : MonoBehaviour
 
     private IEnumerator InnerShow()
     {
+        FMODUtil.PlayOneShot(loadingStartSound);
         for (int i = 0; i < playerElements.Count; i++)
         {
             playerElements[i].FadeIn();
@@ -83,6 +88,7 @@ public class LoadingScreenManager : MonoBehaviour
 
     private IEnumerator InnerHide()
     {
+        FMODUtil.PlayOneShot(loadingEndSound);
         for (int i = 0; i < playerElements.Count; i++)
         {
             playerElements[i].FadeOut();

@@ -1,4 +1,5 @@
-﻿using Mirror;
+﻿using FMODUnity;
+using Mirror;
 using Smooth;
 using UnityEngine;
 
@@ -11,6 +12,8 @@ public class Player : Entity
 
     [SyncVar(hook = nameof(OnNameChanged))] public string userName;
     [SyncVar] public int playerId;
+
+    [SerializeField] [EventRef] private string itemPickUpSound;
 
     public static Player LocalPlayer { get; private set; }
 
@@ -55,7 +58,8 @@ public class Player : Entity
         sr.sortingOrder = (int)transform.position.y * -2 + 1;
     }
 
-    private void LateUpdate() {
+    private void LateUpdate()
+    {
         lastPosition = transform.position;
     }
 
@@ -76,8 +80,10 @@ public class Player : Entity
         Config.Instance.selectedPlayerType = characterType;
         Input = RAGInput.AttachInput(gameObject);
         UIManager.Instance.OnLocalPlayerStarted(this, Input.InputType);
+        MusicManager.Instance.RegisterPlayer(this);
         Camera.main.GetComponent<PlayerCamera>().ToFollow = transform;
         PlayerAnimationController = gameObject.AddComponent<PlayerAnimationController>();
+        gameObject.AddComponent<StudioListener>();
     }
 
     /// <summary>
@@ -92,12 +98,12 @@ public class Player : Entity
 
         Pickable pickable = piw.Pickable;
 
-        if (piw.IsBuyable) {
-            if (Inventory.money >= pickable.Costs) {
-                Inventory.money -= (int)pickable.Costs;
-            } else {
+        if (piw.IsBuyable)
+        {
+            if (Inventory.money < pickable.Costs)
                 return;
-            }
+
+            Inventory.money -= (int)pickable.Costs;
         }
 
         switch (pickable.PickableType)
@@ -118,7 +124,27 @@ public class Player : Entity
                 Debug.LogError("Type " + pickable.PickableType + " not implemented!");
                 break;
         }
+
+        RpcItemPickedUp(pickable);
+
         Destroy(pickup);
+    }
+
+    [TargetRpc]
+    private void RpcItemPickedUp(Pickable pickable)
+    {
+        switch (pickable.PickableType)
+        {
+            case PickableType.Consumable:
+            case PickableType.Item:
+                FMODUtil.PlayOnTransform(itemPickUpSound, transform);
+                break;
+            case PickableType.Weapon:
+                FMODUtil.PlayOnTransform(((Weapon)pickable).WeaponSoundModel.EquipSound, transform);
+                break;
+            case PickableType.StatusEffect:
+                break;
+        }
     }
 
     [Command]
@@ -205,6 +231,8 @@ public class Player : Entity
             PlayersDict.Instance.DeRegister(this);
         if (UIManager.Instance)
             UIManager.Instance.OnLocalPlayerDeleted();
+        if (MusicManager.Instance)
+            MusicManager.Instance.DeRegisterPlayer();
         if (LocalPlayer == this)
             LocalPlayer = null;
     }

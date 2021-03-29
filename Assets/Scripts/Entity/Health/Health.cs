@@ -1,4 +1,5 @@
-﻿using Mirror;
+﻿using FMODUnity;
+using Mirror;
 using UnityEngine;
 
 public class Health : NetworkBehaviour
@@ -15,6 +16,9 @@ public class Health : NetworkBehaviour
     /// The current amount of defence points.
     /// </summary>
     [SyncVar(hook = nameof(OnDefenceChanged))] private int defence = 10;
+
+    [SerializeField] [EventRef] private string hitSound;
+    [SerializeField] [EventRef] private string diedSound;
 
     public event IntChangedWithPrev MaxChanged;
     public event IntChangedWithPrev CurrentChanged;
@@ -140,6 +144,7 @@ public class Health : NetworkBehaviour
     [ClientRpc]
     private void RpcOnDied()
     {
+        FMODUtil.PlayOnTransform(diedSound, transform);
         if (!isServer)
             GetComponent<IDieable>().Die();
     }
@@ -154,6 +159,9 @@ public class Health : NetworkBehaviour
         Debug.Log(gameObject.name + " health changed from " + prevHealth + " to " + currentHealth);
         CurrentChanged?.Invoke(prevHealth, currentHealth);
         CurrentChangedAsPercentage?.Invoke((float)currentHealth / (float)max);
+
+        if (prevHealth > currentHealth)
+            FMODUtil.PlayOnTransform(hitSound, transform);
     }
 
     private void OnMaxChanged(int prevMax, int currentMax)

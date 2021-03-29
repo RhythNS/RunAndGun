@@ -115,6 +115,8 @@ MonoBehaviour:
   emptyPrefab: {fileID: 5039350707131606025, guid: d262f22bcdb70f64e9d56390b01ed37d,
     type: 3}
   notConnectedColor: {r: 0.3584906, g: 0.3584906, b: 0.3584906, a: 1}
+  loadingStartSound: event:/Universal Dungeon Sounds/LoadingStart
+  loadingEndSound: event:/Universal Dungeon Sounds/LoadingEnd
 --- !u!114 &1746210306519318778
 MonoBehaviour:
   m_ObjectHideFlags: 0

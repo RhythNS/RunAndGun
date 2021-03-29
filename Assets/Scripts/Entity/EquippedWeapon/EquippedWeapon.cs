@@ -64,6 +64,7 @@ public class EquippedWeapon : NetworkBehaviour
     {
         --remainingBullets;
         NetworkWeaponAnimator.OnSingleShotFired();
+        FMODUtil.PlayOnTransform(weapon.WeaponSoundModel.ShootSound, transform);
         BulletCountChanged?.Invoke(remainingBullets);
     }
 
@@ -83,6 +84,7 @@ public class EquippedWeapon : NetworkBehaviour
     {
         remainingBullets = weapon.MagazineSize;
         NetworkWeaponAnimator.OnStoppedReload();
+        FMODUtil.PlayOnTransform(weapon.WeaponSoundModel.ReloadSound, transform);
         BulletCountChanged?.Invoke(remainingBullets);
     }
 
@@ -120,6 +122,12 @@ public class EquippedWeapon : NetworkBehaviour
     /// </summary>
     public bool StartFire()
     {
+        if (HasBulletsLeft == false)
+        {
+            FMODUtil.PlayOnTransform(weapon.WeaponSoundModel.EmptyClipSound, transform);
+            return false;
+        }
+
         if (!CanFire)
             return false;
 
