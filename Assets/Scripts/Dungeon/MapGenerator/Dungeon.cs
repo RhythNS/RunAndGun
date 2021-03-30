@@ -361,7 +361,7 @@ namespace MapGenerator
                 case Direction.Up:
                     for (int x = -2; x < corridor.Size.x + 2; x++) {
                         for (int y = 0; y < corridor.Size.y + 2; y++) {
-                            if (mapLayout[corridor.Position.x + x, corridor.Position.y + y] != TileType.Wall) {
+                            if (!mapLayout.InBounds(corridor.Position.x + x, corridor.Position.y + y) || mapLayout[corridor.Position.x + x, corridor.Position.y + y] != TileType.Wall) {
                                 return false;
                             }
                         }
@@ -371,7 +371,7 @@ namespace MapGenerator
                 case Direction.Down:
                     for (int x = -2; x < corridor.Size.x + 2; x++) {
                         for (int y = -2; y < corridor.Size.y; y++) {
-                            if (mapLayout[corridor.Position.x + x, corridor.Position.y + y] != TileType.Wall) {
+                            if (!mapLayout.InBounds(corridor.Position.x + x, corridor.Position.y + y) || mapLayout[corridor.Position.x + x, corridor.Position.y + y] != TileType.Wall) {
                                 return false;
                             }
                         }
@@ -381,7 +381,7 @@ namespace MapGenerator
                 case Direction.Left:
                     for (int x = -2; x < corridor.Size.x; x++) {
                         for (int y = -2; y < corridor.Size.y + 3; y++) {
-                            if (mapLayout[corridor.Position.x + x, corridor.Position.y + y] != TileType.Wall) {
+                            if (!mapLayout.InBounds(corridor.Position.x + x, corridor.Position.y + y) || mapLayout[corridor.Position.x + x, corridor.Position.y + y] != TileType.Wall) {
                                 return false;
                             }
                         }
@@ -391,7 +391,7 @@ namespace MapGenerator
                 case Direction.Right:
                     for (int x = 0; x < corridor.Size.x + 2; x++) {
                         for (int y = -2; y < corridor.Size.y + 2; y++) {
-                            if (mapLayout[corridor.Position.x + x, corridor.Position.y + y] != TileType.Wall) {
+                            if (!mapLayout.InBounds(corridor.Position.x + x, corridor.Position.y + y) || mapLayout[corridor.Position.x + x, corridor.Position.y + y] != TileType.Wall) {
                                 return false;
                             }
                         }
