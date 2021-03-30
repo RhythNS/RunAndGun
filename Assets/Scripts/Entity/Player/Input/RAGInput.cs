@@ -54,7 +54,7 @@ public abstract class RAGInput : MonoBehaviour
 
     private void Update()
     {
-        if (useFocusPoint && HasFocusPoint)
+        //if (useFocusPoint && HasFocusPoint)
             playerCamera.focusPoint = GetFocusPoint();
 
         // If the player is dashing dont listen to other input.
@@ -118,7 +118,7 @@ public abstract class RAGInput : MonoBehaviour
 
     protected virtual bool HasFocusPoint => false;
 
-    protected virtual Vector2 GetFocusPoint() { return new Vector2(0.0f, 0.0f); }
+    protected virtual Vector2 GetFocusPoint() { return transform.position; }
 
     /// <summary>
     /// Called after all internal values of RAGInput have been set. Should be treated as the

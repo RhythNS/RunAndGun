@@ -19,10 +19,6 @@ public class Config : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-#if !UNITY_EDITOR
-    fmodAudioDebugOverlayEnabled = false;
-#endif
-
         LoadValues();
     }
 
@@ -33,17 +29,22 @@ public class Config : MonoBehaviour
     {
         switch (Application.platform)
         {
+            case RuntimePlatform.WindowsEditor:
+            case RuntimePlatform.OSXEditor:
+            case RuntimePlatform.LinuxEditor:
             case RuntimePlatform.OSXPlayer:
             case RuntimePlatform.WindowsPlayer:
             case RuntimePlatform.LinuxPlayer:
-                
+
                 targetFramesPerSecondLoadingScreen = 60;
+                selectedInput = InputType.KeyMouse;
                 break;
 
             case RuntimePlatform.IPhonePlayer:
             case RuntimePlatform.Android:
-                
+
                 targetFramesPerSecondLoadingScreen = 30;
+                selectedInput = InputType.Mobile;
                 break;
 
             default:
