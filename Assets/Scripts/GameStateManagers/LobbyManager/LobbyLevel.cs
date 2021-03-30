@@ -18,6 +18,7 @@ public class LobbyLevel : MonoBehaviour
     public void Show()
     {
         gameObject.SetActive(true);
+        MusicManager.Instance.ChangeState(MusicManager.State.Lobby);
     }
 
     public void Hide()

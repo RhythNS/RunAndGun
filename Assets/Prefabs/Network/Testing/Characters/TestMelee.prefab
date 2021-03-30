@@ -405,6 +405,7 @@ MonoBehaviour:
   characterType: 0
   userName: 
   playerId: 0
+  itemPickUpSound: event:/Universal Dungeon Sounds/PlayerPickup
 --- !u!114 &2103416701
 MonoBehaviour:
   m_ObjectHideFlags: 0

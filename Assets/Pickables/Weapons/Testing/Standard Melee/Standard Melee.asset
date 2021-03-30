@@ -33,3 +33,4 @@ MonoBehaviour:
   baseDamage: 1000
   magazineSize: 10000
   reloadTime: 0
+  weaponSoundModel: {fileID: 11400000, guid: 4dfacabd7a3ffbf45877e7be8b8217dd, type: 2}

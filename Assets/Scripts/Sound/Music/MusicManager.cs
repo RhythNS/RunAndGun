@@ -15,6 +15,7 @@ public class MusicManager : MonoBehaviour
 
     private EventInstance instance;
     PARAMETER_ID healthParameter;
+    PARAMETER_ID stateParameter;
     private State currentState = State.None;
 
     private void Awake()
@@ -33,7 +34,11 @@ public class MusicManager : MonoBehaviour
         instance = RuntimeManager.CreateInstance(eventName);
         instance.getDescription(out EventDescription description);
         description.getParameterDescriptionByName("Health", out PARAMETER_DESCRIPTION healthDesc);
+        description.getParameterDescriptionByName("State", out PARAMETER_DESCRIPTION stateDesc);
         healthParameter = healthDesc.id;
+        stateParameter = stateDesc.id;
+
+        instance.start();
     }
 
     public void RegisterPlayer(Player player)
@@ -61,6 +66,7 @@ public class MusicManager : MonoBehaviour
             return;
 
         currentState = state;
+        instance.setParameterByID(stateParameter, (int)state);
     }
 
     private void OnDestroy()

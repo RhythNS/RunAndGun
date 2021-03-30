@@ -73,6 +73,7 @@ public class RAGNetworkManager : NobleNetworkManager
     private void OnStartGameMessage(StartGameMessage startGameMessage)
     {
         LobbyLevel.Instance.Hide();
+        MusicManager.Instance.ChangeState(MusicManager.State.None);
 
         if (!Player.LocalPlayer || Player.LocalPlayer.isServer)
         {
@@ -121,10 +122,12 @@ public class RAGNetworkManager : NobleNetworkManager
         }
 
         (DungeonDict.Instance.Get(bossSpawnMessage.id) as BossRoom).StartBossAnimation(bossSpawnMessage);
+        MusicManager.Instance.ChangeState(MusicManager.State.Boss);
     }
 
     private void OnEveryoneLoadedMessage(EveryoneLoadedMessage everyoneLoadedMessage)
     {
         UIManager.Instance.HideLevelLoadScreen();
+        MusicManager.Instance.ChangeState(MusicManager.State.Dungeon);
     }
 }
