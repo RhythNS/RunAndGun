@@ -11,7 +11,7 @@ public class EquippedWeapon : NetworkBehaviour
     /// <summary>
     /// Checks if the weapon should stop firing.
     /// </summary>
-    public bool RequestStopFire => requstStopFire;
+    public bool RequestStopFire => requestStopFire;
     /// <summary>
     /// Checks if the weapon is currently firing.
     /// </summary>
@@ -36,7 +36,7 @@ public class EquippedWeapon : NetworkBehaviour
     [SerializeField] [SyncVar] private int bulletLayerSpawn;
     [SerializeField] [SyncVar(hook = nameof(OnWeaponChanged))] private Weapon weapon;
     [SerializeField] int remainingBullets;
-    [SerializeField] private bool requstStopFire;
+    [SerializeField] private bool requestStopFire;
     private Vector2 localDirection;
 
     private ExtendedCoroutine fireCoroutine;
@@ -65,7 +65,7 @@ public class EquippedWeapon : NetworkBehaviour
     /// </summary>
     public void OnStopFiring()
     {
-        requstStopFire = false;
+        requestStopFire = false;
         NetworkWeaponAnimator.OnStoppedFire();
     }
 
@@ -140,7 +140,7 @@ public class EquippedWeapon : NetworkBehaviour
     /// </summary>
     public void StopFire()
     {
-        requstStopFire = true;
+        requestStopFire = true;
     }
 
     /// <summary>

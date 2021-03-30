@@ -17,7 +17,6 @@ MonoBehaviour:
   instantPickup: 0
   costs: 0
   effects:
-  - {fileID: 11400000, guid: 4be70e225fb64434d9d83a29a5003ca5, type: 2}
   - {fileID: 11400000, guid: d34676ecb2805ee44b229b5c4562e24f, type: 2}
   shotModel: {fileID: 11400000, guid: 78a5f0ae289ac3e4da2c5a11bb84d97c, type: 2}
   bulletInfo: {fileID: 11400000, guid: ce3f19762d678e841ae30ec551788ab5, type: 2}

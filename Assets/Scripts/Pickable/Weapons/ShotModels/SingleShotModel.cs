@@ -4,7 +4,8 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Pickable/Weapon/ShotModel/SingleShot")]
 public class SingleShotModel : ShotModel
 {
-    [SerializeField] private float timeBetweenShots;
+    [SerializeField] [Tooltip("How much time is in between individual rounds (in seconds).")]
+    private float timeBetweenShots;
 
     public override IEnumerator Shoot(EquippedWeapon equipped)
     {

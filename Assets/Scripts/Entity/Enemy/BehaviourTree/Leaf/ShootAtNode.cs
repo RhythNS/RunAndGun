@@ -42,6 +42,15 @@ public class ShootAtNode : BNodeAdapter
                 CurrentStatus = Status.Failure;
                 return;
             }
+            else
+            {
+                // Check, if weapon uses some kind of "single trigger pull" weapon and stop firing
+                System.Type shotModel = weapon.Weapon.ShotModel.GetType();
+                if (shotModel == typeof(SingleShotModel) || shotModel == typeof(BurstFireModel))
+                {
+                    weapon.StopFire();
+                }
+            }
 
             return;
         }
