@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.01.00">
+	<object class="AudioFile" id="{c1d3cff9-e8c0-4bff-baba-7c98476695ee}">
+		<property name="assetPath">
+			<value>sfx_weapon_singleshot10.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>1</value>
+		</property>
+		<property name="length">
+			<value>0.15575963718820862</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{49c338c0-ed80-41ea-a0f8-ae66f0696afb}</destination>
+		</relationship>
+	</object>
+</objects>

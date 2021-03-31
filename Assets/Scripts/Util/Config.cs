@@ -27,16 +27,42 @@ public class Config : MonoBehaviour
     /// </summary>
     private void LoadValues()
     {
+        switch (Application.platform)
+        {
+            case RuntimePlatform.WindowsEditor:
+            case RuntimePlatform.OSXEditor:
+            case RuntimePlatform.LinuxEditor:
+            case RuntimePlatform.OSXPlayer:
+            case RuntimePlatform.WindowsPlayer:
+            case RuntimePlatform.LinuxPlayer:
+
+                targetFramesPerSecondLoadingScreen = 60;
+                selectedInput = InputType.KeyMouse;
+                break;
+
+            case RuntimePlatform.IPhonePlayer:
+            case RuntimePlatform.Android:
+
+                targetFramesPerSecondLoadingScreen = 30;
+                selectedInput = InputType.Mobile;
+                break;
+
+            default:
+                break;
+        }
         // TODO: load some stuff
     }
 
-    // --- connection ---
+    // ---- Connection ----
     public string playerName = "Test";
     public CharacterType selectedPlayerType = CharacterType.Melee;
 
     // ---- Input ----
     public InputType selectedInput = InputType.KeyMouse;
     public bool useFocusPoint = true;
+
+    // Graphics
+    public int targetFramesPerSecondLoadingScreen = 60;
 
     private void OnDestroy()
     {

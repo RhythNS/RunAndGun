@@ -6,6 +6,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] Canvas canvas;
 
     [SerializeField] private LoadingScreenManager loadingScreenManager;
+    [SerializeField] private InGameManager inGameManager;
+
+    public OptionsUIManager OptionsManager => optionsManager;
+    [SerializeField] private OptionsUIManager optionsManager;
 
     public static UIManager Instance { get; private set; }
     private MobileUIManager mobileUiManager;
@@ -19,6 +23,8 @@ public class UIManager : MonoBehaviour
             return;
         }
         Instance = this;
+        inGameManager.gameObject.SetActive(false);
+        loadingScreenManager.gameObject.SetActive(false);
     }
 
     public void OnLocalPlayerStarted(Player player, InputType inputMethod)
@@ -28,23 +34,14 @@ public class UIManager : MonoBehaviour
             mobileUiManager = Instantiate(InputDict.Instance.MobileUIManagerPrefab, canvas.transform);
             (player.Input as MobileInput).SetUI(mobileUiManager);
         }
-        // Register to all sort of player events
+        inGameManager.RegisterEvents(player);
     }
 
-    public void OnLocalPlayerDeleted()
-    {
-        // Unregister to all sort of player events
-    }
+    public void OnLocalPlayerDeleted() => inGameManager.UnRegisterEvents();
 
-    public void ShowLevelLoadScreen()
-    {
-        loadingScreenManager.Show();
-    }
+    public void ShowLevelLoadScreen() => loadingScreenManager.Show();
 
-    public void HideLevelLoadScreen()
-    {
-        loadingScreenManager.Hide();
-    }
+    public void HideLevelLoadScreen() => loadingScreenManager.Hide();
 
     private void OnDestroy()
     {

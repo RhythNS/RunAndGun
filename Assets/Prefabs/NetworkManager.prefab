@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 2660826429402068679}
   - component: {fileID: 2660826429402068678}
   - component: {fileID: 2660826429402068680}
-  - component: {fileID: 2660826429402068676}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -102,15 +101,3 @@ MonoBehaviour:
   clientMaxMessagesPerTick: 1000
   channels: 0204
   connectKey: MIRROR_LITENETLIB
---- !u!114 &2660826429402068676
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2660826429402068675}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 125d0fa86afeec24bbb1108f25dc446f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

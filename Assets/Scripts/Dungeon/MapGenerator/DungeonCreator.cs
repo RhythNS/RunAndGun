@@ -47,7 +47,8 @@ public class DungeonCreator : MonoBehaviour
     [SerializeField]
     private Vector2Int maxSize = Vector2Int.one;
 
-    private DungeonTimer timer = new DungeonTimer();
+    private DungeonTimer timer;
+    private Vector3 position;
 
     #region UnityEvents
     private void Awake()
@@ -72,6 +73,7 @@ public class DungeonCreator : MonoBehaviour
     {
         Debug.Log("Creating dungeon with seed: " + seed);
 
+        timer = new DungeonTimer();
         timer.Start();
 
         yield return DestroyPreviousGameObjects();
@@ -95,6 +97,8 @@ public class DungeonCreator : MonoBehaviour
         yield return roomCreator.CreateRooms(dungeon, levelNumber, timer);
 
         SetLoadStatus(1.0f);
+
+        position = transform.position;
 
         if (Player.LocalPlayer) // check to allow for debugging if a localplayer is not scene
             Player.LocalPlayer.StateCommunicator.CmdLevelSetLoaded(true);
@@ -295,21 +299,25 @@ public class DungeonCreator : MonoBehaviour
 
     public Vector3 TilePositionToWorldPositionMiddle(Vector2Int pos)
     {
-        return tilemapFloor.CellToWorld((Vector3Int)pos) + tilemapFloor.cellSize * 0.5f;
+        return position + new Vector3(pos.x + 0.5f, pos.y + 0.5f, 0.0f);
+        //return tilemapFloor.CellToWorld((Vector3Int)pos) + tilemapFloor.cellSize * 0.5f;
     }
 
     public Vector3 TilePositionToWorldPositionMiddle(int x, int y)
     {
-        return tilemapFloor.CellToWorld(new Vector3Int(x, y, 0)) + tilemapFloor.cellSize * 0.5f;
+        return position + new Vector3(x + 0.5f, y + 0.5f, 0.0f);
+        // return tilemapFloor.CellToWorld(new Vector3Int(x, y, 0)) + tilemapFloor.cellSize * 0.5f;
     }
     public Vector3 TilePositionToWorldPosition(Vector2Int pos)
     {
-        return tilemapFloor.CellToWorld((Vector3Int)pos);
+        return position + new Vector3(pos.x, pos.y, 0.0f);
+        // return tilemapFloor.CellToWorld((Vector3Int)pos);
     }
 
     public Vector2Int WorldPositionToTilePosition(Vector3 pos)
     {
-        return (Vector2Int)tilemapFloor.WorldToCell(pos);
+        return new Vector2Int((int)(pos.x - position.x), (int)(pos.y - position.y));
+        // return (Vector2Int)tilemapFloor.WorldToCell(pos);
     }
 
     public void SetLoadStatus(float currentLoadStatus)

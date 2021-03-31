@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.01.00">
+	<object class="AudioFile" id="{876d0ff5-bf6c-4ae4-9ff8-b02a9fb7ba73}">
+		<property name="assetPath">
+			<value>sfx_movement_jump16.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>1</value>
+		</property>
+		<property name="length">
+			<value>0.23399092970521543</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{49c338c0-ed80-41ea-a0f8-ae66f0696afb}</destination>
+		</relationship>
+	</object>
+</objects>

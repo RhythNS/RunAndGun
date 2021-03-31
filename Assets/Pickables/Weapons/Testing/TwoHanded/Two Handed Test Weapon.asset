@@ -15,17 +15,21 @@ MonoBehaviour:
   id: 5
   icon: {fileID: -7349882584872989000, guid: 4da522509089bb34193f504d220d2956, type: 3}
   instantPickup: 0
+  costs: 0
   effects:
   - {fileID: 11400000, guid: 9e2d831bbefdaa34495b581327caf05b, type: 2}
   shotModel: {fileID: 11400000, guid: 92157fb792e873c46b75822b61d6bb80, type: 2}
   bulletInfo: {fileID: 11400000, guid: 4bd243d0ed1ac6f4f879ed41413b0ec5, type: 2}
+  bulletPath: {fileID: 0}
   bulletSpawnModel: {fileID: 11400000, guid: f6042319cfdd2e147a201d4721abf6ed, type: 2}
   animator: {fileID: 22100000, guid: 2548184d6be602145ab9127380569357, type: 2}
   weaponAnimatorType: 1
   targetMode: 0
   useLocalSpace: 0
   range: 20
+  accuracy: 0
   speed: 10
   baseDamage: 50
   magazineSize: 7
   reloadTime: 1
+  weaponSoundModel: {fileID: 11400000, guid: 4dfacabd7a3ffbf45877e7be8b8217dd, type: 2}

@@ -18,15 +18,10 @@ public class StickController : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (Input.GetKey(KeyCode.S))
-            Debug.Log("f");
-
         Vector2 circleSize = rectTransform.lossyScale * rectTransform.rect.size;
         Vector2 circleCenter = (Vector2)rectTransform.transform.position + (circleSize * 0.5f);
         float circleRadius = rectTransform.rect.width * 0.5f;
 
-        Debug.Log(circleCenter);
-        
         Vector2 v = eventData.position - circleCenter;
         v = MathUtil.ClampMagnitude(v, circleRadius, out float magnitude);
         magnitude /= circleRadius;

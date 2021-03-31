@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using FMODUnity;
+using System.Collections;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Pickable/Weapon/Weapon")]
@@ -17,7 +18,7 @@ public class Weapon : Pickable
 
     public BulletPath BulletPath => bulletPath;
     [SerializeField] private BulletPath bulletPath;
-    
+
     public BulletSpawnModel BulletSpawnModel => bulletSpawnModel;
     [SerializeField] private BulletSpawnModel bulletSpawnModel;
 
@@ -37,7 +38,8 @@ public class Weapon : Pickable
     [SerializeField] private float range;
 
     public float Accuracy => accuracy;
-    [SerializeField][Range(0f, 100f)]
+    [SerializeField]
+    [Range(0f, 100f)]
     [Tooltip("The accuracy for each spawned bullet. 100 = fully accurate, 0 = differs up to 45° from original trajectory")]
     private float accuracy;
 
@@ -52,6 +54,9 @@ public class Weapon : Pickable
 
     public float ReloadTime => reloadTime;
     [SerializeField] private float reloadTime;
+
+    public WeaponSoundModel WeaponSoundModel => weaponSoundModel;
+    [SerializeField] private WeaponSoundModel weaponSoundModel;
 
     public IEnumerator Shoot(EquippedWeapon equippedWeapon)
     {

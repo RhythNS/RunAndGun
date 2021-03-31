@@ -5,7 +5,12 @@ public class DungeonTimer
 {
     private readonly Stopwatch stopwatch = new Stopwatch();
 
-    private static readonly int WORKTIME_IN_MS_UNTIL_NEXT_FRAME = 1000 / 30;
+    private readonly int WORKTIME_IN_MS_UNTIL_NEXT_FRAME;
+
+    public DungeonTimer()
+    {
+        WORKTIME_IN_MS_UNTIL_NEXT_FRAME = 1000 / Config.Instance.targetFramesPerSecondLoadingScreen;
+    }
 
     public bool ShouldWait() => stopwatch.ElapsedMilliseconds > WORKTIME_IN_MS_UNTIL_NEXT_FRAME;
 

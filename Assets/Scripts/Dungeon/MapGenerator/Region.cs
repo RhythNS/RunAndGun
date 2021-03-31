@@ -1,4 +1,4 @@
 ﻿public enum Region
 {
-    Debug
+    Debug, Lobby
 }

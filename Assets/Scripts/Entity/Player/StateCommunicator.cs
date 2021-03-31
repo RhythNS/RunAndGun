@@ -1,7 +1,5 @@
 ﻿using Mirror;
 
-public delegate void PercentageChanged(float percentage);
-
 public class StateCommunicator : NetworkBehaviour
 {
     public bool lobbyReady = false;
@@ -53,5 +51,11 @@ public class StateCommunicator : NetworkBehaviour
             return;
 
         bossAnimationFinished = true;
+    }
+
+    [Command]
+    public void CmdChangeName(string newName)
+    {
+        GetComponent<Player>().userName = newName;
     }
 }

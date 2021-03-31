@@ -1,4 +1,5 @@
-﻿using Mirror;
+﻿using FMODUnity;
+using Mirror;
 using System.Collections;
 using UnityEngine;
 
@@ -14,6 +15,9 @@ public class Status : NetworkBehaviour
     public ReviveEvent OnRevivingOtherPlayerStarted;
     public ReviveEvent OnRevivingOtherPlayerFinished;
     public ReviveEvent OnRevived;
+
+    [SerializeField] [EventRef] public string dashSound;
+    [SerializeField] [EventRef] public string reviveSound;
 
     public Player downedPlayerAbleToRevive;
     private ExtendedCoroutine revivingCoroutine;
@@ -99,6 +103,7 @@ public class Status : NetworkBehaviour
     {
         player.Collider2D.isTrigger = false;
         player.gameObject.layer = LayerDict.Instance.GetPlayerLayer();
+        FMODUtil.PlayOnTransform(reviveSound, transform);
         OnRevived?.Invoke();
     }
 
@@ -141,6 +146,7 @@ public class Status : NetworkBehaviour
 
     private IEnumerator Dash()
     {
+        FMODUtil.PlayOnTransform(dashSound, transform);
         Dashing = true;
         yield return new WaitForSeconds(dashDuration);
         Dashing = false;

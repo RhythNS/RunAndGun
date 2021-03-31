@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using FMODUnity;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -26,10 +27,14 @@ public class LoadingScreenManager : MonoBehaviour
 
     [SerializeField] private Color notConnectedColor;
 
+    [SerializeField] [EventRef] private string loadingStartSound;
+    [SerializeField] [EventRef] private string loadingEndSound;
+
     private readonly List<LoadingPlayerElement> playerElements = new List<LoadingPlayerElement>();
 
     public void Show()
     {
+        gameObject.SetActive(true);
         List<Player> players = PlayersDict.Instance.Players;
 
         RectTransform parentRect = (RectTransform)transform;
@@ -54,6 +59,7 @@ public class LoadingScreenManager : MonoBehaviour
 
     private IEnumerator InnerShow()
     {
+        FMODUtil.PlayOneShot(loadingStartSound);
         for (int i = 0; i < playerElements.Count; i++)
         {
             playerElements[i].FadeIn();
@@ -82,6 +88,7 @@ public class LoadingScreenManager : MonoBehaviour
 
     private IEnumerator InnerHide()
     {
+        FMODUtil.PlayOneShot(loadingEndSound);
         for (int i = 0; i < playerElements.Count; i++)
         {
             playerElements[i].FadeOut();
@@ -94,5 +101,6 @@ public class LoadingScreenManager : MonoBehaviour
             Destroy(playerElements[i].gameObject);
         }
         playerElements.Clear();
+        gameObject.SetActive(false);
     }
 }

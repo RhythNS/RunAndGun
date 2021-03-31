@@ -1,5 +1,4 @@
 ﻿using Mirror;
-using Smooth;
 using System.Collections;
 using UnityEngine;
 
@@ -152,5 +151,4 @@ public class Bullet : NetworkBehaviour, IPoolable
     {
         Destroy(gameObject);
     }
-
 }
