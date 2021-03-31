@@ -41,10 +41,4 @@ public class Inventory : NetworkBehaviour
     {
         OnMoneyAmountChanged?.Invoke(currentMoney);
     }
-    [Command]
-    public void CmdBuyItem(int price)
-    {
-        if (money >= price)
-            money -= price;
-    }
 }
