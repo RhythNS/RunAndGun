@@ -12,12 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a92aee6a0c3882045b681e83aa44bfd7, type: 3}
   m_Name: Standard Shotgun
   m_EditorClassIdentifier: 
-  id: 7
+  id: 8
   icon: {fileID: -1169459152763573295, guid: 4da522509089bb34193f504d220d2956, type: 3}
   instantPickup: 0
-  costs: 0
+  costs: 12
   effects:
-  - {fileID: 11400000, guid: 2d9bbabe9d4771846a111a28561667b1, type: 2}
   - {fileID: 11400000, guid: d34676ecb2805ee44b229b5c4562e24f, type: 2}
   shotModel: {fileID: 11400000, guid: 6972e6beef87e2b4dba31fa8e1bdad7c, type: 2}
   bulletInfo: {fileID: 11400000, guid: ce3f19762d678e841ae30ec551788ab5, type: 2}

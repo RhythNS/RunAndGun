@@ -45,10 +45,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   region: 0
   startingRoomPickables:
-  - {fileID: 11400000, guid: a77f1d34bf911184f98774a318ceb2d5, type: 2}
-  - {fileID: 11400000, guid: ac7a3d27f5349fc4589c7af1ddc3ad4f, type: 2}
-  - {fileID: 11400000, guid: 729f31b81fbabaa4e8cabb459a6cfebe, type: 2}
-  - {fileID: 11400000, guid: f6f603894041f4d4db8824abc0e9371d, type: 2}
+  - {fileID: 11400000, guid: 3bc9156ad090e0d41aaba4ee2fe41d33, type: 2}
+  - {fileID: 11400000, guid: b09bbc646a60c2b479355db2c7a061d6, type: 2}
+  - {fileID: 11400000, guid: 6c94d7e1d9a371e4c9b9479a48d76693, type: 2}
+  - {fileID: 11400000, guid: ff2c6c04229b1e7479c5e38810329a01, type: 2}
   lootingRoomPickables:
   - {fileID: 11400000, guid: 827216994d085974c970de0df9ff11d7, type: 2}
   - {fileID: 11400000, guid: 8f9766ed3bc60ff4b87b7e191a1ec6cb, type: 2}
@@ -58,6 +58,9 @@ MonoBehaviour:
   enemiesToSpawn:
   - {fileID: 11400000, guid: 26f26203365c15a46b4fc0f4a7172ae4, type: 2}
   - {fileID: 11400000, guid: 60054b9fd3d83834193d865819246b87, type: 2}
+  - {fileID: 11400000, guid: 38445acf60e406b4daee4536241756d0, type: 2}
+  - {fileID: 11400000, guid: a063d637f36cdf94b9fab319436ff689, type: 2}
+  - {fileID: 11400000, guid: 88e4d0a3f4029da4abcb2e009c461909, type: 2}
   prefabDoorLR: {fileID: 4715358251021290963, guid: 8a7952c49d21107488e9f853c3f469c5,
     type: 3}
   prefabDoorUD: {fileID: 6098499219195057442, guid: b2515d84382afd24796391c735f7120d,

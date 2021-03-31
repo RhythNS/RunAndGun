@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-
+using System.Linq;
 using UnityEngine;
 
 namespace MapGenerator
@@ -80,7 +80,7 @@ namespace MapGenerator
                     if (exits[rndExit].IntoRoom) {
                         GenerateRoom(exits[rndExit]);
                     } else {
-                        GenerateCorridor(exits[rndExit]);
+                        //GenerateCorridor(exits[rndExit]);
                     }
                 }
             }
@@ -258,38 +258,55 @@ namespace MapGenerator
         }
 
         private bool GenerateRoom(Exit exit, bool isBossRoom = false, bool isShopRoom = false) {
-            int rndRoom = Random.Range(3, roomLayouts.Length);
-            if (isBossRoom)
-                rndRoom = 1;
-            if (isShopRoom)
-                rndRoom = 2;
-            Room room = new Room(0, 0, roomLayouts[rndRoom], roomGameObjects[rndRoom], roomTypes[rndRoom]);
+            int[] roomArray = new int[roomLayouts.Length - 3];
+            for (int i = 3; i < roomLayouts.Length; i++)
+            {
+                roomArray[i - 3] = i;
+            }
+            roomArray = roomArray.OrderBy(x => Random.Range(int.MinValue, int.MaxValue)).ToArray();
 
-            foreach (var exitDir in room.ExitDirections) {
-                if (!mapLayout.InBounds(exit.Position.x - exitDir.Key.x, exit.Position.y - exitDir.Key.y))
-                    break;
+            for (int i = 0; i < roomArray.Length; i++)
+            {
+                //int rndRoom = Random.Range(3, roomLayouts.Length);
+                int rndRoom = roomArray[i];
+                if (isBossRoom)
+                    rndRoom = 1;
+                if (isShopRoom)
+                    rndRoom = 2;
+                Room room = new Room(0, 0, roomLayouts[rndRoom], roomGameObjects[rndRoom], roomTypes[rndRoom]);
 
-                if ((exitDir.Value == Direction.Up && exit.Direction == Direction.Down)
-                    || (exitDir.Value == Direction.Down && exit.Direction == Direction.Up)
-                    || (exitDir.Value == Direction.Left && exit.Direction == Direction.Right)
-                    || (exitDir.Value == Direction.Right && exit.Direction == Direction.Left)
-                    ) {
+                foreach (var exitDir in room.ExitDirections)
+                {
+                    if (!mapLayout.InBounds(exit.Position.x - exitDir.Key.x, exit.Position.y - exitDir.Key.y))
+                        break;
 
-                    room.Position = exit.Position - exitDir.Key;
+                    if ((exitDir.Value == Direction.Up && exit.Direction == Direction.Down)
+                        || (exitDir.Value == Direction.Down && exit.Direction == Direction.Up)
+                        || (exitDir.Value == Direction.Left && exit.Direction == Direction.Right)
+                        || (exitDir.Value == Direction.Right && exit.Direction == Direction.Left)
+                        )
+                    {
 
-                    if (IsEmptyInArea(room, exit.Direction)) {
-                        if (exit.Direction == Direction.Down || exit.Direction == Direction.Up) {
-                            mapLayout[exit.Position.x, exit.Position.y] = TileType.Floor;
-                            mapLayout[exit.Position.x + 1, exit.Position.y] = TileType.Floor;
-                        } else {
-                            mapLayout[exit.Position.x, exit.Position.y] = TileType.Floor;
-                            mapLayout[exit.Position.x, exit.Position.y + 1] = TileType.Floor;
-                            mapLayout[exit.Position.x, exit.Position.y + 2] = TileType.Floor;
+                        room.Position = exit.Position - exitDir.Key;
+
+                        if (IsEmptyInArea(room, exit.Direction, exit.Position))
+                        {
+                            if (exit.Direction == Direction.Down || exit.Direction == Direction.Up)
+                            {
+                                mapLayout[exit.Position.x, exit.Position.y] = TileType.Floor;
+                                mapLayout[exit.Position.x + 1, exit.Position.y] = TileType.Floor;
+                            }
+                            else
+                            {
+                                mapLayout[exit.Position.x, exit.Position.y] = TileType.Floor;
+                                mapLayout[exit.Position.x, exit.Position.y + 1] = TileType.Floor;
+                                mapLayout[exit.Position.x, exit.Position.y + 2] = TileType.Floor;
+                            }
+
+                            AddRoom(room);
+
+                            return true;
                         }
-
-                        AddRoom(room);
-
-                        return true;
                     }
                 }
             }
@@ -310,44 +327,52 @@ namespace MapGenerator
             return false;
         }
 
-        private bool IsEmptyInArea(Room room, Direction direction) {
+        private bool IsEmptyInArea(Room room, Direction direction, Vector2Int exitPosition) {
             switch (direction) {
                 case Direction.Up:
-                    for (int x = -4; x < room.Layout.XSize + 4; x++) {
-                        for (int y = 0; y < room.Layout.YSize + 4; y++) {
-                            if (mapLayout[room.Position.x + x, room.Position.y + y] != TileType.Wall) {
+                    for (int x = -3; x < room.Layout.XSize + 3; x++) {
+                        for (int y = -1; y < room.Layout.YSize + 3; y++)
+                        {
+                            if (y < 0/* && x >= exitPosition.x - 1 && x <= exitPosition.x + 2*/)
+                                continue;
+                            if (mapLayout[room.Position.x + x, room.Position.y + y] != TileType.Wall)
                                 return false;
-                            }
                         }
                     }
                     break;
 
                 case Direction.Down:
-                    for (int x = -4; x < room.Layout.XSize + 4; x++) {
-                        for (int y = -4; y < room.Layout.YSize; y++) {
-                            if (mapLayout[room.Position.x + x, room.Position.y + y] != TileType.Wall) {
+                    for (int x = -3; x < room.Layout.XSize + 3; x++) {
+                        for (int y = -3; y < room.Layout.YSize + 1; y++)
+                        {
+                            if (y >= room.Layout.YSize/* && x >= exitPosition.x - 1 && x <= exitPosition.x + 2*/)
+                                continue;
+                            if (mapLayout[room.Position.x + x, room.Position.y + y] != TileType.Wall)
                                 return false;
-                            }
                         }
                     }
                     break;
 
                 case Direction.Left:
-                    for (int x = -4; x < room.Layout.XSize; x++) {
-                        for (int y = -4; y < room.Layout.YSize + 4; y++) {
-                            if (mapLayout[room.Position.x + x, room.Position.y + y] != TileType.Wall) {
+                    for (int x = -3; x < room.Layout.XSize + 1; x++) {
+                        for (int y = -3; y < room.Layout.YSize + 3; y++)
+                        {
+                            if (x >= room.Layout.XSize/* && y >= exitPosition.y - 1 && y <= exitPosition.y + 3*/)
+                                continue;
+                            if (mapLayout[room.Position.x + x, room.Position.y + y] != TileType.Wall)
                                 return false;
-                            }
                         }
                     }
                     break;
 
                 case Direction.Right:
-                    for (int x = 0; x < room.Layout.XSize + 4; x++) {
-                        for (int y = -4; y < room.Layout.YSize + 4; y++) {
-                            if (mapLayout[room.Position.x + x, room.Position.y + y] != TileType.Wall) {
+                    for (int x = -1; x < room.Layout.XSize + 3; x++) {
+                        for (int y = -3; y < room.Layout.YSize + 3; y++)
+                        {
+                            if (x < 0/* && y >= exitPosition.y - 1 && y <= exitPosition.y + 3*/)
+                                continue;
+                            if (mapLayout[room.Position.x + x, room.Position.y + y] != TileType.Wall)
                                 return false;
-                            }
                         }
                     }
                     break;
@@ -361,7 +386,7 @@ namespace MapGenerator
                 case Direction.Up:
                     for (int x = -2; x < corridor.Size.x + 2; x++) {
                         for (int y = 0; y < corridor.Size.y + 2; y++) {
-                            if (mapLayout[corridor.Position.x + x, corridor.Position.y + y] != TileType.Wall) {
+                            if (!mapLayout.InBounds(corridor.Position.x + x, corridor.Position.y + y) || mapLayout[corridor.Position.x + x, corridor.Position.y + y] != TileType.Wall) {
                                 return false;
                             }
                         }
@@ -371,7 +396,7 @@ namespace MapGenerator
                 case Direction.Down:
                     for (int x = -2; x < corridor.Size.x + 2; x++) {
                         for (int y = -2; y < corridor.Size.y; y++) {
-                            if (mapLayout[corridor.Position.x + x, corridor.Position.y + y] != TileType.Wall) {
+                            if (!mapLayout.InBounds(corridor.Position.x + x, corridor.Position.y + y) || mapLayout[corridor.Position.x + x, corridor.Position.y + y] != TileType.Wall) {
                                 return false;
                             }
                         }
@@ -381,7 +406,7 @@ namespace MapGenerator
                 case Direction.Left:
                     for (int x = -2; x < corridor.Size.x; x++) {
                         for (int y = -2; y < corridor.Size.y + 3; y++) {
-                            if (mapLayout[corridor.Position.x + x, corridor.Position.y + y] != TileType.Wall) {
+                            if (!mapLayout.InBounds(corridor.Position.x + x, corridor.Position.y + y) || mapLayout[corridor.Position.x + x, corridor.Position.y + y] != TileType.Wall) {
                                 return false;
                             }
                         }
@@ -391,7 +416,7 @@ namespace MapGenerator
                 case Direction.Right:
                     for (int x = 0; x < corridor.Size.x + 2; x++) {
                         for (int y = -2; y < corridor.Size.y + 2; y++) {
-                            if (mapLayout[corridor.Position.x + x, corridor.Position.y + y] != TileType.Wall) {
+                            if (!mapLayout.InBounds(corridor.Position.x + x, corridor.Position.y + y) || mapLayout[corridor.Position.x + x, corridor.Position.y + y] != TileType.Wall) {
                                 return false;
                             }
                         }

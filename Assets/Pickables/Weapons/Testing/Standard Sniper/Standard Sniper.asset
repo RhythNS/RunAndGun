@@ -12,15 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a92aee6a0c3882045b681e83aa44bfd7, type: 3}
   m_Name: Standard Sniper
   m_EditorClassIdentifier: 
-  id: 9
+  id: 10
   icon: {fileID: -8441434538785342538, guid: 4da522509089bb34193f504d220d2956, type: 3}
   instantPickup: 0
-  costs: 0
+  costs: 25
   effects:
-  - {fileID: 11400000, guid: 2d9bbabe9d4771846a111a28561667b1, type: 2}
   - {fileID: 11400000, guid: d34676ecb2805ee44b229b5c4562e24f, type: 2}
   shotModel: {fileID: 11400000, guid: 74cfee4ec79dafe409587144cc01bd5b, type: 2}
-  bulletInfo: {fileID: 11400000, guid: 00390272fe4d90a49a46fae704a820fc, type: 2}
+  bulletInfo: {fileID: 11400000, guid: ce3f19762d678e841ae30ec551788ab5, type: 2}
   bulletPath: {fileID: 11400000, guid: 6ae02eee6b9440c4dbb3e7ceab369424, type: 2}
   bulletSpawnModel: {fileID: 11400000, guid: df098f7661ca9ed4a88a52d7ffdad406, type: 2}
   animator: {fileID: 9100000, guid: e86451f5629bc1f4abc4e94446a7cdd0, type: 2}

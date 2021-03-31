@@ -176,6 +176,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weapons:
+  - {fileID: 11400000, guid: ff2c6c04229b1e7479c5e38810329a01, type: 2}
   - {fileID: 11400000, guid: 3bc9156ad090e0d41aaba4ee2fe41d33, type: 2}
   - {fileID: 11400000, guid: 2ae5bebfc59d9ba4e9059a549738ebd9, type: 2}
   - {fileID: 11400000, guid: 729f31b81fbabaa4e8cabb459a6cfebe, type: 2}
@@ -186,6 +187,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 81f36331199e4e14fad6015f8836335b, type: 2}
   - {fileID: 11400000, guid: 8f36cc845c82941498d102be15fd04b8, type: 2}
   - {fileID: 11400000, guid: 8fbd28da132d12f458826207530867c7, type: 2}
+  - {fileID: 11400000, guid: a77f1d34bf911184f98774a318ceb2d5, type: 2}
   consumables:
   - {fileID: 11400000, guid: 827216994d085974c970de0df9ff11d7, type: 2}
   - {fileID: 11400000, guid: 8f9766ed3bc60ff4b87b7e191a1ec6cb, type: 2}

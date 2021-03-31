@@ -12,13 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a92aee6a0c3882045b681e83aa44bfd7, type: 3}
   m_Name: Standard Melee
   m_EditorClassIdentifier: 
-  id: 5
-  icon: {fileID: 21300000, guid: 07103c52b3aaeca4da8a83361edd059f, type: 3}
+  id: 6
+  icon: {fileID: -364090565672636624, guid: 0701bdb4ed5c3c34489c17d3191c3455, type: 3}
   instantPickup: 0
-  costs: 0
+  costs: 3
   effects:
   - {fileID: 11400000, guid: d34676ecb2805ee44b229b5c4562e24f, type: 2}
-  - {fileID: 11400000, guid: 2d9bbabe9d4771846a111a28561667b1, type: 2}
   shotModel: {fileID: 11400000, guid: f6c9f80591d78ef4890b07899e6d4a58, type: 2}
   bulletInfo: {fileID: 11400000, guid: 00390272fe4d90a49a46fae704a820fc, type: 2}
   bulletPath: {fileID: 11400000, guid: 6ae02eee6b9440c4dbb3e7ceab369424, type: 2}

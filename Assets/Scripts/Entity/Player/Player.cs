@@ -100,7 +100,16 @@ public class Player : Entity
 
         if (piw.IsBuyable)
         {
-            if (Inventory.money < pickable.Costs)
+            Debug.Log("money: " + Inventory.money + " costs: " + pickable.Costs);
+            if (Inventory.money >= pickable.Costs)
+            {
+                Inventory.CmdBuyItem((int)pickable.Costs);
+                Debug.Log("Bought item " + pickable.name);
+                //Inventory.money -= (int)pickable.Costs;
+            }
+            else
+            {
+                Debug.Log("Could not buy item " + pickable.name);
                 return;
 
             Inventory.money -= (int)pickable.Costs;

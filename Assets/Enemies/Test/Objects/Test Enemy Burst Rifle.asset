@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e87f3f94edef514493df48c604bd029, type: 3}
+  m_Name: Test Enemy Burst Rifle
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 3022296384892480377, guid: 362debbd5c9bf724dbcab5f7921817f4, type: 3}
+  weapons:
+  - {fileID: 11400000, guid: ff2c6c04229b1e7479c5e38810329a01, type: 2}
+  behaviourTree: {fileID: 11400000, guid: 51b34016b4f0576419ea8fd790ed3f20, type: 2}
+  stats:
+    metersPerSecond: 6
+    maxHealth: 100
