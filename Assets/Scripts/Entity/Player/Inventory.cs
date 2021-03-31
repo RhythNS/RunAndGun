@@ -38,4 +38,10 @@ public class Inventory : NetworkBehaviour
             PickableInWorld.Place(item, transform.position);
     }
 
+    [Command]
+    public void CmdBuyItem(int price)
+    {
+        if (money >= price)
+            money -= price;
+    }
 }

@@ -92,10 +92,18 @@ public class Player : Entity
 
         Pickable pickable = piw.Pickable;
 
-        if (piw.IsBuyable) {
-            if (Inventory.money >= pickable.Costs) {
-                Inventory.money -= (int)pickable.Costs;
-            } else {
+        if (piw.IsBuyable)
+        {
+            Debug.Log("money: " + Inventory.money + " costs: " + pickable.Costs);
+            if (Inventory.money >= pickable.Costs)
+            {
+                Inventory.CmdBuyItem((int)pickable.Costs);
+                Debug.Log("Bought item " + pickable.name);
+                //Inventory.money -= (int)pickable.Costs;
+            }
+            else
+            {
+                Debug.Log("Could not buy item " + pickable.name);
                 return;
             }
         }
