@@ -15,7 +15,7 @@ MonoBehaviour:
   id: 6
   icon: {fileID: -364090565672636624, guid: 0701bdb4ed5c3c34489c17d3191c3455, type: 3}
   instantPickup: 0
-  costs: 0
+  costs: 3
   effects:
   - {fileID: 11400000, guid: d34676ecb2805ee44b229b5c4562e24f, type: 2}
   shotModel: {fileID: 11400000, guid: f6c9f80591d78ef4890b07899e6d4a58, type: 2}

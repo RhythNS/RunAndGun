@@ -28,7 +28,7 @@ MonoBehaviour:
   targetMode: 1
   useLocalSpace: 0
   range: 20
-  accuracy: 0
+  accuracy: 80.3
   speed: 10
   baseDamage: 20
   magazineSize: 8
