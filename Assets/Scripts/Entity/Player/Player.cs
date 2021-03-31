@@ -112,7 +112,8 @@ public class Player : Entity
                 Debug.Log("Could not buy item " + pickable.name);
                 return;
 
-            Inventory.money -= (int)pickable.Costs;
+                Inventory.money -= (int)pickable.Costs;
+            }
         }
 
         switch (pickable.PickableType)
