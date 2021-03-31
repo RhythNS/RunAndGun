@@ -90,7 +90,11 @@
 			<destination>{3b3c47f1-36c1-4261-92ff-6b8f5be08ff3}</destination>
 		</relationship>
 	</object>
-	<object class="MultiSound" id="{86d39e35-cbc1-46ed-b4ff-e4c735fd5672}" />
+	<object class="MultiSound" id="{86d39e35-cbc1-46ed-b4ff-e4c735fd5672}">
+		<relationship name="sounds">
+			<destination>{8f5fd089-dd55-4ac6-9d9b-3f6acb7df3d3}</destination>
+		</relationship>
+	</object>
 	<object class="MixerBusEffectChain" id="{1eb0f43e-8279-4d3f-ad01-d7116a4b12cc}">
 		<relationship name="effects">
 			<destination>{743e8b59-37ee-4be8-ab12-f025d8826ebc}</destination>
@@ -114,9 +118,15 @@
 	<object class="MixerBusEffectChain" id="{61f9c33d-871c-4957-a3fd-9cd9b173bd09}">
 		<relationship name="effects">
 			<destination>{c9bd64de-a46c-49cb-9073-9d761dd80bda}</destination>
+			<destination>{c29280e1-b175-4495-b8cd-5e68eca2425d}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{a8c136f3-9c28-4366-957a-910066b93ec8}" />
+	<object class="SingleSound" id="{8f5fd089-dd55-4ac6-9d9b-3f6acb7df3d3}">
+		<relationship name="audioFile">
+			<destination>{3fdcc4f8-a78a-4ef7-85ac-996d97519565}</destination>
+		</relationship>
+	</object>
 	<object class="MixerBusFader" id="{743e8b59-37ee-4be8-ab12-f025d8826ebc}" />
 	<object class="MixerBusEffectChain" id="{df008b74-7d61-4efe-b6d2-10130112fed2}">
 		<relationship name="effects">
@@ -125,5 +135,21 @@
 	</object>
 	<object class="MixerBusPanner" id="{3ce1619c-3151-4178-90cf-c762d916dd43}" />
 	<object class="MixerBusFader" id="{c9bd64de-a46c-49cb-9073-9d761dd80bda}" />
+	<object class="PitchShifterEffect" id="{c29280e1-b175-4495-b8cd-5e68eca2425d}">
+		<property name="pitch">
+			<value>1</value>
+		</property>
+		<relationship name="modulators">
+			<destination>{55290071-182a-4a2a-b31b-a0ba07e6f5e4}</destination>
+		</relationship>
+	</object>
 	<object class="MixerBusFader" id="{ee289818-f27c-4c54-817d-511a1757ea2f}" />
+	<object class="RandomizerModulator" id="{55290071-182a-4a2a-b31b-a0ba07e6f5e4}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>pitch</value>
+		</property>
+		<property name="amount">
+			<value>33</value>
+		</property>
+	</object>
 </objects>

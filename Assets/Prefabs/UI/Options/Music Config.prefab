@@ -912,6 +912,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2991668878225326425}
     m_Modifications:
+    - target: {fileID: -9094528491030159921, guid: cbdb26e64e67e5647b5ac0625242759e,
+        type: 3}
+      propertyPath: sound
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 5462467813479543183, guid: cbdb26e64e67e5647b5ac0625242759e,
         type: 3}
       propertyPath: m_text

@@ -91,7 +91,7 @@
 	</object>
 	<object class="GroupTrack" id="{8ee30e67-1d6e-4b71-ae30-4fa681b826e2}">
 		<relationship name="modules">
-			<destination>{4ef1d0d0-81fa-428d-a5ad-8f98f8548097}</destination>
+			<destination>{6ee1a3b7-94a8-48d9-93f2-6b1223064ad3}</destination>
 		</relationship>
 		<relationship name="mixerGroup">
 			<destination>{f30018bc-9b5d-474b-8774-85b6fc829c50}</destination>
@@ -107,9 +107,9 @@
 	</object>
 	<object class="Timeline" id="{a5da5091-f4a6-4b22-962d-c65b2120e0fc}">
 		<relationship name="modules">
-			<destination>{4ef1d0d0-81fa-428d-a5ad-8f98f8548097}</destination>
 			<destination>{a4331cde-9455-4fe3-a6f8-ba6fbbe2b349}</destination>
 			<destination>{64787f39-0250-4909-bc35-5fa7e306ddfa}</destination>
+			<destination>{6ee1a3b7-94a8-48d9-93f2-6b1223064ad3}</destination>
 		</relationship>
 		<relationship name="markers">
 			<destination>{34130e85-90fd-40b0-a5a8-b769eef51758}</destination>
@@ -198,15 +198,15 @@
 			<destination>{76489297-f0c8-4d6b-b4cd-acb9bf0efe43}</destination>
 		</relationship>
 	</object>
-	<object class="SingleSound" id="{4ef1d0d0-81fa-428d-a5ad-8f98f8548097}">
+	<object class="SingleSound" id="{6ee1a3b7-94a8-48d9-93f2-6b1223064ad3}">
 		<property name="start">
 			<value>60</value>
 		</property>
 		<property name="length">
-			<value>698.12244897959181</value>
+			<value>21.333333333333332</value>
 		</property>
 		<relationship name="audioFile">
-			<destination>{a7658cf1-4129-40fc-974a-3fec87055392}</destination>
+			<destination>{31c80c20-eb20-4b12-8c4d-fe7226c39465}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{f30018bc-9b5d-474b-8774-85b6fc829c50}">
@@ -225,7 +225,7 @@
 	</object>
 	<object class="SingleSound" id="{64787f39-0250-4909-bc35-5fa7e306ddfa}">
 		<property name="start">
-			<value>760</value>
+			<value>141.87755102040819</value>
 		</property>
 		<property name="length">
 			<value>42.057142857142857</value>
@@ -270,7 +270,7 @@
 			<value>60</value>
 		</property>
 		<property name="length">
-			<value>646.55784580498857</value>
+			<value>21.333333333333329</value>
 		</property>
 		<property name="name">
 			<value>Lobby</value>
@@ -284,10 +284,10 @@
 	</object>
 	<object class="LoopRegion" id="{7e42927c-7dcd-418a-8e17-44a4a689fa32}">
 		<property name="position">
-			<value>760</value>
+			<value>141.87755102040819</value>
 		</property>
 		<property name="length">
-			<value>39.646551724138021</value>
+			<value>42.05714285714285</value>
 		</property>
 		<property name="name">
 			<value>Boss</value>
@@ -321,7 +321,7 @@
 	</object>
 	<object class="LoopRegion" id="{d50b04eb-23da-4da3-81f6-a349d14e7c1d}">
 		<property name="position">
-			<value>1040</value>
+			<value>200</value>
 		</property>
 		<property name="length">
 			<value>50</value>
@@ -381,7 +381,7 @@
 			<value>60</value>
 		</property>
 		<property name="length">
-			<value>698.12244897959181</value>
+			<value>21.333333333333329</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{a5da5091-f4a6-4b22-962d-c65b2120e0fc}</destination>
@@ -401,7 +401,7 @@
 			<value>60</value>
 		</property>
 		<property name="length">
-			<value>698.12244897959181</value>
+			<value>21.333333333333329</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{a5da5091-f4a6-4b22-962d-c65b2120e0fc}</destination>
@@ -421,7 +421,7 @@
 			<value>60</value>
 		</property>
 		<property name="length">
-			<value>698.12244897959181</value>
+			<value>21.333333333333329</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{a5da5091-f4a6-4b22-962d-c65b2120e0fc}</destination>
@@ -438,10 +438,10 @@
 	</object>
 	<object class="TransitionRegion" id="{88dc05fa-a406-4483-b04c-120343195b50}">
 		<property name="position">
-			<value>758.12244897959181</value>
+			<value>141.87755102040819</value>
 		</property>
 		<property name="length">
-			<value>41.524102744546212</value>
+			<value>42.05714285714285</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{a5da5091-f4a6-4b22-962d-c65b2120e0fc}</destination>
@@ -458,10 +458,10 @@
 	</object>
 	<object class="TransitionRegion" id="{a6b54980-ea9e-4337-b541-42f3eb4fe72a}">
 		<property name="position">
-			<value>760</value>
+			<value>141.87755102040819</value>
 		</property>
 		<property name="length">
-			<value>39.646551724138021</value>
+			<value>42.05714285714285</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{a5da5091-f4a6-4b22-962d-c65b2120e0fc}</destination>
@@ -478,10 +478,10 @@
 	</object>
 	<object class="TransitionRegion" id="{0b198e6c-a00b-42d6-8217-f054fdeac2b2}">
 		<property name="position">
-			<value>760</value>
+			<value>141.87755102040819</value>
 		</property>
 		<property name="length">
-			<value>39.646551724138021</value>
+			<value>42.05714285714285</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{a5da5091-f4a6-4b22-962d-c65b2120e0fc}</destination>
@@ -498,10 +498,10 @@
 	</object>
 	<object class="TransitionRegion" id="{cc355cc1-23bf-4d61-936b-8017ab8fd23d}">
 		<property name="position">
-			<value>1041.1824943310658</value>
+			<value>200</value>
 		</property>
 		<property name="length">
-			<value>48.817505668934245</value>
+			<value>50</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{a5da5091-f4a6-4b22-962d-c65b2120e0fc}</destination>
@@ -518,10 +518,10 @@
 	</object>
 	<object class="TransitionRegion" id="{5186b649-62b6-4df7-b767-9a0548faedda}">
 		<property name="position">
-			<value>1041.1824943310658</value>
+			<value>200</value>
 		</property>
 		<property name="length">
-			<value>48.817505668934245</value>
+			<value>50</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{a5da5091-f4a6-4b22-962d-c65b2120e0fc}</destination>
@@ -538,10 +538,10 @@
 	</object>
 	<object class="TransitionRegion" id="{457c1e20-10ef-49b4-a744-a05b080ad7fc}">
 		<property name="position">
-			<value>1041.1824943310658</value>
+			<value>200</value>
 		</property>
 		<property name="length">
-			<value>48.817505668934245</value>
+			<value>50</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{a5da5091-f4a6-4b22-962d-c65b2120e0fc}</destination>
