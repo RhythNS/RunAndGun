@@ -84,7 +84,8 @@ public class DungeonCreator : MonoBehaviour
         List<RoomType> roomTypes = new List<RoomType>();
         yield return LoadRoomTypes(roomLayouts, roomGameObjects, roomTypes);
 
-        seed = -1304249244;
+        //seed = -1304249244;
+        seed = "I wanna go home".GetHashCode();
         dungeon = new Dungeon(roomLayouts.ToArray(), roomGameObjects.ToArray(), roomTypes.ToArray(), seed, config);
 
         AdjustMask();

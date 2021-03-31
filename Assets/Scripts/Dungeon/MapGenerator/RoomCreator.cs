@@ -79,15 +79,15 @@ namespace MapGenerator
                         int rnd = Random.Range(0, PickableDict.Instance.NumWeapons + PickableDict.Instance.NumItems);
                         if (rnd >= PickableDict.Instance.NumWeapons)
                         {
-                            shopRoom.shopItems[j] = PickableDict.Instance.GetItem(j - PickableDict.Instance.NumWeapons);
+                            shopRoom.shopItems[j] = PickableDict.Instance.GetItem(j - PickableDict.Instance.NumWeapons + 1);
                             shopRoom.prices[j] = 10;
                         }
                         else
                         {
-                            shopRoom.shopItems[j] = PickableDict.Instance.GetWeapon(j);
+                            shopRoom.shopItems[j] = PickableDict.Instance.GetWeapon(j + 1);
                             shopRoom.prices[j] = 15;
                         }
-                        shopRoom.locations[j] = Vector3.zero;
+                        shopRoom.locations[j] = room.Position + new Vector2Int((int)room.GameObjects[j + 4].Position.x, (int)room.GameObjects[j + 4].Position.y);
                     }
                     shopRoom.SpawnItems();
                     return shopRoom;
