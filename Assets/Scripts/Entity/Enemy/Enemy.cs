@@ -59,6 +59,11 @@ public class Enemy : Entity
         EntityMaterialManager = GetComponent<EntityMaterialManager>();
     }
 
+    private void Update()
+    {
+        PositionConverter.AdjustZ(transform);
+    }
+
     public void Set(EnemyObject enemyObject, Rect roomBorder)
     {
         if (IsBoss == false)

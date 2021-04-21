@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class BreakableObject : MonoBehaviour
 {
@@ -13,12 +11,13 @@ public class BreakableObject : MonoBehaviour
 
     void Start()
     {
-        sr.sortingOrder = (int)transform.position.y * -2;
+        PositionConverter.AdjustZ(transform);
 
         sr.sprite = BreakablesDict.Instance.GetBreakable(index).full;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision) {
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
         bc.enabled = false;
         sr.sprite = BreakablesDict.Instance.GetBreakable(index).broken;
     }

@@ -13,6 +13,7 @@ public class PickableInWorld : NetworkBehaviour
     public static void Place(Pickable pickable, Vector3 position, bool isBuyable = false)
     {
         GameObject gObject = Instantiate(PickableDict.Instance.PickableInWorldPrefab);
+        PositionConverter.AdjustZ(ref position);
         gObject.transform.position = position;
         gObject.GetComponent<PickableInWorld>().pickable = pickable;
         gObject.GetComponent<PickableInWorld>().isBuyable = isBuyable;

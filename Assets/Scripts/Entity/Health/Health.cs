@@ -156,7 +156,6 @@ public class Health : NetworkBehaviour
     /// <param name="currentHealth">The current health amount.</param>
     private void OnCurrentChanged(int prevHealth, int currentHealth)
     {
-        Debug.Log(gameObject.name + " health changed from " + prevHealth + " to " + currentHealth);
         CurrentChanged?.Invoke(prevHealth, currentHealth);
         CurrentChangedAsPercentage?.Invoke((float)currentHealth / (float)max);
 

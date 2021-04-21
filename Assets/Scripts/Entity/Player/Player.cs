@@ -55,7 +55,7 @@ public class Player : Entity
 
     private void Update()
     {
-        sr.sortingOrder = (int)transform.position.y * -2 + 1;
+        PositionConverter.AdjustZ(transform);
     }
 
     private void LateUpdate()
