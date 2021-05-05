@@ -35,6 +35,16 @@ namespace MapGenerator
                 if (timer.ShouldWait())
                     yield return timer.Wait(0.9f + ((i * 1.0f / dungeon.Rooms.Length) * 0.05f));
             }
+            for (int i = 0; i < dungeon.Corridors.Length; i++)
+            {
+                Corridor corridor = dungeon.Corridors[i];
+                GameObject corridorObject = new GameObject("Corridor_" + i);
+                corridorObject.transform.parent = DungeonCreator.Instance.CorridorContainer;
+
+                CorridorRoom corridorRoom = corridorObject.AddComponent<CorridorRoom>();
+                corridorRoom.walkableTiles = corridor.GetWalkableTiles();
+                corridorRoom.ForceBorder(new Rect(corridor.Position.x, corridor.Position.y, corridor.Size.x, corridor.Size.y));
+            }
         }
 
         private DungeonRoom SetRoomType(Room room, GameObject dungeonRoomObject, int levelNumber)

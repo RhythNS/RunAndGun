@@ -33,6 +33,10 @@ public class DungeonCreator : MonoBehaviour
     [SerializeField]
     private Transform roomsContainer;
 
+    public Transform CorridorContainer => corridorContainer;
+    [SerializeField]
+    private Transform corridorContainer;
+
     public GameObject PrefabDungeonRoom => prefabDungeonRoom;
     [SerializeField]
     private GameObject prefabDungeonRoom;

@@ -90,6 +90,13 @@ public abstract class DungeonRoom : MonoBehaviour
         DungeonCreator.Instance.ResetMask();
     }
 
+    public void ForceBorder(Rect rect)
+    {
+        border = rect;
+        boxCollider.offset = rect.position + rect.size * 0.5f;
+        boxCollider.size = rect.size;
+    }
+
     /// <summary>
     /// Called when the room has a room event and all players entered the room. Overwrite this to get
     /// custom behaviour. Make sure to call GameManager.OnRoomEventStarted with the border of the room.
