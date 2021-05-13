@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
@@ -48,4 +49,5 @@ public class UIManager : MonoBehaviour
         if (Instance == this)
             Instance = null;
     }
+
 }

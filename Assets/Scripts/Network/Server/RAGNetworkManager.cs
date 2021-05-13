@@ -1,5 +1,6 @@
 ﻿using Mirror;
 using NobleConnect.Mirror;
+using System;
 using UnityEngine;
 
 public class RAGNetworkManager : NobleNetworkManager
@@ -24,6 +25,7 @@ public class RAGNetworkManager : NobleNetworkManager
         NetworkClient.RegisterHandler<GenerateLevelMessage>(OnGenerateLevelMessage);
         NetworkClient.RegisterHandler<BossSpawnMessage>(OnBossSpawnMessage);
         NetworkClient.RegisterHandler<EveryoneLoadedMessage>(OnEveryoneLoadedMessage);
+        NetworkClient.RegisterHandler<MiniMapNewRoomMessage>(OnMiniMapNewRoomMessage);
     }
 
     public override void OnClientConnect(NetworkConnection conn)
@@ -130,4 +132,12 @@ public class RAGNetworkManager : NobleNetworkManager
         UIManager.Instance.HideLevelLoadScreen();
         MusicManager.Instance.ChangeState(MusicManager.State.Dungeon);
     }
+
+    private void OnMiniMapNewRoomMessage(MiniMapNewRoomMessage miniMapNewRoomMessage)
+    {
+        if (DungeonDict.Instance.IsIdValid(miniMapNewRoomMessage.roomId) == false)
+            return;
+        MiniMapManager.Instance.OnNewRoomEntered(DungeonDict.Instance.Get(miniMapNewRoomMessage.roomId));
+    }
+
 }

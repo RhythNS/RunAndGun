@@ -1,10 +1,12 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class InGameManager : MonoBehaviour
 {
     [SerializeField] private PercentageAs healthPercentage;
     [SerializeField] private IntAs moneyAmount;
     [SerializeField] private WeaponManager weaponManager;
+    [SerializeField] private MiniMapManager miniMapManager;
 
     public void RegisterEvents(Player player)
     {

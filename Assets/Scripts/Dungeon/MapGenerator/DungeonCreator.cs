@@ -102,6 +102,8 @@ public class DungeonCreator : MonoBehaviour
 
         yield return roomCreator.CreateRooms(dungeon, levelNumber, timer);
 
+        MiniMapManager.Instance.OnNewLevelGenerated();
+
         SetLoadStatus(1.0f);
 
         position = transform.position;

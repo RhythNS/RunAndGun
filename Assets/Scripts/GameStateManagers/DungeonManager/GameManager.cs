@@ -196,6 +196,8 @@ public class GameManager : MonoBehaviour
         if (players.Count == 0)
             return;
 
+        MiniMapManager.Instance.OnRoomEntered(player.CurrentRoom);
+
         int firstAlivePlayer = -1;
         for (int i = 0; i < players.Count; i++)
         {
