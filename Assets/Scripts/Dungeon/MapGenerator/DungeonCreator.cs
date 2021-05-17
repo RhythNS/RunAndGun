@@ -91,6 +91,7 @@ public class DungeonCreator : MonoBehaviour
         //seed = -1304249244;
         seed = "I wanna go home".GetHashCode();
         dungeon = new Dungeon(roomLayouts.ToArray(), roomGameObjects.ToArray(), roomTypes.ToArray(), seed, config);
+        DungeonDict.Instance.dungeon = dungeon;
 
         AdjustMask();
 

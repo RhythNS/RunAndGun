@@ -1,4 +1,5 @@
-﻿using Mirror;
+﻿using MapGenerator;
+using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -38,17 +39,24 @@ public class MiniMapManager : MonoBehaviour
         Instance = this;
     }
 
-    private void Start()
+    private void Update()
     {
-        // register listner
+        if (Player.LocalPlayer)
+        {
+            Vector2 position = Player.LocalPlayer.transform.position;
+            position.x = roomOffset.x - position.x * 0.5f;
+            position.y = roomOffset.y - position.y * 0.5f;
+            background.transform.localPosition = position;
+        }
     }
 
     public void OnNewLevelGenerated()
     {
-        RectInt boundingRect = new RectInt();
-         
+        Dungeon dungeon = DungeonDict.Instance.dungeon;
+        RectInt boundingRect = new RectInt(0,0, dungeon.Size.x, dungeon.Size.y);
+
         background.rectTransform.sizeDelta = new Vector2(boundingRect.width, boundingRect.height);
-        roomOffset = boundingRect.position;
+        roomOffset = boundingRect.size / 2;
     }
 
     public void OnLevelDeleted()
@@ -72,6 +80,7 @@ public class MiniMapManager : MonoBehaviour
     public void OnNewRoomEntered(DungeonRoom dungeonRoom)
     {
         Texture2D texture = CreateTexture(dungeonRoom);
+        texture.filterMode = FilterMode.Point;
 
         GameObject roomObject = new GameObject("Room");
         roomObject.transform.parent = background.transform;
@@ -80,7 +89,9 @@ public class MiniMapManager : MonoBehaviour
         Image image = roomObject.AddComponent<Image>();
         image.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
         image.rectTransform.sizeDelta = new Vector2(texture.width, texture.height);
-        Vector2 position = new Vector2((maxX - minX) * 0.5f, (maxY - minY) * 0.5f) - roomOffset;
+
+        //        Vector2 position = new Vector2((maxX - minX) * 0.5f, (maxY - minY) * 0.5f) - roomOffset;
+        Vector2 position = new Vector2(minX * 0.5f, minY * 0.5f) + roomOffset;
         image.rectTransform.localPosition = position;
 
         Room room = new Room(texture, dungeonRoom, image);
@@ -131,7 +142,7 @@ public class MiniMapManager : MonoBehaviour
         }
         enteredRooms.Clear();
 
-        for (int i = 0; i < transform.childCount; i++)
+        for (int i = 0; i < background.transform.childCount; i++)
         {
             Destroy(background.transform.GetChild(i));
         }
