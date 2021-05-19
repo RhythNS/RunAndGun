@@ -24,6 +24,7 @@ public class MiniMapManager : MonoBehaviour
     public static MiniMapManager Instance { get; private set; }
 
     [SerializeField] private Image background;
+    [SerializeField] private float zoomFactor = 2.0f;
 
     private Dictionary<DungeonRoom, Room> enteredRooms = new Dictionary<DungeonRoom, Room>();
     private Vector2Int roomOffset;
@@ -44,8 +45,8 @@ public class MiniMapManager : MonoBehaviour
         if (Player.LocalPlayer)
         {
             Vector2 position = Player.LocalPlayer.transform.position;
-            position.x = roomOffset.x - position.x * 0.5f;
-            position.y = roomOffset.y - position.y * 0.5f;
+            position.x = (roomOffset.x - position.x) * zoomFactor;
+            position.y = (roomOffset.y - position.y) * zoomFactor;
             background.transform.localPosition = position;
         }
     }
@@ -55,7 +56,7 @@ public class MiniMapManager : MonoBehaviour
         Dungeon dungeon = DungeonDict.Instance.dungeon;
         RectInt boundingRect = new RectInt(0,0, dungeon.Size.x, dungeon.Size.y);
 
-        background.rectTransform.sizeDelta = new Vector2(boundingRect.width, boundingRect.height);
+        background.rectTransform.sizeDelta = new Vector2(boundingRect.width, boundingRect.height) * zoomFactor;
         roomOffset = boundingRect.size / 2;
     }
 
@@ -88,10 +89,9 @@ public class MiniMapManager : MonoBehaviour
         GetMinAndMaxValues(dungeonRoom, out int minX, out int minY, out int maxX, out int maxY);
         Image image = roomObject.AddComponent<Image>();
         image.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
-        image.rectTransform.sizeDelta = new Vector2(texture.width, texture.height);
+        image.rectTransform.sizeDelta = new Vector2(texture.width * zoomFactor, texture.height * zoomFactor);
 
-        //        Vector2 position = new Vector2((maxX - minX) * 0.5f, (maxY - minY) * 0.5f) - roomOffset;
-        Vector2 position = new Vector2(minX * 0.5f, minY * 0.5f) + roomOffset;
+        Vector2 position = new Vector2(minX, minY) * zoomFactor;
         image.rectTransform.localPosition = position;
 
         Room room = new Room(texture, dungeonRoom, image);
