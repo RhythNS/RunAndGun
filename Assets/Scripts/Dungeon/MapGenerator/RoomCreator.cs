@@ -9,7 +9,7 @@ namespace MapGenerator
         public IEnumerator CreateRooms(Dungeon dungeon, int levelNumber, DungeonTimer timer)
         {
             List<DungeonRoom> dungeonRooms = new List<DungeonRoom>();
-            DungeonDict.Instance.ResetRooms(dungeon.Rooms.Length);
+            DungeonDict.Instance.ResetRooms(dungeon.Rooms.Length + dungeon.Corridors.Length);
 
             GameObject prefabDoorLR = RegionDict.Instance.PrefabDoorLR;
             GameObject prefabDoorUD = RegionDict.Instance.PrefabDoorUD;
@@ -42,8 +42,10 @@ namespace MapGenerator
                 corridorObject.transform.parent = DungeonCreator.Instance.CorridorContainer;
 
                 CorridorRoom corridorRoom = corridorObject.AddComponent<CorridorRoom>();
+                corridorRoom.id = dungeon.Rooms.Length + i;
                 corridorRoom.walkableTiles = corridor.GetWalkableTiles();
                 corridorRoom.ForceBorder(new Rect(corridor.Position.x, corridor.Position.y, corridor.Size.x, corridor.Size.y));
+                DungeonDict.Instance.Register(corridorRoom);
             }
         }
 

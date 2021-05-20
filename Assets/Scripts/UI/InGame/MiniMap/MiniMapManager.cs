@@ -98,6 +98,17 @@ public class MiniMapManager : MonoBehaviour
         enteredRooms[dungeonRoom] = room;
     }
 
+    public void SetZoomLevel(float newZoomLevel)
+    {
+        background.rectTransform.sizeDelta = background.rectTransform.sizeDelta / zoomFactor * newZoomLevel;
+        foreach (Room room in enteredRooms.Values)
+        {
+            room.image.rectTransform.sizeDelta = new Vector2(room.texture.width * newZoomLevel, room.texture.height * newZoomLevel);
+            room.image.rectTransform.localPosition = room.image.rectTransform.localPosition / zoomFactor * newZoomLevel;
+        }
+        zoomFactor = newZoomLevel;
+    }
+
     private Texture2D CreateTexture(DungeonRoom dungeonRoom)
     {
         GetMinAndMaxValues(dungeonRoom, out int minX, out int minY, out int maxX, out int maxY);

@@ -189,14 +189,17 @@ public class GameManager : MonoBehaviour
 
     public static void OnPlayerChangedRoom(Player player)
     {
-        if (!instance || instance.currentState != State.Wandering)
+        if (!instance)
+            return;
+
+        MiniMapManager.Instance.OnRoomEntered(player.CurrentRoom);
+
+        if (instance.currentState != State.Wandering)
             return;
 
         List<Player> players = PlayersDict.Instance.Players;
         if (players.Count == 0)
             return;
-
-        MiniMapManager.Instance.OnRoomEntered(player.CurrentRoom);
 
         int firstAlivePlayer = -1;
         for (int i = 0; i < players.Count; i++)

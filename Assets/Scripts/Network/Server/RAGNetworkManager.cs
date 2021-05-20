@@ -26,6 +26,7 @@ public class RAGNetworkManager : NobleNetworkManager
         NetworkClient.RegisterHandler<BossSpawnMessage>(OnBossSpawnMessage);
         NetworkClient.RegisterHandler<EveryoneLoadedMessage>(OnEveryoneLoadedMessage);
         NetworkClient.RegisterHandler<MiniMapNewRoomMessage>(OnMiniMapNewRoomMessage);
+        NetworkClient.RegisterHandler<EmoteMessage>(OnEmoteMessage);
     }
 
     public override void OnClientConnect(NetworkConnection conn)
@@ -140,4 +141,9 @@ public class RAGNetworkManager : NobleNetworkManager
         MiniMapManager.Instance.OnNewRoomEntered(DungeonDict.Instance.Get(miniMapNewRoomMessage.roomId));
     }
 
+    private void OnEmoteMessage(EmoteMessage emoteMessage)
+    {
+        if (UIManager.Instance)
+            UIManager.Instance.OnPlayerEmoted(emoteMessage);
+    }
 }

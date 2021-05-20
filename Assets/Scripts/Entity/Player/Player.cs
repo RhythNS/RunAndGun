@@ -28,6 +28,7 @@ public class Player : Entity
     public SmoothSyncMirror SmoothSync { get; private set; }
     public Collider2D Collider2D { get; private set; }
     public StateCommunicator StateCommunicator { get; private set; }
+    public EmoteCommunicator EmoteCommunicator { get; private set; }
     public DungeonRoom CurrentRoom { get; private set; }
     public StatusEffectList StatusEffectList { get; private set; }
     public EntityMaterialManager EntityMaterialManager { get; private set; }
@@ -47,6 +48,7 @@ public class Player : Entity
         SmoothSync = GetComponent<SmoothSyncMirror>();
         Collider2D = GetComponent<Collider2D>();
         StateCommunicator = GetComponent<StateCommunicator>();
+        EmoteCommunicator = GetComponent<EmoteCommunicator>();
         StatusEffectList = GetComponent<StatusEffectList>();
         EntityMaterialManager = GetComponent<EntityMaterialManager>();
 

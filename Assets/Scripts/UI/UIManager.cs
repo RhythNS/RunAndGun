@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
@@ -43,6 +42,11 @@ public class UIManager : MonoBehaviour
     public void ShowLevelLoadScreen() => loadingScreenManager.Show();
 
     public void HideLevelLoadScreen() => loadingScreenManager.Hide();
+
+    public void OnPlayerEmoted(EmoteMessage emoteMessage)
+    {
+
+    }
 
     private void OnDestroy()
     {
