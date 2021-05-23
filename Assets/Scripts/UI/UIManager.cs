@@ -43,10 +43,9 @@ public class UIManager : MonoBehaviour
 
     public void HideLevelLoadScreen() => loadingScreenManager.Hide();
 
-    public void OnPlayerEmoted(EmoteMessage emoteMessage)
-    {
+    public void OnPlayerEmoted(EmoteMessage emoteMessage) => inGameManager.OnPlayerEmoted(emoteMessage);
 
-    }
+    public void ToggleEmotePanel() => inGameManager.ToggleEmotePanel();
 
     private void OnDestroy()
     {

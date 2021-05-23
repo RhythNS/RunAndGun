@@ -76,4 +76,9 @@ public class KeyMouseInput : RAGInput
     {
         return Input.GetKeyDown(KeyCode.X);
     }
+
+    protected override bool GetEmoteInput()
+    {
+        return Input.GetKeyDown(KeyCode.T);
+    }
 }

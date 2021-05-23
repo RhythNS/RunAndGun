@@ -7,6 +7,7 @@ public class InGameManager : MonoBehaviour
     [SerializeField] private IntAs moneyAmount;
     [SerializeField] private WeaponManager weaponManager;
     [SerializeField] private MiniMapManager miniMapManager;
+    [SerializeField] private EmoteManager emoteManager;
 
     public void RegisterEvents(Player player)
     {
@@ -30,5 +31,18 @@ public class InGameManager : MonoBehaviour
 
         if (weaponManager)
             weaponManager.UnRegisterEvents(player);
+    }
+
+    public void OnPlayerEmoted(EmoteMessage emoteMessage)
+    {
+
+    }
+
+    public void ToggleEmotePanel()
+    {
+        if (emoteManager.gameObject.activeSelf)
+            emoteManager.Hide();
+        else
+            emoteManager.Show();
     }
 }

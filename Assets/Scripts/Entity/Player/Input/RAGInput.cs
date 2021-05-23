@@ -54,8 +54,11 @@ public abstract class RAGInput : MonoBehaviour
 
     private void Update()
     {
+        if (GetEmoteInput())
+            UIManager.Instance.ToggleEmotePanel();
+
         //if (useFocusPoint && HasFocusPoint)
-            playerCamera.focusPoint = GetFocusPoint();
+        playerCamera.focusPoint = GetFocusPoint();
 
         // If the player is dashing dont listen to other input.
         if (!Player.Status.CanInteract)
@@ -149,8 +152,11 @@ public abstract class RAGInput : MonoBehaviour
 
     protected abstract bool GetReviveInput();
 
+    protected virtual bool GetEmoteInput() { return false; }
+
     /// <summary>
     /// Removes the InputMethod from the player.
     /// </summary>
     public abstract void Remove();
+
 }
