@@ -11,7 +11,11 @@ public class Player : Entity
     public override EntityType EntityType => EntityType.Player;
 
     [SyncVar(hook = nameof(OnNameChanged))] public string userName;
+    /// <summary>
+    /// ID for network connection
+    /// </summary>
     [SyncVar] public int playerId;
+    [SyncVar] public int playerIndex;
 
     [SerializeField] [EventRef] private string itemPickUpSound;
 

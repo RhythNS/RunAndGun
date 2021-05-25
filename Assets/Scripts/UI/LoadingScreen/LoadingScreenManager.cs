@@ -46,6 +46,15 @@ public class LoadingScreenManager : MonoBehaviour
         Mid = 0.0f;
         Right = width;
 
+        for (int i = 0; i < 4; i++)
+        {
+            Player player = players.Find(x => x.playerIndex == i);
+            if (player)
+                CreateLoadingPlayerElement(i % 2 == 0 ? fromRightPrefab : fromLeftPrefab, -quaterHeight * i, player, CharacterDict.Instance.PlayerColors[i], width, height);
+            else
+                CreateLoadingPlayerElement(emptyPrefab, -quaterHeight * i, null, notConnectedColor, width, height, i % 2 == 0);
+        }
+        /*
         for (int i = 0; i < players.Count; i++)
         {
             CreateLoadingPlayerElement(i % 2 == 0 ? fromRightPrefab : fromLeftPrefab, -quaterHeight * i, players[i], CharacterDict.Instance.PlayerColors[i], width, height);
@@ -54,6 +63,7 @@ public class LoadingScreenManager : MonoBehaviour
         {
             CreateLoadingPlayerElement(emptyPrefab, -quaterHeight * i, null, notConnectedColor, width, height, i % 2 == 0);
         }
+         */
         StartCoroutine(InnerShow());
     }
 

@@ -8,6 +8,7 @@ public class InGameManager : MonoBehaviour
     [SerializeField] private WeaponManager weaponManager;
     [SerializeField] private MiniMapManager miniMapManager;
     [SerializeField] private EmoteManager emoteManager;
+    [SerializeField] private EmoteBoard emoteBoard;
 
     public void RegisterEvents(Player player)
     {
@@ -33,10 +34,7 @@ public class InGameManager : MonoBehaviour
             weaponManager.UnRegisterEvents(player);
     }
 
-    public void OnPlayerEmoted(EmoteMessage emoteMessage)
-    {
-
-    }
+    public void OnPlayerEmoted(EmoteMessage emoteMessage) => emoteBoard.OnPlayerEmoted(emoteMessage);
 
     public void ToggleEmotePanel()
     {

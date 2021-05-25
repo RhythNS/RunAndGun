@@ -1,6 +1,7 @@
 ﻿using Mirror;
 using NobleConnect.Mirror;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class RAGNetworkManager : NobleNetworkManager
@@ -60,6 +61,23 @@ public class RAGNetworkManager : NobleNetworkManager
         if (connection.identity?.gameObject)
         {
             GameObject oldPlayer = connection.identity.gameObject;
+            Player castPlayer = oldPlayer.GetComponent<Player>();
+
+            if (castPlayer != null)
+                newPlayer.playerIndex = castPlayer.playerIndex;
+            else
+            {
+                int? index = GetPlayerIndex(connection.connectionId);
+                if (index == null)
+                {
+                    Debug.LogError("Old player did not have a connection and there are no places remaining!");
+                    connection.Disconnect();
+                    Destroy(oldPlayer);
+                    Destroy(newPlayer);
+                    return;
+                }
+                newPlayer.playerIndex = index.Value;
+            }
 
             NetworkServer.ReplacePlayerForConnection(connection, newPlayer.gameObject);
 
@@ -67,10 +85,43 @@ public class RAGNetworkManager : NobleNetworkManager
         }
         else // They joined for the first time
         {
+            int? index = GetPlayerIndex(connection.connectionId);
+            if (index == null)
+            {
+                Debug.LogError("New player joined a full game!");
+                connection.Disconnect();
+                Destroy(newPlayer);
+                return;
+            }
+            newPlayer.playerIndex = index.Value;
+
             NetworkServer.AddPlayerForConnection(connection, newPlayer.gameObject);
         }
         newPlayer.userName = joinMessage.name;
+    }
 
+    private int? GetPlayerIndex(int? ignoreNetID)
+    {
+        List<Player> players = PlayersDict.Instance.Players;
+        int? indexToReturn = null;
+        for (int i = 0; i < 4; i++)
+        {
+            indexToReturn = i;
+            for (int j = 0; j < players.Count; j++)
+            {
+                if (ignoreNetID != null && players[j].playerId == ignoreNetID.Value)
+                    continue;
+                if (players[j].playerIndex == i)
+                {
+                    indexToReturn = null;
+                    break;
+                }
+            }
+
+            if (indexToReturn != null)
+                return indexToReturn;
+        }
+        return indexToReturn;
     }
 
     private void OnStartGameMessage(StartGameMessage startGameMessage)
