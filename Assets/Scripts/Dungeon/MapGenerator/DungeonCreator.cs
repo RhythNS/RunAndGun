@@ -73,24 +73,27 @@ public class DungeonCreator : MonoBehaviour
     }
     #endregion
 
-    public IEnumerator CreateDungeon(int seed, int levelNumber, DungeonConfig config)
+    public IEnumerator CreateDungeon(int seed, int levelNumber, DungeonConfig config, Dungeon dungeonToLoad = null)
     {
-        Debug.Log("Creating dungeon with seed: " + seed);
-
+        dungeon = dungeonToLoad;
         timer = new DungeonTimer();
         timer.Start();
 
         yield return DestroyPreviousGameObjects();
 
-        // Load all room types
-        List<Fast2DArray<int>> roomLayouts = new List<Fast2DArray<int>>();
-        List<List<TiledImporter.PrefabLocations>> roomGameObjects = new List<List<TiledImporter.PrefabLocations>>();
-        List<RoomType> roomTypes = new List<RoomType>();
-        yield return LoadRoomTypes(roomLayouts, roomGameObjects, roomTypes);
+        if (dungeon == null)
+        {
+            Debug.Log("Creating dungeon with seed: " + seed);
+            // Load all room types
+            List<Fast2DArray<int>> roomLayouts = new List<Fast2DArray<int>>();
+            List<List<TiledImporter.PrefabLocations>> roomGameObjects = new List<List<TiledImporter.PrefabLocations>>();
+            List<RoomType> roomTypes = new List<RoomType>();
+            yield return LoadRoomTypes(roomLayouts, roomGameObjects, roomTypes);
 
-        //seed = -1304249244;
-        seed = "I wanna go home".GetHashCode();
-        dungeon = new Dungeon(roomLayouts.ToArray(), roomGameObjects.ToArray(), roomTypes.ToArray(), seed, config);
+            //seed = -1304249244;
+            seed = "I wanna go home".GetHashCode();
+            dungeon = new Dungeon(roomLayouts.ToArray(), roomGameObjects.ToArray(), roomTypes.ToArray(), seed, config);
+        }
         DungeonDict.Instance.dungeon = dungeon;
 
         AdjustMask();

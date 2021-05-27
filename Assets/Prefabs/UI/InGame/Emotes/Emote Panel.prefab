@@ -130,7 +130,31 @@ MonoBehaviour:
   emoteButtonParent: {fileID: 6638301709777310899}
   emoteChangeButtonPrefab: {fileID: 9218155402176268000, guid: 774232bd1b8c45e4592c9f4db9bd986a,
     type: 3}
-  showInSeconds: 1
+  hideShowCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  showInSeconds: 0.25
 --- !u!1 &7148819791106776218
 GameObject:
   m_ObjectHideFlags: 0

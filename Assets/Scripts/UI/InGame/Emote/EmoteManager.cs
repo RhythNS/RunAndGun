@@ -9,6 +9,7 @@ public class EmoteManager : MonoBehaviour
     [SerializeField] private RectTransform typeParent;
     [SerializeField] private RectTransform emoteButtonParent;
     [SerializeField] private EmoteChangeButton emoteChangeButtonPrefab;
+    [SerializeField] private AnimationCurve hideShowCurve;
     [SerializeField] private float showInSeconds;
 
     private ExtendedCoroutine extendedCoroutine;
@@ -58,7 +59,7 @@ public class EmoteManager : MonoBehaviour
         extendedCoroutine = new ExtendedCoroutine
             (
                 this,
-                EnumeratorUtil.GoToInSecondsLerp(transform, endPos, showInSeconds),
+                EnumeratorUtil.GoToInSecondsCurve(transform, endPos, hideShowCurve, showInSeconds),
                 startNow: true
             );
     }
@@ -103,7 +104,7 @@ public class EmoteManager : MonoBehaviour
 
     public IEnumerator OnHide()
     {
-        yield return EnumeratorUtil.GoToInSecondsLerp(transform, GetStartPos(), showInSeconds);
+        yield return EnumeratorUtil.GoToInSecondsCurve(transform, GetStartPos(), hideShowCurve, showInSeconds);
         gameObject.SetActive(false);
     }
 }

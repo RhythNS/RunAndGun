@@ -62,8 +62,10 @@ namespace MapGenerator
 
             List<Exit> exits = new List<Exit>();
 
-            if (seed != int.MaxValue)
-                Random.InitState(seed);
+            /* If the seed was not set here, then the multiplayer game would not work since everyone would generate a completely different level.
+             * We should assume that seed was seed correctly here! Remove this comment and uncomment the next line if this is not the case. */
+            //if (seed != int.MaxValue)
+            Random.InitState(seed);
 
             // generate starting room
             Room startRoom = new Room((int)(Size.x / 2f - this.roomLayouts[0].XSize / 2f), (int)(Size.y / 2f - this.roomLayouts[0].YSize / 2f), this.roomLayouts[0], this.roomGameObjects[0], this.roomTypes[0]);
@@ -106,6 +108,20 @@ namespace MapGenerator
             for (int i = 0; i < 3; i++) {
                 DeleteDeadEnds();
             }
+        }
+        
+        /// <summary>
+        /// Debug constructor. Needs the rooms, corridors and a rough size.
+        /// </summary>
+        public Dungeon(Room[] rooms, Corridor[] corridors, Vector2Int size) {
+            Size = size;
+            mapLayout = new Fast2DArray<TileType>(Size.x, Size.y);
+
+            for (int i = 0; i < rooms.Length; i++)
+                AddRoom(rooms[i]);
+
+            for (int i = 0; i < corridors.Length; i++)
+                AddCorridor(corridors[i]);
         }
 
         private void GenerateBossRoom() {
