@@ -31,7 +31,7 @@ public class StateCommunicator : NetworkBehaviour
 
     public void OnLevelLoadPercentageChanged(float oldPercentage, float newPercentage)
     {
-        OnPercentageChanged.Invoke(newPercentage);
+        OnPercentageChanged?.Invoke(newPercentage);
     }
 
     [Command]

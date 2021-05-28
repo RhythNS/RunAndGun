@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Regions/LobbyRegion.unity
     guid: 7d10b00839ca97c40ac7ca1f733f874b
+  - enabled: 1
+    path: Assets/Scenes/Regions/EnemyTestRoom.unity
+    guid: dd7179cc16c125848b59a80551723cb8
   m_configObjects: {}

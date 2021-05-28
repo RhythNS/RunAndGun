@@ -90,6 +90,7 @@ GameObject:
   - component: {fileID: 8307653741225969240}
   - component: {fileID: 511879601587473819}
   - component: {fileID: 6147434120120078534}
+  - component: {fileID: 4331830215520593489}
   m_Layer: 0
   m_Name: Dicts
   m_TagString: Untagged
@@ -414,6 +415,8 @@ MonoBehaviour:
     sceneName: DebugRegion
   - region: 1
     sceneName: LobbyRegion
+  - region: 2
+    sceneName: EnemyTestRoom
 --- !u!114 &6147434120120078534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -430,6 +433,62 @@ MonoBehaviour:
   dictsObject: {fileID: 1365799234425872912}
   poolObject: {fileID: 7774315031574413647}
   gameStateManagerObject: {fileID: 2221242444935213018}
+--- !u!114 &4331830215520593489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1365799234425872912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ae5e6a9fd385e247add1bb64046db9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emoteLayers:
+  - name: General
+    emotes:
+    - identifier: 
+      sprite: {fileID: 21300000, guid: c1eb8da769290bc4dae2b4f0ef050f28, type: 3}
+      id: 0
+    - identifier: 
+      sprite: {fileID: 21300000, guid: c8ce78a297cac62439e25e6c38a5b469, type: 3}
+      id: 0
+    - identifier: 
+      sprite: {fileID: 21300000, guid: 38d9f63fd71b05f4798d7a3763a3e396, type: 3}
+      id: 0
+    - identifier: 
+      sprite: {fileID: 21300000, guid: 6fa850b275a30104a92f825885a4c67a, type: 3}
+      id: 0
+    - identifier: 
+      sprite: {fileID: 21300000, guid: ab48bd1dd755e364a9d81c2bb435cf4e, type: 3}
+      id: 0
+    - identifier: 
+      sprite: {fileID: 21300000, guid: 627edb842cf1bbf49b0916c52cd507ea, type: 3}
+      id: 0
+    - identifier: 
+      sprite: {fileID: 21300000, guid: 08bbb38c01d687a46bf3c27e51c38342, type: 3}
+      id: 0
+    - identifier: 
+      sprite: {fileID: 21300000, guid: 6da14cb87d3688c48806753715dc4610, type: 3}
+      id: 0
+    - identifier: 
+      sprite: {fileID: 21300000, guid: bd536211b97f7134a82ee7b3fe5e330f, type: 3}
+      id: 0
+  - name: Reaction
+    emotes:
+    - identifier: 
+      sprite: {fileID: 21300000, guid: de1249dbba762a545a0ad245272bdb55, type: 3}
+      id: 0
+    - identifier: 
+      sprite: {fileID: 21300000, guid: 00f02b4e1f111b944a88179cbbf39aa1, type: 3}
+      id: 0
+    - identifier: 
+      sprite: {fileID: 21300000, guid: 06aae06e42fe2d545b780bca6baca009, type: 3}
+      id: 0
+    - identifier: 
+      sprite: {fileID: 21300000, guid: 6ad58bf6ef4a96d47a6ece0fa4454e29, type: 3}
+      id: 0
 --- !u!1 &1365799234809505999
 GameObject:
   m_ObjectHideFlags: 0

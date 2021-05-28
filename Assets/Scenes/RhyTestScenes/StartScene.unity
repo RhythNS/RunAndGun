@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -262,68 +262,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ef31ecc06432981469da27e90dd8c541, type: 3}
---- !u!1 &611488077 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1365799234425872912, guid: 51cb51d065c14cd4d8c4ff558239b518,
-    type: 3}
-  m_PrefabInstance: {fileID: 1365799233891446723}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &611488079
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 611488077}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ae5e6a9fd385e247add1bb64046db9a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  emoteLayers:
-  - name: General
-    emotes:
-    - identifier: 
-      sprite: {fileID: 21300000, guid: c1eb8da769290bc4dae2b4f0ef050f28, type: 3}
-      id: 0
-    - identifier: 
-      sprite: {fileID: 21300000, guid: c8ce78a297cac62439e25e6c38a5b469, type: 3}
-      id: 0
-    - identifier: 
-      sprite: {fileID: 21300000, guid: 38d9f63fd71b05f4798d7a3763a3e396, type: 3}
-      id: 0
-    - identifier: 
-      sprite: {fileID: 21300000, guid: 6fa850b275a30104a92f825885a4c67a, type: 3}
-      id: 0
-    - identifier: 
-      sprite: {fileID: 21300000, guid: ab48bd1dd755e364a9d81c2bb435cf4e, type: 3}
-      id: 0
-    - identifier: 
-      sprite: {fileID: 21300000, guid: 627edb842cf1bbf49b0916c52cd507ea, type: 3}
-      id: 0
-    - identifier: 
-      sprite: {fileID: 21300000, guid: 08bbb38c01d687a46bf3c27e51c38342, type: 3}
-      id: 0
-    - identifier: 
-      sprite: {fileID: 21300000, guid: 6da14cb87d3688c48806753715dc4610, type: 3}
-      id: 0
-    - identifier: 
-      sprite: {fileID: 21300000, guid: bd536211b97f7134a82ee7b3fe5e330f, type: 3}
-      id: 0
-  - name: Reaction
-    emotes:
-    - identifier: 
-      sprite: {fileID: 21300000, guid: de1249dbba762a545a0ad245272bdb55, type: 3}
-      id: 0
-    - identifier: 
-      sprite: {fileID: 21300000, guid: 00f02b4e1f111b944a88179cbbf39aa1, type: 3}
-      id: 0
-    - identifier: 
-      sprite: {fileID: 21300000, guid: 06aae06e42fe2d545b780bca6baca009, type: 3}
-      id: 0
-    - identifier: 
-      sprite: {fileID: 21300000, guid: 6ad58bf6ef4a96d47a6ece0fa4454e29, type: 3}
-      id: 0
 --- !u!4 &887049973 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1365799234809505998, guid: 51cb51d065c14cd4d8c4ff558239b518,
@@ -565,7 +503,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cf9054ac3da624488f5ac31f2fcad63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  regionToLoad: 1
+  regionToLoad: 2
 --- !u!114 &1819091533
 MonoBehaviour:
   m_ObjectHideFlags: 0
