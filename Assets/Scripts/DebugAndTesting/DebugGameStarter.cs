@@ -2,9 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class DebugGameStarter : MonoBehaviour
 {
+    [SerializeField] private EnemyObject[] enemiesToSpawn;
+
     private IEnumerator Start()
     {
         yield return new WaitForSeconds(0.1f);
@@ -44,7 +47,11 @@ public class DebugGameStarter : MonoBehaviour
         GlobalsDict.Instance.GameStateManagerObject.AddComponent<GameManager>();
 
         Dungeon dungeon = new Dungeon(rooms, corridors, enemyPos + new Vector2Int(layout.XSize, layout.YSize));
-        yield return DungeonCreator.Instance.CreateDungeon(-1, 1, DungeonConfig.StandardConfig, dungeon);
+        DungeonConfig config = DungeonConfig.StandardConfig;
+        yield return DungeonCreator.Instance.CreateDungeon(-1, 1, config, dungeon);
+
+        CombatRoom combatRoom = DungeonDict.Instance.Rooms.First(x => x.RoomType == RoomType.Combat) as CombatRoom;
+        combatRoom.enemiesToSpawn = enemiesToSpawn;
 
         Destroy(gameObject);
     }

@@ -129,7 +129,7 @@ GameObject:
   - component: {fileID: 2103416700}
   - component: {fileID: -5587249916741445024}
   - component: {fileID: 2103416708}
-  - component: {fileID: 2103416707}
+  - component: {fileID: 8961349173938526647}
   - component: {fileID: 3183416551068131400}
   - component: {fileID: 2103416702}
   - component: {fileID: 2103416701}
@@ -346,8 +346,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!61 &2103416707
-BoxCollider2D:
+--- !u!58 &8961349173938526647
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -359,19 +359,9 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.35150152}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 2, y: 2}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
+  m_Offset: {x: 0, y: -0.18468964}
   serializedVersion: 2
-  m_Size: {x: 0.75, y: 0.25}
-  m_EdgeRadius: 0
+  m_Radius: 0.31531036
 --- !u!114 &3183416551068131400
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -406,6 +396,7 @@ MonoBehaviour:
   characterType: 0
   userName: 
   playerId: 0
+  playerIndex: 0
   itemPickUpSound: event:/Universal Dungeon Sounds/PlayerPickup
 --- !u!114 &2103416701
 MonoBehaviour:
@@ -580,3 +571,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 881a0f0ec1e773348b8a77914a9ae3a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1

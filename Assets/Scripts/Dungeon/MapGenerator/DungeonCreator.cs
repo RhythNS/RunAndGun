@@ -75,12 +75,12 @@ public class DungeonCreator : MonoBehaviour
 
     public IEnumerator CreateDungeon(int seed, int levelNumber, DungeonConfig config, Dungeon dungeonToLoad = null)
     {
-        dungeon = dungeonToLoad;
         timer = new DungeonTimer();
         timer.Start();
 
         yield return DestroyPreviousGameObjects();
 
+        dungeon = dungeonToLoad;
         if (dungeon == null)
         {
             Debug.Log("Creating dungeon with seed: " + seed);

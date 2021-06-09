@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -503,7 +503,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cf9054ac3da624488f5ac31f2fcad63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  regionToLoad: 2
+  regionToLoad: 1
 --- !u!114 &1819091533
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -795,6 +795,11 @@ PrefabInstance:
       propertyPath: sound
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 3990865549131121307, guid: 80ba9067596ac284d8b61bc190eeb26d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3990865549193547551, guid: 80ba9067596ac284d8b61bc190eeb26d,
         type: 3}
       propertyPath: m_IsActive
@@ -803,6 +808,16 @@ PrefabInstance:
     - target: {fileID: 3990865549519353694, guid: 80ba9067596ac284d8b61bc190eeb26d,
         type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3990865550171715957, guid: 80ba9067596ac284d8b61bc190eeb26d,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3990865550171715957, guid: 80ba9067596ac284d8b61bc190eeb26d,
+        type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3990865550621846600, guid: 80ba9067596ac284d8b61bc190eeb26d,

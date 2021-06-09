@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class KeyMouseInput : RAGInput
 {
@@ -36,14 +37,14 @@ public class KeyMouseInput : RAGInput
     protected override bool GetFireInput(out Vector2 fireDirection)
     {
         fireDirection = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized;
-        return Input.GetMouseButton(0);
+        return Input.GetMouseButton(0) && EventSystem.current.IsPointerOverGameObject() == false;
     }
 
     protected override void Pickup()
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            BoxCollider2D boxCollider2D = GetComponent<BoxCollider2D>();
+            Collider2D boxCollider2D = GetComponent<Collider2D>();
             List<Collider2D> colls = new List<Collider2D>();
             boxCollider2D.OverlapCollider(new ContactFilter2D().NoFilter(), colls);
             for (int i = 0; i < colls.Count; i++)
