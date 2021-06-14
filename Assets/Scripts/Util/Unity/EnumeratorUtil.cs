@@ -75,4 +75,16 @@ public static class EnumeratorUtil
             yield return null;
         } while (timer < seconds);
     }
+
+    public static IEnumerator FadeGroupCurve(CanvasGroup group, AnimationCurve curve, float seconds, bool inverted = false)
+    {
+        float timer = 0;
+        do
+        {
+            timer += Time.deltaTime;
+            float eval = curve.Evaluate(timer / seconds);
+            group.alpha = inverted ? 1 - eval : eval;
+            yield return null;
+        } while (timer < seconds);
+    }
 }

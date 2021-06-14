@@ -24,6 +24,7 @@ public class Health : NetworkBehaviour
     public event IntChangedWithPrev CurrentChanged;
     public event IntChangedWithPrev DefenceChanged;
     public event HealthPercentageChanged CurrentChangedAsPercentage;
+    public event Died OnDied;
 
     /// <summary>
     /// The current amount defence points.
@@ -144,6 +145,7 @@ public class Health : NetworkBehaviour
     [ClientRpc]
     private void RpcOnDied()
     {
+        OnDied?.Invoke();
         FMODUtil.PlayOnTransform(diedSound, transform);
         if (!isServer)
             GetComponent<IDieable>().Die();
