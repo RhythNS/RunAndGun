@@ -16,8 +16,13 @@ public class ShopRoom : DungeonRoom
 
     public override RoomType RoomType => RoomType.Shop;
 
-    public void SpawnItems() {
-        for (int i = 0; i < shopItems.Length; i++) {
+    public void SpawnItems()
+    {
+        if (Player.LocalPlayer.isServer == false)
+            return;
+
+        for (int i = 0; i < shopItems.Length; i++)
+        {
             PickableInWorld.Place(shopItems[i], locations[i], true);
         }
     }

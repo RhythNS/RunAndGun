@@ -56,6 +56,6 @@ public class StateCommunicator : NetworkBehaviour
     [Command]
     public void CmdChangeName(string newName)
     {
-        GetComponent<Player>().userName = newName;
+        GetComponent<Player>().entityName = newName;
     }
 }

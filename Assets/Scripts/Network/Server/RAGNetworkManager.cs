@@ -97,7 +97,7 @@ public class RAGNetworkManager : NobleNetworkManager
 
             NetworkServer.AddPlayerForConnection(connection, newPlayer.gameObject);
         }
-        newPlayer.userName = joinMessage.name;
+        newPlayer.entityName = joinMessage.name;
     }
 
     private int? GetPlayerIndex(int? ignoreNetID)

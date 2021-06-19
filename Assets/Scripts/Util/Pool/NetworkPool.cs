@@ -14,7 +14,7 @@ public class NetworkPool : MonoBehaviour
     {
         CreateInitialPool();
 
-        ClientScene.RegisterPrefab(prefab, Get, Free);
+        NetworkClient.RegisterPrefab(prefab, Get, Free);
     }
 
     protected virtual void CreateInitialPool()

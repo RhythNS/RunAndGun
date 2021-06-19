@@ -697,8 +697,8 @@ namespace Mirror
         {
             NetworkClient.OnConnectedEvent = OnClientConnectInternal;
             NetworkClient.OnDisconnectedEvent = OnClientDisconnectInternal;
-            NetworkClient.RegisterHandler<NotReadyMessage>(OnClientNotReadyMessageInternal);
-            NetworkClient.RegisterHandler<SceneMessage>(OnClientSceneInternal, false);
+            NetworkClient.ReplaceHandler<NotReadyMessage>(OnClientNotReadyMessageInternal);
+            NetworkClient.ReplaceHandler<SceneMessage>(OnClientSceneInternal, false);
 
             if (playerPrefab != null)
                 NetworkClient.RegisterPrefab(playerPrefab);

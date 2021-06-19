@@ -78,6 +78,8 @@ public class Enemy : Entity
         Brain.BrainMover.RoomBounds = roomBorder;
 
         Health.Init(enemyObject.Stats.maxHealth);
+
+        entityName = enemyObject.name;
     }
 
     public override void OnStartServer()

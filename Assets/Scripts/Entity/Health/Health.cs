@@ -133,9 +133,9 @@ public class Health : NetworkBehaviour
         if (current == 0)
         {
             Debug.Log(gameObject.name + " has died!");
-            enabled = false;
             RpcOnDied();
             GetComponent<IDieable>().Die();
+            enabled = false;
         }
     }
 

@@ -10,7 +10,6 @@ public class Player : Entity
 
     public override EntityType EntityType => EntityType.Player;
 
-    [SyncVar(hook = nameof(OnNameChanged))] public string userName;
     /// <summary>
     /// ID for network connection
     /// </summary>
@@ -73,11 +72,6 @@ public class Player : Entity
     {
         PlayersDict.Instance.Register(this);
         EntityMaterialManager.PlaySpawnEffect();
-    }
-
-    public override void OnStartClient()
-    {
-        gameObject.name = userName;
     }
 
     public override void OnStartLocalPlayer()
@@ -170,11 +164,6 @@ public class Player : Entity
             return;
 
         bullet.HitPlayer(this);
-    }
-
-    private void OnNameChanged(string oldName, string newName)
-    {
-        gameObject.name = newName;
     }
 
     [TargetRpc]

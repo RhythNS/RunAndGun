@@ -69,6 +69,8 @@ public class ServerConnect : PanelElement
 
     private void OnFailed()
     {
+        Debug.LogWarning("Could not connect to server!");
+
         NobleNetworkManager networkManager = (NobleNetworkManager)NetworkManager.singleton;
         if (networkManager.client != null)
             networkManager.StopClient();

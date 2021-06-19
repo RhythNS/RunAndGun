@@ -28,7 +28,7 @@ public class LoadingPlayerElement : MonoBehaviour
             return;
 
         this.player = player;
-        username.text = player.userName;
+        username.text = player.entityName;
         unitIcon.sprite = CharacterDict.Instance.GetSpriteForType(player.CharacterType);
         player.StateCommunicator.OnPercentageChanged += percentageAsText.UpdateValue;
         player.StateCommunicator.OnPercentageChanged += percentageAsImage.UpdateValue;

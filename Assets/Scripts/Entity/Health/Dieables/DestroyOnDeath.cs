@@ -1,4 +1,5 @@
 ﻿using Mirror;
+using System.Collections;
 using UnityEngine;
 
 public class DestroyOnDeath : MonoBehaviour, IDieable
@@ -8,7 +9,13 @@ public class DestroyOnDeath : MonoBehaviour, IDieable
         Health health = GetComponent<Health>();
         if (health.isServer)
         {
-            NetworkServer.Destroy(gameObject);
+            StartCoroutine(WaitAndDie());
         }
+    }
+
+    private IEnumerator WaitAndDie()
+    {
+        yield return null;
+        NetworkServer.Destroy(gameObject);
     }
 }
