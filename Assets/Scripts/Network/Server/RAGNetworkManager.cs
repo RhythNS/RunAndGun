@@ -1,6 +1,5 @@
 ﻿using Mirror;
 using NobleConnect.Mirror;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -20,6 +19,10 @@ public class RAGNetworkManager : NobleNetworkManager
     {
         base.OnStartClient();
 
+        NetworkPool[] networkPools = GlobalsDict.Instance.PoolObject.GetComponents<NetworkPool>();
+        for (int i = 0; i < networkPools.Length; i++)
+            networkPools[i].Setup();
+
         NetworkClient.RegisterHandler<StartGameMessage>(OnStartGameMessage);
         NetworkClient.RegisterHandler<ReturnToLobbyMessage>(OnReturnToLobbyMessage);
         NetworkClient.RegisterHandler<DoorMessage>(OnDoorsMessage);
@@ -30,10 +33,17 @@ public class RAGNetworkManager : NobleNetworkManager
         NetworkClient.RegisterHandler<EmoteMessage>(OnEmoteMessage);
     }
 
+    public override void OnServerConnect(NetworkConnection conn)
+    {
+        base.OnServerConnect(conn);
+
+        Debug.Log("Someone connected to the server!");
+    }
+
     public override void OnClientConnect(NetworkConnection conn)
     {
         base.OnClientConnect(conn);
-
+        
         JoinMessage message = new JoinMessage
         {
             name = Config.Instance.playerName,

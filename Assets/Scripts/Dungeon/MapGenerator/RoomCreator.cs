@@ -110,6 +110,10 @@ namespace MapGenerator
                     DungeonDict.Instance.SetBossRoom(bossRoom);
                     return bossRoom;
 
+                case RoomType.Empty:
+                    EmptyRoom emptyRoom = dungeonRoomObject.AddComponent<EmptyRoom>();
+                    return emptyRoom;
+
                 default:
                     throw new System.Exception("Unknown room type! (" + room.Type + ")");
             }

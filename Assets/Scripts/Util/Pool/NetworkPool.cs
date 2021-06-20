@@ -10,21 +10,32 @@ public class NetworkPool : MonoBehaviour
 
     private Queue<GameObject> poolQueue;
 
-    private void Start()
+    public void Setup()
     {
         CreateInitialPool();
-
         NetworkClient.RegisterPrefab(prefab, Get, Free);
     }
 
     protected virtual void CreateInitialPool()
     {
-        poolQueue = new Queue<GameObject>(maxCapacity);
-        for (int i = 0; i < startingAmount; i++)
+        if (poolQueue == null)
+            poolQueue = new Queue<GameObject>(maxCapacity);
+
+        if (poolQueue.Count < startingAmount)
         {
-            GameObject t = Create();
-            t.GetComponent<IPoolable>().Hide();
-            poolQueue.Enqueue(t);
+            for (int i = 0; i < startingAmount; i++)
+            {
+                GameObject t = Create();
+                t.GetComponent<IPoolable>().Hide();
+                poolQueue.Enqueue(t);
+            }
+            return;
+        }
+
+        // pool count is bigger than startingAmount
+        while (poolQueue.Count > startingAmount)
+        {
+            Destroy(poolQueue.Dequeue());
         }
     }
 

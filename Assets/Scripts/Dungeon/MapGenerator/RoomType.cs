@@ -7,6 +7,7 @@
         Loot,
         Shop,
         Boss,
-        Corridor
+        Corridor,
+        Empty = 99999
     }
 }

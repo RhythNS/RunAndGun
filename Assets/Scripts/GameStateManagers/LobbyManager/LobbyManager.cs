@@ -9,7 +9,7 @@ public class LobbyManager : MonoBehaviour
 
     private ExtendedCoroutine gameStartCountdown;
 
-    [SerializeField] private GameMode testGame;
+    [SerializeField] private GameMode selectedGameMode;
 
     private void Awake()
     {
@@ -32,6 +32,11 @@ public class LobbyManager : MonoBehaviour
     public void OnPlayerChanged(Player player)
     {
         OnPlayerChangedReady();
+    }
+
+    public static void ChangeGameMode(GameMode gameMode)
+    {
+        instance.selectedGameMode = gameMode;
     }
 
     public static void OnPlayerChangedReady()
@@ -83,14 +88,15 @@ public class LobbyManager : MonoBehaviour
 
         instance = null;
         GlobalsDict.Instance.GameStateManagerObject.AddComponent<GameManager>();
-        GameManager.OnStartNewGame(testGame);
 
+        int seed = selectedGameMode.randomSeed ? Random.Range(int.MinValue, int.MaxValue) : selectedGameMode.seed;
 
-        // TODO: Maybe seed can be set in the menu?
+        GameManager.OnStartNewGame(selectedGameMode, seed);
+
         StartGameMessage sgm = new StartGameMessage
         {
-            levelSeed = Random.Range(int.MinValue, int.MaxValue),
-            gameMode = testGame
+            levelSeed = seed,
+            gameMode = selectedGameMode
         };
 
         NetworkServer.SendToAll(sgm);

@@ -75,7 +75,7 @@ public class GameManager : MonoBehaviour
 
         instance.CurrentState = State.LoadingLevel;
         ++currentLevel;
-        if (currentLevel == gameMode.levelAmount)
+        if (currentLevel >= gameMode.levelAmount + 1)
         {
             OnDungeonCleared();
             return;
@@ -84,7 +84,7 @@ public class GameManager : MonoBehaviour
         GenerateLevelMessage generateLevelMessage = new GenerateLevelMessage()
         {
             levelNumber = currentLevel,
-            region = Region.Debug
+            region = GetNextRegion()
         };
 
         NetworkServer.SendToAll(generateLevelMessage);
@@ -93,6 +93,20 @@ public class GameManager : MonoBehaviour
         {
             players[i].RpcChangeCanMove(false);
         }
+    }
+
+    private static Region GetNextRegion()
+    {
+        if (gameMode.customRegionOnLevels == null || gameMode.customRegionOnLevels.Length == 0)
+            return Region.Debug; // <--- TODO:
+
+        for (int i = 1; i < gameMode.customRegionOnLevels.Length; i++)
+        {
+            if (gameMode.customRegionOnLevels[i].level > currentLevel)
+                return gameMode.customRegionOnLevels[i - 1].region;
+        }
+
+        return gameMode.customRegionOnLevels[gameMode.customRegionOnLevels.Length - 1].region;
     }
 
     public static void OnPlayerLoadedLevelChanged()

@@ -10,20 +10,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7ddc32f44282bd3469f7d126bd8dd236, type: 3}
-  m_Name: Test Mode
+  m_Name: Test Room Mode
   m_EditorClassIdentifier: 
   levelSeeds: 
-  levelAmount: 100
+  levelAmount: 1
   startingDifficulty: 10
   minPlayers: 1
   maxPlayers: 4
+  randomSeed: 0
+  seed: 0
   dungeonConfig:
-    seed: 0
-    sizeX: 192
-    sizeY: 192
-    minRooms: 10
-    maxRooms: 20
-    corridorMinLength: 10
-    corridorMaxLength: 32
-    generateShopRoom: 1
+    sizeX: 0
+    sizeY: 0
+    minRooms: 0
+    maxRooms: 0
+    corridorMinLength: 0
+    corridorMaxLength: 0
+    generateShopRoom: 0
     shopItems: []
+  customRegionOnLevels:
+  - level: 0
+    region: 2

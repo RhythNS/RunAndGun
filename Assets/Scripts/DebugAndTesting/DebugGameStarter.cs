@@ -17,12 +17,16 @@ public class DebugGameStarter : MonoBehaviour
         RegionSceneLoader loader = RegionSceneLoader.Instance;
         yield return loader.LoadScene(Region.EnemyTestRoom);
 
-        Vector2Int startPos = new Vector2Int(1, 3);
-        Vector2Int startSize = new Vector2Int(10, 10);
-        Vector2Int corridorPos = startPos + new Vector2Int(startSize.x - 1, 2);
+        Vector2Int weaponSize = new Vector2Int(30, 30);
         Vector2Int corridorSize = new Vector2Int(10, 2);
-        Vector2Int enemyPos = startPos + new Vector2Int(startSize.x - 1, 0) + new Vector2Int(corridorSize.x - 1, 0);
         Vector2Int enemySize = new Vector2Int(20, 20);
+        Vector2Int startSize = new Vector2Int(10, 10);
+
+        Vector2Int weaponPos = new Vector2Int(1, 3);
+        Vector2Int startPos = new Vector2Int(weaponPos.x + weaponSize.x + corridorSize.x - 2, 3);
+        Vector2Int corridor1Pos = startPos + new Vector2Int(0, 2);// - new Vector2Int(corridorSize.x, -2);
+        Vector2Int corridor2Pos = startPos + new Vector2Int(startSize.x - 1, 2);
+        Vector2Int enemyPos = startPos + new Vector2Int(startSize.x - 1, 0) + new Vector2Int(corridorSize.x - 1, 0);
 
         Fast2DArray<TileType> layout = new Fast2DArray<TileType>(startSize.x, startSize.y);
         FillRoomWithBounds(layout);
@@ -32,7 +36,14 @@ public class DebugGameStarter : MonoBehaviour
         List<TiledImporter.PrefabLocations> gameObjects = new List<TiledImporter.PrefabLocations>();
         Room startRoom = new Room(startPos.x, startPos.y, layout, gameObjects, RoomType.Start);
 
-        Corridor corridor = new Corridor(corridorPos.x, corridorPos.y, corridorSize.x, Direction.Right);
+        layout = new Fast2DArray<TileType>(weaponSize.x, weaponSize.y);
+        FillRoomWithBounds(layout);
+        layout.Set(TileType.CorridorAccess, layout.XSize - 1, 2);
+        layout.Set(TileType.CorridorAccess, layout.XSize - 1, 3);
+        Room weaponRoom = new Room(weaponPos.x, weaponPos.y, layout, gameObjects, RoomType.Empty);
+
+        Corridor corridor1 = new Corridor(corridor1Pos.x, corridor1Pos.y, corridorSize.x, Direction.Left);
+        Corridor corridor2 = new Corridor(corridor2Pos.x, corridor2Pos.y, corridorSize.x, Direction.Right);
 
         layout = new Fast2DArray<TileType>(enemySize.x, enemySize.y);
         FillRoomWithBounds(layout);
@@ -41,10 +52,11 @@ public class DebugGameStarter : MonoBehaviour
 
         Room enemyRoom = new Room(enemyPos.x, enemyPos.y, layout, gameObjects, RoomType.Combat);
 
-        Room[] rooms = { startRoom, enemyRoom };
-        Corridor[] corridors = { corridor };
+        Room[] rooms = { startRoom, enemyRoom, weaponRoom };
+        Corridor[] corridors = { corridor1, corridor2 };
 
-        GlobalsDict.Instance.GameStateManagerObject.AddComponent<GameManager>();
+        if (Player.LocalPlayer.isServer)
+            GlobalsDict.Instance.GameStateManagerObject.AddComponent<GameManager>();
 
         Dungeon dungeon = new Dungeon(rooms, corridors, enemyPos + new Vector2Int(layout.XSize, layout.YSize));
         DungeonConfig config = DungeonConfig.StandardConfig;
