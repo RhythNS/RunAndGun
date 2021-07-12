@@ -7,10 +7,12 @@ public class RAGNetworkManager : NobleNetworkManager
 {
     // TODO: Check all messages. If something is wrong, return to main menu
 
+    public bool IsLanOnly => isLANOnly;
+
     public override void OnStartServer()
     {
         base.OnStartServer();
-
+        
         // Register custom messages
         NetworkServer.RegisterHandler<JoinMessage>(OnJoinMessage);
     }
