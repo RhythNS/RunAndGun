@@ -45,6 +45,7 @@ public class ServerInfo : PanelElement
         ipInput.text = networkManager.HostEndPoint.Address.ToString();
         portInput.text = networkManager.HostEndPoint.Port.ToString();
     }
+
     /*
     public override void InnerOnHide()
     {
