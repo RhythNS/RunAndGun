@@ -47,6 +47,8 @@ public class UIManager : MonoBehaviour
 
     public void ToggleEmotePanel() => inGameManager.ToggleEmotePanel();
 
+    public void ShowNotification(string toDisplay) => inGameManager.ShowNotification(toDisplay);
+
     private void OnDestroy()
     {
         if (Instance == this)

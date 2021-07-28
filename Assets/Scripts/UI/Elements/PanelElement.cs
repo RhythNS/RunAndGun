@@ -3,8 +3,8 @@ using UnityEngine.UI;
 
 public abstract class PanelElement : MonoBehaviour
 {
-    [SerializeField] private Button confirmButton;
-    [SerializeField] private Button cancelButton;
+    [SerializeField] protected Button confirmButton;
+    [SerializeField] protected Button cancelButton;
 
     private void Awake()
     {

@@ -25,29 +25,15 @@ public class RAGMatchmaker : MonoBehaviour
         matchUp.onLostConnectionToMatchmakingServer = OnLostConnectionToMatchmakingServer;
     }
 
-    public void HostMatch(Dictionary<string, MatchData> matchData)
+    public Match GetCurrentMatch()
     {
-        NetworkManager.singleton.StartHost();
-
-        /*
-        var matchData = new Dictionary<string, MatchData>() {
-                { "Match name", "Layla's Match" },
-                { "eloScore", 200 },
-                { "Region", "North America" },
-                { "Map name", "de_dust" },
-                { "Game type", "Capture the flag" },
-            };
-         */
-
-        matchUp.CreateMatch(NetworkManager.singleton.maxConnections + 1, matchData, OnMatchCreated);
+        return matchUp.currentMatch;
     }
 
-    public void OnMatchCreated(bool success, Match match)
+    public void HostMatch(Dictionary<string, MatchData> matchData, Action<bool, Match> onMatchCreated)
     {
-        if (success)
-        {
-            Debug.Log("Created match: " + match.matchData["Match name"]);
-        }
+        NetworkManager.singleton.StartHost();
+        matchUp.CreateMatch(NetworkManager.singleton.maxConnections + 1, matchData, onMatchCreated);
     }
 
     // Get a filtered list of matches
@@ -70,17 +56,6 @@ public class RAGMatchmaker : MonoBehaviour
         matchUp.GetMatchList(onMatchListRecieved, 0, 10, filters);
     }
 
-    /*
-    // Called when the match list is retreived via GetMatchList
-    private void OnMatchListReceived(bool success, Match[] matches)
-    {
-        if (!success) return;
-
-        Debug.Log("Received match list.");
-        this.matches = matches;
-    }
-     */
-
     public void JoinMatch(Match match, Action<bool, Match> onJoinMatch)
     {
         if (match == null)
@@ -89,33 +64,17 @@ public class RAGMatchmaker : MonoBehaviour
         matchUp.JoinMatch(match, onJoinMatch);
     }
 
-    /*
-    // Called when a response is received from a JoinMatch request
-    private void OnJoinMatch(bool success, Match match)
+    public void SetMatchData(Dictionary<string, MatchData> matchData)
     {
-        if (!success) return;
-
-        // We don't need to keep the list around any more
-        matches = null;
-
-        Debug.Log("Joined match: " + match.matchData["Match name"]);
-
-        NetworkManager.singleton.StartClient(match);
+        matchUp.SetMatchData(matchData);
     }
-     */
 
-    public void SetMatchData()
+    public void Disconnect()
     {
-        Debug.Log("Setting match data");
-
-        /**
-         * Option 2: Completely replace existing match data and immediately send it to the matchmaking server
-         */
-        //var newMatchData = new Dictionary<string, MatchData>() {
-        //    { "Key1", "value1" },
-        //    { "Key2", 3.14159 }
-        //};
-        //matchUp.SetMatchData(newMatchData);
+        if (NetworkServer.active)
+            matchUp.DestroyMatch();
+        else
+            matchUp.LeaveMatch();
     }
 
 
@@ -126,7 +85,6 @@ public class RAGMatchmaker : MonoBehaviour
         // Handle this however you feel is appropriate. 
         // The Exception will have the actual error but it was probably a loss of internet or server crash
     }
-
 
     private void OnDestroy()
     {

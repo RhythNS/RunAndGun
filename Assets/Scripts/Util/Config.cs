@@ -55,6 +55,7 @@ public class Config : MonoBehaviour
 
     // ---- Connection ----
     public string playerName = "Test";
+    public string password = "";
     public CharacterType selectedPlayerType = CharacterType.Melee;
 
     // ---- Input ----

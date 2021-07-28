@@ -97,6 +97,15 @@ public class RAGNetworkManager : NobleNetworkManager
         }
         else // They joined for the first time
         {
+            string reqPassword = Config.Instance.password;
+            if (reqPassword.Length != 0 && joinMessage.password.Equals(reqPassword) == false)
+            {
+                Debug.LogError("New player joined with wrong password!");
+                connection.Disconnect();
+                Destroy(newPlayer);
+                return;
+            }
+
             int? index = GetPlayerIndex(connection.connectionId);
             if (index == null)
             {
