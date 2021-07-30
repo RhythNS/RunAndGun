@@ -1,6 +1,7 @@
 ﻿using MatchUp;
 using Mirror;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +9,7 @@ using UnityEngine;
 public class RAGMatchmaker : MonoBehaviour
 {
     public static RAGMatchmaker Instance { get; private set; }
+    public bool IsReady => matchUp.IsReady;
 
     private Matchmaker matchUp;
 
@@ -25,42 +27,24 @@ public class RAGMatchmaker : MonoBehaviour
         matchUp.onLostConnectionToMatchmakingServer = OnLostConnectionToMatchmakingServer;
     }
 
-    public Match GetCurrentMatch()
-    {
-        return matchUp.currentMatch;
-    }
+    public Match GetCurrentMatch() => matchUp.currentMatch;
 
-    public void HostMatch(Dictionary<string, MatchData> matchData, Action<bool, Match> onMatchCreated)
+    public IEnumerator Reconnect() => matchUp.ConnectToMatchmaker();
+
+    public void HostMatch(Dictionary<string, MatchData> matchData, int maxPlayers, Action<bool, Match> onMatchCreated)
     {
+        NetworkManager.singleton.maxConnections = maxPlayers - 1;
         NetworkManager.singleton.StartHost();
-        matchUp.CreateMatch(NetworkManager.singleton.maxConnections + 1, matchData, onMatchCreated);
+        matchUp.CreateMatch(maxPlayers, matchData, onMatchCreated);
     }
 
-    // Get a filtered list of matches
     public void GetMatchList(Action<bool, Match[]> onMatchListRecieved)
     {
-        Debug.Log("Fetching match list");
-
-        // Filter so that we only receive matches with 
-        // an eloScore between 150 and 350
-        // and the Region is North America
-        // and the Game type is Capture the Flag
-        var filters = new List<MatchFilter>(){
-                new MatchFilter("eloScore", 150, MatchFilter.OperationType.GREATER),
-                new MatchFilter("eloScore", 350, MatchFilter.OperationType.LESS),
-                new MatchFilter("Region", "North America", MatchFilter.OperationType.EQUALS),
-                new MatchFilter("Game type", "Capture the flag", MatchFilter.OperationType.EQUALS)
-            };
-
-        // Get the filtered match list. The results will be received in OnMatchListReceived()
-        matchUp.GetMatchList(onMatchListRecieved, 0, 10, filters);
+        matchUp.GetMatchList(onMatchListRecieved, 0, 40);
     }
 
     public void JoinMatch(Match match, Action<bool, Match> onJoinMatch)
     {
-        if (match == null)
-            return;
-
         matchUp.JoinMatch(match, onJoinMatch);
     }
 
@@ -76,7 +60,6 @@ public class RAGMatchmaker : MonoBehaviour
         else
             matchUp.LeaveMatch();
     }
-
 
     private void OnLostConnectionToMatchmakingServer(Exception e)
     {

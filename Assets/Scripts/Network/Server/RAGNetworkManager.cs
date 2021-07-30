@@ -49,7 +49,8 @@ public class RAGNetworkManager : NobleNetworkManager
         JoinMessage message = new JoinMessage
         {
             name = Config.Instance.playerName,
-            characterType = Config.Instance.selectedPlayerType
+            characterType = Config.Instance.selectedPlayerType,
+            password = Config.Instance.password
         };
         conn.Send(message);
     }

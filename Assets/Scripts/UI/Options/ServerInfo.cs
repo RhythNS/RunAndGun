@@ -1,5 +1,6 @@
 ﻿using MatchUp;
 using Mirror;
+using NobleConnect.Mirror;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -13,6 +14,7 @@ public class ServerInfo : PanelElement
     [SerializeField] private Button startServerButton;
     [SerializeField] private TMP_Text startServerText;
     [SerializeField] private Button stopServerButton;
+    [SerializeField] private TMP_Dropdown regionDropDown;
 
     private void Start()
     {
@@ -50,11 +52,14 @@ public class ServerInfo : PanelElement
         int players = maxPlayers.Value;
         string matchName = gamenameInput.text;
         Config.Instance.password = passwordInput.text;
+        int regionVal = regionDropDown.value + 1;
 
         Dictionary<string, MatchData> matchData = new Dictionary<string, MatchData>()
         {
             { "Match name", matchName },
             { "Max players", players },
+            { "Connected players", 1 },
+            { "Region", regionVal },
             { "Password protected", (passwordInput.text.Length == 0 ? 0 : 1) }
         };
 
@@ -65,7 +70,10 @@ public class ServerInfo : PanelElement
             return;
         }
 
-        RAGMatchmaker.Instance.HostMatch(matchData, OnMatchCreated);
+        NobleNetworkManager networkManager = (NobleNetworkManager)NetworkManager.singleton;
+        networkManager.StopClient();
+        networkManager.StopServer();
+        RAGMatchmaker.Instance.HostMatch(matchData, players, OnMatchCreated);
         SetEnabled(false);
     }
 

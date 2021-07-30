@@ -58,6 +58,12 @@ public class NetworkConnector : MonoBehaviour
         }
     }
 
+    public static void DisconnectClient()
+    {
+        NetworkClient.Disconnect();
+        NetworkManager.singleton.StopServer();
+    }
+
     public static void TryConnectToServerFailed(Action onFailure)
     {
         Debug.LogWarning("Could not connect to server!");

@@ -91,6 +91,7 @@ GameObject:
   - component: {fileID: 511879601587473819}
   - component: {fileID: 6147434120120078534}
   - component: {fileID: 4331830215520593489}
+  - component: {fileID: 3892839556540046609}
   m_Layer: 0
   m_Name: Dicts
   m_TagString: Untagged
@@ -489,6 +490,33 @@ MonoBehaviour:
     - identifier: 
       sprite: {fileID: 21300000, guid: 6ad58bf6ef4a96d47a6ece0fa4454e29, type: 3}
       id: 0
+--- !u!114 &3892839556540046609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1365799234425872912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89db6382bfa95a846977606733e37ad7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  regionNames:
+  - name: US East
+    region: 1
+  - name: US West
+    region: 2
+  - name: EU
+    region: 3
+  - name: AU
+    region: 4
+  - name: APAC
+    region: 5
+  - name: HK
+    region: 6
+  - name: SA
+    region: 7
 --- !u!1 &1365799234809505999
 GameObject:
   m_ObjectHideFlags: 0
@@ -540,6 +568,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerName: 
+  password: 
   selectedPlayerType: 0
   selectedInput: 0
   useFocusPoint: 1

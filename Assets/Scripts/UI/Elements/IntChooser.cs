@@ -25,7 +25,7 @@ public class IntChooser : MonoBehaviour
                 return;
 
             intValue = value;
-            OnValueChanged.Invoke(value);
+            OnValueChanged?.Invoke(value);
             UpdateDisplay();
         }
     }
