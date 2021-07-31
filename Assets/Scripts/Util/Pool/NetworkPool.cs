@@ -13,7 +13,7 @@ public class NetworkPool : MonoBehaviour
     public void Setup()
     {
         CreateInitialPool();
-        NetworkClient.RegisterPrefab(prefab, Get, Free);
+        ClientScene.RegisterPrefab(prefab, Get, Free);
     }
 
     protected virtual void CreateInitialPool()

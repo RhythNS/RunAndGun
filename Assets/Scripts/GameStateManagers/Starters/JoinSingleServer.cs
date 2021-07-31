@@ -4,7 +4,7 @@ public class JoinSingleServer : MonoBehaviour
 {
     private void Start()
     {
-        NetworkConnector.TryStartServer(true);
+        NetworkConnector.TryStartServer(false);
         Destroy(this);
     }
 }

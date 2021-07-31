@@ -2,7 +2,9 @@ using System;
 
 namespace Mirror
 {
-    /// <summary>Pooled NetworkReader, automatically returned to pool when using 'using'</summary>
+    /// <summary>
+    /// NetworkReader to be used with <see cref="NetworkReaderPool">NetworkReaderPool</see>
+    /// </summary>
     public sealed class PooledNetworkReader : NetworkReader, IDisposable
     {
         internal PooledNetworkReader(byte[] bytes) : base(bytes) {}
@@ -10,7 +12,10 @@ namespace Mirror
         public void Dispose() => NetworkReaderPool.Recycle(this);
     }
 
-    /// <summary>Pool of NetworkReaders to avoid allocations.</summary>
+    /// <summary>
+    /// Pool of NetworkReaders
+    /// <para>Use this pool instead of <see cref="NetworkReader">NetworkReader</see> to reduce memory allocation</para>
+    /// </summary>
     public static class NetworkReaderPool
     {
         // reuse Pool<T>
@@ -21,7 +26,10 @@ namespace Mirror
             () => new PooledNetworkReader(new byte[]{})
         );
 
-        /// <summary>Get the next reader in the pool. If pool is empty, creates a new Reader</summary>
+        /// <summary>
+        /// Get the next reader in the pool
+        /// <para>If pool is empty, creates a new Reader</para>
+        /// </summary>
         public static PooledNetworkReader GetReader(byte[] bytes)
         {
             // grab from pool & set buffer
@@ -31,7 +39,10 @@ namespace Mirror
             return reader;
         }
 
-        /// <summary>Get the next reader in the pool. If pool is empty, creates a new Reader</summary>
+        /// <summary>
+        /// Get the next reader in the pool
+        /// <para>If pool is empty, creates a new Reader</para>
+        /// </summary>
         public static PooledNetworkReader GetReader(ArraySegment<byte> segment)
         {
             // grab from pool & set buffer
@@ -41,7 +52,10 @@ namespace Mirror
             return reader;
         }
 
-        /// <summary>Returns a reader to the pool.</summary>
+        /// <summary>
+        /// Puts reader back into pool
+        /// <para>When pool is full, the extra reader is left for the GC</para>
+        /// </summary>
         public static void Recycle(PooledNetworkReader reader)
         {
             Pool.Return(reader);

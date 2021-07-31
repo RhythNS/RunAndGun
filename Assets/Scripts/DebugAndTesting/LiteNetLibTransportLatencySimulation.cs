@@ -64,9 +64,9 @@ public class LiteNetLibTransportLatencySimulation : LiteNetLibTransport
         // base latency
         switch (channeldId)
         {
-            case Channels.Reliable:
+            case Channels.DefaultReliable:
                 return reliableLatency + spike;
-            case Channels.Unreliable:
+            case Channels.DefaultUnreliable:
                 return unreliableLatency + spike;
             default:
                 return 0;
@@ -91,11 +91,11 @@ public class LiteNetLibTransportLatencySimulation : LiteNetLibTransport
 
         switch (channelId)
         {
-            case Channels.Reliable:
+            case Channels.DefaultReliable:
                 // simulate latency
                 reliableQueue.Add(message);
                 break;
-            case Channels.Unreliable:
+            case Channels.DefaultUnreliable:
                 // simulate packet loss
                 bool drop = random.NextDouble() < unreliableLoss;
                 if (!drop)
@@ -113,6 +113,11 @@ public class LiteNetLibTransportLatencySimulation : LiteNetLibTransport
                 Debug.LogError($"{nameof(LatencySimulation)} unexpected channelId: {channelId}");
                 break;
         }
+    }
+
+    private object LatencySimulation()
+    {
+        throw new NotImplementedException();
     }
 
     public override bool Available() => base.Available();
@@ -192,7 +197,7 @@ public class LiteNetLibTransportLatencySimulation : LiteNetLibTransport
             if (message.time <= Time.time)
             {
                 // send and eat
-                base.ClientSend(Channels.Reliable, new ArraySegment<byte>(message.bytes));
+                base.ClientSend(Channels.DefaultReliable, new ArraySegment<byte>(message.bytes));
                 reliableClientToServer.RemoveAt(0);
             }
             // not enough time elapsed yet
@@ -207,7 +212,7 @@ public class LiteNetLibTransportLatencySimulation : LiteNetLibTransport
             if (message.time <= Time.time)
             {
                 // send and eat
-                base.ClientSend(Channels.Unreliable, new ArraySegment<byte>(message.bytes));
+                base.ClientSend(Channels.DefaultUnreliable, new ArraySegment<byte>(message.bytes));
                 unreliableClientToServer.RemoveAt(0);
             }
             // not enough time elapsed yet
@@ -227,7 +232,7 @@ public class LiteNetLibTransportLatencySimulation : LiteNetLibTransport
             if (message.time <= Time.time)
             {
                 // send and eat
-                base.ServerSend(message.connectionId, Channels.Reliable, new ArraySegment<byte>(message.bytes));
+                base.ServerSend(message.connectionId, Channels.DefaultReliable, new ArraySegment<byte>(message.bytes));
                 reliableServerToClient.RemoveAt(0);
             }
             // not enough time elapsed yet
@@ -242,7 +247,7 @@ public class LiteNetLibTransportLatencySimulation : LiteNetLibTransport
             if (message.time <= Time.time)
             {
                 // send and eat
-                base.ServerSend(message.connectionId, Channels.Unreliable, new ArraySegment<byte>(message.bytes));
+                base.ServerSend(message.connectionId, Channels.DefaultUnreliable, new ArraySegment<byte>(message.bytes));
                 unreliableServerToClient.RemoveAt(0);
             }
             // not enough time elapsed yet

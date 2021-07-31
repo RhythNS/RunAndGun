@@ -4,19 +4,25 @@ using Stopwatch = System.Diagnostics.Stopwatch;
 
 namespace Mirror
 {
-    /// <summary>Synchronizes server time to clients.</summary>
+    /// <summary>
+    /// Synchronize time between the server and the clients
+    /// </summary>
     public static class NetworkTime
     {
-        /// <summary>Ping message frequency, used to calculate network time and RTT</summary>
+        /// <summary>
+        /// how often are we sending ping messages
+        /// used to calculate network time and RTT
+        /// </summary>
         public static float PingFrequency = 2.0f;
 
-        /// <summary>Average out the last few results from Ping</summary>
+        /// <summary>
+        /// average out the last few results from Ping
+        /// </summary>
         public static int PingWindowSize = 10;
 
         static double lastPingTime;
 
         // Date and time when the application started
-        // TODO Unity 2020 / 2021 supposedly has double Time.time now?
         static readonly Stopwatch stopwatch = new Stopwatch();
 
         static NetworkTime()
@@ -32,7 +38,10 @@ namespace Mirror
         static double offsetMax = double.MaxValue;
 
         // returns the clock time _in this system_
-        static double LocalTime() => stopwatch.Elapsed.TotalSeconds;
+        static double LocalTime()
+        {
+            return stopwatch.Elapsed.TotalSeconds;
+        }
 
         public static void Reset()
         {
@@ -47,7 +56,7 @@ namespace Mirror
             if (Time.time - lastPingTime >= PingFrequency)
             {
                 NetworkPingMessage pingMessage = new NetworkPingMessage(LocalTime());
-                NetworkClient.Send(pingMessage, Channels.Unreliable);
+                NetworkClient.Send(pingMessage, Channels.DefaultUnreliable);
                 lastPingTime = Time.time;
             }
         }
@@ -55,35 +64,37 @@ namespace Mirror
         // executed at the server when we receive a ping message
         // reply with a pong containing the time from the client
         // and time from the server
-        internal static void OnServerPing(NetworkConnection conn, NetworkPingMessage message)
+        internal static void OnServerPing(NetworkConnection conn, NetworkPingMessage msg)
         {
             // Debug.Log("OnPingServerMessage  conn=" + conn);
-            NetworkPongMessage pongMessage = new NetworkPongMessage
+
+            NetworkPongMessage pongMsg = new NetworkPongMessage
             {
-                clientTime = message.clientTime,
+                clientTime = msg.clientTime,
                 serverTime = LocalTime()
             };
-            conn.Send(pongMessage, Channels.Unreliable);
+
+            conn.Send(pongMsg, Channels.DefaultUnreliable);
         }
 
         // Executed at the client when we receive a Pong message
         // find out how long it took since we sent the Ping
         // and update time offset
-        internal static void OnClientPong(NetworkPongMessage message)
+        internal static void OnClientPong(NetworkPongMessage msg)
         {
             double now = LocalTime();
 
             // how long did this message take to come back
-            double newRtt = now - message.clientTime;
+            double newRtt = now - msg.clientTime;
             _rtt.Add(newRtt);
 
             // the difference in time between the client and the server
             // but subtract half of the rtt to compensate for latency
             // half of rtt is the best approximation we have
-            double newOffset = now - newRtt * 0.5f - message.serverTime;
+            double newOffset = now - newRtt * 0.5f - msg.serverTime;
 
-            double newOffsetMin = now - newRtt - message.serverTime;
-            double newOffsetMax = now - message.serverTime;
+            double newOffsetMin = now - newRtt - msg.serverTime;
+            double newOffsetMax = now - msg.serverTime;
             offsetMin = Math.Max(offsetMin, newOffsetMin);
             offsetMax = Math.Min(offsetMax, newOffsetMax);
 
@@ -100,7 +111,9 @@ namespace Mirror
             }
         }
 
-        /// <summary>The time in seconds since the server started.</summary>
+        /// <summary>
+        /// The time in seconds since the server started.
+        /// </summary>
         //
         // I measured the accuracy of float and I got this:
         // for the same day,  accuracy is better than 1 ms
@@ -112,34 +125,42 @@ namespace Mirror
         // and you cast down to float,  then the time will jump in 0.4s intervals.
         public static double time => LocalTime() - _offset.Value;
 
-        /// <summary>Time measurement variance. The higher, the less accurate the time is.</summary>
-        // TODO does this need to be public? user should only need NetworkTime.time
-        public static double timeVariance => _offset.Var;
-        [Obsolete("NetworkTime.timeVar was renamed to timeVariance")]
-        public static double timeVar => timeVariance;
+        /// <summary>
+        /// Measurement of the variance of time.
+        /// <para>The higher the variance, the less accurate the time is</para>
+        /// </summary>
+        public static double timeVar => _offset.Var;
 
-        /// <summary>Time standard deviation. The highe, the less accurate the time is.</summary>
-        // TODO does this need to be public? user should only need NetworkTime.time
-        public static double timeStandardDeviation => Math.Sqrt(timeVariance);
-        [Obsolete("NetworkTime.timeSd was renamed to timeStandardDeviation")]
-        public static double timeSd => timeStandardDeviation;
+        /// <summary>
+        /// standard deviation of time.
+        /// <para>The higher the variance, the less accurate the time is</para>
+        /// </summary>
+        public static double timeSd => Math.Sqrt(timeVar);
 
-        /// <summary>Clock difference in seconds between the client and the server. Always 0 on server.</summary>
+        /// <summary>
+        /// Clock difference in seconds between the client and the server
+        /// </summary>
+        /// <remarks>
+        /// Note this value is always 0 at the server
+        /// </remarks>
         public static double offset => _offset.Value;
 
-        /// <summary>Round trip time (in seconds) that it takes a message to go client->server->client.</summary>
+        /// <summary>
+        /// how long in seconds does it take for a message to go
+        /// to the server and come back
+        /// </summary>
         public static double rtt => _rtt.Value;
 
-        /// <summary>Round trip time variance. The higher, the less accurate the rtt is.</summary>
-        // TODO does this need to be public? user should only need NetworkTime.time
-        public static double rttVariance => _rtt.Var;
-        [Obsolete("NetworkTime.rttVar was renamed to rttVariance")]
-        public static double rttVar => rttVariance;
+        /// <summary>
+        /// measure variance of rtt
+        /// the higher the number,  the less accurate rtt is
+        /// </summary>
+        public static double rttVar => _rtt.Var;
 
-        /// <summary>Round trip time standard deviation. The higher, the less accurate the rtt is.</summary>
-        // TODO does this need to be public? user should only need NetworkTime.time
-        public static double rttStandardDeviation => Math.Sqrt(rttVariance);
-        [Obsolete("NetworkTime.rttSd was renamed to rttStandardDeviation")]
-        public static double rttSd => rttStandardDeviation;
+        /// <summary>
+        /// Measure the standard deviation of rtt
+        /// the higher the number,  the less accurate rtt is
+        /// </summary>
+        public static double rttSd => Math.Sqrt(rttVar);
     }
 }

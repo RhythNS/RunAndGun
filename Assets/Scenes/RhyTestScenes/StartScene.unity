@@ -287,6 +287,34 @@ PrefabInstance:
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 35156fd5962f7af409bc9c2a8aedda2b, type: 3}
+--- !u!1 &308228714 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2660826429402068675, guid: ef31ecc06432981469da27e90dd8c541,
+    type: 3}
+  m_PrefabInstance: {fileID: 554370227}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &308228715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 308228714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b0fecffa3f624585964b0d0eb21b18e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Port: 7777
+  NoDelay: 1
+  Interval: 10
+  FastResend: 2
+  CongestionWindow: 0
+  SendWindowSize: 4096
+  ReceiveWindowSize: 4096
+  debugLog: 1
+  statisticsGUI: 0
+  statisticsLog: 0
 --- !u!1 &534775330
 GameObject:
   m_ObjectHideFlags: 0
@@ -378,9 +406,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2660826429402068678, guid: ef31ecc06432981469da27e90dd8c541,
         type: 3}
-      propertyPath: forceRelayConnection
-      value: 1
-      objectReference: {fileID: 0}
+      propertyPath: transport
+      value: 
+      objectReference: {fileID: 308228715}
     - target: {fileID: 2660826429402068678, guid: ef31ecc06432981469da27e90dd8c541,
         type: 3}
       propertyPath: spawnPrefabs.Array.size
@@ -507,7 +535,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 2660826429402068680, guid: ef31ecc06432981469da27e90dd8c541,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 2660826429402068680, guid: ef31ecc06432981469da27e90dd8c541, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: ef31ecc06432981469da27e90dd8c541, type: 3}
 --- !u!4 &887049973 stripped
 Transform:

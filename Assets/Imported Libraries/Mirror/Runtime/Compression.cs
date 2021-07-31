@@ -4,7 +4,16 @@ using UnityEngine;
 
 namespace Mirror
 {
-    /// <summary>Functions to Compress Quaternions and Floats</summary>
+    /// <summary>
+    /// Functions to Compress Quaternions and Floats
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Links for more info:
+    /// <br/><see href="https://youtu.be/Z9X4lysFr64">GDC Talk</see>
+    /// <br/><see href="https://gafferongames.com/post/snapshot_compression/">Post on Snapshot Compression</see>
+    /// </para>
+    /// </remarks>
     public static class Compression
     {
         // quaternion compression //////////////////////////////////////////////

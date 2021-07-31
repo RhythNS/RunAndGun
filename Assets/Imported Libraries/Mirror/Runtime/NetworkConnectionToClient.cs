@@ -5,8 +5,7 @@ namespace Mirror
 {
     public class NetworkConnectionToClient : NetworkConnection
     {
-        public override string address =>
-            Transport.activeTransport.ServerGetClientAddress(connectionId);
+        public override string address => Transport.activeTransport.ServerGetClientAddress(connectionId);
 
         // batching from server to client.
         // fewer transport calls give us significantly better performance/scale.
@@ -37,7 +36,16 @@ namespace Mirror
         }
         Dictionary<int, Batch> batches = new Dictionary<int, Batch>();
 
-        // batch messages and send them out in LateUpdate (or after batchInterval)
+        // batching is optional because due to mirror's non-optimal update order
+        // it would increase latency.
+
+        // batching is still optional until we improve mirror's update order.
+        // right now it increases latency because:
+        //   enabling batching flushes all state updates in same frame, but
+        //   transport processes incoming messages afterwards so server would
+        //   batch them until next frame's flush
+        // => disable it for super fast paced games
+        // => enable it for high scale / cpu heavy games
         bool batching;
 
         // batch interval is 0 by default, meaning that we send immediately.
@@ -122,8 +130,10 @@ namespace Mirror
             batch.lastSendTime = NetworkTime.time;
         }
 
-        internal override void Send(ArraySegment<byte> segment, int channelId = Channels.Reliable)
+        internal override void Send(ArraySegment<byte> segment, int channelId = Channels.DefaultReliable)
         {
+            // Debug.Log("ConnectionSend " + this + " bytes:" + BitConverter.ToString(segment.Array, segment.Offset, segment.Count));
+
             //Debug.Log("ConnectionSend " + this + " bytes:" + BitConverter.ToString(segment.Array, segment.Offset, segment.Count));
 
             // validate packet size first.
@@ -144,7 +154,10 @@ namespace Mirror
                     batch.messages.Enqueue(writer);
                 }
                 // otherwise send directly to minimize latency
-                else Transport.activeTransport.ServerSend(connectionId, channelId, segment);
+                else
+                {
+                    Transport.activeTransport.ServerSend(connectionId, channelId, segment);
+                }
             }
         }
 
@@ -172,7 +185,9 @@ namespace Mirror
             }
         }
 
-        /// <summary>Disconnects this connection.</summary>
+        /// <summary>
+        /// Disconnects this connection.
+        /// </summary>
         public override void Disconnect()
         {
             // set not ready and handle clientscene disconnect in any case

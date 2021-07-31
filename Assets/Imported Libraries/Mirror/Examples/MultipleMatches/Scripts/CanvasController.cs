@@ -558,7 +558,7 @@ namespace Mirror.Examples.MultipleMatch
 
         #region Client Match Message Handler
 
-        void OnClientMatchMessage(ClientMatchMessage msg)
+        void OnClientMatchMessage(NetworkConnection conn, ClientMatchMessage msg)
         {
             if (!NetworkClient.active) return;
 
