@@ -300,6 +300,7 @@ MonoBehaviour:
   playerLayer: 8
   enemyLayer: 9
   downedPlayerLayer: 10
+  pickableLayer: 11
   dungeonRoomLayer: 16
   bulletTargetPlayerOnly: 17
   bulletTargetEnemyOnly: 18
