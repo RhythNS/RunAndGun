@@ -34,7 +34,7 @@ public class RAGMatchmaker : MonoBehaviour
     public void HostMatch(Dictionary<string, MatchData> matchData, int maxPlayers, Action<bool, Match> onMatchCreated)
     {
         NetworkManager.singleton.maxConnections = maxPlayers;
-        NetworkManager.singleton.StartHost();
+//        NetworkManager.singleton.StartHost();
         matchUp.CreateMatch(maxPlayers, matchData, onMatchCreated);
     }
 

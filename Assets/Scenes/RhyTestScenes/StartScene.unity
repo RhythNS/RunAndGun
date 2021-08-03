@@ -287,34 +287,6 @@ PrefabInstance:
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 35156fd5962f7af409bc9c2a8aedda2b, type: 3}
---- !u!1 &308228714 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2660826429402068675, guid: ef31ecc06432981469da27e90dd8c541,
-    type: 3}
-  m_PrefabInstance: {fileID: 554370227}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &308228715
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 308228714}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b0fecffa3f624585964b0d0eb21b18e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Port: 7777
-  NoDelay: 1
-  Interval: 10
-  FastResend: 2
-  CongestionWindow: 0
-  SendWindowSize: 4096
-  ReceiveWindowSize: 4096
-  debugLog: 1
-  statisticsGUI: 0
-  statisticsLog: 0
 --- !u!1 &534775330
 GameObject:
   m_ObjectHideFlags: 0
@@ -404,11 +376,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 2660826429402068678, guid: ef31ecc06432981469da27e90dd8c541,
-        type: 3}
-      propertyPath: transport
-      value: 
-      objectReference: {fileID: 308228715}
     - target: {fileID: 2660826429402068678, guid: ef31ecc06432981469da27e90dd8c541,
         type: 3}
       propertyPath: spawnPrefabs.Array.size
@@ -535,8 +502,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 2660826429402068680, guid: ef31ecc06432981469da27e90dd8c541, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ef31ecc06432981469da27e90dd8c541, type: 3}
 --- !u!4 &887049973 stripped
 Transform:
@@ -561,6 +527,8 @@ GameObject:
   - component: {fileID: 1437744883}
   - component: {fileID: 1437744884}
   - component: {fileID: 1437744885}
+  - component: {fileID: 1437744886}
+  - component: {fileID: 1437744887}
   m_Layer: 0
   m_Name: Debug and Cheats
   m_TagString: Untagged
@@ -692,6 +660,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67f770cb8a7cf3a45acb3322f0b2d0dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1437744886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1437744876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd18a7ebb51be7f429c45487341eee27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  messages:
+  - This is the first line
+  - The second line comes after that
+  - On the third line the boss might have been killed
+  - Fourth one is where the friendly died
+  - Next on the fifth line there is some ammo you can pick up
+  - Then there is the sixth line
+  - And finally the seventh line is where it ends
+--- !u!114 &1437744887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1437744876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9d08f8404978ef4ab7b868e40541f06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1458578295
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -768,6 +768,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 143620709140942622, guid: 80ba9067596ac284d8b61bc190eeb26d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 615397593607150280, guid: 80ba9067596ac284d8b61bc190eeb26d,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -1148,6 +1153,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3990865549519353694, guid: 80ba9067596ac284d8b61bc190eeb26d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3990865550171715957, guid: 80ba9067596ac284d8b61bc190eeb26d,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -1156,6 +1166,11 @@ PrefabInstance:
     - target: {fileID: 3990865550171715957, guid: 80ba9067596ac284d8b61bc190eeb26d,
         type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3990865550621846600, guid: 80ba9067596ac284d8b61bc190eeb26d,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3990865551002923283, guid: 80ba9067596ac284d8b61bc190eeb26d,
@@ -1836,6 +1851,11 @@ PrefabInstance:
     - target: {fileID: 8734496301492230637, guid: 80ba9067596ac284d8b61bc190eeb26d,
         type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8934108226431560336, guid: 80ba9067596ac284d8b61bc190eeb26d,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

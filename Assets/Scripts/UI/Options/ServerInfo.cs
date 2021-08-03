@@ -71,8 +71,8 @@ public class ServerInfo : PanelElement
         }
 
         NobleNetworkManager networkManager = (NobleNetworkManager)NetworkManager.singleton;
-        networkManager.StopClient();
-        networkManager.StopServer();
+//        networkManager.StopClient();
+//        networkManager.StopServer();
         RAGMatchmaker.Instance.HostMatch(matchData, players, OnMatchCreated);
         SetEnabled(false);
     }

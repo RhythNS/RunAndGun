@@ -11,19 +11,26 @@ public class NotificationManager : MonoBehaviour
     [SerializeField] private int maxLines = 5;
     [SerializeField] private TMP_Text text;
 
-    private List<string> displayingStrings;
+    private List<Tuple<string, ExtendedCoroutine>> displayingStrings;
 
     private void Start()
     {
-        displayingStrings = new List<string>();
+        displayingStrings = new List<Tuple<string, ExtendedCoroutine>>();
         text.text = "";
     }
 
     public void Show(string toDisplay)
     {
-        displayingStrings.Add(toDisplay);
+        displayingStrings.Add(new Tuple<string, ExtendedCoroutine>(toDisplay,
+            new ExtendedCoroutine(this, StartTimerForDeletion(), startNow: true)));
+
+        if (displayingStrings.Count >= maxLines)
+        {
+            displayingStrings[0].Item2.Stop(false);
+            displayingStrings.RemoveAt(0);
+        }
+
         UpdateDisplay();
-        StartCoroutine(StartTimerForDeletion());
     }
 
     private void UpdateDisplay()
@@ -34,11 +41,11 @@ public class NotificationManager : MonoBehaviour
             return;
         }
 
-        StringBuilder sb = new StringBuilder(displayingStrings[0]);
+        StringBuilder sb = new StringBuilder(displayingStrings[0].Item1);
         for (int i = 1; i < displayingStrings.Count; i++)
         {
             sb.Append(Environment.NewLine);
-            sb.Append(displayingStrings[i]);
+            sb.Append(displayingStrings[i].Item1);
         }
 
         text.text = sb.ToString();
@@ -48,5 +55,6 @@ public class NotificationManager : MonoBehaviour
     {
         yield return new WaitForSeconds(timeForSingleNotification);
         displayingStrings.RemoveAt(0);
+        UpdateDisplay();
     }
 }

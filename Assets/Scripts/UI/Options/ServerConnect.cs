@@ -24,6 +24,8 @@ public class ServerConnect : PanelElement
     [SerializeField] private RectTransform passwordTrans;
     [SerializeField] private RectTransform matchInfoContentTrans;
 
+    [SerializeField] private ConnectingScreen connectingScreen;
+
     private Match toConnectToMatch;
 
     private void Start()
@@ -114,7 +116,16 @@ public class ServerConnect : PanelElement
         }
 
         NetworkConnector.DisconnectClient();
-        NetworkManager.singleton.StartClient(match);
+
+        //NetworkManager.singleton.StartClient(match);
+        NobleNetworkManager manager = (NobleNetworkManager)NetworkManager.singleton;
+        string ip = match.matchData["ipAddress"];
+        int port = match.matchData["port"];
+        manager.networkAddress = ip;
+        manager.networkPort = (ushort)port;
+        manager.StartClient();
+
+        connectingScreen.Show();
         OnConfirm();
     }
 
