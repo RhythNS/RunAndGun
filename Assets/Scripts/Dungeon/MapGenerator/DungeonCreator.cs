@@ -299,7 +299,7 @@ public class DungeonCreator : MonoBehaviour
 
     public void AdjustMask(Vector3 position, Vector3 scale)
     {
-        mask.localScale = scale + new Vector3(0f, 1.5f, 0f);
+        mask.localScale = scale;
         mask.position = position + scale / 2f + new Vector3(0f, 1f, 0f);
     }
 

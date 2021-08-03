@@ -44,7 +44,8 @@ namespace MapGenerator
                 CorridorRoom corridorRoom = corridorObject.AddComponent<CorridorRoom>();
                 corridorRoom.id = dungeon.Rooms.Length + i;
                 corridorRoom.walkableTiles = corridor.GetWalkableTiles();
-                corridorRoom.ForceBorder(new Rect(corridor.Position.x, corridor.Position.y, corridor.Size.x, corridor.Size.y));
+                corridorRoom.direction = corridor.Size.y == 3;
+                SetCorridorBorder(corridor, corridorRoom);
                 DungeonDict.Instance.Register(corridorRoom);
             }
         }
@@ -141,8 +142,29 @@ namespace MapGenerator
 
         private void SetRoomBorder(Dungeon dungeon, int i, DungeonRoom dr)
         {
-            dr.Border = new Rect(dungeon.Rooms[i].Position.x, dungeon.Rooms[i].Position.y, dungeon.Rooms[i].Layout.XSize, dungeon.Rooms[i].Layout.YSize);
+            dr.Border = new Rect(dungeon.Rooms[i].Position.x - 0.5f, dungeon.Rooms[i].Position.y - 0.5f, dungeon.Rooms[i].Layout.XSize + 1, dungeon.Rooms[i].Layout.YSize + 1);
             dr.walkableTiles = dungeon.GetWalkableTiles(i);
+        }
+
+        private void SetCorridorBorder(Corridor corridor, CorridorRoom corridorRoom)
+        {
+            switch (corridor.Direction)
+            {
+                case Direction.Right:
+                    corridorRoom.ForceBorder(new Rect(corridor.Position.x + 1, corridor.Position.y, corridor.Size.x - 1, corridor.Size.y));
+                    break;
+                case Direction.Left:
+                    corridorRoom.ForceBorder(new Rect(corridor.Position.x, corridor.Position.y, corridor.Size.x - 1, corridor.Size.y));
+                    break;
+                case Direction.Up:
+                    corridorRoom.ForceBorder(new Rect(corridor.Position.x, corridor.Position.y + 1, corridor.Size.x, corridor.Size.y - 1));
+                    break;
+                case Direction.Down:
+                    corridorRoom.ForceBorder(new Rect(corridor.Position.x, corridor.Position.y, corridor.Size.x, corridor.Size.y - 1));
+                    break;
+                default:
+                    break;
+            }
         }
 
         private void SetRoomObjects(Room room, GameObject dungeonRoomPrefab, DungeonRoom dr)

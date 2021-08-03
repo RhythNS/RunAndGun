@@ -14,6 +14,8 @@ namespace MapGenerator
 
         public Dictionary<Vector2Int, Direction> exitDirections;
 
+        public Direction Direction { get; set; }
+
         /// <summary>
         /// Places a new corridor from the given position with the length in the given direction.
         /// </summary>
@@ -25,6 +27,7 @@ namespace MapGenerator
         {
             Position = Vector2Int.zero;
             Size = Vector2Int.zero;
+            Direction = direction;
             exitDirections = new Dictionary<Vector2Int, Direction>();
 
             switch (direction)
