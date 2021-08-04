@@ -28,6 +28,8 @@ public class ServerInfo : PanelElement
 
         Match currentMatch = RAGMatchmaker.Instance.GetCurrentMatch();
 
+        Debug.Log(currentMatch);
+
         if (currentMatch == null)
         {
             startServerText.text = "Start Server";
@@ -92,7 +94,7 @@ public class ServerInfo : PanelElement
     private void StopServer()
     {
         RAGMatchmaker.Instance.Disconnect();
-        NetworkConnector.TryStartServer(true);
+        OnCancel();
     }
 
     private void SetEnabled(bool enabled)

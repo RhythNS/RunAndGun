@@ -58,6 +58,11 @@ public class GameManager : MonoBehaviour
         if (!instance)
             return;
 
+        if (instance.TryGetComponent(out StatTracker tracker) == false)
+            instance.gameObject.AddComponent<StatTracker>();
+        else
+            tracker.ResetStats();
+
         GameMode copied = Instantiate(gameMode);
         copied.Init(seed);
         GameManager.gameMode = copied;
@@ -194,10 +199,14 @@ public class GameManager : MonoBehaviour
         NetworkServer.SendToAll(msg);
     }
 
-    private void OnBackToLobby()
+    public static void BackToLobby()
     {
-        gameObject.AddComponent<LobbyManager>();
-        Destroy(this);
+        if (!instance)
+            return;
+
+        instance.gameObject.AddComponent<LobbyManager>();
+        Destroy(instance);
+        instance = null;
         NetworkServer.SendToAll(new ReturnToLobbyMessage());
     }
 

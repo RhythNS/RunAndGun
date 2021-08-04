@@ -9,6 +9,7 @@ public class ServerConnect : PanelElement
 {
     [SerializeField] private Button refreshButton;
     [SerializeField] private Button connectButton;
+    [SerializeField] private Button abortConnectButton;
 
     [SerializeField] private RectTransform contentTrans;
     [SerializeField] private RectTransform overviewTrans;
@@ -32,6 +33,7 @@ public class ServerConnect : PanelElement
     {
         refreshButton.onClick.AddListener(Refresh);
         connectButton.onClick.AddListener(OnConnectButtonPressed);
+        abortConnectButton.onClick.AddListener(OnAbortConnectButtonPressed);
     }
 
     public override void InnerOnShow()
@@ -82,16 +84,21 @@ public class ServerConnect : PanelElement
             return;
         }
 
+        Match currentMatch = RAGMatchmaker.Instance.GetCurrentMatch();
         ServerConnectMatchDisplay matchDisplay = Instantiate(matchDisplayPrefab);
         for (int i = 0; i < matches.Length; i++)
         {
+            if (currentMatch != null && currentMatch == matches[i])
+                continue;
+
             if (matchDisplay.Set(matches[i], this) == false)
                 continue;
 
             matchDisplay.transform.SetParent(contentTrans);
+            matchDisplay.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
             matchDisplay = Instantiate(matchDisplayPrefab);
         }
-        Destroy(matchDisplay);
+        Destroy(matchDisplay.gameObject);
     }
 
     private void OnConnectButtonPressed()
@@ -103,6 +110,14 @@ public class ServerConnect : PanelElement
         }
 
         RAGMatchmaker.Instance.JoinMatch(toConnectToMatch, OnMatchJoined);
+    }
+
+    private void OnAbortConnectButtonPressed()
+    {
+        joinServerTrans.gameObject.SetActive(false);
+        overviewTrans.gameObject.SetActive(true);
+
+        Refresh();
     }
 
     private void OnMatchJoined(bool success, Match match)
