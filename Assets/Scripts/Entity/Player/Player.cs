@@ -150,18 +150,18 @@ public class Player : Entity
     [Command]
     public void CmdBulletHit(GameObject gameObject, Weapon firedWeapon)
     {
+        if (gameObject.TryGetComponent(out Bullet bullet) == false)
+            return;
+     
         if (gameObject)
         {
             Health health = GetComponent<Health>();
             for (int i = 0; i < firedWeapon.Effects.Length; i++)
             {
-                firedWeapon.Effects[i].OnHit(firedWeapon, health);
+                firedWeapon.Effects[i].OnHit(firedWeapon, bullet, health);
             }
             return;
         }
-
-        if (gameObject.TryGetComponent(out Bullet bullet) == false)
-            return;
 
         bullet.HitPlayer(this);
     }

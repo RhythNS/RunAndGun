@@ -49,9 +49,11 @@ public class Health : NetworkBehaviour
 
     public EntityType EntityType { get; private set; }
     public StatusEffectList StatusEffectList { get; private set; }
+    private Player onPlayer = null;
 
     private void Awake()
     {
+        onPlayer = GetComponent<Player>();
         EntityType = GetComponent<Entity>().EntityType;
         StatusEffectList = GetComponent<StatusEffectList>();
     }
@@ -100,16 +102,16 @@ public class Health : NetworkBehaviour
         current = Mathf.Clamp(amount, 0, max);
     }
 
-    public void Damage(int amount)
+    public void Damage(int amount, Health inflicter)
     {
         if (!enabled)
             return;
 
         bool isPlayer = EntityType == EntityType.Player;
         if (isPlayer && isLocalPlayer)
-            CmdDamage(amount);
+            CmdDamage(amount, inflicter);
         else if (!isPlayer && isServer)
-            ServerDamage(amount);
+            ServerDamage(amount, inflicter);
     }
 
     /// <summary>
@@ -117,22 +119,35 @@ public class Health : NetworkBehaviour
     /// reaches 0 then OnDied is called.
     /// </summary>
     [Command]
-    private void CmdDamage(int amount)
+    private void CmdDamage(int amount, Health inflicter)
     {
-        ServerDamage(amount);
+        ServerDamage(amount, inflicter);
     }
 
     [Server]
-    private void ServerDamage(int amount)
+    private void ServerDamage(int amount, Health inflicter)
     {
         if (!this || !enabled)
             return;
+
+        Player source = null;
+        bool trackStat = EntityType != EntityType.Player && inflicter != null && amount > 0 && inflicter.TryGetComponent(out source) == true;
+
+        if (trackStat)
+            StatTracker.Instance.GetStat<DamageInflicted>(source).Add(amount);
 
         // TODO: Add defence to this
         current = Mathf.Clamp(current - amount, 0, max);
         if (current == 0)
         {
             Debug.Log(gameObject.name + " has died!");
+
+            if (trackStat)
+                StatTracker.Instance.GetStat<KillStat>(source).Add(1);
+
+            if (onPlayer != null)
+                StatTracker.Instance.GetStat<TimesDied>(onPlayer).Add(1);
+
             RpcOnDied();
             GetComponent<IDieable>().Die();
             enabled = false;

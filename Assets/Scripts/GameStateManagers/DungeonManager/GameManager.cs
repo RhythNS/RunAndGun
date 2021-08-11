@@ -47,6 +47,7 @@ public class GameManager : MonoBehaviour
 
     private void OnPlayerDisconnected(Player player)
     {
+        Debug.Log(player.entityName + " has disconnected!"); 
         // TODO: Figure out what happens here.
         // If level is loading =>
         // If level is not loading => 
@@ -194,8 +195,7 @@ public class GameManager : MonoBehaviour
     public void OnAllPlayersDied()
     {
         instance.CurrentState = State.Failed;
-        GameOverMessage msg = new GameOverMessage();
-        // set some important stat values to the message
+        GameOverMessage msg = new GameOverMessage(new StatsTransmission(StatTracker.Instance.GetAllStats()));
         NetworkServer.SendToAll(msg);
     }
 
@@ -204,7 +204,6 @@ public class GameManager : MonoBehaviour
         if (!instance)
             return;
 
-        instance.gameObject.AddComponent<LobbyManager>();
         Destroy(instance);
         instance = null;
         NetworkServer.SendToAll(new ReturnToLobbyMessage());

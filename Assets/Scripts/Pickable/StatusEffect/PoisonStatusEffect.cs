@@ -20,7 +20,7 @@ public class PoisonStatusEffect : StatusEffectAdapter
     protected override void InnerOnTick()
     {
         if (IsServer)
-            OnHealth.Damage(damagePerTick);
+            OnHealth.Damage(damagePerTick, Inflicter);
     }
 
     public override void OnEffectAlreadyInList(StatusEffect other)

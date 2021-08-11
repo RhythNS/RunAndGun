@@ -6,9 +6,10 @@ public class GameOverStat : MonoBehaviour
     [SerializeField] private TMP_Text statName;
     [SerializeField] private TMP_Text statValue;
 
-    public void Set(Stat stat)
+    public void Set(string stat)
     {
-        statName.text = stat.Name;
-        statValue.text = stat.StringValue;
+        string[] seperated = stat.Split(StatsTransmission.SEPERATOR);
+        statName.text = seperated[0];
+        statValue.text = seperated[1];
     }
 }

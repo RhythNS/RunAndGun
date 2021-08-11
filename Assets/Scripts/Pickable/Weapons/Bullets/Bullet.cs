@@ -110,9 +110,12 @@ public class Bullet : NetworkBehaviour, IPoolable
     {
         if (collider.TryGetComponent(out Health health) && isServer)
         {
+            if (ShooterHealth.TryGetComponent(out Player player) == true)
+                StatTracker.Instance.GetStat<ShotsHitStat>(player).Add(1);
+
             for (int i = 0; i < fromWeapon.Effects.Length; i++)
             {
-                fromWeapon.Effects[i].OnHit(fromWeapon, health);
+                fromWeapon.Effects[i].OnHit(fromWeapon, this, health);
             }
         }
 

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,7 +17,6 @@ public class GameOverScreen : MonoBehaviour
 
     public GameOverStat statPrefab;
 
-
     private void Awake()
     {
         if (Instance)
@@ -32,16 +29,18 @@ public class GameOverScreen : MonoBehaviour
 
         backButton.onClick.AddListener(OnReturnToLobbyClicked);
         leaveServerButton.onClick.AddListener(OnLeaveServerClicked);
+        gameObject.SetActive(false);
     }
 
-    public void Set(Dictionary<Player, Dictionary<Type, Stat>> stats)
+    public void Set(StatsTransmission stats)
     {
-        StartCoroutine(InnerSet(stats));
+        GlobalsDict.Instance.StartCoroutine(InnerSet(stats));
     }
 
-    private IEnumerator InnerSet(Dictionary<Player, Dictionary<Type, Stat>> stats)
+    private IEnumerator InnerSet(StatsTransmission stats)
     {
         yield return new WaitForSeconds(showAfterSeconds);
+        gameObject.SetActive(true);
 
         if (Player.LocalPlayer.isServer)
         {
@@ -63,25 +62,22 @@ public class GameOverScreen : MonoBehaviour
             Destroy(trans.gameObject);
         }
 
-        foreach (Player player in stats.Keys)
+        for (int i = 0; i < stats.stats.Length; i++)
         {
-            Dictionary<Type, Stat> dict = stats[player];
-
-            if (dict.Count == 0)
-                continue;
-
             GameOverPlayer gop = Instantiate(playerPrefab, contentTrans);
-            gop.Set(player, dict);
+            gop.Set(stats.names[i], stats.characterTypes[i], stats.stats[i]);
         }
     }
 
     private void OnLeaveServerClicked()
     {
-
+        gameObject.SetActive(false);
+        StartCoroutine(RegionSceneLoader.Instance.LoadScene(Region.Lobby));
     }
 
     private void OnReturnToLobbyClicked()
     {
+        gameObject.SetActive(false);
         GameManager.BackToLobby();
     }
 
@@ -90,5 +86,4 @@ public class GameOverScreen : MonoBehaviour
         if (Instance == this)
             Instance = null;
     }
-
 }

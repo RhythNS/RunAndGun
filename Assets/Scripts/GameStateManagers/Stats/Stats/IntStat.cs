@@ -31,3 +31,8 @@ public class OtherPlayerRevived : IntStat
 {
     public override string Name => "Players revived";
 }
+
+public class DamageInflicted : IntStat
+{
+    public override string Name => "Damage inflicted";
+}

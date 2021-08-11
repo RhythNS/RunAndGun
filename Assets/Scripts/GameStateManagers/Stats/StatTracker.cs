@@ -41,6 +41,11 @@ public class StatTracker : MonoBehaviour
         return dict;
     }
 
+    public Dictionary<Player, Dictionary<Type, Stat>> GetAllStats()
+    {
+        return statsForPlayer;
+    }
+
     public void ResetStats()
     {
         statsForPlayer = new Dictionary<Player, Dictionary<Type, Stat>>();

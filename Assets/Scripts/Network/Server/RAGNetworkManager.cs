@@ -33,6 +33,7 @@ public class RAGNetworkManager : NobleNetworkManager
         NetworkClient.RegisterHandler<EveryoneLoadedMessage>(OnEveryoneLoadedMessage);
         NetworkClient.RegisterHandler<MiniMapNewRoomMessage>(OnMiniMapNewRoomMessage);
         NetworkClient.RegisterHandler<EmoteMessage>(OnEmoteMessage);
+        NetworkClient.RegisterHandler<GameOverMessage>(OnGameOverMessage);
     }
 
     public override void OnServerConnect(NetworkConnection conn)
@@ -172,7 +173,7 @@ public class RAGNetworkManager : NobleNetworkManager
 
     private void OnReturnToLobbyMessage(ReturnToLobbyMessage returnToLobbyMessage)
     {
-        LobbyLevel.Instance.Show();
+        StartCoroutine(RegionSceneLoader.Instance.LoadScene(Region.Lobby));
     }
 
     private void OnDoorsMessage(DoorMessage doorMessage)
@@ -218,5 +219,10 @@ public class RAGNetworkManager : NobleNetworkManager
     {
         if (UIManager.Instance)
             UIManager.Instance.OnPlayerEmoted(emoteMessage);
+    }
+
+    private void OnGameOverMessage(GameOverMessage gameOverMessage)
+    {
+        GameOverScreen.Instance.Set(gameOverMessage.statsTransmission);
     }
 }
