@@ -9,7 +9,7 @@ public class SwitchCharacterWhenTouched : MonoBehaviour
     {
         if (collision.TryGetComponent(out Player player) && player.isLocalPlayer)
         {
-            if (toSwitchTo == Config.Instance.selectedPlayerType)
+            if (toSwitchTo == Config.Instance.SelectedPlayerType)
                 return;
 
             JoinMessage joinMessage = new JoinMessage()

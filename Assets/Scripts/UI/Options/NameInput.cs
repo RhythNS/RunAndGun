@@ -12,6 +12,7 @@ public class NameInput : PanelElement
             return false;
 
         Player.LocalPlayer.StateCommunicator.CmdChangeName(name);
+        Config.Instance.PlayerName = name;
         return true;
     }
 

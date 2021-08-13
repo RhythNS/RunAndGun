@@ -50,19 +50,57 @@ public class Config : MonoBehaviour
             default:
                 break;
         }
-        // TODO: load some stuff
+
+        SaveGame loaded = Saver.Load();
+        if (loaded == null)
+            return;
+
+        saveFileExisted = true;
+        playerName = loaded.playerName;
+        selectedPlayerType = loaded.lastSelectedCharacterType;
     }
 
+    public void Save()
+    {
+        SaveGame saveGame = new SaveGame()
+        {
+            playerName = PlayerName,
+            lastSelectedCharacterType = SelectedPlayerType
+        };
+        Saver.Save(saveGame);
+    }
+
+    // ---- Config ----
+    public static bool saveFileExisted = false;
+
     // ---- Connection ----
-    public string playerName = "Test";
+    private string playerName = "Test";
     public string password = "";
-    public CharacterType selectedPlayerType = CharacterType.Melee;
+    private CharacterType selectedPlayerType = CharacterType.Melee;
+
+    public string PlayerName
+    {
+        get => playerName; set
+        {
+            playerName = value;
+            Save();
+        }
+    }
+    public CharacterType SelectedPlayerType
+    {
+        get => selectedPlayerType; set
+        {
+            selectedPlayerType = value;
+            Save();
+        }
+    }
+
 
     // ---- Input ----
     public InputType selectedInput = InputType.KeyMouse;
     public bool useFocusPoint = true;
 
-    // Graphics
+    // ---- Graphics ----
     public int targetFramesPerSecondLoadingScreen = 60;
 
     private void OnDestroy()

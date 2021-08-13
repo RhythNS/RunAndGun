@@ -6,7 +6,7 @@ public class DebugRandomName : MonoBehaviour
 
     private void Start()
     {
-        Config.Instance.playerName = RandomUtil.Element(names);
-        Debug.Log("Set random name! Name is now: " + Config.Instance.playerName);
+        Config.Instance.PlayerName = RandomUtil.Element(names);
+        Debug.Log("Set random name! Name is now: " + Config.Instance.PlayerName);
     }
 }

@@ -125,7 +125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6bc0ed7d7b88d642b5dda5b36dcffe3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseCursor: {fileID: 2800000, guid: 8f30995aabb7826479ab87ab2ff924bb, type: 3}
+  mouseCursor: {fileID: 2800000, guid: 958d7c01232137b4cbc29e51b1e28c58, type: 3}
   mobileUIManagerPrefab: {fileID: 1302508998527182904, guid: bc4d9fb6e6986ca4a8d0bbd9940034e2,
     type: 3}
 --- !u!114 &1365799234425872917

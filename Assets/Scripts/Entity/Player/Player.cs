@@ -77,7 +77,7 @@ public class Player : Entity
     public override void OnStartLocalPlayer()
     {
         LocalPlayer = this;
-        Config.Instance.selectedPlayerType = characterType;
+        Config.Instance.SelectedPlayerType = characterType;
         Input = RAGInput.AttachInput(gameObject);
         UIManager.Instance.OnLocalPlayerStarted(this, Input.InputType);
         MusicManager.Instance.RegisterPlayer(this);
