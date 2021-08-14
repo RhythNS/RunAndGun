@@ -4,11 +4,13 @@ using System.Diagnostics;
 public class DungeonTimer
 {
     private readonly Stopwatch stopwatch = new Stopwatch();
-
     private readonly int WORKTIME_IN_MS_UNTIL_NEXT_FRAME;
 
-    public DungeonTimer()
+    private bool setLoadStatus;
+
+    public DungeonTimer(bool setLoadStatus = true)
     {
+        this.setLoadStatus = setLoadStatus;
         WORKTIME_IN_MS_UNTIL_NEXT_FRAME = 1000 / Config.Instance.targetFramesPerSecondLoadingScreen;
     }
 
@@ -16,7 +18,8 @@ public class DungeonTimer
 
     public IEnumerator Wait(float dungeonProgressInPercent)
     {
-        DungeonCreator.Instance.SetLoadStatus(dungeonProgressInPercent);
+        if (setLoadStatus)
+            DungeonCreator.Instance.SetLoadStatus(dungeonProgressInPercent);
         yield return null;
         stopwatch.Restart();
     }

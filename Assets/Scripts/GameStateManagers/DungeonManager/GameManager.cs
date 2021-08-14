@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour
 
     private void OnPlayerDisconnected(Player player)
     {
-        Debug.Log(player.entityName + " has disconnected!"); 
+        Debug.Log(player.entityName + " has disconnected!");
         // TODO: Figure out what happens here.
         // If level is loading =>
         // If level is not loading => 
@@ -78,6 +78,8 @@ public class GameManager : MonoBehaviour
     {
         if (!instance)
             return;
+
+        ClearAllObjects();
 
         instance.CurrentState = State.LoadingLevel;
         ++currentLevel;
@@ -194,6 +196,9 @@ public class GameManager : MonoBehaviour
 
     public void OnAllPlayersDied()
     {
+        if (!instance)
+            return;
+
         instance.CurrentState = State.Failed;
         GameOverMessage msg = new GameOverMessage(new StatsTransmission(StatTracker.Instance.GetAllStats()));
         NetworkServer.SendToAll(msg);
@@ -204,9 +209,23 @@ public class GameManager : MonoBehaviour
         if (!instance)
             return;
 
+        ClearAllObjects();
         Destroy(instance);
         instance = null;
         NetworkServer.SendToAll(new ReturnToLobbyMessage());
+    }
+
+    public static void ClearAllObjects()
+    {
+        if (!instance)
+            return;
+
+        PickableInWorld[] pickableInWorlds = FindObjectsOfType<PickableInWorld>();
+        for (int i = 0; i < pickableInWorlds.Length; i++)
+            NetworkServer.Destroy(pickableInWorlds[i].gameObject);
+        Enemy[] enemies = FindObjectsOfType<Enemy>();
+        for (int i = 0; i < enemies.Length; i++)
+            NetworkServer.Destroy(enemies[i].gameObject);
     }
 
     public static void OnPlayerChangedRoom(Player player)

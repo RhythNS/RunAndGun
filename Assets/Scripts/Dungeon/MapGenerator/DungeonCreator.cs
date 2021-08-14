@@ -116,6 +116,17 @@ public class DungeonCreator : MonoBehaviour
             Player.LocalPlayer.StateCommunicator.CmdLevelSetLoaded(true);
     }
 
+    public IEnumerator ClearPreviousDungeon()
+    {
+        timer = new DungeonTimer(false);
+        timer.Start();
+
+        yield return DestroyPreviousGameObjects();
+        yield return ClearPreviousTiles();
+
+        dungeon = DungeonDict.Instance.dungeon = null;
+    }
+
     #region DungeonCreateHelperMethods
     private IEnumerator DestroyPreviousGameObjects()
     {
@@ -124,6 +135,14 @@ public class DungeonCreator : MonoBehaviour
             for (int i = roomsContainer.childCount - 1; i >= 0; i--)
             {
                 Destroy(roomsContainer.GetChild(i).gameObject);
+            }
+        }
+
+        if (corridorContainer.childCount > 0)
+        {
+            for (int i = corridorContainer.childCount - 1; i >= 0; i--)
+            {
+                Destroy(corridorContainer.GetChild(i).gameObject);
             }
         }
 

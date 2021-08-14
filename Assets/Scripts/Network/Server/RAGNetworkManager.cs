@@ -174,6 +174,7 @@ public class RAGNetworkManager : NobleNetworkManager
     private void OnReturnToLobbyMessage(ReturnToLobbyMessage returnToLobbyMessage)
     {
         StartCoroutine(RegionSceneLoader.Instance.LoadScene(Region.Lobby));
+        StartCoroutine(DungeonCreator.Instance.ClearPreviousDungeon());
     }
 
     private void OnDoorsMessage(DoorMessage doorMessage)
