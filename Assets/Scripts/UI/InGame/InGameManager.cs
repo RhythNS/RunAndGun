@@ -19,6 +19,8 @@ public class InGameManager : MonoBehaviour
         player.Inventory.OnMoneyAmountChanged += moneyAmount.UpdateValue;
         moneyAmount.UpdateValue(player.Inventory.money);
         weaponManager.RegisterEvents(player);
+        emoteBoard.ClearAll();
+        notificationManager.ClearAll();
     }
 
     public void UnRegisterEvents()

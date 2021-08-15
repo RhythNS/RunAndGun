@@ -32,7 +32,7 @@ public class EmoteMessageDisplay : MonoBehaviour
         float timer = 0.0f;
 
         while (timer < aliveTime)
-        {
+        {;
             float eval = scaleCurve.Evaluate(timer / aliveTime);
             transform.localScale = Vector3.one * eval;
 

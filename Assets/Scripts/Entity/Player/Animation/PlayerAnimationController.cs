@@ -29,6 +29,7 @@ public class PlayerAnimationController : MonoBehaviour
     public void OnDeath()
     {
         animator.SetBool("Dead", true);
+        animator.SetTrigger("DeadTrigger");
     }
 
     public void OnRevived()

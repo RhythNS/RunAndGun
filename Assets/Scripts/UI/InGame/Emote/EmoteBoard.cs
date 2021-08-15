@@ -18,4 +18,12 @@ public class EmoteBoard : MonoBehaviour
             =  MathUtil.RandomVector2(-rectTransform.sizeDelta * 0.5f, rectTransform.sizeDelta * 0.5f);
         messageDisplay.Set(emoteMessage, this);
     }
+
+    public void ClearAll()
+    {
+        for (int i = transform.childCount - 1; i >= 0; i--)
+        {
+            Destroy(transform.GetChild(i).gameObject);
+        }
+    }
 }

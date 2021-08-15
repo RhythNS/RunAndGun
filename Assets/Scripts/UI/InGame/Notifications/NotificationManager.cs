@@ -19,6 +19,17 @@ public class NotificationManager : MonoBehaviour
         text.text = "";
     }
 
+    public void ClearAll()
+    {
+        if (displayingStrings == null)
+            return;
+
+        for (int i = 0; i < displayingStrings.Count; i++)
+            displayingStrings[i].Item2.Stop(false);
+        displayingStrings = new List<Tuple<string, ExtendedCoroutine>>();
+        text.text = "";
+    }
+
     public void Show(string toDisplay)
     {
         displayingStrings.Add(new Tuple<string, ExtendedCoroutine>(toDisplay,
