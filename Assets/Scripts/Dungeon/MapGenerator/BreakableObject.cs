@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Represents an object that can be broken ingame.
+/// </summary>
 public class BreakableObject : MonoBehaviour
 {
-    [SerializeField]
-    private SpriteRenderer sr;
-    [SerializeField]
-    private BoxCollider2D bc;
+    [SerializeField] private SpriteRenderer sr;
+    [SerializeField] private BoxCollider2D bc;
 
     public int index;
 

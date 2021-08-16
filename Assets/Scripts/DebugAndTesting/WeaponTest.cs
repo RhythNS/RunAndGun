@@ -1,6 +1,9 @@
 ﻿using Mirror;
 using UnityEngine;
 
+/// <summary>
+/// Spawns a specified weapon on a specified position.
+/// </summary>
 public class WeaponTest : NetworkBehaviour
 {
     [SerializeField] private Weapon weaponToDrop;

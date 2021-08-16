@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// FMOD Testing class on the fmod documentation for unity.
+/// </summary>
 public class FMODTesting : MonoBehaviour
 {
     //--------------------------------------------------------------------

@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Sends strings in order to notifications.
+/// </summary>
 public class NotificationTester : MonoBehaviour
 {
     [SerializeField] private string[] messages;

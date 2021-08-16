@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Sends a specified emote as the local player to all other players.
+/// </summary>
 public class SendEmoteTester : MonoBehaviour
 {
     [SerializeField] private int emoteID;

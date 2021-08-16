@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
+/// <summary>
+/// Test for starting the game without the need of the lobby.
+/// </summary>
 public class DebugGameStarter : MonoBehaviour
 {
     [SerializeField] private EnemyObject[] enemiesToSpawn;

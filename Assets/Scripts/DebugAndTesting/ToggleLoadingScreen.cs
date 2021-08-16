@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Shows or Hides the loading Screen.
+/// </summary>
 public class ToggleLoadingScreen : MonoBehaviour
 {
     private void Start()

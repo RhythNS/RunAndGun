@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Shows the Boss UI.
+/// </summary>
 public class DebugShowBossOnSelf : MonoBehaviour
 {
     private void Start()

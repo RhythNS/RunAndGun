@@ -1,5 +1,8 @@
 ﻿using MapGenerator;
 
+/// <summary>
+/// A dungeon room in which enemies can spawn in.
+/// </summary>
 public class CombatRoom : DungeonRoom
 {
     public override bool EventOnRoomEntered => true;

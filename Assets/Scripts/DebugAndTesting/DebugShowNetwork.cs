@@ -2,6 +2,9 @@
 using NobleConnect.Mirror;
 using UnityEngine;
 
+/// <summary>
+/// Shows the ip and host on canvas.
+/// </summary>
 public class DebugShowNetwork : MonoBehaviour
 {
     private void OnGUI()

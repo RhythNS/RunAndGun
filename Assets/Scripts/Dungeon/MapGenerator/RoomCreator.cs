@@ -4,8 +4,18 @@ using UnityEngine;
 
 namespace MapGenerator
 {
+    /// <summary>
+    /// Generates DungeonRooms for generated Dungeons and Corridors.
+    /// </summary>
     public class RoomCreator : MonoBehaviour
     {
+        /// <summary>
+        /// Create and place and DungeonRooms and Corridors from the generated dungeons.
+        /// </summary>
+        /// <param name="dungeon">The dungeon that was just generated.</param>
+        /// <param name="levelNumber">The number of the level.</param>
+        /// <param name="timer">The current used DungeonTimer.</param>
+        /// <returns></returns>
         public IEnumerator CreateRooms(Dungeon dungeon, int levelNumber, DungeonTimer timer)
         {
             List<DungeonRoom> dungeonRooms = new List<DungeonRoom>();
@@ -14,6 +24,7 @@ namespace MapGenerator
             GameObject prefabDoorLR = RegionDict.Instance.PrefabDoorLR;
             GameObject prefabDoorUD = RegionDict.Instance.PrefabDoorUD;
 
+            // Create DungeonRooms
             for (int i = 0; i < dungeon.Rooms.Length; i++)
             {
                 GameObject dungeonRoomObject = Instantiate(DungeonCreator.Instance.PrefabDungeonRoom);
@@ -35,6 +46,7 @@ namespace MapGenerator
                 if (timer.ShouldWait())
                     yield return timer.Wait(0.9f + ((i * 1.0f / dungeon.Rooms.Length) * 0.05f));
             }
+            // Create corridors.
             for (int i = 0; i < dungeon.Corridors.Length; i++)
             {
                 Corridor corridor = dungeon.Corridors[i];
@@ -50,6 +62,13 @@ namespace MapGenerator
             }
         }
 
+        /// <summary>
+        /// Generates specific values for the DungeonType.
+        /// </summary>
+        /// <param name="room">The current room.</param>
+        /// <param name="dungeonRoomObject">The gameobject to which the room should be generate don.</param>
+        /// <param name="levelNumber">The number of the level.</param>
+        /// <returns>The fully generated DungeonRoom.</returns>
         private DungeonRoom SetRoomType(Room room, GameObject dungeonRoomObject, int levelNumber)
         {
             switch (room.Type)
@@ -120,6 +139,15 @@ namespace MapGenerator
             }
         }
 
+        /// <summary>
+        /// Generates each door for the DungeonRoom.
+        /// </summary>
+        /// <param name="dungeon">The current dungeon.</param>
+        /// <param name="prefabDoorLR">The prefab for doors that face either left or right.</param>
+        /// <param name="prefabDoorUD">The prefab for doors that face either up or down.</param>
+        /// <param name="roomDungeonId">The id of the DungeonRoom to where the doors should be generated to.</param>
+        /// <param name="dungeonRoomObject">The GameObject that the dungeon room is generated on.</param>
+        /// <param name="dungeonRoom">The DungeonRoom.</param>
         private void SetDoors(Dungeon dungeon, GameObject prefabDoorLR, GameObject prefabDoorUD, int roomDungeonId, GameObject dungeonRoomObject, DungeonRoom dungeonRoom)
         {
             DoorLocations[] doorLocs = dungeon.GetDoorsOfRoom(roomDungeonId);
@@ -133,6 +161,7 @@ namespace MapGenerator
                 dungeonDoor.IsLeftRight = doorLoc.IsLeftRight;
 
                 door.transform.parent = dungeonRoomObject.transform;
+                // Is the DungeonRoom the start room?
                 if (roomDungeonId == 0)
                     dungeonDoor.IsLocked = false;
 
@@ -140,12 +169,23 @@ namespace MapGenerator
             }
         }
 
+        /// <summary>
+        /// Sets the Border of the DungeonRoom.
+        /// </summary>
+        /// <param name="dungeon">The current dungeon.</param>
+        /// <param name="i">The index of the current room in the rooms array.</param>
+        /// <param name="dr">The current DungeonRoom.</param>
         private void SetRoomBorder(Dungeon dungeon, int i, DungeonRoom dr)
         {
             dr.Border = new Rect(dungeon.Rooms[i].Position.x - 0.5f, dungeon.Rooms[i].Position.y - 0.5f, dungeon.Rooms[i].Layout.XSize + 1, dungeon.Rooms[i].Layout.YSize + 1);
             dr.walkableTiles = dungeon.GetWalkableTiles(i);
         }
 
+        /// <summary>
+        /// Sets the Border of a corridor.
+        /// </summary>
+        /// <param name="corridor">The current Corridor.</param>
+        /// <param name="corridorRoom">The current generated CorridorRoom.</param>
         private void SetCorridorBorder(Corridor corridor, CorridorRoom corridorRoom)
         {
             switch (corridor.Direction)
@@ -167,6 +207,9 @@ namespace MapGenerator
             }
         }
 
+        /// <summary>
+        /// Creates all breakables for a dungeon room.
+        /// </summary>
         private void SetRoomObjects(Room room, GameObject dungeonRoomPrefab, DungeonRoom dr)
         {
             List<GameObject> objs = new List<GameObject>();
@@ -181,6 +224,5 @@ namespace MapGenerator
             }
             dr.objects = objs;
         }
-
     }
 }

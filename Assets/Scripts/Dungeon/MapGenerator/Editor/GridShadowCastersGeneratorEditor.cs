@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 
+/// <summary>
+/// Custom editor for the GridShadowCastersGenerator
+/// </summary>
 [CustomEditor(typeof(GridShadowCastersGenerator))]
 public class GridShadowCastersGeneratorEditor : Editor
 {

@@ -1,6 +1,9 @@
 ﻿using System;
 using UnityEngine;
 
+/// <summary>
+/// Kills all currently spawned enemies.
+/// </summary>
 public class KillAllEnemies : MonoBehaviour
 {
     private void Start()

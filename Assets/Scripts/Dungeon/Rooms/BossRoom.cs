@@ -4,21 +4,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Dungeon room that cointains a boss and a zone to the next level.
+/// </summary>
 public class BossRoom : DungeonRoom
 {
     public override bool EventOnRoomEntered => false;
     public override RoomType RoomType => RoomType.Boss;
 
     public State CurrentState { get; private set; } = State.ReadyToEnter;
+    /// <summary>
+    /// All spawned Bosses.
+    /// </summary>
     public Enemy[] SpawnedEnemies { get; private set; }
     public bool IsLocked => CurrentState == State.Locked;
+    /// <summary>
+    /// The position that all players are teleported to when the boss fight starts.
+    /// </summary>
     public Vector2 PlayersStartPos { get; private set; }
 
+    /// <summary>
+    /// The bosses that spawn inside this room.
+    /// </summary>
     public BossObject[] bossObjects;
 
     private ExtendedCoroutine enterAnimationCoroutine;
     private BossEnterAnimation enterAnimation;
 
+    /// <summary>
+    /// States in which the Bossroom can be in.
+    /// </summary>
     public enum State
     {
         Locked, ReadyToEnter, InProgress, Cleared, Failed
@@ -57,6 +72,10 @@ public class BossRoom : DungeonRoom
         }
     }
 
+    /// <summary>
+    /// Called when all players stood on a BoseReadyZone.
+    /// </summary>
+    /// <param name="bossReadyZone">The zone that the players stood on.</param>
     [Server]
     public void OnAllPlayersReadyToEnter(BossReadyZone bossReadyZone)
     {
@@ -79,10 +98,13 @@ public class BossRoom : DungeonRoom
             SpawnedEnemies[i] = objs[i].GetComponent<Enemy>();
 
         NetworkServer.SendToAll(bossSpawnMessage);
+        
+        // Make all players not being able to move.
         List<Player> players = PlayersDict.Instance.Players;
         for (int i = 0; i < players.Count; i++)
             players[i].RpcChangeCanMove(false);
 
+        // Start the boss animations.
         enterAnimation = BossEnterAnimation.AddAnimationType(gameObject, bossObjects[0].AnimationType);
         enterAnimationCoroutine = new ExtendedCoroutine(this, enterAnimation.PlayAnimation(objs[0], this),
             StartCheckingForAllPlayersWatchedEnterAnimation, true);
@@ -90,6 +112,9 @@ public class BossRoom : DungeonRoom
         GameManager.OnRoomEventStarted();
     }
 
+    /// <summary>
+    /// Starts the boss animation for the local player.
+    /// </summary>
     public void StartBossAnimation(BossSpawnMessage bossSpawnMessage)
     {
         if (!Player.LocalPlayer || Player.LocalPlayer.isServer)
@@ -105,8 +130,12 @@ public class BossRoom : DungeonRoom
         enterAnimationCoroutine = new ExtendedCoroutine(this, CheckForPlayersWatchedEnterAnimation(), StartBossEncounter, true);
     }
 
+    /// <summary>
+    /// Starts the boss fight.
+    /// </summary>
     private void StartBossEncounter()
     {
+        // Make all players able to move again.
         List<Player> players = PlayersDict.Instance.Players;
         for (int i = 0; i < players.Count; i++)
         {
@@ -114,13 +143,18 @@ public class BossRoom : DungeonRoom
             players[i].StateCommunicator.bossAnimationFinished = false;
         }
 
+        // Make bosses able to move
         for (int i = 0; i < SpawnedEnemies.Length; i++)
             SpawnedEnemies[i].Brain.enabled = true;
 
+        // Register for all enemies or players dead evetns.
         AliveHealthDict.Instance.OnAllEnemiesDied += OnAllEnemiesDefeated;
         AliveHealthDict.Instance.OnAllPlayersDied += OnAllPlayersDied;
     }
 
+    /// <summary>
+    /// Instantiates each boss and returns them.
+    /// </summary>
     private GameObject[] SpawnBoss()
     {
         GameObject[] bosses = new GameObject[bossObjects.Length];
@@ -132,6 +166,10 @@ public class BossRoom : DungeonRoom
         return bosses;
     }
 
+    /// <summary>
+    /// Runs as long as either all players watched the boss enter animations or a timeout time has been
+    /// reached.
+    /// </summary>
     private IEnumerator CheckForPlayersWatchedEnterAnimation()
     {
         List<Player> players = PlayersDict.Instance.Players;
@@ -157,6 +195,9 @@ public class BossRoom : DungeonRoom
         }
     }
 
+    /// <summary>
+    /// Callback if all players died.
+    /// </summary>
     private void OnAllPlayersDied()
     {
         CurrentState = State.Failed;
@@ -165,6 +206,9 @@ public class BossRoom : DungeonRoom
         AliveHealthDict.Instance.OnAllPlayersDied -= OnAllPlayersDied;
     }
 
+    /// <summary>
+    /// Callback if all enemies are defeated.
+    /// </summary>
     private void OnAllEnemiesDefeated()
     {
         CurrentState = State.Cleared;
@@ -180,6 +224,9 @@ public class BossRoom : DungeonRoom
         GameManager.OnRoomEventEnded();
     }
 
+    /// <summary>
+    /// Spawns the exit to the next level.
+    /// </summary>
     [Server]
     private void SpawnExitToNextLevel()
     {

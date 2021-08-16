@@ -1,6 +1,9 @@
 ﻿using Mirror;
 using UnityEngine;
 
+/// <summary>
+/// Switches the CharacterType of a Player when they Overlap with this Object.
+/// </summary>
 public class SwitchCharacterWhenTouched : MonoBehaviour
 {
     [SerializeField] private CharacterType toSwitchTo;

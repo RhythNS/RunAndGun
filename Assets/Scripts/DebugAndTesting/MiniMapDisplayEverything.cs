@@ -1,6 +1,9 @@
 ﻿using Mirror;
 using UnityEngine;
 
+/// <summary>
+/// Displays everything on the minimap.
+/// </summary>
 public class MiniMapDisplayEverything : MonoBehaviour
 {
     [SerializeField] [Range(0.1f, 10.0f)] private float zoomLevel = 0.1f;

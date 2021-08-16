@@ -1,5 +1,9 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Camera control for Players. A focus point can be set to slightly adjust
+/// the position of the camera.
+/// </summary>
 public class PlayerCamera : MonoBehaviour
 {
     [SerializeField] private float focusPointStrength = 0.25f;
@@ -8,6 +12,9 @@ public class PlayerCamera : MonoBehaviour
 
     public static PlayerCamera Instance { get; private set; }
 
+    /// <summary>
+    /// Should be the player that the camera follows.
+    /// </summary>
     public Transform ToFollow
     {
         get => toFollow;
@@ -17,7 +24,10 @@ public class PlayerCamera : MonoBehaviour
             toFollow = value;
         }
     }
-
+    
+    /// <summary>
+    /// Focus point to slightly adjust the position of the camera.
+    /// </summary>
     public Vector2 focusPoint = new Vector2(0.0f, 0.0f);
 
     private void Awake()

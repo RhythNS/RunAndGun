@@ -2,6 +2,9 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+/// <summary>
+/// Prints the UI element that the mouse pointer clicked on.
+/// </summary>
 public class PrintHitUIElement : MonoBehaviour
 {
     void Update()
