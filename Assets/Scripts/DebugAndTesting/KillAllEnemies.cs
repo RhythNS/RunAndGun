@@ -1,6 +1,9 @@
 ﻿using System;
 using UnityEngine;
 
+/// <summary>
+/// Kills all currently spawned enemies.
+/// </summary>
 public class KillAllEnemies : MonoBehaviour
 {
     private void Start()
@@ -15,7 +18,7 @@ public class KillAllEnemies : MonoBehaviour
             Enemy[] enemies = FindObjectsOfType<Enemy>();
             if (enemies == null || enemies.Length == 0)
                 return;
-            Array.ForEach(enemies, x => x.Health.Damage(int.MaxValue));
+            Array.ForEach(enemies, x => x.Health.Damage(int.MaxValue, null));
         }
     }
 }

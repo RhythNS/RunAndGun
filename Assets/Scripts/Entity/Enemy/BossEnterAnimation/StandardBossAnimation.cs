@@ -15,8 +15,8 @@ public class StandardBossAnimation : BossEnterAnimation
 
         yield return EnumeratorUtil.GoToInSecondsSlerp(camera.transform, room.Middle, 2.0f);
 
-        // UI.Instance.DisplayText(boss.GetName(), 1.0f);
-        yield return new WaitForSeconds(1.0f);
+        BossUIManager.Instance.Show(boss.GetComponent<Entity>(), 2.0f);
+        yield return new WaitForSeconds(2.0f);
 
         if (Player.LocalPlayer.isServer)
         {

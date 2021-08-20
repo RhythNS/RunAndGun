@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Kills the LocalPlayer.
+/// </summary>
 public class KillSelf : MonoBehaviour
 {
     [SerializeField] private Weapon weapon;

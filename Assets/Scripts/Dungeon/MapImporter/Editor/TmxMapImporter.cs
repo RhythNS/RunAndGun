@@ -2,6 +2,9 @@
 using UnityEditor.Experimental.AssetImporters;
 using UnityEngine;
 
+/// <summary>
+/// Custom importer for importing tmx files.
+/// </summary>
 [ScriptedImporter(1, "tmx")]
 public class TmxMapImporter : ScriptedImporter
 {

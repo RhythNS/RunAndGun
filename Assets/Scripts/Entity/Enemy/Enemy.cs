@@ -59,6 +59,11 @@ public class Enemy : Entity
         EntityMaterialManager = GetComponent<EntityMaterialManager>();
     }
 
+    private void Update()
+    {
+        PositionConverter.AdjustZ(transform);
+    }
+
     public void Set(EnemyObject enemyObject, Rect roomBorder)
     {
         if (IsBoss == false)
@@ -73,6 +78,8 @@ public class Enemy : Entity
         Brain.BrainMover.RoomBounds = roomBorder;
 
         Health.Init(enemyObject.Stats.maxHealth);
+
+        entityName = enemyObject.name;
     }
 
     public override void OnStartServer()

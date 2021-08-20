@@ -3,6 +3,9 @@ using FMODUnity;
 using Mirror;
 using UnityEngine;
 
+/// <summary>
+/// Test class for testing changing a parameter on a fmod event.
+/// </summary>
 public class FMODTest : NetworkBehaviour
 {
     [BankRef]

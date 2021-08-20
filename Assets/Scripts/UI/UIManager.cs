@@ -31,7 +31,8 @@ public class UIManager : MonoBehaviour
     {
         if (inputMethod == InputType.Mobile)
         {
-            mobileUiManager = Instantiate(InputDict.Instance.MobileUIManagerPrefab, canvas.transform);
+            if (!mobileUiManager)
+                mobileUiManager = Instantiate(InputDict.Instance.MobileUIManagerPrefab, canvas.transform);
             (player.Input as MobileInput).SetUI(mobileUiManager);
         }
         inGameManager.RegisterEvents(player);
@@ -43,9 +44,16 @@ public class UIManager : MonoBehaviour
 
     public void HideLevelLoadScreen() => loadingScreenManager.Hide();
 
+    public void OnPlayerEmoted(EmoteMessage emoteMessage) => inGameManager.OnPlayerEmoted(emoteMessage);
+
+    public void ToggleEmotePanel() => inGameManager.ToggleEmotePanel();
+
+    public void ShowNotification(string toDisplay) => inGameManager.ShowNotification(toDisplay);
+
     private void OnDestroy()
     {
         if (Instance == this)
             Instance = null;
     }
+
 }

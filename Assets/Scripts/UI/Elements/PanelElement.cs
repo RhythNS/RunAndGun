@@ -3,13 +3,15 @@ using UnityEngine.UI;
 
 public abstract class PanelElement : MonoBehaviour
 {
-    [SerializeField] private Button confirmButton;
-    [SerializeField] private Button cancelButton;
+    [SerializeField] protected Button confirmButton;
+    [SerializeField] protected Button cancelButton;
 
     private void Awake()
     {
-        confirmButton.onClick.AddListener(OnConfirm);
-        cancelButton.onClick.AddListener(OnCancel);
+        if (confirmButton)
+            confirmButton.onClick.AddListener(OnConfirm);
+        if (cancelButton)
+            cancelButton.onClick.AddListener(OnCancel);
     }
 
     public void OnConfirm()
@@ -36,6 +38,9 @@ public abstract class PanelElement : MonoBehaviour
 
     public void Show()
     {
+        if (Player.LocalPlayer)
+            Player.LocalPlayer.Input.enabled = false;
+
         gameObject.SetActive(true);
         InnerOnShow();
     }
@@ -44,6 +49,9 @@ public abstract class PanelElement : MonoBehaviour
 
     public void Hide()
     {
+        if (Player.LocalPlayer)
+            Player.LocalPlayer.Input.enabled = true;
+
         InnerOnHide();
         gameObject.SetActive(false);
     }
@@ -52,7 +60,9 @@ public abstract class PanelElement : MonoBehaviour
 
     private void OnDestroy()
     {
-        confirmButton.onClick.RemoveListener(OnConfirm);
-        cancelButton.onClick.RemoveListener(OnCancel);
+        if (confirmButton)
+            confirmButton.onClick.RemoveListener(OnConfirm);
+        if (cancelButton)
+            cancelButton.onClick.RemoveListener(OnCancel);
     }
 }

@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.Tilemaps;
 
+/// <summary>
+/// Testing for loading a map from Tiled.
+/// </summary>
 public class TiledTester : MonoBehaviour
 {
     [SerializeField] private string toLoad;

@@ -88,7 +88,7 @@ MonoBehaviour:
   boundsInEditor:
     serializedVersion: 2
     x: -20
-    y: -56
+    y: -60
     width: 80
     height: 80
   checkEverySeconds: 1

@@ -30,11 +30,7 @@ namespace Mirror.Discovery
         [SerializeField]
         [Tooltip("The UDP port the server will listen for multi-cast messages")]
         protected int serverBroadcastListenPort = 47777;
-        
-        [SerializeField]
-        [Tooltip("If true, broadcasts a discovery request every ActiveDiscoveryInterval seconds")]
-        public bool enableActiveDiscovery = true;
-        
+
         [SerializeField]
         [Tooltip("Time in seconds between multi-cast messages")]
         [Range(1, 60)]
@@ -255,7 +251,7 @@ namespace Mirror.Discovery
 
             _ = ClientListenAsync();
 
-            if (enableActiveDiscovery) InvokeRepeating(nameof(BroadcastDiscoveryRequest), 0, ActiveDiscoveryInterval);
+            InvokeRepeating(nameof(BroadcastDiscoveryRequest), 0, ActiveDiscoveryInterval);
         }
 
         /// <summary>

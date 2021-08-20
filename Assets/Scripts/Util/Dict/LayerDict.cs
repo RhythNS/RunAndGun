@@ -7,6 +7,7 @@ public class LayerDict : MonoBehaviour
     [SerializeField] private int playerLayer;
     [SerializeField] private int enemyLayer;
     [SerializeField] private int downedPlayerLayer;
+    [SerializeField] private int pickableLayer;
     [SerializeField] private int dungeonRoomLayer;
 
     [SerializeField] private int bulletTargetPlayerOnly;
@@ -71,6 +72,8 @@ public class LayerDict : MonoBehaviour
     public int GetDownedPlayerLayer() => downedPlayerLayer;
 
     public int GetDungeonRoomLayer() => dungeonRoomLayer;
+
+    public int GetPickableLayer() => pickableLayer;
 
     private void OnDestroy()
     {

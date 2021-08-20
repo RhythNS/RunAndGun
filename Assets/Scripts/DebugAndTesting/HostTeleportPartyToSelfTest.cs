@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Teleports all players to the host.
+/// </summary>
 public class HostTeleportPartyToSelfTest : MonoBehaviour
 {
     private void Start()

@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Adds dungeon rooms to the DungeonDict and call OnAllPlayersEntered when each player
+/// entered a dungeon room.
+/// </summary>
 public class RoomTester : MonoBehaviour
 {
     [SerializeField] private DungeonRoom[] roomsToAdd;

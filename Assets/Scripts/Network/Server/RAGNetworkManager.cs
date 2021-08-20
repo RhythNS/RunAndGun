@@ -1,15 +1,18 @@
 ﻿using Mirror;
 using NobleConnect.Mirror;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class RAGNetworkManager : NobleNetworkManager
 {
     // TODO: Check all messages. If something is wrong, return to main menu
 
+    public bool IsLanOnly => isLANOnly;
+
     public override void OnStartServer()
     {
         base.OnStartServer();
-
+        
         // Register custom messages
         NetworkServer.RegisterHandler<JoinMessage>(OnJoinMessage);
     }
@@ -18,22 +21,37 @@ public class RAGNetworkManager : NobleNetworkManager
     {
         base.OnStartClient();
 
+        NetworkPool[] networkPools = GlobalsDict.Instance.PoolObject.GetComponents<NetworkPool>();
+        for (int i = 0; i < networkPools.Length; i++)
+            networkPools[i].Setup();
+
         NetworkClient.RegisterHandler<StartGameMessage>(OnStartGameMessage);
         NetworkClient.RegisterHandler<ReturnToLobbyMessage>(OnReturnToLobbyMessage);
         NetworkClient.RegisterHandler<DoorMessage>(OnDoorsMessage);
         NetworkClient.RegisterHandler<GenerateLevelMessage>(OnGenerateLevelMessage);
         NetworkClient.RegisterHandler<BossSpawnMessage>(OnBossSpawnMessage);
         NetworkClient.RegisterHandler<EveryoneLoadedMessage>(OnEveryoneLoadedMessage);
+        NetworkClient.RegisterHandler<MiniMapNewRoomMessage>(OnMiniMapNewRoomMessage);
+        NetworkClient.RegisterHandler<EmoteMessage>(OnEmoteMessage);
+        NetworkClient.RegisterHandler<GameOverMessage>(OnGameOverMessage);
+    }
+
+    public override void OnServerConnect(NetworkConnection conn)
+    {
+        base.OnServerConnect(conn);
+
+        Debug.Log("Someone connected to the server!");
     }
 
     public override void OnClientConnect(NetworkConnection conn)
     {
         base.OnClientConnect(conn);
-
+        
         JoinMessage message = new JoinMessage
         {
-            name = Config.Instance.playerName,
-            characterType = Config.Instance.selectedPlayerType
+            name = Config.Instance.PlayerName,
+            characterType = Config.Instance.SelectedPlayerType,
+            password = Config.Instance.password
         };
         conn.Send(message);
     }
@@ -57,6 +75,23 @@ public class RAGNetworkManager : NobleNetworkManager
         if (connection.identity?.gameObject)
         {
             GameObject oldPlayer = connection.identity.gameObject;
+            Player castPlayer = oldPlayer.GetComponent<Player>();
+
+            if (castPlayer != null)
+                newPlayer.playerIndex = castPlayer.playerIndex;
+            else
+            {
+                int? index = GetPlayerIndex(connection.connectionId);
+                if (index == null)
+                {
+                    Debug.LogError("Old player did not have a connection and there are no places remaining!");
+                    connection.Disconnect();
+                    Destroy(oldPlayer);
+                    Destroy(newPlayer);
+                    return;
+                }
+                newPlayer.playerIndex = index.Value;
+            }
 
             NetworkServer.ReplacePlayerForConnection(connection, newPlayer.gameObject);
 
@@ -64,10 +99,52 @@ public class RAGNetworkManager : NobleNetworkManager
         }
         else // They joined for the first time
         {
+            string reqPassword = Config.Instance.password;
+            if (reqPassword.Length != 0 && joinMessage.password.Equals(reqPassword) == false)
+            {
+                Debug.LogError("New player joined with wrong password!");
+                connection.Disconnect();
+                Destroy(newPlayer);
+                return;
+            }
+
+            int? index = GetPlayerIndex(connection.connectionId);
+            if (index == null)
+            {
+                Debug.LogError("New player joined a full game!");
+                connection.Disconnect();
+                Destroy(newPlayer);
+                return;
+            }
+            newPlayer.playerIndex = index.Value;
+
             NetworkServer.AddPlayerForConnection(connection, newPlayer.gameObject);
         }
-        newPlayer.userName = joinMessage.name;
+        newPlayer.entityName = joinMessage.name;
+    }
 
+    private int? GetPlayerIndex(int? ignoreNetID)
+    {
+        List<Player> players = PlayersDict.Instance.Players;
+        int? indexToReturn = null;
+        for (int i = 0; i < 4; i++)
+        {
+            indexToReturn = i;
+            for (int j = 0; j < players.Count; j++)
+            {
+                if (ignoreNetID != null && players[j].playerId == ignoreNetID.Value)
+                    continue;
+                if (players[j].playerIndex == i)
+                {
+                    indexToReturn = null;
+                    break;
+                }
+            }
+
+            if (indexToReturn != null)
+                return indexToReturn;
+        }
+        return indexToReturn;
     }
 
     private void OnStartGameMessage(StartGameMessage startGameMessage)
@@ -96,7 +173,8 @@ public class RAGNetworkManager : NobleNetworkManager
 
     private void OnReturnToLobbyMessage(ReturnToLobbyMessage returnToLobbyMessage)
     {
-        LobbyLevel.Instance.Show();
+        StartCoroutine(RegionSceneLoader.Instance.LoadScene(Region.Lobby));
+        StartCoroutine(DungeonCreator.Instance.ClearPreviousDungeon());
     }
 
     private void OnDoorsMessage(DoorMessage doorMessage)
@@ -129,5 +207,23 @@ public class RAGNetworkManager : NobleNetworkManager
     {
         UIManager.Instance.HideLevelLoadScreen();
         MusicManager.Instance.ChangeState(MusicManager.State.Dungeon);
+    }
+
+    private void OnMiniMapNewRoomMessage(MiniMapNewRoomMessage miniMapNewRoomMessage)
+    {
+        if (DungeonDict.Instance.IsIdValid(miniMapNewRoomMessage.roomId) == false)
+            return;
+        MiniMapManager.Instance.OnNewRoomEntered(DungeonDict.Instance.Get(miniMapNewRoomMessage.roomId));
+    }
+
+    private void OnEmoteMessage(EmoteMessage emoteMessage)
+    {
+        if (UIManager.Instance)
+            UIManager.Instance.OnPlayerEmoted(emoteMessage);
+    }
+
+    private void OnGameOverMessage(GameOverMessage gameOverMessage)
+    {
+        GameOverScreen.Instance.Set(gameOverMessage.statsTransmission);
     }
 }

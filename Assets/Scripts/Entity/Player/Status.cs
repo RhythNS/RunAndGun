@@ -92,6 +92,7 @@ public class Status : NetworkBehaviour
         if (!downedPlayerAbleToRevive || downedPlayerAbleToRevive.Health.Alive)
             return;
 
+        StatTracker.Instance.GetStat<OtherPlayerRevived>(player).Add(1);
         // TODO: Change the max value to how much the player is revived to.
         downedPlayerAbleToRevive.Health.Revive(downedPlayerAbleToRevive.Health.Max);
         downedPlayerAbleToRevive.Status.RpcOnRevived();

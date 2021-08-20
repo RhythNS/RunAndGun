@@ -44,6 +44,7 @@ public class EquippedWeapon : NetworkBehaviour
     [SerializeField] int remainingBullets;
     [SerializeField] private bool requestStopFire;
     private Vector2 localDirection;
+    private Player onPlayer;
 
     private ExtendedCoroutine fireCoroutine;
     private ExtendedCoroutine reloadCoroutine;
@@ -54,6 +55,7 @@ public class EquippedWeapon : NetworkBehaviour
         Collider2D = GetComponent<Collider2D>();
 
         NetworkWeaponAnimator = GetComponent<NetworkWeaponAnimator>();
+        onPlayer = GetComponent<Player>();
     }
 
     #region Events
@@ -194,6 +196,9 @@ public class EquippedWeapon : NetworkBehaviour
         //bullet.Ssm.setPosition(position, true);
         bullet.transform.position = position;
 
+        if (onPlayer != null)
+            StatTracker.Instance.GetStat<ShotsFiredStat>(onPlayer).Add(1);
+
         NetworkServer.Spawn(bullet.gameObject);
     }
 
@@ -206,6 +211,9 @@ public class EquippedWeapon : NetworkBehaviour
         Bullet bullet = GetBullet(direction);
         if (isServer)
         {
+            if (onPlayer != null)
+                StatTracker.Instance.GetStat<ShotsFiredStat>(onPlayer).Add(1);
+
             NetworkServer.Spawn(bullet.gameObject);
             //bullet.GetComponent<SmoothSyncMirror>().teleportAnyObjectFromServer(bullet.transform.position, bullet.transform.rotation, bullet.transform.localScale);
         }

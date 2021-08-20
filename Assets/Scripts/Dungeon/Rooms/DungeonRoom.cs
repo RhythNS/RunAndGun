@@ -82,12 +82,19 @@ public abstract class DungeonRoom : MonoBehaviour
 
     public virtual void OnLocalPlayerEntered()
     {
-        DungeonCreator.Instance.AdjustMask(new Vector2(border.xMin, border.yMin), border.size);
+        DungeonCreator.Instance.AdjustMask(new Vector2(border.xMin, border.yMin - 1), border.size + new Vector2(0, 1));
     }
 
     public virtual void OnLocalPlayerLeft()
     {
-        DungeonCreator.Instance.ResetMask();
+        //DungeonCreator.Instance.ResetMask();
+    }
+
+    public void ForceBorder(Rect rect)
+    {
+        border = rect;
+        boxCollider.offset = rect.position + rect.size * 0.5f;
+        boxCollider.size = rect.size;
     }
 
     /// <summary>

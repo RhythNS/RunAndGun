@@ -1,78 +1,178 @@
-﻿using Mirror;
+﻿using MatchUp;
+using Mirror;
 using NobleConnect.Mirror;
-using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ServerConnect : PanelElement
 {
-    [SerializeField] private TMP_InputField ipInput;
-    [SerializeField] private TMP_InputField portInput;
+    [SerializeField] private Button refreshButton;
+    [SerializeField] private Button connectButton;
+    [SerializeField] private Button abortConnectButton;
 
-    public override bool InnerOnConfirm()
+    [SerializeField] private RectTransform contentTrans;
+    [SerializeField] private RectTransform overviewTrans;
+    [SerializeField] private RectTransform joinServerTrans;
+
+    [SerializeField] private ServerConnectMatchDisplay matchDisplayPrefab;
+    [SerializeField] private RectTransform noConnectionPrefab;
+
+    [SerializeField] private TMP_Text nameDisplay;
+    [SerializeField] private TMP_Text playerDisplay;
+    [SerializeField] private TMP_Text regionDisplay;
+    [SerializeField] private TMP_InputField passwordInput;
+    [SerializeField] private RectTransform passwordTrans;
+    [SerializeField] private RectTransform matchInfoContentTrans;
+
+    [SerializeField] private ConnectingScreen connectingScreen;
+
+    private Match toConnectToMatch;
+
+    private void Start()
     {
-        NobleNetworkManager networkManager = (NobleNetworkManager)NetworkManager.singleton;
-
-        if (ushort.TryParse(portInput.text, out ushort port) == false)
-            return false;
-
-        Config.Instance.StartCoroutine(StartConnect(networkManager, ipInput.text, port));
-
-        return true;
+        refreshButton.onClick.AddListener(Refresh);
+        connectButton.onClick.AddListener(OnConnectButtonPressed);
+        abortConnectButton.onClick.AddListener(OnAbortConnectButtonPressed);
     }
 
-    private IEnumerator StartConnect(NobleNetworkManager networkManager, string networkAdress, ushort port)
+    public override void InnerOnShow()
     {
-        networkManager.StopHost();
+        joinServerTrans.gameObject.SetActive(false);
+        overviewTrans.gameObject.SetActive(true);
 
-        yield return new WaitForSeconds(1.0f);
+        Refresh();
+    }
 
-        try
+    private void Refresh()
+    {
+        refreshButton.gameObject.SetActive(false);
+
+        if (RAGMatchmaker.Instance.IsReady == false)
         {
-            networkManager.InitClient();
-
-            networkManager.networkAddress = networkAdress;
-            networkManager.networkPort = port;
-
-            networkManager.StartClient();
+            new ExtendedCoroutine(
+                this,
+                RAGMatchmaker.Instance.Reconnect(),
+                OnReconnected,
+                true
+            );
+            return;
         }
-        catch (System.Exception)
+
+        RAGMatchmaker.Instance.GetMatchList(OnMatchListRecieved);
+    }
+
+    private void OnReconnected()
+    {
+        RAGMatchmaker.Instance.GetMatchList(OnMatchListRecieved);
+    }
+
+    private void OnMatchListRecieved(bool success, Match[] matches)
+    {
+        refreshButton.gameObject.SetActive(true);
+
+        while (contentTrans.childCount != 0)
         {
-            OnFailed();
-            yield break;
+            Transform trans = contentTrans.GetChild(0);
+            trans.parent = null;
+            Destroy(trans.gameObject);
         }
 
-        yield return new WaitForSeconds(1.0f);
-
-        float time = 0.0f;
-        while (networkManager.isNetworkActive)
+        if (success == false)
         {
-            if (networkManager.client == null)
-            {
-                OnFailed();
-                yield break;
-            }
+            Instantiate(noConnectionPrefab, contentTrans);
+            return;
+        }
 
-            if (networkManager.client.isConnected)
-                yield break;
+        Match currentMatch = RAGMatchmaker.Instance.GetCurrentMatch();
+        ServerConnectMatchDisplay matchDisplay = Instantiate(matchDisplayPrefab);
+        for (int i = 0; i < matches.Length; i++)
+        {
+            if (currentMatch != null && currentMatch == matches[i])
+                continue;
 
-            time += Time.deltaTime;
-            if (time > 5.0f)
-            {
-                OnFailed();
-                yield break;
-            }
+            if (matchDisplay.Set(matches[i], this) == false)
+                continue;
 
-            yield return null;
+            matchDisplay.transform.SetParent(contentTrans);
+            matchDisplay.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+            matchDisplay = Instantiate(matchDisplayPrefab);
+        }
+        Destroy(matchDisplay.gameObject);
+    }
+
+    private void OnConnectButtonPressed()
+    {
+        if (toConnectToMatch == null)
+        {
+            OnCancel();
+            return;
+        }
+
+        RAGMatchmaker.Instance.JoinMatch(toConnectToMatch, OnMatchJoined);
+    }
+
+    private void OnAbortConnectButtonPressed()
+    {
+        joinServerTrans.gameObject.SetActive(false);
+        overviewTrans.gameObject.SetActive(true);
+
+        Refresh();
+    }
+
+    private void OnMatchJoined(bool success, Match match)
+    {
+        if (success == false)
+        {
+            UIManager.Instance.ShowNotification("Could not connect to match");
+            joinServerTrans.gameObject.SetActive(false);
+            overviewTrans.gameObject.SetActive(true);
+            return;
+        }
+
+        NetworkConnector.DisconnectClient();
+
+        //NetworkManager.singleton.StartClient(match);
+        NobleNetworkManager manager = (NobleNetworkManager)NetworkManager.singleton;
+        string ip = match.matchData["ipAddress"];
+        int port = match.matchData["port"];
+        manager.networkAddress = ip;
+        manager.networkPort = (ushort)port;
+        manager.StartClient();
+
+        connectingScreen.Show();
+        OnConfirm();
+    }
+
+    public void OnMatchClicked(Match match, bool isPasswordProtected, string matchName, int connected, int maxPlayers, string regionString)
+    {
+        joinServerTrans.gameObject.SetActive(true);
+        overviewTrans.gameObject.SetActive(false);
+
+        toConnectToMatch = match;
+
+        nameDisplay.text = matchName;
+        playerDisplay.text = connected + " / " + maxPlayers;
+        regionDisplay.text = regionString;
+        passwordInput.text = "";
+
+        if (isPasswordProtected)
+        {
+            if (passwordTrans.parent == null)
+                passwordTrans.parent = matchInfoContentTrans;
+            passwordTrans.gameObject.SetActive(true);
+        }
+        else
+        {
+            if (passwordTrans.parent != null)
+                passwordTrans.parent = null;
+            passwordTrans.gameObject.SetActive(false);
         }
     }
 
-    private void OnFailed()
+    private void OnDestroy()
     {
-        NobleNetworkManager networkManager = (NobleNetworkManager)NetworkManager.singleton;
-        if (networkManager.client != null)
-            networkManager.StopClient();
-
-        networkManager.StartHost();
+        refreshButton.onClick.RemoveListener(Refresh);
+        connectButton.onClick.RemoveListener(OnConnectButtonPressed);
     }
 }

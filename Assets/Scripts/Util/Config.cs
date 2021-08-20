@@ -5,6 +5,8 @@
 /// </summary>
 public class Config : MonoBehaviour
 {
+    [SerializeField] private bool ignorePlatform = false;
+
     // Singleton
     public static Config Instance { get; private set; }
 
@@ -27,6 +29,20 @@ public class Config : MonoBehaviour
     /// </summary>
     private void LoadValues()
     {
+        if (ignorePlatform == false)
+            SetValuesForPlattform();
+
+        SaveGame loaded = Saver.Load();
+        if (loaded == null)
+            return;
+
+        saveFileExisted = true;
+        playerName = loaded.playerName;
+        selectedPlayerType = loaded.lastSelectedCharacterType;
+    }
+
+    private void SetValuesForPlattform()
+    {
         switch (Application.platform)
         {
             case RuntimePlatform.WindowsEditor:
@@ -38,30 +54,58 @@ public class Config : MonoBehaviour
 
                 targetFramesPerSecondLoadingScreen = 60;
                 selectedInput = InputType.KeyMouse;
-                break;
+                return;
 
             case RuntimePlatform.IPhonePlayer:
             case RuntimePlatform.Android:
 
                 targetFramesPerSecondLoadingScreen = 30;
                 selectedInput = InputType.Mobile;
-                break;
-
-            default:
-                break;
+                return;
         }
-        // TODO: load some stuff
     }
 
+    public void Save()
+    {
+        SaveGame saveGame = new SaveGame()
+        {
+            playerName = PlayerName,
+            lastSelectedCharacterType = SelectedPlayerType
+        };
+        Saver.Save(saveGame);
+    }
+
+    // ---- Config ----
+    public static bool saveFileExisted = false;
+
     // ---- Connection ----
-    public string playerName = "Test";
-    public CharacterType selectedPlayerType = CharacterType.Melee;
+    private string playerName = "Test";
+    public string password = "";
+    private CharacterType selectedPlayerType = CharacterType.Melee;
+
+    public string PlayerName
+    {
+        get => playerName; set
+        {
+            playerName = value;
+            Save();
+        }
+    }
+    public CharacterType SelectedPlayerType
+    {
+        get => selectedPlayerType; set
+        {
+            selectedPlayerType = value;
+            Save();
+        }
+    }
+
 
     // ---- Input ----
     public InputType selectedInput = InputType.KeyMouse;
     public bool useFocusPoint = true;
 
-    // Graphics
+    // ---- Graphics ----
     public int targetFramesPerSecondLoadingScreen = 60;
 
     private void OnDestroy()

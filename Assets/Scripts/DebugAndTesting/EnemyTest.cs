@@ -1,6 +1,9 @@
 ﻿using Mirror;
 using UnityEngine;
 
+/// <summary>
+/// Test class for spawning an enemy.
+/// </summary>
 public class EnemyTest : NetworkBehaviour
 {
     [SerializeField] private bool shouldSpawn;

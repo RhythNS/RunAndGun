@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+/// <summary>
+/// Custom Editor for the DungeonCreator.
+/// </summary>
 [CustomEditor(typeof(DungeonCreator))]
 public class DungeonEditor : Editor
 {

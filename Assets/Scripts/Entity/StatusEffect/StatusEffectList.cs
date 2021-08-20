@@ -23,8 +23,10 @@ public class StatusEffectList : NetworkBehaviour
     }
 
     [Server]
-    public void ServerAdd(StatusEffect effect)
+    public void ServerAdd(StatusEffect effect, Health inflicter)
     {
+        effect.Inflicter = inflicter;
+
         if (effect.IsInstant)
         {
             effect.OnList = this;
@@ -62,7 +64,7 @@ public class StatusEffectList : NetworkBehaviour
     [Command]
     public void CmdAdd(StatusEffect effect)
     {
-        ServerAdd(effect);
+       // ServerAdd(effect);
     }
 
     [Server]

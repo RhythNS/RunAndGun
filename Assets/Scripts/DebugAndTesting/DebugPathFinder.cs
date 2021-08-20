@@ -2,6 +2,9 @@
 using System.Threading;
 using UnityEngine;
 
+/// <summary>
+/// Test class for debuging the path finder used in the DungeonCreator.
+/// </summary>
 public class DebugPathFinder : MonoBehaviour
 {
     public static DebugPathFinder Instance { get; private set; }

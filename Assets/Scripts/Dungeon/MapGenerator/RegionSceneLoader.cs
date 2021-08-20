@@ -1,9 +1,16 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Manages the un- loading of regions.
+/// </summary>
 public class RegionSceneLoader : MonoBehaviour
 {
+    /// <summary>
+    /// Singleton.
+    /// </summary>
     public static RegionSceneLoader Instance { get; private set; }
 
     private GenerateLevelMessage generateLevelMessage;
@@ -21,12 +28,18 @@ public class RegionSceneLoader : MonoBehaviour
 
     private int numberOfOperationsNotDone = 0;
 
+    /// <summary>
+    /// Loads new regions and unloads the old scenes.
+    /// </summary>
     public IEnumerator LoadScene(GenerateLevelMessage generateLevelMessage)
     {
         this.generateLevelMessage = generateLevelMessage;
         yield return LoadScene(generateLevelMessage.region);
     }
 
+    /// <summary>
+    /// Loads new regions and unloads the old scenes.
+    /// </summary>
     public IEnumerator LoadScene(Region region)
     {
         if (RegionDict.Instance)
@@ -47,11 +60,17 @@ public class RegionSceneLoader : MonoBehaviour
             yield return null;
     }
 
+    /// <summary>
+    /// Loads the level that was specified in the GenerateLevelMessage.
+    /// </summary>
     public void LoadLevel()
     {
         DungeonCreator.Instance.CreateLevel(generateLevelMessage.levelNumber);
     }
 
+    /// <summary>
+    /// Callback for when an async operation finished.
+    /// </summary>
     private void OperationFinished(AsyncOperation operation)
     {
         operation.completed -= OperationFinished;

@@ -1,10 +1,15 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class InGameManager : MonoBehaviour
 {
     [SerializeField] private PercentageAs healthPercentage;
     [SerializeField] private IntAs moneyAmount;
     [SerializeField] private WeaponManager weaponManager;
+    [SerializeField] private MiniMapManager miniMapManager;
+    [SerializeField] private EmoteManager emoteManager;
+    [SerializeField] private EmoteBoard emoteBoard;
+    [SerializeField] private NotificationManager notificationManager;
 
     public void RegisterEvents(Player player)
     {
@@ -14,6 +19,8 @@ public class InGameManager : MonoBehaviour
         player.Inventory.OnMoneyAmountChanged += moneyAmount.UpdateValue;
         moneyAmount.UpdateValue(player.Inventory.money);
         weaponManager.RegisterEvents(player);
+        emoteBoard.ClearAll();
+        notificationManager.ClearAll();
     }
 
     public void UnRegisterEvents()
@@ -28,5 +35,17 @@ public class InGameManager : MonoBehaviour
 
         if (weaponManager)
             weaponManager.UnRegisterEvents(player);
+    }
+
+    public void OnPlayerEmoted(EmoteMessage emoteMessage) => emoteBoard.OnPlayerEmoted(emoteMessage);
+
+    public void ShowNotification(string toDisplay) => notificationManager.Show(toDisplay);
+
+    public void ToggleEmotePanel()
+    {
+        if (emoteManager.Hidden)
+            emoteManager.Show();
+        else
+            emoteManager.Hide();
     }
 }

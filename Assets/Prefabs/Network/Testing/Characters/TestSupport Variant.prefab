@@ -7,11 +7,29 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -6987412224448605266, guid: 63f431cca889dbf42b617e481f43c216,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 22100000, guid: 5afd4b7b7c3da13408b1afc562b8407a,
+        type: 2}
+    - target: {fileID: 2103416700, guid: 63f431cca889dbf42b617e481f43c216, type: 3}
+      propertyPath: m_Size.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2103416700, guid: 63f431cca889dbf42b617e481f43c216, type: 3}
+      propertyPath: m_Size.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2103416700, guid: 63f431cca889dbf42b617e481f43c216, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 316470711418822924, guid: 2585c315b5ada3241973a55cc08276d0,
+      objectReference: {fileID: 6082339987025560736, guid: 6cb935625b50c56499c5768dea8303f4,
         type: 3}
+    - target: {fileID: 2103416700, guid: 63f431cca889dbf42b617e481f43c216, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2103416702, guid: 63f431cca889dbf42b617e481f43c216, type: 3}
       propertyPath: characterType
       value: 2
@@ -19,7 +37,7 @@ PrefabInstance:
     - target: {fileID: 3992868732581162177, guid: 63f431cca889dbf42b617e481f43c216,
         type: 3}
       propertyPath: m_Name
-      value: TestSupport
+      value: TestSupport Variant
       objectReference: {fileID: 0}
     - target: {fileID: 6243887196303527659, guid: 63f431cca889dbf42b617e481f43c216,
         type: 3}

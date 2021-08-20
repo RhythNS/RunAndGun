@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ddc32f44282bd3469f7d126bd8dd236, type: 3}
+  m_Name: Test Room Mode
+  m_EditorClassIdentifier: 
+  levelSeeds: 
+  levelAmount: 1
+  startingDifficulty: 10
+  minPlayers: 1
+  maxPlayers: 4
+  randomSeed: 0
+  seed: 0
+  dungeonConfig:
+    sizeX: 0
+    sizeY: 0
+    minRooms: 0
+    maxRooms: 0
+    corridorMinLength: 0
+    corridorMaxLength: 0
+    generateShopRoom: 0
+    shopItems: []
+  customRegionOnLevels:
+  - level: 0
+    region: 2

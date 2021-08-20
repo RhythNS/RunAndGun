@@ -1,6 +1,9 @@
 ﻿using Mirror;
 using UnityEngine;
 
+/// <summary>
+/// Switches the CharacterType of a Player when they Overlap with this Object.
+/// </summary>
 public class SwitchCharacterWhenTouched : MonoBehaviour
 {
     [SerializeField] private CharacterType toSwitchTo;
@@ -9,13 +12,13 @@ public class SwitchCharacterWhenTouched : MonoBehaviour
     {
         if (collision.TryGetComponent(out Player player) && player.isLocalPlayer)
         {
-            if (toSwitchTo == Config.Instance.selectedPlayerType)
+            if (toSwitchTo == Config.Instance.SelectedPlayerType)
                 return;
 
             JoinMessage joinMessage = new JoinMessage()
             {
                 characterType = toSwitchTo,
-                name = player.userName
+                name = player.entityName
             };
             NetworkClient.Send(joinMessage);
         }

@@ -2,8 +2,14 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+/// <summary>
+/// Test class for adding colliders based on a DungeonRoom.
+/// </summary>
 public class CreateColliderFromRoom : MonoBehaviour
 {
+    /// <summary>
+    /// The tileset to be used for creating the tilemap.
+    /// </summary>
     [SerializeField] private Tileset tileset;
     [SerializeField] private Transform[] trans;
 

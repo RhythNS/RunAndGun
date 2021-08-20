@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// Test class for testing the ExtendedCoroutine class.
+/// </summary>
 public class CoroutineTest : MonoBehaviour
 {
     private ExtendedCoroutine ext;

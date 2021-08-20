@@ -2,11 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Starts a boss fight if all players are inside this zone.
+/// </summary>
 public class BossReadyZone : MonoBehaviour
 {
     public DungeonDoor OnDoor { get; private set; }
     private readonly List<Player> playersReady = new List<Player>();
 
+    /// <summary>
+    /// Sets all required variables.
+    /// </summary>
+    /// <param name="rect">The bounding rectangle of the zone.</param>
+    /// <param name="onDoor">The door that is next to this zone.</param>
     public void Set(Rect rect, DungeonDoor onDoor)
     {
         OnDoor = onDoor;

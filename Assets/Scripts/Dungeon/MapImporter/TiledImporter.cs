@@ -6,6 +6,9 @@ using TiledSharp;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+/// <summary>
+/// Manages the loading of tiled maps.
+/// </summary>
 public class TiledImporter : MonoBehaviour
 {
     public static TiledImporter Instance { get; private set; }

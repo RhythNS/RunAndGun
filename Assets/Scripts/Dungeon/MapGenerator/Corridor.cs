@@ -14,6 +14,8 @@ namespace MapGenerator
 
         public Dictionary<Vector2Int, Direction> exitDirections;
 
+        public Direction Direction { get; set; }
+
         /// <summary>
         /// Places a new corridor from the given position with the length in the given direction.
         /// </summary>
@@ -21,17 +23,21 @@ namespace MapGenerator
         /// <param name="posY">The y-Position where the corridor should start.</param>
         /// <param name="length">The length of the corridor.</param>
         /// <param name="direction">The direction where the corridor should point to.</param>
-        public Corridor(int posX, int posY, int length, Direction direction) {
+        public Corridor(int posX, int posY, int length, Direction direction)
+        {
             Position = Vector2Int.zero;
             Size = Vector2Int.zero;
+            Direction = direction;
             exitDirections = new Dictionary<Vector2Int, Direction>();
 
-            switch (direction) {
+            switch (direction)
+            {
                 case Direction.Up:
                     Size = new Vector2Int(2, length);
                     Position = new Vector2Int(posX, posY);
 
-                    for (int y = 5; y < Size.y - 8; y++) {
+                    for (int y = 5; y < Size.y - 8; y++)
+                    {
                         exitDirections.Add(new Vector2Int(-1, y), Direction.Left);
                         exitDirections.Add(new Vector2Int(Size.x, y), Direction.Right);
                     }
@@ -43,7 +49,8 @@ namespace MapGenerator
                     Size = new Vector2Int(2, length);
                     Position = new Vector2Int(posX, posY - Size.y + 1);
 
-                    for (int y = 5; y < Size.y - 8; y++) {
+                    for (int y = 5; y < Size.y - 8; y++)
+                    {
                         exitDirections.Add(new Vector2Int(-1, y), Direction.Left);
                         exitDirections.Add(new Vector2Int(Size.x, y), Direction.Right);
                     }
@@ -55,7 +62,8 @@ namespace MapGenerator
                     Size = new Vector2Int(length, 3);
                     Position = new Vector2Int(posX - Size.x + 1, posY);
 
-                    for (int x = 5; x < Size.x - 7; x++) {
+                    for (int x = 5; x < Size.x - 7; x++)
+                    {
                         exitDirections.Add(new Vector2Int(x, Size.y), Direction.Up);
                         exitDirections.Add(new Vector2Int(x, -1), Direction.Down);
                     }
@@ -67,7 +75,8 @@ namespace MapGenerator
                     Size = new Vector2Int(length, 3);
                     Position = new Vector2Int(posX, posY);
 
-                    for (int x = 5; x < Size.x - 7; x++) {
+                    for (int x = 5; x < Size.x - 7; x++)
+                    {
                         exitDirections.Add(new Vector2Int(x, -1), Direction.Down);
                         exitDirections.Add(new Vector2Int(x, Size.y), Direction.Up);
                     }
@@ -76,5 +85,20 @@ namespace MapGenerator
                     break;
             }
         }
+
+        public List<Vector2Int> GetWalkableTiles()
+        {
+            List<Vector2Int> walkableTiles = new List<Vector2Int>();
+            for (int x = 0; x < Size.x; x++)
+            {
+                for (int y = 0; y < Size.y; y++)
+                {
+                    walkableTiles.Add(new Vector2Int(Position.x + x, Position.y + y));
+                }
+            }
+
+            return walkableTiles;
+        }
+
     }
 }

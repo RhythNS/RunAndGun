@@ -8,6 +8,7 @@ public abstract class StatusEffect : Pickable
 
     public StatusEffectList OnList { get; set; }
     public Health OnHealth => OnList.Health;
+    public Health Inflicter { get; set; } = null;
     public bool IsInstant => numberOfTicks == 0;
     public bool IsForever => numberOfTicks == -1;
     public bool IsServer => OnList.isServer;

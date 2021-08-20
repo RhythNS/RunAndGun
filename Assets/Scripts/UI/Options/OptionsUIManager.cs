@@ -6,6 +6,7 @@ public class OptionsUIManager : MonoBehaviour
     [SerializeField] private ServerConnect serverConnect;
     [SerializeField] private ServerInfo serverInfo;
     [SerializeField] private VolumeControl volumeControl;
+    [SerializeField] private GameModeConfig gameModeConfig;
 
     private void Awake()
     {
@@ -23,4 +24,7 @@ public class OptionsUIManager : MonoBehaviour
 
     public void ShowVolumeControl() => volumeControl.Show();
     public void HideVolumeControl() => volumeControl.Hide();
+    
+    public void ShowGameModeConfig() => gameModeConfig.Show();
+    public void HideGameModeConfig() => gameModeConfig.Hide();
 }

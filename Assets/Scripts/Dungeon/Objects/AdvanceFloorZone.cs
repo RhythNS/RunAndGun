@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Advances to the next floor if all players stand inside the zone.
+/// </summary>
 public class AdvanceFloorZone : NetworkBehaviour
 {
     private readonly List<Player> playersReady = new List<Player>();

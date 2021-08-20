@@ -90,6 +90,8 @@ GameObject:
   - component: {fileID: 8307653741225969240}
   - component: {fileID: 511879601587473819}
   - component: {fileID: 6147434120120078534}
+  - component: {fileID: 4331830215520593489}
+  - component: {fileID: 3892839556540046609}
   m_Layer: 0
   m_Name: Dicts
   m_TagString: Untagged
@@ -123,7 +125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6bc0ed7d7b88d642b5dda5b36dcffe3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseCursor: {fileID: 2800000, guid: 8f30995aabb7826479ab87ab2ff924bb, type: 3}
+  mouseCursor: {fileID: 2800000, guid: 958d7c01232137b4cbc29e51b1e28c58, type: 3}
   mobileUIManagerPrefab: {fileID: 1302508998527182904, guid: bc4d9fb6e6986ca4a8d0bbd9940034e2,
     type: 3}
 --- !u!114 &1365799234425872917
@@ -141,22 +143,22 @@ MonoBehaviour:
   players:
   - player: {fileID: 2103416702, guid: 63f431cca889dbf42b617e481f43c216, type: 3}
     characterType: 0
-    characterPreviewSprite: {fileID: -1801323016989662738, guid: 597c40df2db09824f9bc256f42715481,
+    characterPreviewSprite: {fileID: -1801323016989662738, guid: 71d5ed4f4e85b6847b730abce960f9b0,
       type: 3}
   - player: {fileID: 2993631946973848731, guid: 6e1903cbfca72494a819f41729d7a653,
       type: 3}
     characterType: 1
-    characterPreviewSprite: {fileID: 5524089288207099101, guid: 9877aaa799703f8469ccf1b487954bcb,
+    characterPreviewSprite: {fileID: 5524089288207099101, guid: ace4137e1757aa746ba6acd4b17ffef3,
       type: 3}
   - player: {fileID: 7664403472604156912, guid: bc73c59a2b64fb241ab5a10bba3397fe,
       type: 3}
     characterType: 2
-    characterPreviewSprite: {fileID: 6082339987025560736, guid: 580bedba5fc12c24bb13641864a9fba6,
+    characterPreviewSprite: {fileID: 6082339987025560736, guid: 6cb935625b50c56499c5768dea8303f4,
       type: 3}
   - player: {fileID: 9085926947561574475, guid: 35e542e06af903049a5d08f368ec42aa,
       type: 3}
     characterType: 3
-    characterPreviewSprite: {fileID: 316470711418822924, guid: 2585c315b5ada3241973a55cc08276d0,
+    characterPreviewSprite: {fileID: 316470711418822924, guid: f8ffd8840da323d4baf8dfa202d0006b,
       type: 3}
   playerColors:
   - {r: 0.80392164, g: 0.19215688, b: 0.19215688, a: 1}
@@ -298,6 +300,7 @@ MonoBehaviour:
   playerLayer: 8
   enemyLayer: 9
   downedPlayerLayer: 10
+  pickableLayer: 11
   dungeonRoomLayer: 16
   bulletTargetPlayerOnly: 17
   bulletTargetEnemyOnly: 18
@@ -414,6 +417,8 @@ MonoBehaviour:
     sceneName: DebugRegion
   - region: 1
     sceneName: LobbyRegion
+  - region: 2
+    sceneName: EnemyTestRoom
 --- !u!114 &6147434120120078534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -430,6 +435,89 @@ MonoBehaviour:
   dictsObject: {fileID: 1365799234425872912}
   poolObject: {fileID: 7774315031574413647}
   gameStateManagerObject: {fileID: 2221242444935213018}
+--- !u!114 &4331830215520593489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1365799234425872912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ae5e6a9fd385e247add1bb64046db9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emoteLayers:
+  - name: General
+    emotes:
+    - identifier: 
+      sprite: {fileID: 21300000, guid: c1eb8da769290bc4dae2b4f0ef050f28, type: 3}
+      id: 0
+    - identifier: 
+      sprite: {fileID: 21300000, guid: c8ce78a297cac62439e25e6c38a5b469, type: 3}
+      id: 0
+    - identifier: 
+      sprite: {fileID: 21300000, guid: 38d9f63fd71b05f4798d7a3763a3e396, type: 3}
+      id: 0
+    - identifier: 
+      sprite: {fileID: 21300000, guid: 6fa850b275a30104a92f825885a4c67a, type: 3}
+      id: 0
+    - identifier: 
+      sprite: {fileID: 21300000, guid: ab48bd1dd755e364a9d81c2bb435cf4e, type: 3}
+      id: 0
+    - identifier: 
+      sprite: {fileID: 21300000, guid: 627edb842cf1bbf49b0916c52cd507ea, type: 3}
+      id: 0
+    - identifier: 
+      sprite: {fileID: 21300000, guid: 08bbb38c01d687a46bf3c27e51c38342, type: 3}
+      id: 0
+    - identifier: 
+      sprite: {fileID: 21300000, guid: 6da14cb87d3688c48806753715dc4610, type: 3}
+      id: 0
+    - identifier: 
+      sprite: {fileID: 21300000, guid: bd536211b97f7134a82ee7b3fe5e330f, type: 3}
+      id: 0
+  - name: Reaction
+    emotes:
+    - identifier: 
+      sprite: {fileID: 21300000, guid: de1249dbba762a545a0ad245272bdb55, type: 3}
+      id: 0
+    - identifier: 
+      sprite: {fileID: 21300000, guid: 00f02b4e1f111b944a88179cbbf39aa1, type: 3}
+      id: 0
+    - identifier: 
+      sprite: {fileID: 21300000, guid: 06aae06e42fe2d545b780bca6baca009, type: 3}
+      id: 0
+    - identifier: 
+      sprite: {fileID: 21300000, guid: 6ad58bf6ef4a96d47a6ece0fa4454e29, type: 3}
+      id: 0
+--- !u!114 &3892839556540046609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1365799234425872912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89db6382bfa95a846977606733e37ad7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  regionNames:
+  - name: US East
+    region: 1
+  - name: US West
+    region: 2
+  - name: EU
+    region: 3
+  - name: AU
+    region: 4
+  - name: APAC
+    region: 5
+  - name: HK
+    region: 6
+  - name: SA
+    region: 7
 --- !u!1 &1365799234809505999
 GameObject:
   m_ObjectHideFlags: 0
@@ -464,6 +552,7 @@ Transform:
   - {fileID: 2590642215619971641}
   - {fileID: 4436296186711646576}
   - {fileID: 890658120583229764}
+  - {fileID: 6454816947648575636}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -479,8 +568,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52ab51436dddbec4792908c1339503c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerName: 
-  selectedPlayerType: 0
+  ignorePlatform: 0
+  password: 
   selectedInput: 0
   useFocusPoint: 1
   targetFramesPerSecondLoadingScreen: 60
@@ -544,6 +633,68 @@ MonoBehaviour:
   visible: 0
   m_AssetId: 
   hasSpawned: 0
+--- !u!1 &2231233067460551503
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6454816947648575636}
+  - component: {fileID: 4605492734531399316}
+  - component: {fileID: 4639023130057972085}
+  m_Layer: 0
+  m_Name: Matchmaker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6454816947648575636
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2231233067460551503}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1365799234809505998}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4605492734531399316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2231233067460551503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: facb388d7edb36444a88b7c19a38e56e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  matchmakerURL: noblewhale.com
+  matchmakerPort: 20205
+  timeout: 5
+  maxReconnectionAttempts: 5
+  externalIPSource: ipv4.noblewhale.com
+  autoConnect: 1
+--- !u!114 &4639023130057972085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2231233067460551503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd44a527a68930b4cb21c61666807d35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4134369047632752567
 GameObject:
   m_ObjectHideFlags: 0

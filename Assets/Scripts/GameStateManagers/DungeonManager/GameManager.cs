@@ -47,6 +47,7 @@ public class GameManager : MonoBehaviour
 
     private void OnPlayerDisconnected(Player player)
     {
+        Debug.Log(player.entityName + " has disconnected!");
         // TODO: Figure out what happens here.
         // If level is loading =>
         // If level is not loading => 
@@ -57,6 +58,11 @@ public class GameManager : MonoBehaviour
     {
         if (!instance)
             return;
+
+        if (instance.TryGetComponent(out StatTracker tracker) == false)
+            instance.gameObject.AddComponent<StatTracker>();
+        else
+            tracker.ResetStats();
 
         GameMode copied = Instantiate(gameMode);
         copied.Init(seed);
@@ -73,9 +79,11 @@ public class GameManager : MonoBehaviour
         if (!instance)
             return;
 
+        ClearAllObjects();
+
         instance.CurrentState = State.LoadingLevel;
         ++currentLevel;
-        if (currentLevel == gameMode.levelAmount)
+        if (currentLevel >= gameMode.levelAmount + 1)
         {
             OnDungeonCleared();
             return;
@@ -84,7 +92,7 @@ public class GameManager : MonoBehaviour
         GenerateLevelMessage generateLevelMessage = new GenerateLevelMessage()
         {
             levelNumber = currentLevel,
-            region = Region.Debug
+            region = GetNextRegion()
         };
 
         NetworkServer.SendToAll(generateLevelMessage);
@@ -93,6 +101,20 @@ public class GameManager : MonoBehaviour
         {
             players[i].RpcChangeCanMove(false);
         }
+    }
+
+    private static Region GetNextRegion()
+    {
+        if (gameMode.customRegionOnLevels == null || gameMode.customRegionOnLevels.Length == 0)
+            return Region.Debug; // <--- TODO:
+
+        for (int i = 1; i < gameMode.customRegionOnLevels.Length; i++)
+        {
+            if (gameMode.customRegionOnLevels[i].level > currentLevel)
+                return gameMode.customRegionOnLevels[i - 1].region;
+        }
+
+        return gameMode.customRegionOnLevels[gameMode.customRegionOnLevels.Length - 1].region;
     }
 
     public static void OnPlayerLoadedLevelChanged()
@@ -174,22 +196,46 @@ public class GameManager : MonoBehaviour
 
     public void OnAllPlayersDied()
     {
+        if (!instance)
+            return;
+
         instance.CurrentState = State.Failed;
-        GameOverMessage msg = new GameOverMessage();
-        // set some important stat values to the message
+        GameOverMessage msg = new GameOverMessage(new StatsTransmission(StatTracker.Instance.GetAllStats()));
         NetworkServer.SendToAll(msg);
     }
 
-    private void OnBackToLobby()
+    public static void BackToLobby()
     {
-        gameObject.AddComponent<LobbyManager>();
-        Destroy(this);
+        if (!instance)
+            return;
+
+        ClearAllObjects();
+        Destroy(instance);
+        instance = null;
         NetworkServer.SendToAll(new ReturnToLobbyMessage());
+    }
+
+    public static void ClearAllObjects()
+    {
+        if (!instance)
+            return;
+
+        PickableInWorld[] pickableInWorlds = FindObjectsOfType<PickableInWorld>();
+        for (int i = 0; i < pickableInWorlds.Length; i++)
+            NetworkServer.Destroy(pickableInWorlds[i].gameObject);
+        Enemy[] enemies = FindObjectsOfType<Enemy>();
+        for (int i = 0; i < enemies.Length; i++)
+            NetworkServer.Destroy(enemies[i].gameObject);
     }
 
     public static void OnPlayerChangedRoom(Player player)
     {
-        if (!instance || instance.currentState != State.Wandering)
+        if (!instance)
+            return;
+
+        MiniMapManager.Instance.OnRoomEntered(player.CurrentRoom);
+
+        if (instance.currentState != State.Wandering)
             return;
 
         List<Player> players = PlayersDict.Instance.Players;

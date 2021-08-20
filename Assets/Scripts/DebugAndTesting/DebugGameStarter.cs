@@ -1,53 +1,87 @@
 ﻿using MapGenerator;
+using System.Collections;
 using System.Collections.Generic;
-using TiledSharp;
 using UnityEngine;
+using System.Linq;
 
+/// <summary>
+/// Test for starting the game without the need of the lobby.
+/// </summary>
 public class DebugGameStarter : MonoBehaviour
 {
-    private void Start()
+    [SerializeField] private EnemyObject[] enemiesToSpawn;
+
+    private IEnumerator Start()
     {
-        List<DungeonRoom> dungeonRooms = new List<DungeonRoom>();
+        yield return new WaitForSeconds(0.1f);
 
-        List<Fast2DArray<int>> roomLayouts = new List<Fast2DArray<int>>();
-        List<List<TiledImporter.PrefabLocations>> roomGameObjects = new List<List<TiledImporter.PrefabLocations>>();
-        List<RoomType> roomTypes = new List<RoomType>();
+        UIManager.Instance.ShowLevelLoadScreen();
+        DungeonDict.Instance.ClearRooms();
+        RegionSceneLoader loader = RegionSceneLoader.Instance;
+        yield return loader.LoadScene(Region.EnemyTestRoom);
 
-        roomLayouts.Add(TiledImporter.Instance.GetReplacableMap("startRoom", out PropertyDict properties, out List<TiledImporter.PrefabLocations> gos));
-        if (properties.TryGetValue("roomType", out string value) == false)
-            throw new System.Exception("No room type in map: startRoom!");
-        if (int.TryParse(value, out int roomType) == false)
-            throw new System.Exception("Room type is not an integer in: startRoom!");
-        roomTypes.Add((RoomType)roomType);
-        roomGameObjects.Add(gos);
+        Vector2Int weaponSize = new Vector2Int(30, 30);
+        Vector2Int corridorSize = new Vector2Int(10, 2);
+        Vector2Int enemySize = new Vector2Int(20, 20);
+        Vector2Int startSize = new Vector2Int(10, 10);
 
-        roomLayouts.Add(TiledImporter.Instance.GetReplacableMap("bossRoom", out properties, out gos));
-        if (properties.TryGetValue("roomType", out value) == false)
-            throw new System.Exception("No room type in map: bossRoom!");
-        if (int.TryParse(value, out roomType) == false)
-            throw new System.Exception("Room type is not an integer in: bossRoom!");
-        roomTypes.Add((RoomType)roomType);
-        roomGameObjects.Add(gos);
+        Vector2Int weaponPos = new Vector2Int(1, 3);
+        Vector2Int startPos = new Vector2Int(weaponPos.x + weaponSize.x + corridorSize.x - 2, 3);
+        Vector2Int corridor1Pos = startPos + new Vector2Int(0, 2);// - new Vector2Int(corridorSize.x, -2);
+        Vector2Int corridor2Pos = startPos + new Vector2Int(startSize.x - 1, 2);
+        Vector2Int enemyPos = startPos + new Vector2Int(startSize.x - 1, 0) + new Vector2Int(corridorSize.x - 1, 0);
 
-        int mapCount = 7;
-        for (int i = 1; i <= mapCount; i++)
-        {
-            roomLayouts.Add(TiledImporter.Instance.GetReplacableMap("room" + i.ToString(), out properties, out gos));
+        Fast2DArray<TileType> layout = new Fast2DArray<TileType>(startSize.x, startSize.y);
+        FillRoomWithBounds(layout);
+        layout.Set(TileType.CorridorAccess, layout.XSize - 1, 2);
+        layout.Set(TileType.CorridorAccess, layout.XSize - 1, 3);
 
-            // Example:
-            if (properties.TryGetValue("roomType", out value) == false)
-                throw new System.Exception("No room type in map: room" + i + "!");
+        List<TiledImporter.PrefabLocations> gameObjects = new List<TiledImporter.PrefabLocations>();
+        Room startRoom = new Room(startPos.x, startPos.y, layout, gameObjects, RoomType.Start);
 
-            if (int.TryParse(value, out roomType) == false)
-                throw new System.Exception("Room type is not an integer in: room" + i + "!");
+        layout = new Fast2DArray<TileType>(weaponSize.x, weaponSize.y);
+        FillRoomWithBounds(layout);
+        layout.Set(TileType.CorridorAccess, layout.XSize - 1, 2);
+        layout.Set(TileType.CorridorAccess, layout.XSize - 1, 3);
+        Room weaponRoom = new Room(weaponPos.x, weaponPos.y, layout, gameObjects, RoomType.Empty);
 
-            // do something with the roomType here
-            roomTypes.Add((RoomType)roomType);
+        Corridor corridor1 = new Corridor(corridor1Pos.x, corridor1Pos.y, corridorSize.x, Direction.Left);
+        Corridor corridor2 = new Corridor(corridor2Pos.x, corridor2Pos.y, corridorSize.x, Direction.Right);
 
-            roomGameObjects.Add(gos);
-        }
+        layout = new Fast2DArray<TileType>(enemySize.x, enemySize.y);
+        FillRoomWithBounds(layout);
+        layout.Set(TileType.CorridorAccess, 0, 2);
+        layout.Set(TileType.CorridorAccess, 0, 3);
 
+        Room enemyRoom = new Room(enemyPos.x, enemyPos.y, layout, gameObjects, RoomType.Combat);
+
+        Room[] rooms = { startRoom, enemyRoom, weaponRoom };
+        Corridor[] corridors = { corridor1, corridor2 };
+
+        if (Player.LocalPlayer.isServer)
+            GlobalsDict.Instance.GameStateManagerObject.AddComponent<GameManager>();
+
+        Dungeon dungeon = new Dungeon(rooms, corridors, enemyPos + new Vector2Int(layout.XSize, layout.YSize));
         DungeonConfig config = DungeonConfig.StandardConfig;
-        DungeonDict.Instance.dungeon = DungeonCreator.Instance.dungeon = new Dungeon(roomLayouts.ToArray(), roomGameObjects.ToArray(), roomTypes.ToArray(), int.MaxValue, config);
+        yield return DungeonCreator.Instance.CreateDungeon(-1, 1, config, dungeon);
+
+        CombatRoom combatRoom = DungeonDict.Instance.Rooms.First(x => x.RoomType == RoomType.Combat) as CombatRoom;
+        combatRoom.enemiesToSpawn = enemiesToSpawn;
+
+        Destroy(gameObject);
+    }
+
+    private void FillRoomWithBounds(Fast2DArray<TileType> layout)
+    {
+        for (int x = 0; x < layout.XSize; x++)
+        {
+            for (int y = 0; y < layout.YSize; y++)
+            {
+                if (x == 0 || x == layout.XSize - 1 || y == 0 || y == layout.YSize - 1)
+                    layout.Set(TileType.Wall, x, y);
+                else
+                    layout.Set(TileType.Floor, x, y);
+            }
+        }
     }
 }

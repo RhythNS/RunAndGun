@@ -1,17 +1,21 @@
 ﻿using Mirror;
-using NobleConnect.Mirror;
 using UnityEngine;
 
 public class JoinSingleServer : MonoBehaviour
 {
     private void Start()
     {
-        NobleNetworkManager networkManager = (NobleNetworkManager)NetworkManager.singleton;
-
-        if (networkManager.isNetworkActive)
-            return;
-
-        networkManager.StartHost();
+        if (NetworkClient.active == false)
+            NetworkConnector.TryStartServer(false);
+        else
+        {
+            JoinMessage joinMessage = new JoinMessage()
+            {
+                characterType = Config.Instance.SelectedPlayerType,
+                name = Config.Instance.PlayerName
+            };
+            NetworkClient.Send(joinMessage);
+        }
 
         Destroy(this);
     }

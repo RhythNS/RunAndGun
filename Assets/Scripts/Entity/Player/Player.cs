@@ -10,8 +10,11 @@ public class Player : Entity
 
     public override EntityType EntityType => EntityType.Player;
 
-    [SyncVar(hook = nameof(OnNameChanged))] public string userName;
+    /// <summary>
+    /// ID for network connection
+    /// </summary>
     [SyncVar] public int playerId;
+    [SyncVar] public int playerIndex;
 
     [SerializeField] [EventRef] private string itemPickUpSound;
 
@@ -28,11 +31,10 @@ public class Player : Entity
     public SmoothSyncMirror SmoothSync { get; private set; }
     public Collider2D Collider2D { get; private set; }
     public StateCommunicator StateCommunicator { get; private set; }
+    public EmoteCommunicator EmoteCommunicator { get; private set; }
     public DungeonRoom CurrentRoom { get; private set; }
     public StatusEffectList StatusEffectList { get; private set; }
     public EntityMaterialManager EntityMaterialManager { get; private set; }
-
-    private SpriteRenderer sr;
 
     private Vector3 lastPosition = Vector3.zero;
     public Vector3 LastPosition => lastPosition;
@@ -47,15 +49,14 @@ public class Player : Entity
         SmoothSync = GetComponent<SmoothSyncMirror>();
         Collider2D = GetComponent<Collider2D>();
         StateCommunicator = GetComponent<StateCommunicator>();
+        EmoteCommunicator = GetComponent<EmoteCommunicator>();
         StatusEffectList = GetComponent<StatusEffectList>();
         EntityMaterialManager = GetComponent<EntityMaterialManager>();
-
-        sr = GetComponent<SpriteRenderer>();
     }
 
     private void Update()
     {
-        sr.sortingOrder = (int)transform.position.y * -2 + 1;
+        PositionConverter.AdjustZ(transform);
     }
 
     private void LateUpdate()
@@ -69,15 +70,10 @@ public class Player : Entity
         EntityMaterialManager.PlaySpawnEffect();
     }
 
-    public override void OnStartClient()
-    {
-        gameObject.name = userName;
-    }
-
     public override void OnStartLocalPlayer()
     {
         LocalPlayer = this;
-        Config.Instance.selectedPlayerType = characterType;
+        Config.Instance.SelectedPlayerType = characterType;
         Input = RAGInput.AttachInput(gameObject);
         UIManager.Instance.OnLocalPlayerStarted(this, Input.InputType);
         MusicManager.Instance.RegisterPlayer(this);
@@ -150,25 +146,20 @@ public class Player : Entity
     [Command]
     public void CmdBulletHit(GameObject gameObject, Weapon firedWeapon)
     {
+        if (gameObject.TryGetComponent(out Bullet bullet) == false)
+            return;
+     
         if (gameObject)
         {
             Health health = GetComponent<Health>();
             for (int i = 0; i < firedWeapon.Effects.Length; i++)
             {
-                firedWeapon.Effects[i].OnHit(firedWeapon, health);
+                firedWeapon.Effects[i].OnHit(firedWeapon, bullet, health);
             }
             return;
         }
 
-        if (gameObject.TryGetComponent(out Bullet bullet) == false)
-            return;
-
         bullet.HitPlayer(this);
-    }
-
-    private void OnNameChanged(string oldName, string newName)
-    {
-        gameObject.name = newName;
     }
 
     [TargetRpc]

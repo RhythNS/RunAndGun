@@ -34,7 +34,7 @@ namespace Mirror
         /// <summary>
         /// Syncs animator.speed
         /// </summary>
-        [SyncVar(hook = nameof(OnAnimatorSpeedChanged))]
+        [SyncVar(hook = nameof(onAnimatorSpeedChanged))]
         float animatorSpeed;
         float previousSpeed;
 
@@ -127,7 +127,7 @@ namespace Mirror
                 {
                     animatorSpeed = newSpeed;
                 }
-                else if (isClient)
+                else if (ClientScene.readyConnection != null)
                 {
                     CmdSetAnimatorSpeed(newSpeed);
                 }
@@ -141,7 +141,7 @@ namespace Mirror
             animatorSpeed = newSpeed;
         }
 
-        void OnAnimatorSpeedChanged(float _, float value)
+        void onAnimatorSpeedChanged(float _, float value)
         {
             // skip if host or client with authority
             // they will have already set the speed so don't set again
@@ -215,7 +215,7 @@ namespace Mirror
             {
                 RpcOnAnimationClientMessage(stateHash, normalizedTime, layerId, weight, parameters);
             }
-            else if (isClient)
+            else if (ClientScene.readyConnection != null)
             {
                 CmdOnAnimationServerMessage(stateHash, normalizedTime, layerId, weight, parameters);
             }
@@ -227,7 +227,7 @@ namespace Mirror
             {
                 RpcOnAnimationParametersClientMessage(parameters);
             }
-            else if (isClient)
+            else if (ClientScene.readyConnection != null)
             {
                 CmdOnAnimationParametersServerMessage(parameters);
             }
@@ -455,7 +455,7 @@ namespace Mirror
                     return;
                 }
 
-                if (isClient)
+                if (ClientScene.readyConnection != null)
                     CmdOnAnimationTriggerServerMessage(hash);
 
                 // call on client right away
@@ -504,7 +504,7 @@ namespace Mirror
                     return;
                 }
 
-                if (isClient)
+                if (ClientScene.readyConnection != null)
                     CmdOnAnimationResetTriggerServerMessage(hash);
 
                 // call on client right away

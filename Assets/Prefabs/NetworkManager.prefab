@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2660826429402068679}
   - component: {fileID: 2660826429402068678}
-  - component: {fileID: 2660826429402068680}
+  - component: {fileID: -4830744422628329946}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -45,15 +45,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dontDestroyOnLoad: 1
-  PersistNetworkManagerToOfflineScene: 0
   runInBackground: 1
   autoStartServerBuild: 1
+  showDebugMessages: 0
   serverTickRate: 30
   serverBatching: 1
   serverBatchInterval: 0
   offlineScene: 
   onlineScene: 
-  transport: {fileID: 2660826429402068680}
+  transport: {fileID: -4830744422628329946}
   networkAddress: localhost
   maxConnections: 4
   disconnectInactiveConnections: 0
@@ -80,7 +80,7 @@ MonoBehaviour:
   maxRelayRefreshAttempts: 3
   relayLifetime: 30
   isDisconnecting: 0
---- !u!114 &2660826429402068680
+--- !u!114 &-4830744422628329946
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -89,15 +89,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 2660826429402068675}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86e6b3cd388498e42b6e4af1f17cc12c, type: 3}
+  m_Script: {fileID: 11500000, guid: 6b0fecffa3f624585964b0d0eb21b18e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  port: 7777
-  updateTime: 15
-  disconnectTimeout: 5000
-  ipv6Enabled: 1
-  maxConnectAttempts: 10
-  serverMaxMessagesPerTick: 10000
-  clientMaxMessagesPerTick: 1000
-  channels: 0204
-  connectKey: MIRROR_LITENETLIB
+  Port: 7777
+  NoDelay: 1
+  Interval: 10
+  FastResend: 2
+  CongestionWindow: 0
+  SendWindowSize: 4096
+  ReceiveWindowSize: 4096
+  debugLog: 0
+  statisticsGUI: 0
+  statisticsLog: 0

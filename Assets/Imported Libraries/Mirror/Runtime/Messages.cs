@@ -11,6 +11,7 @@ namespace Mirror
     [Obsolete("Implement NetworkMessage instead. Use extension methods instead of Serialize/Deserialize, see https://github.com/vis2k/Mirror/pull/2317", true)]
     public class MessageBase : IMessageBase {}
 
+    #region Public System Messages
     public struct ReadyMessage : NetworkMessage {}
 
     public struct NotReadyMessage : NetworkMessage {}
@@ -32,6 +33,9 @@ namespace Mirror
         UnloadAdditive
     }
 
+    #endregion
+
+    #region System Messages required for code gen path
     public struct CommandMessage : NetworkMessage
     {
         public uint netId;
@@ -51,25 +55,48 @@ namespace Mirror
         // -> ArraySegment to avoid unnecessary allocations
         public ArraySegment<byte> payload;
     }
+    #endregion
 
+    #region Internal System Messages
     public struct SpawnMessage : NetworkMessage
     {
-        // netId of new or existing object
+        /// <summary>
+        /// netId of new or existing object
+        /// </summary>
         public uint netId;
+        /// <summary>
+        /// Is the spawning object the local player. Sets ClientScene.localPlayer
+        /// </summary>
         public bool isLocalPlayer;
-        // Sets hasAuthority on the spawned object
+        /// <summary>
+        /// Sets hasAuthority on the spawned object
+        /// </summary>
         public bool isOwner;
+        /// <summary>
+        /// The id of the scene object to spawn
+        /// </summary>
         public ulong sceneId;
-        // If sceneId != 0 then it is used instead of assetId
+        /// <summary>
+        /// The id of the prefab to spawn
+        /// <para>If sceneId != 0 then it is used instead of assetId</para>
+        /// </summary>
         public Guid assetId;
-        // Local position
+        /// <summary>
+        /// Local position
+        /// </summary>
         public Vector3 position;
-        // Local rotation
+        /// <summary>
+        /// Local rotation
+        /// </summary>
         public Quaternion rotation;
-        // Local scale
+        /// <summary>
+        /// Local scale
+        /// </summary>
         public Vector3 scale;
-        // serialized component data
-        // ArraySegment to avoid unnecessary allocations
+        /// <summary>
+        /// The serialized component data
+        /// <remark>ArraySegment to avoid unnecessary allocations</remark>
+        /// </summary>
         public ArraySegment<byte> payload;
     }
 
@@ -114,4 +141,5 @@ namespace Mirror
         public double clientTime;
         public double serverTime;
     }
+    #endregion
 }

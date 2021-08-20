@@ -33,6 +33,10 @@ public class DungeonCreator : MonoBehaviour
     [SerializeField]
     private Transform roomsContainer;
 
+    public Transform CorridorContainer => corridorContainer;
+    [SerializeField]
+    private Transform corridorContainer;
+
     public GameObject PrefabDungeonRoom => prefabDungeonRoom;
     [SerializeField]
     private GameObject prefabDungeonRoom;
@@ -69,24 +73,28 @@ public class DungeonCreator : MonoBehaviour
     }
     #endregion
 
-    public IEnumerator CreateDungeon(int seed, int levelNumber, DungeonConfig config)
+    public IEnumerator CreateDungeon(int seed, int levelNumber, DungeonConfig config, Dungeon dungeonToLoad = null)
     {
-        Debug.Log("Creating dungeon with seed: " + seed);
-
         timer = new DungeonTimer();
         timer.Start();
 
         yield return DestroyPreviousGameObjects();
 
-        // Load all room types
-        List<Fast2DArray<int>> roomLayouts = new List<Fast2DArray<int>>();
-        List<List<TiledImporter.PrefabLocations>> roomGameObjects = new List<List<TiledImporter.PrefabLocations>>();
-        List<RoomType> roomTypes = new List<RoomType>();
-        yield return LoadRoomTypes(roomLayouts, roomGameObjects, roomTypes);
+        dungeon = dungeonToLoad;
+        if (dungeon == null)
+        {
+            Debug.Log("Creating dungeon with seed: " + seed);
+            // Load all room types
+            List<Fast2DArray<int>> roomLayouts = new List<Fast2DArray<int>>();
+            List<List<TiledImporter.PrefabLocations>> roomGameObjects = new List<List<TiledImporter.PrefabLocations>>();
+            List<RoomType> roomTypes = new List<RoomType>();
+            yield return LoadRoomTypes(roomLayouts, roomGameObjects, roomTypes);
 
-        //seed = -1304249244;
-        seed = "I wanna go home".GetHashCode();
-        dungeon = new Dungeon(roomLayouts.ToArray(), roomGameObjects.ToArray(), roomTypes.ToArray(), seed, config);
+            //seed = -1304249244;
+            seed = "I wanna go home".GetHashCode();
+            dungeon = new Dungeon(roomLayouts.ToArray(), roomGameObjects.ToArray(), roomTypes.ToArray(), seed, config);
+        }
+        DungeonDict.Instance.dungeon = dungeon;
 
         AdjustMask();
 
@@ -98,12 +106,25 @@ public class DungeonCreator : MonoBehaviour
 
         yield return roomCreator.CreateRooms(dungeon, levelNumber, timer);
 
+        MiniMapManager.Instance.OnNewLevelGenerated();
+
         SetLoadStatus(1.0f);
 
         position = transform.position;
 
         if (Player.LocalPlayer) // check to allow for debugging if a localplayer is not scene
             Player.LocalPlayer.StateCommunicator.CmdLevelSetLoaded(true);
+    }
+
+    public IEnumerator ClearPreviousDungeon()
+    {
+        timer = new DungeonTimer(false);
+        timer.Start();
+
+        yield return DestroyPreviousGameObjects();
+        yield return ClearPreviousTiles();
+
+        dungeon = DungeonDict.Instance.dungeon = null;
     }
 
     #region DungeonCreateHelperMethods
@@ -114,6 +135,14 @@ public class DungeonCreator : MonoBehaviour
             for (int i = roomsContainer.childCount - 1; i >= 0; i--)
             {
                 Destroy(roomsContainer.GetChild(i).gameObject);
+            }
+        }
+
+        if (corridorContainer.childCount > 0)
+        {
+            for (int i = corridorContainer.childCount - 1; i >= 0; i--)
+            {
+                Destroy(corridorContainer.GetChild(i).gameObject);
             }
         }
 
@@ -289,7 +318,7 @@ public class DungeonCreator : MonoBehaviour
 
     public void AdjustMask(Vector3 position, Vector3 scale)
     {
-        mask.localScale = scale + new Vector3(0f, 1.5f, 0f);
+        mask.localScale = scale;
         mask.position = position + scale / 2f + new Vector3(0f, 1f, 0f);
     }
 
