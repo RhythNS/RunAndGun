@@ -5,6 +5,8 @@
 /// </summary>
 public class Config : MonoBehaviour
 {
+    [SerializeField] private bool ignorePlatform = false;
+
     // Singleton
     public static Config Instance { get; private set; }
 
@@ -27,6 +29,20 @@ public class Config : MonoBehaviour
     /// </summary>
     private void LoadValues()
     {
+        if (ignorePlatform == false)
+            SetValuesForPlattform();
+
+        SaveGame loaded = Saver.Load();
+        if (loaded == null)
+            return;
+
+        saveFileExisted = true;
+        playerName = loaded.playerName;
+        selectedPlayerType = loaded.lastSelectedCharacterType;
+    }
+
+    private void SetValuesForPlattform()
+    {
         switch (Application.platform)
         {
             case RuntimePlatform.WindowsEditor:
@@ -38,26 +54,15 @@ public class Config : MonoBehaviour
 
                 targetFramesPerSecondLoadingScreen = 60;
                 selectedInput = InputType.KeyMouse;
-                break;
+                return;
 
             case RuntimePlatform.IPhonePlayer:
             case RuntimePlatform.Android:
 
                 targetFramesPerSecondLoadingScreen = 30;
                 selectedInput = InputType.Mobile;
-                break;
-
-            default:
-                break;
+                return;
         }
-
-        SaveGame loaded = Saver.Load();
-        if (loaded == null)
-            return;
-
-        saveFileExisted = true;
-        playerName = loaded.playerName;
-        selectedPlayerType = loaded.lastSelectedCharacterType;
     }
 
     public void Save()

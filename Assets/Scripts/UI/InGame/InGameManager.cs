@@ -43,9 +43,9 @@ public class InGameManager : MonoBehaviour
 
     public void ToggleEmotePanel()
     {
-        if (emoteManager.gameObject.activeSelf)
-            emoteManager.Hide();
-        else
+        if (emoteManager.Hidden)
             emoteManager.Show();
+        else
+            emoteManager.Hide();
     }
 }

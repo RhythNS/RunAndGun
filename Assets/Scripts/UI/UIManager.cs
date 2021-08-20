@@ -31,7 +31,8 @@ public class UIManager : MonoBehaviour
     {
         if (inputMethod == InputType.Mobile)
         {
-            mobileUiManager = Instantiate(InputDict.Instance.MobileUIManagerPrefab, canvas.transform);
+            if (!mobileUiManager)
+                mobileUiManager = Instantiate(InputDict.Instance.MobileUIManagerPrefab, canvas.transform);
             (player.Input as MobileInput).SetUI(mobileUiManager);
         }
         inGameManager.RegisterEvents(player);

@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EmoteManager : MonoBehaviour
 {
+    [SerializeField] private Button showManagerButton;
     [SerializeField] private List<EmoteButton> emoteButtons;
     [SerializeField] private List<EmoteChangeButton> emoteChangeButtons;
     [SerializeField] private RectTransform typeParent;
@@ -11,6 +13,8 @@ public class EmoteManager : MonoBehaviour
     [SerializeField] private EmoteChangeButton emoteChangeButtonPrefab;
     [SerializeField] private AnimationCurve hideShowCurve;
     [SerializeField] private float showInSeconds;
+
+    public bool Hidden { get; private set; }
 
     private ExtendedCoroutine extendedCoroutine;
     private Vector2 endPos;
@@ -22,6 +26,7 @@ public class EmoteManager : MonoBehaviour
 
         endPos = transform.position;
         transform.position = GetStartPos();
+        Hidden = true;
     }
 
     private void Start()
@@ -38,7 +43,7 @@ public class EmoteManager : MonoBehaviour
         if (emoteLayers.Length > 0)
             OnLayerChange(0);
 
-        gameObject.SetActive(false);
+        showManagerButton.gameObject.SetActive(Player.LocalPlayer.Input is MobileInput);
     }
 
     private Vector2 GetStartPos()
@@ -54,14 +59,18 @@ public class EmoteManager : MonoBehaviour
         if (extendedCoroutine != null && extendedCoroutine.IsFinshed == false)
             return;
 
-        gameObject.SetActive(true);
-
         extendedCoroutine = new ExtendedCoroutine
             (
                 this,
                 EnumeratorUtil.GoToInSecondsCurve(transform, endPos, hideShowCurve, showInSeconds),
-                startNow: true
+                OnShownFinished,
+                true
             );
+    }
+
+    public void OnShownFinished()
+    {
+        Hidden = false;
     }
 
     public void OnLayerChange(int layerId)
@@ -99,12 +108,16 @@ public class EmoteManager : MonoBehaviour
         if (extendedCoroutine != null && extendedCoroutine.IsFinshed == false)
             return;
 
-        extendedCoroutine = new ExtendedCoroutine(this, OnHide(), startNow: true);
+        extendedCoroutine = new ExtendedCoroutine(this, OnHide(), OnHideFinished, true);
     }
 
     public IEnumerator OnHide()
     {
         yield return EnumeratorUtil.GoToInSecondsCurve(transform, GetStartPos(), hideShowCurve, showInSeconds);
-        gameObject.SetActive(false);
+    }
+
+    private void OnHideFinished()
+    {
+        Hidden = true;
     }
 }

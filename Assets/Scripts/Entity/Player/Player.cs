@@ -36,8 +36,6 @@ public class Player : Entity
     public StatusEffectList StatusEffectList { get; private set; }
     public EntityMaterialManager EntityMaterialManager { get; private set; }
 
-    private SpriteRenderer sr;
-
     private Vector3 lastPosition = Vector3.zero;
     public Vector3 LastPosition => lastPosition;
 
@@ -54,8 +52,6 @@ public class Player : Entity
         EmoteCommunicator = GetComponent<EmoteCommunicator>();
         StatusEffectList = GetComponent<StatusEffectList>();
         EntityMaterialManager = GetComponent<EntityMaterialManager>();
-
-        sr = GetComponent<SpriteRenderer>();
     }
 
     private void Update()

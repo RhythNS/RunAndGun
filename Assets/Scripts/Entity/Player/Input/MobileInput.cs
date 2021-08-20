@@ -71,9 +71,9 @@ public class MobileInput : RAGInput
         {
             pickUp = false;
 
-            BoxCollider2D boxCollider2D = GetComponent<BoxCollider2D>();
+            Collider2D collider2D = GetComponent<Collider2D>();
             List<Collider2D> colls = new List<Collider2D>();
-            boxCollider2D.OverlapCollider(new ContactFilter2D().NoFilter(), colls);
+            collider2D.OverlapCollider(new ContactFilter2D().NoFilter(), colls);
             for (int i = 0; i < colls.Count; i++)
             {
                 if (colls[i].gameObject.TryGetComponent(out PickableInWorld _))
@@ -87,6 +87,9 @@ public class MobileInput : RAGInput
 
     public override void Remove()
     {
+        mobileUI.DashButton.onClick.RemoveListener(OnDashButton);
+        mobileUI.ReviveButton.onClick.RemoveListener(OnReviveButton);
+        mobileUI.PickUpButton.onClick.RemoveListener(OnPickUpButton);
         Destroy(mobileUI.gameObject);
     }
 

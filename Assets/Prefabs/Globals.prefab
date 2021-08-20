@@ -143,22 +143,22 @@ MonoBehaviour:
   players:
   - player: {fileID: 2103416702, guid: 63f431cca889dbf42b617e481f43c216, type: 3}
     characterType: 0
-    characterPreviewSprite: {fileID: -1801323016989662738, guid: 597c40df2db09824f9bc256f42715481,
+    characterPreviewSprite: {fileID: -1801323016989662738, guid: 71d5ed4f4e85b6847b730abce960f9b0,
       type: 3}
   - player: {fileID: 2993631946973848731, guid: 6e1903cbfca72494a819f41729d7a653,
       type: 3}
     characterType: 1
-    characterPreviewSprite: {fileID: 5524089288207099101, guid: 9877aaa799703f8469ccf1b487954bcb,
+    characterPreviewSprite: {fileID: 5524089288207099101, guid: ace4137e1757aa746ba6acd4b17ffef3,
       type: 3}
   - player: {fileID: 7664403472604156912, guid: bc73c59a2b64fb241ab5a10bba3397fe,
       type: 3}
     characterType: 2
-    characterPreviewSprite: {fileID: 6082339987025560736, guid: 580bedba5fc12c24bb13641864a9fba6,
+    characterPreviewSprite: {fileID: 6082339987025560736, guid: 6cb935625b50c56499c5768dea8303f4,
       type: 3}
   - player: {fileID: 9085926947561574475, guid: 35e542e06af903049a5d08f368ec42aa,
       type: 3}
     characterType: 3
-    characterPreviewSprite: {fileID: 316470711418822924, guid: 2585c315b5ada3241973a55cc08276d0,
+    characterPreviewSprite: {fileID: 316470711418822924, guid: f8ffd8840da323d4baf8dfa202d0006b,
       type: 3}
   playerColors:
   - {r: 0.80392164, g: 0.19215688, b: 0.19215688, a: 1}
@@ -568,9 +568,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52ab51436dddbec4792908c1339503c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerName: 
+  ignorePlatform: 0
   password: 
-  selectedPlayerType: 0
   selectedInput: 0
   useFocusPoint: 1
   targetFramesPerSecondLoadingScreen: 60
