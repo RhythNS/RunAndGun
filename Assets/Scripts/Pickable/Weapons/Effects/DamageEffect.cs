@@ -3,8 +3,8 @@
 [CreateAssetMenu(menuName = "Pickable/Weapon/Effect/DamageEffect")]
 public class DamageEffect : Effect
 {
-    public override void OnHit(Weapon weapon, Bullet bullet, Health health)
+    public override void OnHit(Weapon weapon, Health affecter, Health health)
     {
-        health.Damage(weapon.BaseDamage, bullet.ShooterHealth);
+        health.Damage(weapon.BaseDamage, affecter);
     }
 }

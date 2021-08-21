@@ -144,22 +144,27 @@ public class Player : Entity
     }
 
     [Command]
-    public void CmdBulletHit(GameObject gameObject, Weapon firedWeapon)
+    public void CmdBulletHit(GameObject gameObject, GameObject affecterObj, Weapon firedWeapon)
     {
-        if (gameObject.TryGetComponent(out Bullet bullet) == false)
+        if (!gameObject || !affecterObj || affecterObj.TryGetComponent(out Health affecter) == false)
             return;
-     
-        if (gameObject)
+
+        Debug.Log((gameObject.TryGetComponent<Bullet>(out _) == true) + " try get bullet");
+
+        // Check if the Player was hit by a bullet that did not already hit something else.
+        if (gameObject.TryGetComponent(out Bullet bullet) == true && gameObject.activeInHierarchy &&
+            bullet.ShooterHealth == affecter)
         {
-            Health health = GetComponent<Health>();
-            for (int i = 0; i < firedWeapon.Effects.Length; i++)
-            {
-                firedWeapon.Effects[i].OnHit(firedWeapon, bullet, health);
-            }
+            bullet.HitPlayer(this);
             return;
         }
 
-        bullet.HitPlayer(this);
+        // Bullet already hit something else. In this case we just decrease the health and dont
+        // do anything with the bullet.
+        for (int i = 0; i < firedWeapon.Effects.Length; i++)
+        {
+            firedWeapon.Effects[i].OnHit(firedWeapon, affecter, Health);
+        }
     }
 
     [TargetRpc]
@@ -184,10 +189,11 @@ public class Player : Entity
 
         if (isLocalPlayer && !Status.Dashing)
         {
+            Debug.Log(other.name + " " + (other.GetComponent<Bullet>() != null));
             if (other.TryGetComponent(out PickableInWorld pickable) && pickable.Pickable.InstantPickup)
                 CmdPickup(pickable.gameObject);
             else if (other.TryGetComponent(out Bullet bullet))
-                CmdBulletHit(bullet.gameObject, bullet.fromWeapon);
+                CmdBulletHit(bullet.gameObject, bullet.ShooterHealth.gameObject, bullet.fromWeapon);
             else if (other.TryGetComponent(out Player player))
             {
                 if (!player.Health.Alive)

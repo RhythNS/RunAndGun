@@ -15,6 +15,8 @@ public class Bullet : NetworkBehaviour, IPoolable
     [SyncVar] public Weapon fromWeapon;
     [SyncVar] public int owningPlayer = 0;
     [SyncVar] public byte layer;
+    [SyncVar] public GameObject shooterObject;
+
     public bool owningBullet = false;
     private Collider2D ignoringCollider;
 
@@ -34,6 +36,9 @@ public class Bullet : NetworkBehaviour, IPoolable
     {
         if (isServer)
             return;
+
+        ShooterHealth = shooterObject.GetComponent<Health>();
+        SpriteRenderer.sprite = fromWeapon.BulletInfo.Sprite;
 
         gameObject.layer = layer;
         if (Player.LocalPlayer?.playerId == owningPlayer)
@@ -55,22 +60,19 @@ public class Bullet : NetworkBehaviour, IPoolable
         }
     }
 
+    /*
     private void FixedUpdate() {
         aliveTime += Time.fixedDeltaTime;
         Vector2 vec = Quaternion.AngleAxis(fromWeapon.BulletPath.GetCurrentAngle(aliveTime), Vector3.forward) * velocity;
         Body.velocity = vec;
     }
+     */
 
     private void Update() {
         if (fromWeapon.UseLocalSpace) {
             Vector3 move = PlayersDict.Instance.Players[owningPlayer].transform.position - PlayersDict.Instance.Players[owningPlayer].LastPosition;
             this.transform.position += move;
         }
-    }
-
-    private void OnVelocityChanged(Vector2 _, Vector2 newVelocity)
-    {
-        Body.velocity = newVelocity;
     }
 
     public IEnumerator DeleteWhenOutOfRange(Vector2 velocity, float range)
@@ -115,7 +117,7 @@ public class Bullet : NetworkBehaviour, IPoolable
 
             for (int i = 0; i < fromWeapon.Effects.Length; i++)
             {
-                fromWeapon.Effects[i].OnHit(fromWeapon, this, health);
+                fromWeapon.Effects[i].OnHit(fromWeapon, ShooterHealth, health);
             }
         }
 
@@ -148,6 +150,7 @@ public class Bullet : NetworkBehaviour, IPoolable
         gameObject.SetActive(false);
         if (ignoringCollider)
             Physics2D.IgnoreCollision(ignoringCollider, OwnCollider, false);
+        ignoringCollider = null;
     }
 
     public void Delete()

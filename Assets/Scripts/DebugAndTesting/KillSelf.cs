@@ -15,6 +15,6 @@ public class KillSelf : MonoBehaviour
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.F3))
-            Player.LocalPlayer.CmdBulletHit(Player.LocalPlayer.gameObject, weapon);
+            Player.LocalPlayer.CmdBulletHit(Player.LocalPlayer.gameObject, Player.LocalPlayer.gameObject, weapon);
     }
 }

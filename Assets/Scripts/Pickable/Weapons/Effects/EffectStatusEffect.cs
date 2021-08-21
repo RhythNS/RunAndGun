@@ -5,8 +5,8 @@ public class EffectStatusEffect : Effect
 {
     [SerializeField] private StatusEffect statusEffect;
 
-    public override void OnHit(Weapon weapon, Bullet bullet, Health health)
+    public override void OnHit(Weapon weapon, Health affecter, Health health)
     {
-        health.StatusEffectList.ServerAdd(Instantiate(statusEffect), bullet.ShooterHealth);
+        health.StatusEffectList.ServerAdd(Instantiate(statusEffect), affecter);
     }
 }

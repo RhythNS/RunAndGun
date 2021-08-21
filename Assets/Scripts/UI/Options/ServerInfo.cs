@@ -28,8 +28,6 @@ public class ServerInfo : PanelElement
 
         Match currentMatch = RAGMatchmaker.Instance.GetCurrentMatch();
 
-        Debug.Log(currentMatch);
-
         if (currentMatch == null)
         {
             startServerText.text = "Start Server";

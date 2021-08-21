@@ -2,7 +2,7 @@
 using NobleConnect.Mirror;
 using System;
 using System.Collections;
-using System.Collections.Generic;
+using System.Net.Sockets;
 using UnityEngine;
 
 public class NetworkConnector : MonoBehaviour
@@ -88,7 +88,29 @@ public class NetworkConnector : MonoBehaviour
         if (lanOnly == true)
             networkManager.StartHostLANOnly();
         else
-            networkManager.StartHost();
+        {
+            // Try to start server. If the port is already in use, catch the error and try a different one.
+            int startPort = networkManager.networkPort;
+            for (int i = 0; i < 5; i++)
+            {
+                try
+                {
+                    networkManager.networkPort = startPort + i;
+                    networkManager.StartHost();
+                    return;
+                }
+                catch (SocketException se)
+                {
+                    if (se.SocketErrorCode == SocketError.AddressAlreadyInUse)
+                        continue;
+
+                    // unknown error
+                    throw se;
+                }
+            }
+
+            throw new Exception("Could not start a local server!");
+        }
     }
     #endregion
 }

@@ -634,7 +634,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 347893289083de545a9510b5d69d8de1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zoomLevel: 0.1
+  zoomLevel: 10
 --- !u!114 &1437744883
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1398,7 +1398,7 @@ PrefabInstance:
     - target: {fileID: 934052032549057241, guid: 80ba9067596ac284d8b61bc190eeb26d,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000061035156
+      value: 0.000030517578
       objectReference: {fileID: 0}
     - target: {fileID: 967277726208162550, guid: 80ba9067596ac284d8b61bc190eeb26d,
         type: 3}
@@ -6685,6 +6685,11 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8382530590671379301, guid: 80ba9067596ac284d8b61bc190eeb26d,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8401286789621379395, guid: 80ba9067596ac284d8b61bc190eeb26d,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -7227,7 +7232,7 @@ PrefabInstance:
     - target: {fileID: 1365799234809505997, guid: 51cb51d065c14cd4d8c4ff558239b518,
         type: 3}
       propertyPath: ignorePlatform
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1365799234809505998, guid: 51cb51d065c14cd4d8c4ff558239b518,
         type: 3}

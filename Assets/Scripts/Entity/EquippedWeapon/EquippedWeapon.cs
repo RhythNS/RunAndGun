@@ -238,6 +238,7 @@ public class EquippedWeapon : NetworkBehaviour
         bullet.layer = (byte)bulletLayerSpawn;
 
         bullet.ShooterHealth = Health;
+        bullet.shooterObject = Health.gameObject;
         bullet.fromWeapon = weapon;
         bullet.IgnoreCollision(Collider2D);
         BulletInfo info = Weapon.BulletInfo;

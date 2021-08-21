@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public abstract class Effect : ScriptableObject
 {
-    public abstract void OnHit(Weapon weapon, Bullet bullet, Health health);
+    public abstract void OnHit(Weapon weapon, Health affecter, Health health);
 }
