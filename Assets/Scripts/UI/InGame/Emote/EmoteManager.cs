@@ -23,10 +23,6 @@ public class EmoteManager : MonoBehaviour
     {
         for (int i = 0; i < emoteButtons.Count; i++)
             emoteButtons[i].manager = this;
-
-        endPos = transform.position;
-        transform.position = GetStartPos();
-        Hidden = true;
     }
 
     private void Start()
@@ -44,14 +40,18 @@ public class EmoteManager : MonoBehaviour
             OnLayerChange(0);
 
         showManagerButton.gameObject.SetActive(Player.LocalPlayer.Input is MobileInput);
+
+        endPos = transform.localPosition;
+        transform.localPosition = GetStartPos();
+
+        Hidden = true;
     }
 
     private Vector2 GetStartPos()
     {
         RectTransform ownTrans = transform as RectTransform;
-        Vector2 retPos = ownTrans.position;
-        retPos.x = -ownTrans.sizeDelta.x;
-        return retPos;
+
+        return endPos - ownTrans.rect.width * Vector2.right;
     }
 
     public void Show()
@@ -62,7 +62,7 @@ public class EmoteManager : MonoBehaviour
         extendedCoroutine = new ExtendedCoroutine
             (
                 this,
-                EnumeratorUtil.GoToInSecondsCurve(transform, endPos, hideShowCurve, showInSeconds),
+                EnumeratorUtil.GoToInSecondsLocalCurve(transform, endPos, hideShowCurve, showInSeconds),
                 OnShownFinished,
                 true
             );
@@ -113,7 +113,7 @@ public class EmoteManager : MonoBehaviour
 
     public IEnumerator OnHide()
     {
-        yield return EnumeratorUtil.GoToInSecondsCurve(transform, GetStartPos(), hideShowCurve, showInSeconds);
+        yield return EnumeratorUtil.GoToInSecondsLocalCurve(transform, GetStartPos(), hideShowCurve, showInSeconds);
     }
 
     private void OnHideFinished()
