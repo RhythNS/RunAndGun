@@ -25,7 +25,8 @@ public class AdvanceFloorZone : NetworkBehaviour
                 return;
 
             // all players are ready
-            changeLevelCoroutine = new ExtendedCoroutine(this, CountdownToLevelChange(), GameManager.OnLoadNewLevel, true);
+            //changeLevelCoroutine = new ExtendedCoroutine(this, CountdownToLevelChange(), GameManager.OnLoadNewLevel, true);
+            GameManager.OnLoadNewLevel();
         }
     }
 

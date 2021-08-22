@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Represents a path that the entity can walk on.
+/// </summary>
 public class PathValue : Value
 {
     [SerializeField] private List<Vector2> path;
@@ -13,12 +16,18 @@ public class PathValue : Value
         return pv;
     }
 
+    /// <summary>
+    /// Gets the raw array of the path.
+    /// </summary>
     public List<Vector2> Get() => path;
 
     public override object GetValue() => path;
 
     public override void SetValue(object obj) => path = obj as List<Vector2>;
 
+    /// <summary>
+    /// Sets the path with an array.
+    /// </summary>
     public void Set(List<Vector2> path) => this.path = path;
 
     /// <summary>

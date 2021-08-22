@@ -1,6 +1,9 @@
 ﻿using Rhyth.BTree;
 using UnityEngine;
 
+/// <summary>
+/// Represents an entity that can be targeted.
+/// </summary>
 public class HealthValue : Value
 {
     [SerializeField] private Health health;

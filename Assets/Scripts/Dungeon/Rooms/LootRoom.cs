@@ -1,12 +1,8 @@
 ﻿using MapGenerator;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-using UnityEngine;
-
+/// <summary>
+/// A room that spawns loot when all players entered.
+/// </summary>
 public class LootRoom : DungeonRoom
 {
     public override bool EventOnRoomEntered => true;
@@ -15,7 +11,8 @@ public class LootRoom : DungeonRoom
 
     public Pickable[] pickables;
 
-    public override void OnAllPlayersEntered() {
+    public override void OnAllPlayersEntered()
+    {
         SpawnLoot(pickables);
         AlreadyCleared = true;
     }

@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 4227666607956230204}
   - component: {fileID: -504424227593924387}
   - component: {fileID: 4227666607956230205}
-  - component: {fileID: 6102780795063393587}
+  - component: {fileID: -3943077538038132571}
   - component: {fileID: 4227666607956230202}
   - component: {fileID: 3231521140356070906}
   - component: {fileID: 6926628881129279728}
@@ -175,6 +175,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  entityName: 
   carryingWeapons: []
 --- !u!114 &4227666607956230204
 MonoBehaviour:
@@ -221,7 +222,7 @@ MonoBehaviour:
   syncInterval: 0.1
   hitSound: event:/Default/Enemy/Hit
   diedSound: event:/Default/Enemy/Died
---- !u!114 &6102780795063393587
+--- !u!114 &-3943077538038132571
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -230,7 +231,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4227666607956230200}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1f771b7a829fbe479d78cfc04825db3, type: 3}
+  m_Script: {fileID: 11500000, guid: 669950082153926468bc2aa95198b61d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &4227666607956230202
@@ -251,7 +252,7 @@ MonoBehaviour:
   bulletLayerSpawn: 0
   weapon: {fileID: 0}
   remainingBullets: 0
-  requstStopFire: 0
+  requestStopFire: 0
 --- !u!114 &3231521140356070906
 MonoBehaviour:
   m_ObjectHideFlags: 0

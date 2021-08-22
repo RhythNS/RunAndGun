@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Points used by the weapon animator.
+/// </summary>
 public class WeaponPoints : MonoBehaviour
 {
     public Vector2 EastHand => eastHand;

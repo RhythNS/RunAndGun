@@ -1,11 +1,9 @@
 ﻿using MapGenerator;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
+/// <summary>
+/// A room where players can buy items with their money.
+/// </summary>
 public class ShopRoom : DungeonRoom
 {
     public Pickable[] shopItems;
@@ -16,6 +14,9 @@ public class ShopRoom : DungeonRoom
 
     public override RoomType RoomType => RoomType.Shop;
 
+    /// <summary>
+    /// Spawns the itmes that the playes can buy.
+    /// </summary>
     public void SpawnItems()
     {
         if (Player.LocalPlayer.isServer == false)

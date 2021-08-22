@@ -1,7 +1,9 @@
 ﻿using Mirror;
-using Smooth;
 using UnityEngine;
 
+/// <summary>
+/// Reperesents a weapon that has been picked up by the entity.
+/// </summary>
 public class EquippedWeapon : NetworkBehaviour
 {
     public delegate void ReloadingWeapon(float reloadTime);
@@ -237,6 +239,7 @@ public class EquippedWeapon : NetworkBehaviour
         bullet.gameObject.layer = bulletLayerSpawn;
         bullet.layer = (byte)bulletLayerSpawn;
 
+        bullet.owningPlayer = -1;
         bullet.ShooterHealth = Health;
         bullet.shooterObject = Health.gameObject;
         bullet.fromWeapon = weapon;

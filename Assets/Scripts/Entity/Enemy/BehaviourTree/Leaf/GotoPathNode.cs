@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Goes on a specified path.
+/// </summary>
 public class GotoPathNode : BNodeAdapter
 {
     public override int MaxNumberOfChildren => 0;
@@ -9,6 +12,8 @@ public class GotoPathNode : BNodeAdapter
     [SerializeField] private PathValue path;
     private int atNode;
     private List<Vector2> gottenPath;
+
+    public override string StringToolTip => "Goes on a specified path.";
 
     public override void InnerBeginn()
     {

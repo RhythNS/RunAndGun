@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
+/// <summary>
+/// Tries to generate a path from the entity to the health target.
+/// </summary>
 public class SetPathFromHealthNode : BNodeAdapter
 {
     public override string StringToolTip => "Tries to generate a path from the entity to the health target.\nReturns success when a path was found. Returns false when the target is invalid, died or no path was found.";

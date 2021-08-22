@@ -2,9 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Goes to a specified location.
+/// </summary>
 public class GotoNode : BNodeAdapter
 {
     public override int MaxNumberOfChildren => 0;
+
+    public override string StringToolTip => "Goes to a specified location.";
 
     [SerializeField] private Vector2 destPos;
 

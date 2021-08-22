@@ -1,11 +1,16 @@
-﻿using UnityEngine;
+﻿using Mirror;
+using UnityEngine;
 
+/// <summary>
+/// Helper class for animating the player.
+/// </summary>
 public class PlayerAnimationController : MonoBehaviour
 {
     private Animator animator;
     private Rigidbody2D body;
     private Status status;
     private EquippedWeapon weapon;
+    private NetworkAnimator networkAnimator;
 
     private static readonly float DEADZONE = 0.1f;
     private bool prevDashing;
@@ -16,6 +21,7 @@ public class PlayerAnimationController : MonoBehaviour
         body = GetComponent<Rigidbody2D>();
         status = GetComponent<Status>();
         weapon = GetComponent<EquippedWeapon>();
+        networkAnimator = GetComponent<NetworkAnimator>();
         prevDashing = status.Dashing;
     }
 
@@ -26,22 +32,35 @@ public class PlayerAnimationController : MonoBehaviour
         status.OnRevivingOtherPlayerStarted += OnRevivingOtherPlayerStarted;
     }
 
+    /// <summary>
+    /// Callback when the player died.
+    /// </summary>
     public void OnDeath()
     {
         animator.SetBool("Dead", true);
-        animator.SetTrigger("DeadTrigger");
+        // Triggers must be set on the network animator
+        networkAnimator.SetTrigger("DeadTrigger");
     }
 
+    /// <summary>
+    /// Callback when the player got revived.
+    /// </summary>
     public void OnRevived()
     {
         animator.SetBool("Dead", false);
     }
 
+    /// <summary>
+    /// Callback when the player started reviving someone else.
+    /// </summary>
     public void OnRevivingOtherPlayerStarted()
     {
         animator.SetBool("Reviving", true);
     }
     
+    /// <summary>
+    /// Callback when the player stopped reviving someone else.
+    /// </summary>
     public void OnRevivingOtherPlayerFinished()
     {
         animator.SetBool("Reviving", false);

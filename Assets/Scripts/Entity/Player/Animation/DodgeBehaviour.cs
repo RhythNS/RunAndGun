@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Makes the sprite lerp between white and black whilst it is in this state.
+/// </summary>
 public class DodgeBehaviour : StateMachineBehaviour
 {
     private SpriteRenderer sprite;

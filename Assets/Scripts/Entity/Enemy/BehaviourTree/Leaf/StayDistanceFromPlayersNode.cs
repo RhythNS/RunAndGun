@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Tries to stay a certain distance away from all players.
+/// </summary>
 public class StayDistanceFromPlayersNode : BNodeAdapter
 {
     public override int MaxNumberOfChildren => 0;
@@ -11,6 +14,8 @@ public class StayDistanceFromPlayersNode : BNodeAdapter
 
     private Health health;
     private float prefDistance;
+
+    public override string StringToolTip => "Tries to stay a certain distance away from all players.";
 
     public override void InnerBeginn()
     {

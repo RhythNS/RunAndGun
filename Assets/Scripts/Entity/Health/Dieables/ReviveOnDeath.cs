@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Revives the entity on death.
+/// </summary>
 public class ReviveOnDeath : MonoBehaviour, IDieable
 {
     public void Die()

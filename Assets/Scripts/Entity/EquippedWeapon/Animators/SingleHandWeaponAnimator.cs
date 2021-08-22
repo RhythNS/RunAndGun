@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Animates single hand weapons.
+/// </summary>
 public class SingleHandWeaponAnimator : WeaponAnimator
 {
     public override WeaponAnimatorType WeaponAnimatorType => WeaponAnimatorType.SingleHand;

@@ -2,6 +2,9 @@
 using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// Destroys the entity on death.
+/// </summary>
 public class DestroyOnDeath : MonoBehaviour, IDieable
 {
     public void Die()

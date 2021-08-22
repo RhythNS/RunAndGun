@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Animates the weapon hold in the entitys hand.
+/// </summary>
 public abstract class WeaponAnimator : MonoBehaviour
 {
     public abstract WeaponAnimatorType WeaponAnimatorType { get; }
@@ -21,6 +24,12 @@ public abstract class WeaponAnimator : MonoBehaviour
 
     protected virtual void InnerAwake() { }
 
+    /// <summary>
+    /// Replaces the old Weapon animator with a new one.
+    /// </summary>
+    /// <param name="oldAnimator">The old animator.</param>
+    /// <param name="newWeapon">The new weapon.</param>
+    /// <returns>A reference to the new weapon animator.</returns>
     public static WeaponAnimator Replace(WeaponAnimator oldAnimator, Weapon newWeapon)
     {
         GameObject gObj = oldAnimator.gameObject;
@@ -53,30 +62,48 @@ public abstract class WeaponAnimator : MonoBehaviour
         return newAnimator;
     }
 
+    /// <summary>
+    /// Called when the weapon fired.
+    /// </summary>
     public virtual void OnSingleShotFired()
     {
         // Animator.SetTrigger("ShotSingleBullet");
     }
 
+    /// <summary>
+    /// Called when the weapon has started firing.
+    /// </summary>
     public virtual void OnStartedFire()
     {
         // Animator.SetBool("Fire", true);
     }
 
+    /// <summary>
+    /// Called when the weapon has stopped firing.
+    /// </summary>
     public virtual void OnStoppedFire()
     {
         // Animator.SetBool("Fire", false);
     }
 
+    /// <summary>
+    /// Called when the weapon has started reloading.
+    /// </summary>
     public virtual void OnStartedReload()
     {
         // Animator.SetBool("Reload", true);
     }
 
+    /// <summary>
+    /// Called when the weapon has stopped reloading.
+    /// </summary>
     public virtual void OnStoppedReload()
     {
         // Animator.SetBool("Reload", false);
     }
 
+    /// <summary>
+    /// Sets the direction of where the entity is aiming at.
+    /// </summary>
     public abstract void SetDirection(Vector2 direction);
 }
