@@ -146,18 +146,16 @@ public class Player : Entity
     [Command]
     public void CmdBulletHit(GameObject gameObject, GameObject affecterObj, Weapon firedWeapon)
     {
-        if (!gameObject || !affecterObj || affecterObj.TryGetComponent(out Health affecter) == false)
-            return;
-
-        Debug.Log((gameObject.TryGetComponent<Bullet>(out _) == true) + " try get bullet");
-
         // Check if the Player was hit by a bullet that did not already hit something else.
-        if (gameObject.TryGetComponent(out Bullet bullet) == true && gameObject.activeInHierarchy &&
-            bullet.ShooterHealth == affecter)
+        if (gameObject && gameObject.TryGetComponent(out Bullet bullet) == true && gameObject.activeInHierarchy)
         {
             bullet.HitPlayer(this);
             return;
         }
+
+        Health affecter = null;
+        if (affecterObj != null)
+            affecter = affecterObj.GetComponent<Health>();
 
         // Bullet already hit something else. In this case we just decrease the health and dont
         // do anything with the bullet.
@@ -193,7 +191,9 @@ public class Player : Entity
             if (other.TryGetComponent(out PickableInWorld pickable) && pickable.Pickable.InstantPickup)
                 CmdPickup(pickable.gameObject);
             else if (other.TryGetComponent(out Bullet bullet))
-                CmdBulletHit(bullet.gameObject, bullet.ShooterHealth.gameObject, bullet.fromWeapon);
+            {
+                CmdBulletHit(bullet.gameObject, bullet.shooterObject, bullet.fromWeapon);
+            }
             else if (other.TryGetComponent(out Player player))
             {
                 if (!player.Health.Alive)

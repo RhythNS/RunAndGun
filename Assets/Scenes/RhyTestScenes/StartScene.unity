@@ -1398,7 +1398,7 @@ PrefabInstance:
     - target: {fileID: 934052032549057241, guid: 80ba9067596ac284d8b61bc190eeb26d,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 0.000061035156
       objectReference: {fileID: 0}
     - target: {fileID: 967277726208162550, guid: 80ba9067596ac284d8b61bc190eeb26d,
         type: 3}
@@ -4420,41 +4420,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4977337313057573052, guid: 80ba9067596ac284d8b61bc190eeb26d,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 303.50085
-      objectReference: {fileID: 0}
-    - target: {fileID: 4977337313057573052, guid: 80ba9067596ac284d8b61bc190eeb26d,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: -303.50067
-      objectReference: {fileID: 0}
-    - target: {fileID: 4977337313057573052, guid: 80ba9067596ac284d8b61bc190eeb26d,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 4977337313057573052, guid: 80ba9067596ac284d8b61bc190eeb26d,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 4977337313057573052, guid: 80ba9067596ac284d8b61bc190eeb26d,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -0.00023651123
-      objectReference: {fileID: 0}
-    - target: {fileID: 4977337313057573052, guid: 80ba9067596ac284d8b61bc190eeb26d,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -0.00021362305
-      objectReference: {fileID: 0}
-    - target: {fileID: 4977337313057573052, guid: 80ba9067596ac284d8b61bc190eeb26d,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 90
-      objectReference: {fileID: 0}
     - target: {fileID: 5045877391286297250, guid: 80ba9067596ac284d8b61bc190eeb26d,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -4839,11 +4804,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_fontSize
       value: 50.55
-      objectReference: {fileID: 0}
-    - target: {fileID: 5969167360036766085, guid: 80ba9067596ac284d8b61bc190eeb26d,
-        type: 3}
-      propertyPath: m_HorizontalAlignment
-      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5979372720446662617, guid: 80ba9067596ac284d8b61bc190eeb26d,
         type: 3}
@@ -7282,7 +7242,7 @@ PrefabInstance:
     - target: {fileID: 1365799234809505997, guid: 51cb51d065c14cd4d8c4ff558239b518,
         type: 3}
       propertyPath: ignorePlatform
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1365799234809505998, guid: 51cb51d065c14cd4d8c4ff558239b518,
         type: 3}

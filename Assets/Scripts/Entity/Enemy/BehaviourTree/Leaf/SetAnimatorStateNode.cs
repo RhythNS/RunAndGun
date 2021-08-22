@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Sets an animator value.
+/// </summary>
 public class SetAnimatorStateNode : BNodeAdapter
 {
     public override int MaxNumberOfChildren => 0;
@@ -12,6 +15,8 @@ public class SetAnimatorStateNode : BNodeAdapter
     [SerializeField] private bool boolValue;
 
     private Animator animator;
+
+    public override string StringToolTip => "Sets an animator value.";
 
     public override void InnerSetup()
     {

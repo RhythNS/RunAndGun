@@ -24,5 +24,6 @@ public class PickableInWorld : NetworkBehaviour
     public override void OnStartClient()
     {
         GetComponent<SpriteRenderer>().sprite = pickable.Icon ? pickable.Icon : PickableDict.Instance.MissingTexture;
+        gameObject.layer = LayerDict.Instance.GetPickableLayer();
     }
 }

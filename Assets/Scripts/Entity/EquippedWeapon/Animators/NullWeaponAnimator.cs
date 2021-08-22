@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Does not animate the weapon.
+/// </summary>
 public class NullWeaponAnimator : WeaponAnimator
 {
     public override WeaponAnimatorType WeaponAnimatorType => WeaponAnimatorType.Null;

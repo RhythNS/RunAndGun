@@ -2,9 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Goes to a specified health target.
+/// </summary>
 public class GotoHealthNode : BNodeAdapter
 {
     public override int MaxNumberOfChildren => 0;
+
+    public override string StringToolTip => "Goes to a specified health target.";
 
     [SerializeField] private HealthValue target;
     [SerializeField] private DistanceReference distanceReference;
@@ -36,6 +41,7 @@ public class GotoHealthNode : BNodeAdapter
     public override void Update()
     {
         Health health;
+        // Is the target still alive?
         if (!target || !(health = target.Get()) || !health.Alive)
         {
             CurrentStatus = Status.Failure;
@@ -43,13 +49,15 @@ public class GotoHealthNode : BNodeAdapter
         }
 
         Vector2 direction = health.transform.position - Brain.transform.position;
+        // Was the health reached?
         if (direction.sqrMagnitude < minDistanceFromTargetSquared)
         {
             CurrentStatus = Status.Success;
             return;
         }
-        direction.Normalize();
 
+        // Still needs to go to the target.
+        direction.Normalize();
         Mover.ConstantDirection = direction;
         Mover.ShouldMove = true;
     }

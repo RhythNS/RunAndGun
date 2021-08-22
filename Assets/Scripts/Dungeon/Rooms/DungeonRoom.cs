@@ -3,6 +3,10 @@ using UnityEngine;
 using MapGenerator;
 using Mirror;
 
+/// <summary>
+/// Generated room in a dungeon. New rooms that inherit from this class should
+/// also add a new enum in RoomType.
+/// </summary>
 public abstract class DungeonRoom : MonoBehaviour
 {
     /// <summary>
@@ -90,6 +94,9 @@ public abstract class DungeonRoom : MonoBehaviour
         //DungeonCreator.Instance.ResetMask();
     }
 
+    /// <summary>
+    /// Overrides the border of the room.
+    /// </summary>
     public void ForceBorder(Rect rect)
     {
         border = rect;

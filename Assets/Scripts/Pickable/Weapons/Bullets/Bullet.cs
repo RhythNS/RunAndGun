@@ -13,7 +13,7 @@ public class Bullet : NetworkBehaviour, IPoolable
 
     //[SyncVar(hook = nameof(OnVelocityChanged))] public Vector2 velocity;
     [SyncVar] public Weapon fromWeapon;
-    [SyncVar] public int owningPlayer = 0;
+    [SyncVar] public int owningPlayer = -1;
     [SyncVar] public byte layer;
     [SyncVar] public GameObject shooterObject;
 
@@ -36,7 +36,6 @@ public class Bullet : NetworkBehaviour, IPoolable
     {
         if (isServer)
             return;
-
         ShooterHealth = shooterObject.GetComponent<Health>();
         SpriteRenderer.sprite = fromWeapon.BulletInfo.Sprite;
 
@@ -66,7 +65,6 @@ public class Bullet : NetworkBehaviour, IPoolable
         Vector2 vec = Quaternion.AngleAxis(fromWeapon.BulletPath.GetCurrentAngle(aliveTime), Vector3.forward) * velocity;
         Body.velocity = vec;
     }
-     */
 
     private void Update() {
         if (fromWeapon.UseLocalSpace) {
@@ -74,6 +72,7 @@ public class Bullet : NetworkBehaviour, IPoolable
             this.transform.position += move;
         }
     }
+     */
 
     public IEnumerator DeleteWhenOutOfRange(Vector2 velocity, float range)
     {
@@ -112,7 +111,7 @@ public class Bullet : NetworkBehaviour, IPoolable
     {
         if (collider.TryGetComponent(out Health health) && isServer)
         {
-            if (ShooterHealth.TryGetComponent(out Player player) == true)
+            if (ShooterHealth != null && ShooterHealth.TryGetComponent(out Player player) == true)
                 StatTracker.Instance.GetStat<ShotsHitStat>(player).Add(1);
 
             for (int i = 0; i < fromWeapon.Effects.Length; i++)
@@ -147,6 +146,7 @@ public class Bullet : NetworkBehaviour, IPoolable
 
     public void Hide()
     {
+        owningPlayer = -1;
         gameObject.SetActive(false);
         if (ignoringCollider)
             Physics2D.IgnoreCollision(ignoringCollider, OwnCollider, false);

@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Used for when a player died.
+/// </summary>
 public class PlayerDeath : MonoBehaviour, IDieable
 {
     private Player player;

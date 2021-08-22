@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Returns true if the given entity is still alive.
+/// </summary>
 public class IsHealthAliveNode : BoolNode
 {
     public override string StringToolTip => "Returns true if the given entity is still alive.";

@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Standard animation for a single boss.
+/// </summary>
 public class StandardBossAnimation : BossEnterAnimation
 {
     public override AnimationType Type => AnimationType.Standard;

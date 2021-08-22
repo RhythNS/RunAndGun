@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Replaces the current equipped weapon with another in the given time.
+/// </summary>
 public class ChangeWeaponNode : BNodeAdapter
 {
     public override int MaxNumberOfChildren => 0;

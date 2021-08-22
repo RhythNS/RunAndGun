@@ -14,6 +14,8 @@ public class LayerDict : MonoBehaviour
     [SerializeField] private int bulletTargetEnemyOnly;
     [SerializeField] private int bulletTargetPlayerAndEnemy;
 
+    [SerializeField] private int unhittableLayer;
+
 
     private void Awake()
     {
@@ -74,6 +76,8 @@ public class LayerDict : MonoBehaviour
     public int GetDungeonRoomLayer() => dungeonRoomLayer;
 
     public int GetPickableLayer() => pickableLayer;
+
+    public int GetUnhittableLayer() => unhittableLayer;
 
     private void OnDestroy()
     {

@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Flees from all alive Players.
+/// </summary>
 public class FleeFromPlayersNode : BNodeAdapter
 {
     public override string StringToolTip => "Flees from all alive Players.\nOnly returns success when all Players died.";

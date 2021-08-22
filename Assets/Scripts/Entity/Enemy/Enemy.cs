@@ -23,6 +23,14 @@ public class Enemy : Entity
         return enemy;
     }
 
+    /// <summary>
+    /// Helper method for creating and spawning a boss.
+    /// </summary>
+    /// <param name="bossObject">The scriptable object describing the boss.</param>
+    /// <param name="roomBorder">The border of the room to where the boss should be spawned in.</param>
+    /// <param name="position">The position to where the enemy should be spawned to.</param>
+    /// <param name="quaternion">The rotation of the enemy.</param>
+    /// <returns>The spawned boss.</returns>
     public static Enemy InstantiateAndSpawn(BossObject bossObject, Rect roomBorder, Vector3 position, Quaternion quaternion)
     {
         GameObject gameObject = Instantiate(bossObject.EnemyObject.Prefab, position, quaternion);
@@ -64,6 +72,11 @@ public class Enemy : Entity
         PositionConverter.AdjustZ(transform);
     }
 
+    /// <summary>
+    /// Inits the Enemy.
+    /// </summary>
+    /// <param name="enemyObject">The enemy object.</param>
+    /// <param name="roomBorder">The border of the room the enemy spawned in.</param>
     public void Set(EnemyObject enemyObject, Rect roomBorder)
     {
         if (IsBoss == false)
@@ -84,6 +97,7 @@ public class Enemy : Entity
 
     public override void OnStartServer()
     {
+        // Disable the brain until the boss enter animation played.
         if (IsBoss == false)
             Brain.enabled = true;
     }

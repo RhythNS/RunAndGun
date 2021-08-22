@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class EntityMaterialManager : MonoBehaviour
@@ -35,6 +36,17 @@ public class EntityMaterialManager : MonoBehaviour
     {
         Material spawnMaterial = new Material(MaterialDict.Instance.SpawnMaterial);
         StartTempEffect(SpawnEffect(spawnMaterial, duration), spawnMaterial);
+    }
+
+    public void PlayDeSpawnEffect(float duration = 0.6f, Action onFinished = null)
+    {
+        Material spawnMaterial = new Material(MaterialDict.Instance.SpawnMaterial);
+
+        if (currentTempEffect != null && currentTempEffect.IsFinshed == false)
+            currentTempEffect.Stop(true);
+
+        spriteRenderer.material = currentEffectMaterial = spawnMaterial;
+        currentTempEffect = new ExtendedCoroutine(this, DeSpawnEffect(spawnMaterial, duration), onFinished, true);
     }
 
     private IEnumerator HealthEffect(Material material, float duration)
@@ -84,6 +96,24 @@ public class EntityMaterialManager : MonoBehaviour
                 perc = 0.0f;
             }
             material.SetFloat("_FadeAmount", perc);
+            yield return null;
+        }
+    }
+
+    private IEnumerator DeSpawnEffect(Material material, float duration)
+    {
+        float timer = duration;
+        bool continueExecuting = true;
+        while (continueExecuting)
+        {
+            timer -= Time.deltaTime;
+            float perc = timer / duration;
+            if (perc < 0.0f)
+            {
+                continueExecuting = false;
+                perc = 0.0f;
+            }
+            material.SetFloat("_FadeAmount", 1 - perc);
             yield return null;
         }
     }

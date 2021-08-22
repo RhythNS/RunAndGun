@@ -2,6 +2,9 @@
 using Mirror;
 using UnityEngine;
 
+/// <summary>
+/// Manages the health of an entity.
+/// </summary>
 public class Health : NetworkBehaviour
 {
     /// <summary>
@@ -49,6 +52,7 @@ public class Health : NetworkBehaviour
 
     public EntityType EntityType { get; private set; }
     public StatusEffectList StatusEffectList { get; private set; }
+
     private Player onPlayer = null;
 
     private void Awake()
@@ -68,12 +72,18 @@ public class Health : NetworkBehaviour
         AliveHealthDict.Instance.DeRegister(this);
     }
 
+    /// <summary>
+    /// Inits the health with the max health value.
+    /// </summary>
     [Server]
     public void Init(int maxHealth)
     {
         max = current = maxHealth;
     }
 
+    /// <summary>
+    /// Changes the max health amount.
+    /// </summary>
     [Server]
     public void SetMax(int amount)
     {
@@ -83,12 +93,19 @@ public class Health : NetworkBehaviour
         // TODO: If the max goes up, this the current also go up?
     }
 
+    /// <summary>
+    /// Changes the max defence.
+    /// </summary>
     [Server]
     public void SetDefence(int amount)
     {
         defence = amount;
     }
 
+    /// <summary>
+    /// Revives an entity.
+    /// </summary>
+    /// <param name="amount">The amount of health to be restored.</param>
     [Server]
     public void Revive(int amount)
     {
@@ -102,15 +119,26 @@ public class Health : NetworkBehaviour
         current = Mathf.Clamp(amount, 0, max);
     }
 
+    /// <summary>
+    /// Takes damage.
+    /// </summary>
+    /// <param name="amount">The amount of damage taken.</param>
+    /// <param name="inflicter">The health that inflicted the damage.</param>
     public void Damage(int amount, Health inflicter)
     {
         if (!enabled)
             return;
-
+        /*
         bool isPlayer = EntityType == EntityType.Player;
         if (isPlayer && isLocalPlayer)
             CmdDamage(amount, inflicter);
         else if (!isPlayer && isServer)
+            ServerDamage(amount, inflicter);
+         */
+
+        if (isLocalPlayer)
+            CmdDamage(amount, inflicter);
+        else if (isServer)
             ServerDamage(amount, inflicter);
     }
 
@@ -118,12 +146,19 @@ public class Health : NetworkBehaviour
     /// Subtracts the specified amount from the current health total. Wenn the total
     /// reaches 0 then OnDied is called.
     /// </summary>
+    /// <param name="amount">The amount of damage taken.</param>
+    /// <param name="inflicter">The health that inflicted the damage.</param>
     [Command]
     private void CmdDamage(int amount, Health inflicter)
     {
         ServerDamage(amount, inflicter);
     }
 
+    /// <summary>
+    /// Damages this health as a server.
+    /// </summary>
+    /// <param name="amount">The amount of damage taken.</param>
+    /// <param name="inflicter">The health that inflicted the damage.</param>
     [Server]
     private void ServerDamage(int amount, Health inflicter)
     {
@@ -180,11 +215,21 @@ public class Health : NetworkBehaviour
             FMODUtil.PlayOnTransform(hitSound, transform);
     }
 
+    /// <summary>
+    /// Callback when the max health changed.
+    /// </summary>
+    /// <param name="prevMax">The previous max health.</param>
+    /// <param name="currentMax">The new max health.</param>
     private void OnMaxChanged(int prevMax, int currentMax)
     {
         MaxChanged?.Invoke(prevMax, currentMax);
     }
 
+    /// <summary>
+    /// Callback when the defence changed.
+    /// </summary>
+    /// <param name="prevDefence">The previous defence.</param>
+    /// <param name="currentDefence">The new defence.</param>
     private void OnDefenceChanged(int prevDefence, int currentDefence)
     {
         DefenceChanged?.Invoke(prevDefence, currentDefence);

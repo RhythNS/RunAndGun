@@ -305,6 +305,7 @@ MonoBehaviour:
   bulletTargetPlayerOnly: 17
   bulletTargetEnemyOnly: 18
   bulletTargetPlayerAndEnemy: 19
+  unhittableLayer: 31
 --- !u!114 &8554081839076921764
 MonoBehaviour:
   m_ObjectHideFlags: 0

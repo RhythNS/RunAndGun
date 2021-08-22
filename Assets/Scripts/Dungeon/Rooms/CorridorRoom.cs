@@ -1,8 +1,9 @@
 ﻿using MapGenerator;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Corridors connect other rooms with each other.
+/// </summary>
 public class CorridorRoom : DungeonRoom
 {
     public override bool EventOnRoomEntered => false;

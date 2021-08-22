@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Animates two handed weapons.
+/// </summary>
 public class TwoHandWeaponAnimator : WeaponAnimator
 {
     public override WeaponAnimatorType WeaponAnimatorType => WeaponAnimatorType.TwoHand;
