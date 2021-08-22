@@ -30,7 +30,7 @@ public class Enemy : Entity
     /// <param name="roomBorder">The border of the room to where the boss should be spawned in.</param>
     /// <param name="position">The position to where the enemy should be spawned to.</param>
     /// <param name="quaternion">The rotation of the enemy.</param>
-    /// <returns></returns>
+    /// <returns>The spawned boss.</returns>
     public static Enemy InstantiateAndSpawn(BossObject bossObject, Rect roomBorder, Vector3 position, Quaternion quaternion)
     {
         GameObject gameObject = Instantiate(bossObject.EnemyObject.Prefab, position, quaternion);

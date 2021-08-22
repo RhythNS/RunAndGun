@@ -61,10 +61,18 @@ public class StatusEffectList : NetworkBehaviour
         }
     }
 
-    [Command]
-    public void CmdAdd(StatusEffect effect)
+    public void Add(StatusEffect effect, Health inflicter)
     {
-       // ServerAdd(effect);
+        if (isServer)
+            ServerAdd(effect, inflicter);
+        else
+            CmdAdd(effect, inflicter);
+    }
+
+    [Command]
+    public void CmdAdd(StatusEffect effect, Health inflicter)
+    {
+        ServerAdd(effect, inflicter);
     }
 
     [Server]
