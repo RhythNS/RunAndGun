@@ -677,15 +677,9 @@ namespace MapGenerator
 
             path.Reverse();
 
+            // removed - leads to getting stuck at corners
             //if (path.Count > 1)
             //    path.RemoveAt(0);
-
-            Debug.Log("start");
-            foreach (var item in path)
-            {
-                Debug.Log(item);
-            }
-            Debug.Log("end");
 
             return path;
         }
