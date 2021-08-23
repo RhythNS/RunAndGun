@@ -1,18 +1,20 @@
-﻿using System.Collections;
+﻿using Mirror;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
 /// Manages the object that places world effects onto health targets.
 /// </summary>
-public class WorldEffectInWorld : MonoBehaviour
+public class WorldEffectInWorld : NetworkBehaviour
 {
     public Health Inflicter { get; private set; }
 
-    private Dictionary<Health, ExtendedCoroutine> coroutineForHealth = new Dictionary<Health, ExtendedCoroutine>();
-    private WorldEffect[] effects;
-    private bool hasTickables;
+    private SyncList<WorldEffect> effects = new SyncList<WorldEffect>();
+    [SyncVar] private GameObject inflicterObj;
 
+    private Dictionary<Health, ExtendedCoroutine> coroutineForHealth = new Dictionary<Health, ExtendedCoroutine>();
+    private bool hasTickables;
     private static readonly float secondsPerTick = 1.0f;
 
     /// <summary>
@@ -20,16 +22,36 @@ public class WorldEffectInWorld : MonoBehaviour
     /// </summary>
     /// <param name="inflicter">The Health that started this worldeffect. Can be null.</param>
     /// <param name="effects">The world effects.</param>
+    [Server]
     public void Init(Health inflicter, WorldEffect[] effects)
     {
         Inflicter = inflicter;
+        inflicterObj = inflicter != null ? inflicter.gameObject : null;
 
-        this.effects = new WorldEffect[effects.Length];
+        this.effects = new SyncList<WorldEffect>();
         for (int i = 0; i < effects.Length; i++)
         {
-            this.effects[i] = Instantiate(effects[i]);
+            this.effects.Add(Instantiate(effects[i]));
             if (this.effects[i].Type == WorldEffect.TriggerType.EveryTick)
                 hasTickables = true;
+        }
+    }
+
+    public override void OnStartClient()
+    {
+        if (isServer == true)
+            return;
+
+        if (inflicterObj != null)
+            Inflicter = inflicterObj.GetComponent<Health>();
+
+        for (int i = 0; i < effects.Count; i++)
+        {
+            if (effects[i].Type == WorldEffect.TriggerType.EveryTick)
+            {
+                hasTickables = true;
+                break;
+            }
         }
     }
 
@@ -49,7 +71,7 @@ public class WorldEffectInWorld : MonoBehaviour
         // for that target.
         coroutineForHealth[target] = hasTickables ? new ExtendedCoroutine(target, DoTick(target), startNow: true) : null;
 
-        for (int i = 0; i < effects.Length; i++)
+        for (int i = 0; i < effects.Count; i++)
         {
             switch (effects[i].Type)
             {
@@ -80,7 +102,7 @@ public class WorldEffectInWorld : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(secondsPerTick);
-            for (int i = 0; i < effects.Length; i++)
+            for (int i = 0; i < effects.Count; i++)
             {
                 if (effects[i].Type == WorldEffect.TriggerType.EveryTick)
                     effects[i].OnTick(target, this);

@@ -3,15 +3,17 @@
 /// <summary>
 /// An effect that can be placed on the world.
 /// </summary>
-public class WorldEffect : ScriptableObject
+public class WorldEffect : Pickable
 {
+    public override PickableType PickableType => PickableType.WorldEffect;
+
     public enum TriggerType
     {
         Once, EveryReEnter, EveryTick
     }
 
     public TriggerType Type => type;
-    [SerializeField] private TriggerType type;
+    [SerializeField] protected TriggerType type;
 
     /// <summary>
     /// Called when a health has entered the effect.

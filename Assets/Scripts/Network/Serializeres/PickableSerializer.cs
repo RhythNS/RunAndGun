@@ -64,4 +64,14 @@ public static class PickableSerializer
     {
         return PickableDict.Instance.GetStatusEffect(reader.ReadUInt16());
     }
+
+    public static void WriteWorldEffect(this NetworkWriter writer, WorldEffect worldEffect)
+    {
+        writer.WriteUInt16(worldEffect == null ? (ushort)0 : worldEffect.Id);
+    }
+
+    public static WorldEffect ReadWorldEffect(this NetworkReader reader)
+    {
+        return PickableDict.Instance.GetWorldEffect(reader.ReadUInt16());
+    }
 }

@@ -2,7 +2,7 @@
 
 public enum PickableType
 {
-    Consumable, Item, Weapon, StatusEffect
+    Consumable, Item, Weapon, StatusEffect, WorldEffect
 }
 
 public abstract class Pickable : ScriptableObject

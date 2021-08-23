@@ -187,7 +187,6 @@ public class Player : Entity
 
         if (isLocalPlayer && !Status.Dashing)
         {
-            Debug.Log(other.name + " " + (other.GetComponent<Bullet>() != null));
             if (other.TryGetComponent(out PickableInWorld pickable) && pickable.Pickable.InstantPickup)
                 CmdPickup(pickable.gameObject);
             else if (other.TryGetComponent(out Bullet bullet))
