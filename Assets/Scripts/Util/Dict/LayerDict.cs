@@ -31,7 +31,8 @@ public class LayerDict : MonoBehaviour
     public int GetBulletCollisionLayerMask()
     {
         // return objectLayer | someOtherLayerThatBulletsCanHit
-        return ~(1 << enemyLayer | 1 << playerLayer | 1 << bulletTargetPlayerOnly | 1 << bulletTargetEnemyOnly | 1 << bulletTargetPlayerAndEnemy);
+        return ~(1 << enemyLayer | 1 << playerLayer | 1 << bulletTargetPlayerOnly | 1 << bulletTargetEnemyOnly | 1 << bulletTargetPlayerAndEnemy
+            | 1 << dungeonRoomLayer | 1 << pickableLayer | 1 << downedPlayerLayer | 1 << unhittableLayer);
     }
 
     public int GetBulletLayer(EntityType entityType, TargetMode targetMode)

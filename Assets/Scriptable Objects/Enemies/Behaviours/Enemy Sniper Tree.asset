@@ -61,14 +61,14 @@ MonoBehaviour:
   children:
   - {fileID: -117256382767691904}
   - {fileID: -1209691397578426126}
-  - {fileID: 7789407354039686301}
+  - {fileID: 2869868398740446850}
   boundsInEditor:
     serializedVersion: 2
     x: 160
     y: -200
     width: 80
     height: 80
-  checkEverySeconds: 0
+  checkEverySeconds: 1
   onNodeChange: 1
   onIfNodeSuccess: 2
   onIfNodeFailure: 0
@@ -189,6 +189,29 @@ MonoBehaviour:
     height: 80
   target: {fileID: 1083132830938798850}
   outPath: {fileID: 4260826689320070557}
+--- !u!114 &2869868398740446850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ebfb1a116e272644a2b5d0ee9def89e, type: 3}
+  m_Name: New GuardNode
+  m_EditorClassIdentifier: 
+  breakPointEnabled: 0
+  children:
+  - {fileID: 1765039945530720343}
+  - {fileID: 8619061468392938951}
+  boundsInEditor:
+    serializedVersion: 2
+    x: 480
+    y: -60
+    width: 80
+    height: 80
+  checkEverySeconds: 1
 --- !u!114 &4260826689320070557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -256,12 +279,10 @@ MonoBehaviour:
   m_Name: Find Line of Sight
   m_EditorClassIdentifier: 
   breakPointEnabled: 0
-  children:
-  - {fileID: 1765039945530720343}
-  - {fileID: 8619061468392938951}
+  children: []
   boundsInEditor:
     serializedVersion: 2
-    x: 480
+    x: 680
     y: -60
     width: 80
     height: 80

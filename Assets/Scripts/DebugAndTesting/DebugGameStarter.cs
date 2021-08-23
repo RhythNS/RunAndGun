@@ -50,6 +50,13 @@ public class DebugGameStarter : MonoBehaviour
 
         layout = new Fast2DArray<TileType>(enemySize.x, enemySize.y);
         FillRoomWithBounds(layout);
+        for (int x = 3; x < enemySize.x - 2; x++)
+        {
+            for (int y = 5; y < enemySize.y - 2; y += 5)
+            {
+                layout.Set(TileType.Wall, x, y);
+            }
+        }
         layout.Set(TileType.CorridorAccess, 0, 2);
         layout.Set(TileType.CorridorAccess, 0, 3);
 
