@@ -2,13 +2,19 @@
 
 public class BrainMover : MonoBehaviour
 {
-    private static readonly float MAGNITUDE_SQUARED_TO_REACH = 0.25f;
+    /// <summary>
+    /// The squared distance to mark a node as "reached".
+    /// </summary>
+    private static readonly float MAGNITUDE_SQUARED_TO_REACH = 0.15f * 0.15f;
 
     public enum PathState // in late update
     {
         InProgress, Reached, Unreachable, ConstantDirection
     }
 
+    /// <summary>
+    /// The current state of the path.
+    /// </summary>
     public PathState State { get => state; 
         private set => state = value; }
     [SerializeField] private PathState state = PathState.Reached;
@@ -19,6 +25,9 @@ public class BrainMover : MonoBehaviour
     public bool ShouldMove { get; set; }
     private bool didMoveLastFrame = false;
 
+    /// <summary>
+    /// The body of the object that should be moved.
+    /// </summary>
     private Rigidbody2D body;
 
     [SerializeField] private Vector2 destination;

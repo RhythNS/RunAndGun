@@ -572,7 +572,7 @@ namespace MapGenerator
         /// <param name="y">y-value of the tile to check</param>
         /// <returns>The TileType of the given tile</returns>
         private TileType GetTileType(int x, int y) {
-            if (x < 0 || y < 0 || x >= mapLayout.XSize || y >= mapLayout.YSize)
+            if (x < 0 || y < 2 || x >= mapLayout.XSize || y >= mapLayout.YSize || mapLayout[x, y - 1] == TileType.Wall || mapLayout[x, y - 2] == TileType.Wall)
                 return TileType.Wall;
 
             return mapLayout[x, y];
@@ -596,14 +596,16 @@ namespace MapGenerator
             if (GetTileType(x, y + 1) == TileType.Floor) // up
                 neighbours.Add(new Vector2Int(x, y + 1));
 
-            if (GetTileType(x - 1, y - 1) == TileType.Floor) // left down
-                neighbours.Add(new Vector2Int(x - 1, y - 1));
-            if (GetTileType(x + 1, y - 1) == TileType.Floor) // right down
-                neighbours.Add(new Vector2Int(x + 1, y - 1));
-            if (GetTileType(x - 1, y + 1) == TileType.Floor) // left up
-                neighbours.Add(new Vector2Int(x - 1, y + 1));
-            if (GetTileType(x + 1, y + 1) == TileType.Floor) // right up
-                neighbours.Add(new Vector2Int(x + 1, y + 1));
+            // removed due to AI constantly getting stuck on corners
+            // TODO: needs several additional checks for walls
+            //if (GetTileType(x - 1, y - 1) == TileType.Floor) // left down
+            //    neighbours.Add(new Vector2Int(x - 1, y - 1));
+            //if (GetTileType(x + 1, y - 1) == TileType.Floor) // right down
+            //    neighbours.Add(new Vector2Int(x + 1, y - 1));
+            //if (GetTileType(x - 1, y + 1) == TileType.Floor) // left up
+            //    neighbours.Add(new Vector2Int(x - 1, y + 1));
+            //if (GetTileType(x + 1, y + 1) == TileType.Floor) // right up
+            //    neighbours.Add(new Vector2Int(x + 1, y + 1));
 
             return neighbours;
         }
@@ -675,8 +677,15 @@ namespace MapGenerator
 
             path.Reverse();
 
-            if (path.Count > 1)
-                path.RemoveAt(0);
+            //if (path.Count > 1)
+            //    path.RemoveAt(0);
+
+            Debug.Log("start");
+            foreach (var item in path)
+            {
+                Debug.Log(item);
+            }
+            Debug.Log("end");
 
             return path;
         }
