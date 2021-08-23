@@ -1,0 +1,206 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-6126205140044084976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db7bc8b93351e7241bbf8fdb0b27050a, type: 3}
+  m_Name: New StayInRangeOfPlayerNode
+  m_EditorClassIdentifier: 
+  breakPointEnabled: 0
+  children: []
+  boundsInEditor:
+    serializedVersion: 2
+    x: -220
+    y: 120
+    width: 80
+    height: 80
+  target: {fileID: -2519916010467430956}
+  minDistance: 0.5
+  maxDistance: 1
+--- !u!114 &-4198750015808790832
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53577cdb5d1a4794b916806cf5c046d2, type: 3}
+  m_Name: New ShootAtNode
+  m_EditorClassIdentifier: 
+  breakPointEnabled: 0
+  children: []
+  boundsInEditor:
+    serializedVersion: 2
+    x: -40
+    y: 400
+    width: 80
+    height: 80
+  targetHealth: {fileID: -2519916010467430956}
+--- !u!114 &-3468451816522142021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ebfb1a116e272644a2b5d0ee9def89e, type: 3}
+  m_Name: New GuardNode
+  m_EditorClassIdentifier: 
+  breakPointEnabled: 0
+  children:
+  - {fileID: 1816394848613039184}
+  - {fileID: 4632602910214955752}
+  boundsInEditor:
+    serializedVersion: 2
+    x: -100
+    y: 120
+    width: 80
+    height: 80
+  checkEverySeconds: 1
+--- !u!114 &-3219638528334162521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 848b8cb122d6c584ebf134caeb6c0d99, type: 3}
+  m_Name: New SetClosestHealthNode
+  m_EditorClassIdentifier: 
+  breakPointEnabled: 0
+  children: []
+  boundsInEditor:
+    serializedVersion: 2
+    x: -280
+    y: -20
+    width: 80
+    height: 80
+  targetHealth: {fileID: -2519916010467430956}
+  targetPlayers: 1
+--- !u!114 &-2519916010467430956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2ae472dc4030164585e8ba5f9a755fb, type: 3}
+  m_Name: targetHealth
+  m_EditorClassIdentifier: 
+  health: {fileID: 0}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dffe61478ed6e7b498c9b997879bf192, type: 3}
+  m_Name: Enemy Melee Tree
+  m_EditorClassIdentifier: 
+  root: {fileID: 3435080444470225418}
+--- !u!114 &1816394848613039184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f24db4be7dc5384baa96d98fc411cd2, type: 3}
+  m_Name: New IsInWeaponRange
+  m_EditorClassIdentifier: 
+  breakPointEnabled: 0
+  children: []
+  boundsInEditor:
+    serializedVersion: 2
+    x: -160
+    y: 260
+    width: 80
+    height: 80
+  targetHealth: {fileID: -2519916010467430956}
+--- !u!114 &3435080444470225418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ebfb1a116e272644a2b5d0ee9def89e, type: 3}
+  m_Name: New GuardNode
+  m_EditorClassIdentifier: 
+  breakPointEnabled: 0
+  children:
+  - {fileID: -3219638528334162521}
+  - {fileID: 8418927792176126505}
+  boundsInEditor:
+    serializedVersion: 2
+    x: -220
+    y: -160
+    width: 80
+    height: 80
+  checkEverySeconds: 1
+--- !u!114 &4632602910214955752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfc898845fd13e748b592e2bdf87632c, type: 3}
+  m_Name: New ForeverNode
+  m_EditorClassIdentifier: 
+  breakPointEnabled: 0
+  children:
+  - {fileID: -4198750015808790832}
+  boundsInEditor:
+    serializedVersion: 2
+    x: -40
+    y: 260
+    width: 80
+    height: 80
+--- !u!114 &8418927792176126505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e14c49380ef658440a51306adf88ddd1, type: 3}
+  m_Name: New ParallelNode
+  m_EditorClassIdentifier: 
+  breakPointEnabled: 0
+  children:
+  - {fileID: -6126205140044084976}
+  - {fileID: -3468451816522142021}
+  boundsInEditor:
+    serializedVersion: 2
+    x: -160
+    y: -20
+    width: 80
+    height: 80
+  childFailed: 0
+  childSucceeded: 0

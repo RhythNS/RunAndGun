@@ -55,7 +55,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4bc2da5b9b910bb4d9d85f8722932c8b, type: 3}
-  m_Name: Attack or Move
+  m_Name: Enemy  Tree
   m_EditorClassIdentifier: 
   breakPointEnabled: 0
   children:
@@ -106,7 +106,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e14c49380ef658440a51306adf88ddd1, type: 3}
-  m_Name: Attack
+  m_Name: Enemy Tree
   m_EditorClassIdentifier: 
   breakPointEnabled: 0
   children:

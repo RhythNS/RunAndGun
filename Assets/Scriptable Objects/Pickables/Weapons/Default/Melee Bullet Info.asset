@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c726a7dc2388cc3428a7e4ec3414092b, type: 3}
   m_Name: Melee Bullet Info
   m_EditorClassIdentifier: 
-  sprite: {fileID: 0}
+  sprite: {fileID: 21300000, guid: 782ee2c6973a71f43bc9d6822be65a22, type: 3}
   bulletImpactEffects: []

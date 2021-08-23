@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5e87f3f94edef514493df48c604bd029, type: 3}
-  m_Name: Burst Rifle
+  m_Name: Melee
   m_EditorClassIdentifier: 
-  prefab: {fileID: 3022296384892480377, guid: 362debbd5c9bf724dbcab5f7921817f4, type: 3}
+  prefab: {fileID: 5535896864327699010, guid: 3f427b306821ee146b2006a3fd0855fb, type: 3}
   weapons:
-  - {fileID: 11400000, guid: ff2c6c04229b1e7479c5e38810329a01, type: 2}
-  behaviourTree: {fileID: 11400000, guid: 51b34016b4f0576419ea8fd790ed3f20, type: 2}
+  - {fileID: 11400000, guid: b09bbc646a60c2b479355db2c7a061d6, type: 2}
+  behaviourTree: {fileID: 11400000, guid: b8df1ea5c7fcfb84cba882d793085e24, type: 2}
   stats:
-    metersPerSecond: 6
+    metersPerSecond: 5
     maxHealth: 100
