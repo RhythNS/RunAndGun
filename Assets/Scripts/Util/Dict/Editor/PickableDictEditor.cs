@@ -26,6 +26,9 @@ public class PickableDictEditor : Editor
                     case "statusEffects":
                         AddAll(prop, PickableEditor.LoadPickables(PickableType.StatusEffect));
                         break;
+                    case "worldEffects":
+                        AddAll(prop, PickableEditor.LoadPickables(PickableType.WorldEffect));
+                        break;
                     default:
                         break;
                 }

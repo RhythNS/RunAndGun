@@ -77,6 +77,9 @@ public class Bullet : NetworkBehaviour, IPoolable
     public IEnumerator DeleteWhenOutOfRange(Vector2 velocity, float range)
     {
         yield return new WaitForSeconds(range / velocity.magnitude);
+        
+        DoImpactEffects(false);
+        
         Free();
     }
 
@@ -120,15 +123,20 @@ public class Bullet : NetworkBehaviour, IPoolable
             }
         }
 
+        DoImpactEffects(health != null);
+
+        Free();
+    }
+
+    private void DoImpactEffects(bool hitHealth)
+    {
         if (isServer || owningBullet)
         {
             for (int i = 0; i < fromWeapon.BulletInfo.BulletImpactEffects.Length; i++)
             {
-                fromWeapon.BulletInfo.BulletImpactEffects[i].OnBulletImpacted(transform.position, health != null);
+                fromWeapon.BulletInfo.BulletImpactEffects[i].OnBulletImpacted(transform.position, ShooterHealth, hitHealth);
             }
         }
-
-        Free();
     }
 
     public void IgnoreCollision(Collider2D other)

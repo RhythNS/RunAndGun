@@ -121,6 +121,8 @@ public class PickableEditor : Editor
                 return "t:Weapon";
             case PickableType.StatusEffect:
                 return "t:StatusEffect";
+            case PickableType.WorldEffect:
+                return "t:WorldEffect";
         }
         throw new System.Exception("Could not find that type" + pickable);
     }

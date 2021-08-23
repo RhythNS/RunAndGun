@@ -10,6 +10,7 @@ public class PickableDict : MonoBehaviour
     [SerializeField] private Consumable[] consumables;
     [SerializeField] private Item[] items;
     [SerializeField] private StatusEffect[] statusEffects;
+    [SerializeField] private WorldEffect[] worldEffects;
 
     public GameObject PickableInWorldPrefab => pickableInWorldPrefab;
     [SerializeField] private GameObject pickableInWorldPrefab;
@@ -24,11 +25,13 @@ public class PickableDict : MonoBehaviour
     private readonly Dictionary<int, Consumable> consumableDict = new Dictionary<int, Consumable>();
     private readonly Dictionary<int, Item> itemDict = new Dictionary<int, Item>();
     private readonly Dictionary<int, StatusEffect> statusEffectDict = new Dictionary<int, StatusEffect>();
+    private readonly Dictionary<int, WorldEffect> worldEffectDict = new Dictionary<int, WorldEffect>();
 
     public int NumWeapons => weaponDict.Count;
     public int NumConsumables => consumableDict.Count;
     public int NumItems => itemDict.Count;
     public int NumStatusEffects => statusEffectDict.Count;
+    public int NumWorldEffects => worldEffectDict.Count;
 
     private void Awake()
     {
@@ -48,6 +51,8 @@ public class PickableDict : MonoBehaviour
             itemDict.Add(items[i].Id, items[i]);
         for (int i = 0; i < statusEffects.Length; i++)
             statusEffectDict.Add(statusEffects[i].Id, statusEffects[i]);
+        for (int i = 0; i < worldEffects.Length; i++)
+            worldEffectDict.Add(worldEffects[i].Id, worldEffects[i]);
     }
 
     public Pickable Get(PickableType type, int id)
@@ -63,7 +68,9 @@ public class PickableDict : MonoBehaviour
             case PickableType.Weapon:
                 return weaponDict[id];
             case PickableType.StatusEffect:
-                return statusEffects[id];
+                return statusEffectDict[id];
+            case PickableType.WorldEffect:
+                return worldEffectDict[id];
         }
         throw new Exception("Could not find " + type);
     }
@@ -75,6 +82,8 @@ public class PickableDict : MonoBehaviour
     public StatusEffect GetStatusEffect(ushort id) => id == 0 ? null :  Instantiate(statusEffectDict[id]);
 
     public Item GetItem(int id) => id == 0 ? null : Instantiate(itemDict[id]);
+
+    public WorldEffect GetWorldEffect(ushort id) => id == 0 ? null : Instantiate(worldEffectDict[id]);
 
     private void OnDestroy()
     {

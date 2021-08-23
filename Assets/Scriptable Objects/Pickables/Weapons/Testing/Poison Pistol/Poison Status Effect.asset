@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 682d1a1944e3043479e90de4dfef8fe9, type: 3}
   m_Name: Poison Status Effect
   m_EditorClassIdentifier: 
-  id: 2
+  id: 3
   icon: {fileID: 0}
   instantPickup: 0
+  costs: 0
   numberOfTicks: 5
   damagePerTick: 5
