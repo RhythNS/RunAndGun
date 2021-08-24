@@ -19,7 +19,7 @@ MonoBehaviour:
   effects:
   - {fileID: 11400000, guid: d34676ecb2805ee44b229b5c4562e24f, type: 2}
   shotModel: {fileID: 11400000, guid: 55646eafaf6f1ab4884e15a9b1b16709, type: 2}
-  bulletInfo: {fileID: 11400000, guid: ce3f19762d678e841ae30ec551788ab5, type: 2}
+  bulletInfo: {fileID: 11400000, guid: a50ab7f460d7aec4a91fae42f13e464f, type: 2}
   bulletPath: {fileID: 11400000, guid: 6ae02eee6b9440c4dbb3e7ceab369424, type: 2}
   bulletSpawnModel: {fileID: 11400000, guid: 25adb0b660d408447b63b8960d0dedfe, type: 2}
   animator: {fileID: 9100000, guid: e86451f5629bc1f4abc4e94446a7cdd0, type: 2}

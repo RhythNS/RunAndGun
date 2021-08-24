@@ -9,7 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3836cdd6b82e06a43bd5f7e99b23f4ee, type: 3}
-  m_Name: Single Shot Model
+  m_Script: {fileID: 11500000, guid: 7d5cadc3af7232942818c6865a5fae0d, type: 3}
+  m_Name: Boss 2
   m_EditorClassIdentifier: 
-  timeBetweenShots: 0.1
+  enemyObject: {fileID: 11400000, guid: 86cf8d2f9cb611445a4ceed01573c5fd, type: 2}
+  animationType: 1

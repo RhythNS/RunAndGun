@@ -1,0 +1,164 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-4911195261524936624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff2c9638f94bdb548b86ee75c5c259f9, type: 3}
+  m_Name: Reload
+  m_EditorClassIdentifier: 
+  breakPointEnabled: 0
+  children: []
+  boundsInEditor:
+    serializedVersion: 2
+    x: 20
+    y: 60
+    width: 80
+    height: 80
+--- !u!114 &-4550355929740015736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d005b5b901613fd44820becea8e4a31a, type: 3}
+  m_Name: Selector
+  m_EditorClassIdentifier: 
+  breakPointEnabled: 0
+  children:
+  - {fileID: 7458006928806338609}
+  - {fileID: -4911195261524936624}
+  boundsInEditor:
+    serializedVersion: 2
+    x: -40
+    y: -80
+    width: 80
+    height: 80
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dffe61478ed6e7b498c9b997879bf192, type: 3}
+  m_Name: StayInRangeAndAttack Tree
+  m_EditorClassIdentifier: 
+  root: {fileID: 749561038092593099}
+--- !u!114 &89303558089022605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2ae472dc4030164585e8ba5f9a755fb, type: 3}
+  m_Name: targetHealthValue
+  m_EditorClassIdentifier: 
+  health: {fileID: 0}
+--- !u!114 &749561038092593099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e14c49380ef658440a51306adf88ddd1, type: 3}
+  m_Name: ParallelNode
+  m_EditorClassIdentifier: 
+  breakPointEnabled: 0
+  children:
+  - {fileID: 3137348911739295901}
+  - {fileID: -4550355929740015736}
+  boundsInEditor:
+    serializedVersion: 2
+    x: -100
+    y: -220
+    width: 80
+    height: 80
+  childFailed: 0
+  childSucceeded: 0
+--- !u!114 &1274552301285185090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6de43f5e48708734980ed6f2ce3f6c1d, type: 3}
+  m_Name: minDistance
+  m_EditorClassIdentifier: 
+  value: 0
+--- !u!114 &3137348911739295901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db7bc8b93351e7241bbf8fdb0b27050a, type: 3}
+  m_Name: StayInRangeOfPlayerNode
+  m_EditorClassIdentifier: 
+  breakPointEnabled: 0
+  children: []
+  boundsInEditor:
+    serializedVersion: 2
+    x: -160
+    y: -80
+    width: 80
+    height: 80
+  target: {fileID: 89303558089022605}
+  minDistance: {fileID: 1274552301285185090}
+  maxDistance: {fileID: 5545660760265017326}
+--- !u!114 &5545660760265017326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6de43f5e48708734980ed6f2ce3f6c1d, type: 3}
+  m_Name: maxDistance
+  m_EditorClassIdentifier: 
+  value: 0
+--- !u!114 &7458006928806338609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53577cdb5d1a4794b916806cf5c046d2, type: 3}
+  m_Name: Shoot At Target
+  m_EditorClassIdentifier: 
+  breakPointEnabled: 0
+  children: []
+  boundsInEditor:
+    serializedVersion: 2
+    x: -100
+    y: 60
+    width: 80
+    height: 80
+  targetHealth: {fileID: 89303558089022605}

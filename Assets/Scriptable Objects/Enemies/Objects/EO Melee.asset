@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5e87f3f94edef514493df48c604bd029, type: 3}
-  m_Name: Melee
+  m_Name: EO Melee
   m_EditorClassIdentifier: 
   prefab: {fileID: 5535896864327699010, guid: 3f427b306821ee146b2006a3fd0855fb, type: 3}
   weapons:
   - {fileID: 11400000, guid: b09bbc646a60c2b479355db2c7a061d6, type: 2}
-  behaviourTree: {fileID: 11400000, guid: b8df1ea5c7fcfb84cba882d793085e24, type: 2}
+  behaviourTree: {fileID: 11400000, guid: 9487ac92ae74ce14da883b39652ea3bc, type: 2}
   stats:
-    metersPerSecond: 5
-    maxHealth: 100
+    metersPerSecond: 6
+    maxHealth: 50

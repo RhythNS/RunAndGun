@@ -57,10 +57,10 @@ MonoBehaviour:
   bossesToSpawn:
   - {fileID: 11400000, guid: 415f447ccd5a84c46a74ed042d639dcf, type: 2}
   enemiesToSpawn:
-  - {fileID: 11400000, guid: d3ced052eafa9db4a9e9db7a2c33f297, type: 2}
-  - {fileID: 11400000, guid: 60054b9fd3d83834193d865819246b87, type: 2}
   - {fileID: 11400000, guid: 38445acf60e406b4daee4536241756d0, type: 2}
-  - {fileID: 11400000, guid: a063d637f36cdf94b9fab319436ff689, type: 2}
+  - {fileID: 11400000, guid: d3ced052eafa9db4a9e9db7a2c33f297, type: 2}
+  - {fileID: 11400000, guid: 09cf6519ca983084a96104d50f88576b, type: 2}
+  - {fileID: 11400000, guid: 7feb21fdcc393ae428f1e025a0b760d2, type: 2}
   - {fileID: 11400000, guid: 88e4d0a3f4029da4abcb2e009c461909, type: 2}
   prefabDoorLR: {fileID: 4715358251021290963, guid: 8a7952c49d21107488e9f853c3f469c5,
     type: 3}

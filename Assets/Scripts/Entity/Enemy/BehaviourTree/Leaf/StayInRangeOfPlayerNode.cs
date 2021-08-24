@@ -9,14 +9,21 @@ public class StayInRangeOfPlayerNode : BNodeAdapter
     public override string StringToolTip => "Tries to stay within the specified min and max distance from the closest player.";
 
     [SerializeField] private HealthValue target;
-    [SerializeField] private float minDistance = 6.0f;
-    [SerializeField] private float maxDistance = 8.0f;
+    [SerializeField] private FloatValue minDistance;
+    [SerializeField] private FloatValue maxDistance;
 
     private Health health;
+    private float min, max, distanceFactor;
+    private const float DISTANCE_TOLERANCE = 0.25f * 0.25f;
 
     public override void InnerBeginn()
     {
         health = target.Get();
+
+        min = minDistance.Get();
+        max = maxDistance.Get();
+
+        distanceFactor = (max + min) * 0.5f;
     }
 
     public override void Update()
@@ -32,21 +39,11 @@ public class StayInRangeOfPlayerNode : BNodeAdapter
         Vector2 difference = ownPos - targetPos;
 
         float sqrDistance = difference.sqrMagnitude;
-        if (sqrDistance < minDistance * minDistance)
-        {
-            float distanceFactor = minDistance + (maxDistance - minDistance) * 0.75f;
+        if (sqrDistance < min * min || sqrDistance > max * max)
             Mover.Destination = targetPos + (difference.normalized * distanceFactor);
-        }
-        else if (sqrDistance > maxDistance * maxDistance)
-        {
-            float distanceFactor = minDistance + (maxDistance - minDistance) * 0.25f;
-            Mover.Destination = targetPos + (difference.normalized * distanceFactor);
-        }
 
-        if (Mathf.Abs(Mover.Destination.sqrMagnitude - ownPos.sqrMagnitude) > 0.0625f)
-        {
+        if (Mathf.Abs(Mover.Destination.sqrMagnitude - ownPos.sqrMagnitude) > DISTANCE_TOLERANCE)
             Mover.ShouldMove = true;
-        }
     }
 
     protected override BNode InnerClone(Dictionary<Value, Value> originalValueForClonedValue)
