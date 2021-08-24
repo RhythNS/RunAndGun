@@ -1,16 +1,31 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Abstraction layer for the input. Inherit from this to implement inputs
+/// for different controllers or plattforms.
+/// </summary>
 public abstract class RAGInput : MonoBehaviour
 {
     public abstract InputType InputType { get; }
 
+    /// <summary>
+    /// The maximum force applied to the entity when moving.
+    /// </summary>
     public float movementForce;
+    /// <summary>
+    /// Multiplicator that is added to the movment force. Can be used if items
+    /// increase or decrease the movement speed.
+    /// </summary>
     public float MovementMultiplicator { get; private set; } = 1.0f;
 
     protected Rigidbody2D Body { get; private set; }
     protected Player Player { get; private set; }
 
     private PlayerCamera playerCamera;
+
+    /// <summary>
+    /// Wheter the camera should take the mouse pointer into consideration.
+    /// </summary>
     private bool useFocusPoint;
 
     private void Awake()
@@ -28,6 +43,11 @@ public abstract class RAGInput : MonoBehaviour
         OnStart(); // Call start on child classes.
     }
 
+    /// <summary>
+    /// Attaches the specified input set in the config to the given object.
+    /// </summary>
+    /// <param name="gameObject">The gameobject to which the input is attached to.</param>
+    /// <returns>A reference to the created input.</returns>
     public static RAGInput AttachInput(GameObject gameObject)
     {
         // Is there already a input instance on the player?
@@ -74,6 +94,7 @@ public abstract class RAGInput : MonoBehaviour
         bool shouldFire = GetFireInput(out Vector2 fireDirection);
         weapon.SetDirection(fireDirection);
 
+        // Does the player have a weapon?
         if (weapon.Weapon)
         {
             if (shouldFire)
@@ -146,12 +167,24 @@ public abstract class RAGInput : MonoBehaviour
     /// <returns>Wheter the player wants to shoot or not.</returns>
     protected abstract bool GetFireInput(out Vector2 fireDirection);
 
+    /// <summary>
+    /// Calls when the player can pickup an item.
+    /// </summary>
     protected abstract void Pickup();
 
+    /// <summary>
+    /// Returns wheter the player wants to reload or not.
+    /// </summary>
     protected abstract bool GetReloadInput();
 
+    /// <summary>
+    /// Returns wheter the player wants to revive a nearby player.
+    /// </summary>
     protected abstract bool GetReviveInput();
 
+    /// <summary>
+    /// Returns wheter the player wants to toggle the emote panel.
+    /// </summary>
     protected virtual bool GetEmoteInput() { return false; }
 
     /// <summary>

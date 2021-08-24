@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Input used for mobile devices.
+/// </summary>
 public class MobileInput : RAGInput
 {
     public override InputType InputType => InputType.Mobile;
@@ -11,6 +14,9 @@ public class MobileInput : RAGInput
     private bool revive = false;
     private bool dash = false;
 
+    /// <summary>
+    /// Sets reference to the mobile ui manager.
+    /// </summary>
     public void SetUI(MobileUIManager ui)
     {
         mobileUI = ui;
@@ -61,7 +67,6 @@ public class MobileInput : RAGInput
 
     protected override bool GetReloadInput()
     {
-        // TODO: Implement
         return Input.GetKeyDown(KeyCode.R);
     }
 

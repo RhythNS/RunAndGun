@@ -3,6 +3,9 @@ using Mirror;
 using Smooth;
 using UnityEngine;
 
+/// <summary>
+/// The entity that is controlled by each player.
+/// </summary>
 public class Player : Entity
 {
     public CharacterType CharacterType => characterType;
@@ -126,6 +129,10 @@ public class Player : Entity
         Destroy(pickup);
     }
 
+    /// <summary>
+    /// Called when the player picked up an item.
+    /// </summary>
+    /// <param name="pickable">The picked up item.</param>
     [TargetRpc]
     private void RpcItemPickedUp(Pickable pickable)
     {
@@ -143,6 +150,12 @@ public class Player : Entity
         }
     }
 
+    /// <summary>
+    /// Notifies the server that the player has been hit by a bullet.
+    /// </summary>
+    /// <param name="gameObject">The bullet that hit the player.</param>
+    /// <param name="affecterObj">The entity that shoot the bullet.</param>
+    /// <param name="firedWeapon">The weapon that fired the bullet.</param>
     [Command]
     public void CmdBulletHit(GameObject gameObject, GameObject affecterObj, Weapon firedWeapon)
     {
@@ -184,6 +197,7 @@ public class Player : Entity
 
             return;
         }
+
 
         if (isLocalPlayer && !Status.Dashing)
         {

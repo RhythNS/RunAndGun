@@ -1,8 +1,9 @@
 ﻿using Mirror;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Holds all stats and formulas that need these stats.
+/// </summary>
 public class Stats : NetworkBehaviour
 {
     // TODO: Remove SerializeField
@@ -30,6 +31,10 @@ public class Stats : NetworkBehaviour
         dodge = baseDodge;
     }
 
+    /// <summary>
+    /// Called when the item list changed.
+    /// </summary>
+    /// <param name="items">A list of current equipped items.</param>
     [Server]
     public void OnItemsChanged(SyncList<Item> items)
     {
@@ -39,6 +44,10 @@ public class Stats : NetworkBehaviour
         SetStats(effect);
     }
 
+    /// <summary>
+    /// Normailzes each stat.
+    /// </summary>
+    /// <param name="effect">The stats to be normalized</param>
     private void NormalizeStats(ref StatsEffect effect)
     {
         effect.health = Mathf.Clamp(effect.health, 1, 10);
@@ -48,6 +57,9 @@ public class Stats : NetworkBehaviour
         effect.dodge = Mathf.Clamp(effect.dodge, 1, 10);
     }
 
+    /// <summary>
+    /// Sets all stats.
+    /// </summary>
     [Server]
     private void SetStats(StatsEffect effect)
     {
@@ -80,12 +92,18 @@ public class Stats : NetworkBehaviour
         }
     }
 
+    /// <summary>
+    /// Gets the current maximum movment force.
+    /// </summary>
     public float GetMovementForce()
     {
         // TODO: Some fitting formula
         return speed * 600;
     }
 
+    /// <summary>
+    /// Gets the dodge cooldown in seconds.
+    /// </summary>
     public float GetDodgeCooldown()
     {
         // TODO: Some fitting formula

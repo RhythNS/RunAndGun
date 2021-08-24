@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Tries to stay within the specified min and max distance from the closest player.
+/// </summary>
 public class StayInRangeOfPlayerNode : BNodeAdapter
 {
     public override int MaxNumberOfChildren => 0;

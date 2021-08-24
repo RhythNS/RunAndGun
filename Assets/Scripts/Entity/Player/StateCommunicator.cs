@@ -1,5 +1,8 @@
 ﻿using Mirror;
 
+/// <summary>
+/// Helper class for issuing commands or updating on local progress to the server.
+/// </summary>
 public class StateCommunicator : NetworkBehaviour
 {
     public bool lobbyReady = false;
@@ -10,6 +13,9 @@ public class StateCommunicator : NetworkBehaviour
 
     [SyncVar(hook = nameof(OnLevelLoadPercentageChanged))] private float loadPercentage;
 
+    /// <summary>
+    /// Called to update wheter the player is or is not ready to transition from the lobby into the acctual game.
+    /// </summary>
     [Command]
     public void CmdLobbySetReady(bool ready)
     {
@@ -20,6 +26,9 @@ public class StateCommunicator : NetworkBehaviour
         LobbyManager.OnPlayerChangedReady();
     }
 
+    /// <summary>
+    /// Called to update the players loading progress.
+    /// </summary>
     [Command]
     public void CmdSetLevelLoadPercentage(float newPercentage)
     {
@@ -34,6 +43,9 @@ public class StateCommunicator : NetworkBehaviour
         OnPercentageChanged?.Invoke(newPercentage);
     }
 
+    /// <summary>
+    /// Called to update wheter the player has finished loading the current level.
+    /// </summary>
     [Command]
     public void CmdLevelSetLoaded(bool loaded)
     {
@@ -44,6 +56,9 @@ public class StateCommunicator : NetworkBehaviour
         GameManager.OnPlayerLoadedLevelChanged();
     }
 
+    /// <summary>
+    /// Called when the boss animation has finished playing.
+    /// </summary>
     [Command]
     public void CmdBossAnimationFinished()
     {
@@ -53,6 +68,9 @@ public class StateCommunicator : NetworkBehaviour
         bossAnimationFinished = true;
     }
 
+    /// <summary>
+    /// Call to change the name of the player.
+    /// </summary>
     [Command]
     public void CmdChangeName(string newName)
     {

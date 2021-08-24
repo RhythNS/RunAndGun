@@ -5,11 +5,23 @@ using UnityEngine;
 
 public delegate void ReviveEvent();
 
+/// <summary>
+/// Manages the states that player can be in.
+/// </summary>
 public class Status : NetworkBehaviour
 {
+    /// <summary>
+    /// Wheter the player can currently interact with anything.
+    /// </summary>
     public bool CanInteract => !Dashing && !Reviving && player.Health.Alive;
 
+    /// <summary>
+    /// Wheter the player is currently dashing.
+    /// </summary>
     public bool Dashing { get; private set; } = false;
+    /// <summary>
+    /// Wheter the player is currently reviving someone.
+    /// </summary>
     public bool Reviving { get; private set; } = false;
 
     public ReviveEvent OnRevivingOtherPlayerStarted;
@@ -40,6 +52,9 @@ public class Status : NetworkBehaviour
         body = GetComponent<Rigidbody2D>();
     }
 
+    /// <summary>
+    /// Update the time that is needed between the player can dash.
+    /// </summary>
     [Server]
     public void SetDashCooldown(float cooldown)
     {
@@ -57,6 +72,9 @@ public class Status : NetworkBehaviour
         downedPlayerAbleToRevive = null;
     }
 
+    /// <summary>
+    /// Tries to revive a nearby team mate.
+    /// </summary>
     public void TryRevive()
     {
         if (!downedPlayerAbleToRevive || downedPlayerAbleToRevive.Health.Alive)
@@ -65,6 +83,10 @@ public class Status : NetworkBehaviour
         CmdReviveTeammate(downedPlayerAbleToRevive.gameObject);
     }
 
+    /// <summary>
+    /// Issues a command to the server that the player wants to revive another player.
+    /// </summary>
+    /// <param name="other">The player to be revived.</param>
     [Command]
     public void CmdReviveTeammate(GameObject other)
     {
@@ -74,10 +96,14 @@ public class Status : NetworkBehaviour
         ServerReviving(player);
     }
 
+    /// <summary>
+    /// Revives the given player.
+    /// </summary>
     [Server]
     public void ServerReviving(Player player)
     {
-        // if player in range
+        // Maybe add a check if the player is in range.
+
         if (!player || player.Health.Alive)
             return;
 
@@ -86,6 +112,9 @@ public class Status : NetworkBehaviour
         RpcOnRevivingOtherPlayerStarted();
     }
 
+    /// <summary>
+    /// Called when the player finished reviving another player.
+    /// </summary>
     [Server]
     public void OnServerPlayerRevived()
     {
@@ -99,6 +128,9 @@ public class Status : NetworkBehaviour
         RpcOnRevivingOtherPlayerFinished();
     }
 
+    /// <summary>
+    /// Called on the client if this player was revived.
+    /// </summary>
     [ClientRpc]
     public void RpcOnRevived()
     {
@@ -108,6 +140,9 @@ public class Status : NetworkBehaviour
         OnRevived?.Invoke();
     }
 
+    /// <summary>
+    /// Called when the player has started the revive.
+    /// </summary>
     [ClientRpc]
     public void RpcOnRevivingOtherPlayerStarted()
     {
@@ -115,6 +150,9 @@ public class Status : NetworkBehaviour
         OnRevivingOtherPlayerStarted?.Invoke();
     }
 
+    /// <summary>
+    /// Called when the player has finished the revive.
+    /// </summary>
     [ClientRpc]
     public void RpcOnRevivingOtherPlayerFinished()
     {
@@ -133,6 +171,10 @@ public class Status : NetworkBehaviour
         dashTimer -= Time.deltaTime;
     }
 
+    /// <summary>
+    /// Tries to engage dashing.
+    /// </summary>
+    /// <returns>Wheter it successeded or not.</returns>
     public bool TryDashing()
     {
         if (Dashing == true || dashTimer > 0.0f)

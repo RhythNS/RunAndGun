@@ -1,5 +1,9 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// A world effect that damages the entity when they enter or stay
+/// in the world effect.
+/// </summary>
 [CreateAssetMenu(menuName = "World/WorldEffect/DamageWorldEffect")]
 public class DamageWorldEffect : WorldEffect
 {

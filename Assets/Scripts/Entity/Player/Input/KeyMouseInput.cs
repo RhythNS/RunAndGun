@@ -2,6 +2,9 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+/// <summary>
+/// Input for using a keyboard and mouse.
+/// </summary>
 public class KeyMouseInput : RAGInput
 {
     public override InputType InputType => InputType.KeyMouse;
