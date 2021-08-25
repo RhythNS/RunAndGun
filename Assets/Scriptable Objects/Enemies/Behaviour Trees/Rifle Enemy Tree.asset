@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-6506519917976021998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6de43f5e48708734980ed6f2ce3f6c1d, type: 3}
+  m_Name: minDistance
+  m_EditorClassIdentifier: 
+  value: 6
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dffe61478ed6e7b498c9b997879bf192, type: 3}
+  m_Name: Rifle Enemy Tree
+  m_EditorClassIdentifier: 
+  root: {fileID: 5882343341241458148}
+--- !u!114 &5702557516720295104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6de43f5e48708734980ed6f2ce3f6c1d, type: 3}
+  m_Name: maxDistance
+  m_EditorClassIdentifier: 
+  value: 9
+--- !u!114 &5882343341241458148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 600da718a367327438be6843a065f573, type: 3}
+  m_Name: SubTree Rifle Enemy
+  m_EditorClassIdentifier: 
+  breakPointEnabled: 0
+  children: []
+  boundsInEditor:
+    serializedVersion: 2
+    x: -134.74579
+    y: -90.25425
+    width: 80
+    height: 80
+  behaviourTree: {fileID: 11400000, guid: 5a62b165905bf2246bf6d474d8d4014f, type: 2}
+  valuesToOverwrite:
+  - toOverwrite: {fileID: 5843617289265880086, guid: 5a62b165905bf2246bf6d474d8d4014f,
+      type: 2}
+    newValue: {fileID: 0}
+  - toOverwrite: {fileID: -4012384648624462460, guid: 5a62b165905bf2246bf6d474d8d4014f,
+      type: 2}
+    newValue: {fileID: -6506519917976021998}
+  - toOverwrite: {fileID: -6122327776980015509, guid: 5a62b165905bf2246bf6d474d8d4014f,
+      type: 2}
+    newValue: {fileID: 5702557516720295104}
+  - toOverwrite: {fileID: 1754515563807091247, guid: 5a62b165905bf2246bf6d474d8d4014f,
+      type: 2}
+    newValue: {fileID: 0}

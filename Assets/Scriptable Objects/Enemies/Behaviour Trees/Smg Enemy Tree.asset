@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-6191060989614119601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6de43f5e48708734980ed6f2ce3f6c1d, type: 3}
+  m_Name: maxDistance
+  m_EditorClassIdentifier: 
+  value: 7
+--- !u!114 &-2808949580075449818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6de43f5e48708734980ed6f2ce3f6c1d, type: 3}
+  m_Name: minDistance
+  m_EditorClassIdentifier: 
+  value: 5
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dffe61478ed6e7b498c9b997879bf192, type: 3}
+  m_Name: Smg Enemy Tree
+  m_EditorClassIdentifier: 
+  root: {fileID: 2238086058197317680}
+--- !u!114 &2238086058197317680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 600da718a367327438be6843a065f573, type: 3}
+  m_Name: SubTree Smg Enemy
+  m_EditorClassIdentifier: 
+  breakPointEnabled: 0
+  children: []
+  boundsInEditor:
+    serializedVersion: 2
+    x: -220
+    y: -80
+    width: 80
+    height: 80
+  behaviourTree: {fileID: 11400000, guid: 5a62b165905bf2246bf6d474d8d4014f, type: 2}
+  valuesToOverwrite: []

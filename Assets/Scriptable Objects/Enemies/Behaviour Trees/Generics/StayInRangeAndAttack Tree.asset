@@ -128,6 +128,9 @@ MonoBehaviour:
   target: {fileID: 89303558089022605}
   minDistance: {fileID: 1274552301285185090}
   maxDistance: {fileID: 5545660760265017326}
+  min: 0
+  max: 0
+  distanceFactor: 0
 --- !u!114 &5545660760265017326
 MonoBehaviour:
   m_ObjectHideFlags: 0

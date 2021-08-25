@@ -1,5 +1,33 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7203053771378937665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 600da718a367327438be6843a065f573, type: 3}
+  m_Name: SubTree Pathfind to Target
+  m_EditorClassIdentifier: 
+  breakPointEnabled: 0
+  children: []
+  boundsInEditor:
+    serializedVersion: 2
+    x: 80
+    y: -0
+    width: 80
+    height: 80
+  behaviourTree: {fileID: 11400000, guid: c7679baf576bcda428a166ff08ada1e6, type: 2}
+  valuesToOverwrite:
+  - toOverwrite: {fileID: -4783296669617038377, guid: c7679baf576bcda428a166ff08ada1e6,
+      type: 2}
+    newValue: {fileID: 0}
+  - toOverwrite: {fileID: -849134150090655159, guid: c7679baf576bcda428a166ff08ada1e6,
+      type: 2}
+    newValue: {fileID: 5843617289265880086}
 --- !u!114 &-6122327776980015509
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12,7 +40,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6de43f5e48708734980ed6f2ce3f6c1d, type: 3}
   m_Name: maxDistance
   m_EditorClassIdentifier: 
-  value: 1
+  value: 6
 --- !u!114 &-5412474288684624154
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68,95 +96,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6de43f5e48708734980ed6f2ce3f6c1d, type: 3}
   m_Name: minDistance
   m_EditorClassIdentifier: 
-  value: 0
---- !u!114 &-3854263981083447095
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff2c9638f94bdb548b86ee75c5c259f9, type: 3}
-  m_Name: New ReloadNode
-  m_EditorClassIdentifier: 
-  breakPointEnabled: 0
-  children: []
-  boundsInEditor:
-    serializedVersion: 2
-    x: 220
-    y: 280
-    width: 80
-    height: 80
---- !u!114 &-2067427749837727064
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ebfb1a116e272644a2b5d0ee9def89e, type: 3}
-  m_Name: New GuardNode
-  m_EditorClassIdentifier: 
-  breakPointEnabled: 0
-  children:
-  - {fileID: 625652122557131791}
-  - {fileID: 6801713609433824230}
-  boundsInEditor:
-    serializedVersion: 2
-    x: 420
-    y: 0
-    width: 80
-    height: 80
-  checkEverySeconds: 1
---- !u!114 &-720692139815668100
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d005b5b901613fd44820becea8e4a31a, type: 3}
-  m_Name: New Selector
-  m_EditorClassIdentifier: 
-  breakPointEnabled: 0
-  children:
-  - {fileID: 6812952653674811918}
-  - {fileID: -3854263981083447095}
-  boundsInEditor:
-    serializedVersion: 2
-    x: 160
-    y: 140
-    width: 80
-    height: 80
---- !u!114 &-154114869948159613
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db7bc8b93351e7241bbf8fdb0b27050a, type: 3}
-  m_Name: New StayInRangeOfPlayerNode
-  m_EditorClassIdentifier: 
-  breakPointEnabled: 0
-  children: []
-  boundsInEditor:
-    serializedVersion: 2
-    x: 40
-    y: 140
-    width: 80
-    height: 80
-  target: {fileID: 5843617289265880086}
-  minDistance: {fileID: -4012384648624462460}
-  maxDistance: {fileID: -6122327776980015509}
+  value: 4
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -167,31 +107,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dffe61478ed6e7b498c9b997879bf192, type: 3}
-  m_Name: Melee Tree
+  m_Name: Default Enemy Tree
   m_EditorClassIdentifier: 
   root: {fileID: 6345909715767096463}
---- !u!114 &625652122557131791
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe8e38a7f4413ea40ae13fecda4cba8e, type: 3}
-  m_Name: New SetPathFromHealthNode
-  m_EditorClassIdentifier: 
-  breakPointEnabled: 0
-  children: []
-  boundsInEditor:
-    serializedVersion: 2
-    x: 360
-    y: 140
-    width: 80
-    height: 80
-  target: {fileID: 5843617289265880086}
-  outPath: {fileID: 1754515563807091247}
 --- !u!114 &1487207383782435977
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -249,6 +167,37 @@ MonoBehaviour:
     width: 80
     height: 80
   inverseResult: 0
+--- !u!114 &4263282987898067497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 600da718a367327438be6843a065f573, type: 3}
+  m_Name: SubTree Stay In Range And Attack
+  m_EditorClassIdentifier: 
+  breakPointEnabled: 0
+  children: []
+  boundsInEditor:
+    serializedVersion: 2
+    x: -40
+    y: 0
+    width: 80
+    height: 80
+  behaviourTree: {fileID: 11400000, guid: 7a3b8b2b3077f6a46a724fcb3c21105e, type: 2}
+  valuesToOverwrite:
+  - toOverwrite: {fileID: 5545660760265017326, guid: 7a3b8b2b3077f6a46a724fcb3c21105e,
+      type: 2}
+    newValue: {fileID: -6122327776980015509}
+  - toOverwrite: {fileID: 1274552301285185090, guid: 7a3b8b2b3077f6a46a724fcb3c21105e,
+      type: 2}
+    newValue: {fileID: -4012384648624462460}
+  - toOverwrite: {fileID: 89303558089022605, guid: 7a3b8b2b3077f6a46a724fcb3c21105e,
+      type: 2}
+    newValue: {fileID: 5843617289265880086}
 --- !u!114 &4295814853956278342
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -264,8 +213,8 @@ MonoBehaviour:
   breakPointEnabled: 0
   children:
   - {fileID: 2548071907764811373}
-  - {fileID: 6193960771712684795}
-  - {fileID: -2067427749837727064}
+  - {fileID: 4263282987898067497}
+  - {fileID: -7203053771378937665}
   boundsInEditor:
     serializedVersion: 2
     x: -100
@@ -291,30 +240,6 @@ MonoBehaviour:
   m_Name: HealthValue
   m_EditorClassIdentifier: 
   health: {fileID: 0}
---- !u!114 &6193960771712684795
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e14c49380ef658440a51306adf88ddd1, type: 3}
-  m_Name: New ParallelNode
-  m_EditorClassIdentifier: 
-  breakPointEnabled: 0
-  children:
-  - {fileID: -154114869948159613}
-  - {fileID: -720692139815668100}
-  boundsInEditor:
-    serializedVersion: 2
-    x: 100
-    y: 0
-    width: 80
-    height: 80
-  childFailed: 0
-  childSucceeded: 0
 --- !u!114 &6345909715767096463
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -338,45 +263,3 @@ MonoBehaviour:
     width: 80
     height: 80
   checkEverySeconds: 1
---- !u!114 &6801713609433824230
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c65146faa4255fe4181a9f71ad373861, type: 3}
-  m_Name: New GotoPathNode
-  m_EditorClassIdentifier: 
-  breakPointEnabled: 0
-  children: []
-  boundsInEditor:
-    serializedVersion: 2
-    x: 480
-    y: 140
-    width: 80
-    height: 80
-  path: {fileID: 1754515563807091247}
---- !u!114 &6812952653674811918
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53577cdb5d1a4794b916806cf5c046d2, type: 3}
-  m_Name: New ShootAtNode
-  m_EditorClassIdentifier: 
-  breakPointEnabled: 0
-  children: []
-  boundsInEditor:
-    serializedVersion: 2
-    x: 100
-    y: 280
-    width: 80
-    height: 80
-  targetHealth: {fileID: 5843617289265880086}
