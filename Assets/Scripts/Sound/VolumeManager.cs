@@ -1,5 +1,6 @@
 ﻿using FMOD.Studio;
 using FMODUnity;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -63,6 +64,30 @@ public class VolumeManager : MonoBehaviour
 
         bus.getVolume(out float volume);
         return volume;
+    }
+
+    public void Save()
+    {
+        Tuple<string, float>[] volumes = new Tuple<string, float>[busses.Length];
+        for (int i = 0; i < busses.Length; i++)
+        {
+            nameForBus[busses[i].name].getVolume(out float level);
+            volumes[i] = new Tuple<string, float>(busses[i].name, level);
+        }
+        Config.Instance.volumes = volumes;
+        Config.Instance.Save();
+    }
+
+    public void Load(Tuple<string, float>[] volumes)
+    {
+        if (volumes == null)
+            return;
+
+        for (int i = 0; i < volumes.Length; i++)
+        {
+            if (nameForBus.TryGetValue(volumes[i].Item1, out Bus bus) == true)
+                bus.setVolume(volumes[i].Item2);
+        }
     }
 
     private void OnDestroy()

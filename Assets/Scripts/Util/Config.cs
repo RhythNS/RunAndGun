@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 /// <summary>
 /// Holds all config values.
@@ -24,6 +25,11 @@ public class Config : MonoBehaviour
         LoadValues();
     }
 
+    private void Start()
+    {
+        VolumeManager.Instance.Load(volumes);
+    }
+
     /// <summary>
     /// Loads all config values from config file.
     /// </summary>
@@ -39,6 +45,7 @@ public class Config : MonoBehaviour
         saveFileExisted = true;
         playerName = loaded.playerName;
         selectedPlayerType = loaded.lastSelectedCharacterType;
+        volumes = loaded.volumes;
     }
 
     private void SetValuesForPlattform()
@@ -70,7 +77,8 @@ public class Config : MonoBehaviour
         SaveGame saveGame = new SaveGame()
         {
             playerName = PlayerName,
-            lastSelectedCharacterType = SelectedPlayerType
+            lastSelectedCharacterType = SelectedPlayerType,
+            volumes = volumes
         };
         Saver.Save(saveGame);
     }
@@ -107,6 +115,9 @@ public class Config : MonoBehaviour
 
     // ---- Graphics ----
     public int targetFramesPerSecondLoadingScreen = 60;
+
+    // ---- Sound ----
+    public Tuple<string, float>[] volumes;
 
     private void OnDestroy()
     {

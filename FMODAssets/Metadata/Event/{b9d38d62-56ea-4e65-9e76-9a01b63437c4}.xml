@@ -5,7 +5,7 @@
 			<value>PlayerPickup</value>
 		</property>
 		<property name="outputFormat">
-			<value>0</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{43e8947e-05ce-450a-932f-97cb4cece35b}</destination>
@@ -118,6 +118,7 @@
 	<object class="MixerBusEffectChain" id="{a0270157-7762-4563-80fc-989aa40ea58a}">
 		<relationship name="effects">
 			<destination>{a77138e1-15e6-4e9a-9717-b1c9f811d1ff}</destination>
+			<destination>{107de11e-521c-4a7f-a996-b8f1478b101d}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{16a7c9f5-1655-4b04-a804-540677b2c172}" />
@@ -134,5 +135,6 @@
 	</object>
 	<object class="MixerBusPanner" id="{b2ee6870-9cdb-48e9-a5a1-a69a43b1acaf}" />
 	<object class="MixerBusFader" id="{a77138e1-15e6-4e9a-9717-b1c9f811d1ff}" />
+	<object class="SpatialiserEffect" id="{107de11e-521c-4a7f-a996-b8f1478b101d}" />
 	<object class="MixerBusFader" id="{e12dc417-cd78-40aa-8092-ed35d270eb4a}" />
 </objects>

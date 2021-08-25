@@ -5,7 +5,7 @@
 			<value>PlayerRevived</value>
 		</property>
 		<property name="outputFormat">
-			<value>0</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{43e8947e-05ce-450a-932f-97cb4cece35b}</destination>
@@ -118,6 +118,7 @@
 	<object class="MixerBusEffectChain" id="{664cad34-fc7c-456e-bacb-6978fa15ac94}">
 		<relationship name="effects">
 			<destination>{9f5fb3df-189f-424d-a7fd-51cbb4c1b4da}</destination>
+			<destination>{73236bca-12dc-4159-aa58-411a94f6083a}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{81a90936-2299-41d8-b75d-15c042039378}" />
@@ -134,5 +135,6 @@
 	</object>
 	<object class="MixerBusPanner" id="{d3066a71-e1de-49c7-bd81-336cf6bbb7c4}" />
 	<object class="MixerBusFader" id="{9f5fb3df-189f-424d-a7fd-51cbb4c1b4da}" />
+	<object class="SpatialiserEffect" id="{73236bca-12dc-4159-aa58-411a94f6083a}" />
 	<object class="MixerBusFader" id="{01c4bd88-cf9a-47c0-bb35-c4e027aecbd7}" />
 </objects>

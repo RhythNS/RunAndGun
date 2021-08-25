@@ -143,6 +143,7 @@ GameObject:
   - component: {fileID: 4129680484880328122}
   - component: {fileID: 3275582449120558718}
   - component: {fileID: 7638826065939115409}
+  - component: {fileID: 8536415436953222183}
   m_Layer: 8
   m_Name: TestMelee
   m_TagString: Untagged
@@ -265,7 +266,7 @@ SpriteRenderer:
   m_Size: {x: 2, y: 2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &-5587249916741445024
@@ -393,8 +394,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  entityName: 
   characterType: 0
-  userName: 
   playerId: 0
   playerIndex: 0
   itemPickUpSound: event:/Universal Dungeon Sounds/PlayerPickup
@@ -569,6 +570,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 881a0f0ec1e773348b8a77914a9ae3a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+--- !u!114 &8536415436953222183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3992868732581162177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 576899aff3d76254f986a5146573952c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0

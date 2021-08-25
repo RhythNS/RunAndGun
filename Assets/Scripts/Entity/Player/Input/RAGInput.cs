@@ -100,7 +100,7 @@ public abstract class RAGInput : MonoBehaviour
             if (shouldFire)
             {
                 if (weapon.HasBulletsLeft == false)
-                    FMODUtil.PlayOnTransform(weapon.Weapon.WeaponSoundModel.EmptyClipSound, transform);
+                    Player.LocalSound.PlayWeaponCanNotShoot(weapon.Weapon.WeaponSoundModel.EmptyClipSound);
                 else if (weapon.CanFire)
                     weapon.StartFire();
             }

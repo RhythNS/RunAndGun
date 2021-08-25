@@ -12,7 +12,7 @@ public class RAGNetworkManager : NobleNetworkManager
     public override void OnStartServer()
     {
         base.OnStartServer();
-        
+
         // Register custom messages
         NetworkServer.RegisterHandler<JoinMessage>(OnJoinMessage);
     }
@@ -30,6 +30,7 @@ public class RAGNetworkManager : NobleNetworkManager
         NetworkClient.RegisterHandler<DoorMessage>(OnDoorsMessage);
         NetworkClient.RegisterHandler<GenerateLevelMessage>(OnGenerateLevelMessage);
         NetworkClient.RegisterHandler<BossSpawnMessage>(OnBossSpawnMessage);
+        NetworkClient.RegisterHandler<BossDefeatedMessage>(OnBossDefeatedMessage);
         NetworkClient.RegisterHandler<EveryoneLoadedMessage>(OnEveryoneLoadedMessage);
         NetworkClient.RegisterHandler<MiniMapNewRoomMessage>(OnMiniMapNewRoomMessage);
         NetworkClient.RegisterHandler<EmoteMessage>(OnEmoteMessage);
@@ -46,7 +47,7 @@ public class RAGNetworkManager : NobleNetworkManager
     public override void OnClientConnect(NetworkConnection conn)
     {
         base.OnClientConnect(conn);
-        
+
         JoinMessage message = new JoinMessage
         {
             name = Config.Instance.PlayerName,
@@ -201,6 +202,11 @@ public class RAGNetworkManager : NobleNetworkManager
 
         (DungeonDict.Instance.Get(bossSpawnMessage.id) as BossRoom).StartBossAnimation(bossSpawnMessage);
         MusicManager.Instance.ChangeState(MusicManager.State.Boss);
+    }
+
+    private void OnBossDefeatedMessage(BossDefeatedMessage bossDefeatedMessage)
+    {
+        MusicManager.Instance.ChangeState(MusicManager.State.Dungeon);
     }
 
     private void OnEveryoneLoadedMessage(EveryoneLoadedMessage everyoneLoadedMessage)

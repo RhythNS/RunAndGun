@@ -38,6 +38,7 @@ public class Player : Entity
     public DungeonRoom CurrentRoom { get; private set; }
     public StatusEffectList StatusEffectList { get; private set; }
     public EntityMaterialManager EntityMaterialManager { get; private set; }
+    public LocalSound LocalSound { get; private set; }
 
     private Vector3 lastPosition = Vector3.zero;
     public Vector3 LastPosition => lastPosition;
@@ -55,6 +56,7 @@ public class Player : Entity
         EmoteCommunicator = GetComponent<EmoteCommunicator>();
         StatusEffectList = GetComponent<StatusEffectList>();
         EntityMaterialManager = GetComponent<EntityMaterialManager>();
+        LocalSound = GetComponent<LocalSound>();
     }
 
     private void Update()

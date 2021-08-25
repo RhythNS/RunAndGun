@@ -1,4 +1,6 @@
-﻿using Mirror;
+﻿using FMOD.Studio;
+using FMODUnity;
+using Mirror;
 using System.Collections;
 using UnityEngine;
 
@@ -24,6 +26,8 @@ public class Bullet : NetworkBehaviour, IPoolable
 
     private float aliveTime = 0f;
 
+    private EventInstance inAirLoop;
+
     private void Awake()
     {
         SpriteRenderer = GetComponent<SpriteRenderer>();
@@ -38,6 +42,14 @@ public class Bullet : NetworkBehaviour, IPoolable
             return;
         ShooterHealth = shooterObject.GetComponent<Health>();
         SpriteRenderer.sprite = fromWeapon.BulletInfo.Sprite;
+
+        if (fromWeapon != null && string.IsNullOrEmpty(fromWeapon.WeaponSoundModel.InAirLoop) == false)
+        {
+            inAirLoop = RuntimeManager.CreateInstance(fromWeapon.WeaponSoundModel.InAirLoop);
+            inAirLoop.set3DAttributes(RuntimeUtils.To3DAttributes(transform));
+            inAirLoop.start();
+            FMODUtil.PlayOnPosition(fromWeapon.WeaponSoundModel.ImpactSound, transform.position);
+        }
 
         gameObject.layer = layer;
         if (Player.LocalPlayer?.playerId == owningPlayer)
@@ -77,9 +89,9 @@ public class Bullet : NetworkBehaviour, IPoolable
     public IEnumerator DeleteWhenOutOfRange(Vector2 velocity, float range)
     {
         yield return new WaitForSeconds(range / velocity.magnitude);
-        
+
         DoImpactEffects(false);
-        
+
         Free();
     }
 
@@ -154,6 +166,15 @@ public class Bullet : NetworkBehaviour, IPoolable
 
     public void Hide()
     {
+        if (fromWeapon != null && string.IsNullOrEmpty(fromWeapon.WeaponSoundModel.ImpactSound) == false)
+            FMODUtil.PlayOnPosition(fromWeapon.WeaponSoundModel.ImpactSound, transform.position);
+
+        if (inAirLoop.isValid() == true)
+        {
+            inAirLoop.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            inAirLoop.release();
+        }
+
         owningPlayer = -1;
         gameObject.SetActive(false);
         if (ignoringCollider)

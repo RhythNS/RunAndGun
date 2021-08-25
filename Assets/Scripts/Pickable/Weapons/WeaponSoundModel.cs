@@ -15,4 +15,10 @@ public class WeaponSoundModel : ScriptableObject
 
     public string EquipSound => equipSound;
     [SerializeField] [EventRef] private string equipSound;
+
+    public string ImpactSound => impactSound;
+    [SerializeField] [EventRef] private string impactSound;
+
+    public string InAirLoop => inAirLoop;
+    [SerializeField] [EventRef] private string inAirLoop;
 }

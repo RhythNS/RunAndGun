@@ -5,7 +5,7 @@
 			<value>PlayerDodge</value>
 		</property>
 		<property name="outputFormat">
-			<value>0</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{43e8947e-05ce-450a-932f-97cb4cece35b}</destination>
@@ -118,6 +118,7 @@
 	<object class="MixerBusEffectChain" id="{5e610d7a-e008-4f84-8155-cef9c62f2d4c}">
 		<relationship name="effects">
 			<destination>{7421692c-14cb-4309-bed6-74056ae2a513}</destination>
+			<destination>{4ff8b68d-b187-43c8-9109-b77d7c5a3599}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{3bc5a985-b4dd-47df-93f0-af10e1a4e2b2}" />
@@ -137,6 +138,7 @@
 	</object>
 	<object class="MixerBusPanner" id="{fab09f53-375c-496b-b1de-ee8eafb97793}" />
 	<object class="MixerBusFader" id="{7421692c-14cb-4309-bed6-74056ae2a513}" />
+	<object class="SpatialiserEffect" id="{4ff8b68d-b187-43c8-9109-b77d7c5a3599}" />
 	<object class="SingleSound" id="{b6093f88-3be4-4a08-8080-6cb05fc90486}">
 		<relationship name="audioFile">
 			<destination>{abf4cd2a-84f6-4e5b-b1cf-0b0ab061e09c}</destination>

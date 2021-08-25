@@ -5,7 +5,7 @@
 			<value>PlayerDied</value>
 		</property>
 		<property name="outputFormat">
-			<value>0</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{43e8947e-05ce-450a-932f-97cb4cece35b}</destination>
@@ -118,6 +118,7 @@
 	<object class="MixerBusEffectChain" id="{ce5dbd65-1145-4c0e-8855-569a0471cabb}">
 		<relationship name="effects">
 			<destination>{530e5f8f-93f6-42b7-a44d-b0529629725b}</destination>
+			<destination>{553ee683-510b-4ad9-b212-570791bf0e03}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{49b27442-476b-4439-9e2f-7b7486b2aadb}" />
@@ -135,6 +136,7 @@
 	</object>
 	<object class="MixerBusPanner" id="{3c4bab9b-f76c-43a4-9536-0070c8a2fb5e}" />
 	<object class="MixerBusFader" id="{530e5f8f-93f6-42b7-a44d-b0529629725b}" />
+	<object class="SpatialiserEffect" id="{553ee683-510b-4ad9-b212-570791bf0e03}" />
 	<object class="SingleSound" id="{11b91e27-bb47-492f-8f8f-e7d2f214721d}">
 		<relationship name="audioFile">
 			<destination>{7f650b55-f02d-4b2e-8d56-695352cec4d6}</destination>

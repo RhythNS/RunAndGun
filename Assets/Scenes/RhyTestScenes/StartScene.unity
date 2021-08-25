@@ -3699,6 +3699,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3990865551052283309, guid: 80ba9067596ac284d8b61bc190eeb26d,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4059747307782292838, guid: 80ba9067596ac284d8b61bc190eeb26d,
         type: 3}
       propertyPath: m_IsActive
@@ -5949,6 +5954,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7663205239132814118, guid: 80ba9067596ac284d8b61bc190eeb26d,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.27000427
+      objectReference: {fileID: 0}
     - target: {fileID: 7680336609557369610, guid: 80ba9067596ac284d8b61bc190eeb26d,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -7163,55 +7173,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 381cc669c3963ae42b6c7f3c9cafaef2,
         type: 2}
-    - target: {fileID: 1365799234809505997, guid: 51cb51d065c14cd4d8c4ff558239b518,
-        type: 3}
-      propertyPath: selectedInput
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1365799234809505997, guid: 51cb51d065c14cd4d8c4ff558239b518,
-        type: 3}
-      propertyPath: ignorePlatform
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1365799234809505998, guid: 51cb51d065c14cd4d8c4ff558239b518,
         type: 3}
       propertyPath: m_RootOrder
       value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 1365799234809505998, guid: 51cb51d065c14cd4d8c4ff558239b518,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1365799234809505998, guid: 51cb51d065c14cd4d8c4ff558239b518,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1365799234809505998, guid: 51cb51d065c14cd4d8c4ff558239b518,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1365799234809505998, guid: 51cb51d065c14cd4d8c4ff558239b518,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1365799234809505998, guid: 51cb51d065c14cd4d8c4ff558239b518,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1365799234809505998, guid: 51cb51d065c14cd4d8c4ff558239b518,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1365799234809505998, guid: 51cb51d065c14cd4d8c4ff558239b518,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1365799234809505998, guid: 51cb51d065c14cd4d8c4ff558239b518,
         type: 3}
@@ -7233,6 +7198,129 @@ PrefabInstance:
       propertyPath: m_Name
       value: Globals
       objectReference: {fileID: 0}
+    - target: {fileID: 4331830215520593489, guid: 51cb51d065c14cd4d8c4ff558239b518,
+        type: 3}
+      propertyPath: emoteLayers.Array.data[0].name
+      value: Faces
+      objectReference: {fileID: 0}
+    - target: {fileID: 4331830215520593489, guid: 51cb51d065c14cd4d8c4ff558239b518,
+        type: 3}
+      propertyPath: emoteLayers.Array.data[1].name
+      value: Symbols
+      objectReference: {fileID: 0}
+    - target: {fileID: 4331830215520593489, guid: 51cb51d065c14cd4d8c4ff558239b518,
+        type: 3}
+      propertyPath: emoteLayers.Array.data[1].emotes.Array.size
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4331830215520593489, guid: 51cb51d065c14cd4d8c4ff558239b518,
+        type: 3}
+      propertyPath: emoteLayers.Array.data[0].emotes.Array.data[0].sprite
+      value: 
+      objectReference: {fileID: 1358680944413601997, guid: f29ce8ecfd817b245bdbc0da42e4ed73,
+        type: 3}
+    - target: {fileID: 4331830215520593489, guid: 51cb51d065c14cd4d8c4ff558239b518,
+        type: 3}
+      propertyPath: emoteLayers.Array.data[0].emotes.Array.data[1].sprite
+      value: 
+      objectReference: {fileID: 8560450389038738817, guid: f29ce8ecfd817b245bdbc0da42e4ed73,
+        type: 3}
+    - target: {fileID: 4331830215520593489, guid: 51cb51d065c14cd4d8c4ff558239b518,
+        type: 3}
+      propertyPath: emoteLayers.Array.data[0].emotes.Array.data[2].sprite
+      value: 
+      objectReference: {fileID: 7397839153621870338, guid: f29ce8ecfd817b245bdbc0da42e4ed73,
+        type: 3}
+    - target: {fileID: 4331830215520593489, guid: 51cb51d065c14cd4d8c4ff558239b518,
+        type: 3}
+      propertyPath: emoteLayers.Array.data[0].emotes.Array.data[3].sprite
+      value: 
+      objectReference: {fileID: 6233039292562749219, guid: f29ce8ecfd817b245bdbc0da42e4ed73,
+        type: 3}
+    - target: {fileID: 4331830215520593489, guid: 51cb51d065c14cd4d8c4ff558239b518,
+        type: 3}
+      propertyPath: emoteLayers.Array.data[0].emotes.Array.data[4].sprite
+      value: 
+      objectReference: {fileID: -2194667968016709300, guid: f29ce8ecfd817b245bdbc0da42e4ed73,
+        type: 3}
+    - target: {fileID: 4331830215520593489, guid: 51cb51d065c14cd4d8c4ff558239b518,
+        type: 3}
+      propertyPath: emoteLayers.Array.data[0].emotes.Array.data[5].sprite
+      value: 
+      objectReference: {fileID: -2260012342086508981, guid: f29ce8ecfd817b245bdbc0da42e4ed73,
+        type: 3}
+    - target: {fileID: 4331830215520593489, guid: 51cb51d065c14cd4d8c4ff558239b518,
+        type: 3}
+      propertyPath: emoteLayers.Array.data[0].emotes.Array.data[6].sprite
+      value: 
+      objectReference: {fileID: 6190484951090040358, guid: f29ce8ecfd817b245bdbc0da42e4ed73,
+        type: 3}
+    - target: {fileID: 4331830215520593489, guid: 51cb51d065c14cd4d8c4ff558239b518,
+        type: 3}
+      propertyPath: emoteLayers.Array.data[0].emotes.Array.data[7].sprite
+      value: 
+      objectReference: {fileID: -7732956015899300384, guid: f29ce8ecfd817b245bdbc0da42e4ed73,
+        type: 3}
+    - target: {fileID: 4331830215520593489, guid: 51cb51d065c14cd4d8c4ff558239b518,
+        type: 3}
+      propertyPath: emoteLayers.Array.data[0].emotes.Array.data[8].sprite
+      value: 
+      objectReference: {fileID: 723362977619312270, guid: f29ce8ecfd817b245bdbc0da42e4ed73,
+        type: 3}
+    - target: {fileID: 4331830215520593489, guid: 51cb51d065c14cd4d8c4ff558239b518,
+        type: 3}
+      propertyPath: emoteLayers.Array.data[1].emotes.Array.data[0].sprite
+      value: 
+      objectReference: {fileID: 211069865737578204, guid: 8b3f6cbeda0c8a04398472541b8cb089,
+        type: 3}
+    - target: {fileID: 4331830215520593489, guid: 51cb51d065c14cd4d8c4ff558239b518,
+        type: 3}
+      propertyPath: emoteLayers.Array.data[1].emotes.Array.data[1].sprite
+      value: 
+      objectReference: {fileID: 8650254843087023023, guid: 8b3f6cbeda0c8a04398472541b8cb089,
+        type: 3}
+    - target: {fileID: 4331830215520593489, guid: 51cb51d065c14cd4d8c4ff558239b518,
+        type: 3}
+      propertyPath: emoteLayers.Array.data[1].emotes.Array.data[2].sprite
+      value: 
+      objectReference: {fileID: -2077084847556229935, guid: 8b3f6cbeda0c8a04398472541b8cb089,
+        type: 3}
+    - target: {fileID: 4331830215520593489, guid: 51cb51d065c14cd4d8c4ff558239b518,
+        type: 3}
+      propertyPath: emoteLayers.Array.data[1].emotes.Array.data[3].sprite
+      value: 
+      objectReference: {fileID: 997842016656946391, guid: 8b3f6cbeda0c8a04398472541b8cb089,
+        type: 3}
+    - target: {fileID: 4331830215520593489, guid: 51cb51d065c14cd4d8c4ff558239b518,
+        type: 3}
+      propertyPath: emoteLayers.Array.data[1].emotes.Array.data[4].sprite
+      value: 
+      objectReference: {fileID: -287259115211605663, guid: 8b3f6cbeda0c8a04398472541b8cb089,
+        type: 3}
+    - target: {fileID: 4331830215520593489, guid: 51cb51d065c14cd4d8c4ff558239b518,
+        type: 3}
+      propertyPath: emoteLayers.Array.data[1].emotes.Array.data[5].sprite
+      value: 
+      objectReference: {fileID: -8506494374677069109, guid: 8b3f6cbeda0c8a04398472541b8cb089,
+        type: 3}
+    - target: {fileID: 4331830215520593489, guid: 51cb51d065c14cd4d8c4ff558239b518,
+        type: 3}
+      propertyPath: emoteLayers.Array.data[1].emotes.Array.data[6].sprite
+      value: 
+      objectReference: {fileID: 8567407652144255134, guid: 8b3f6cbeda0c8a04398472541b8cb089,
+        type: 3}
+    - target: {fileID: 4331830215520593489, guid: 51cb51d065c14cd4d8c4ff558239b518,
+        type: 3}
+      propertyPath: emoteLayers.Array.data[1].emotes.Array.data[7].sprite
+      value: 
+      objectReference: {fileID: 3214438038795450700, guid: 8b3f6cbeda0c8a04398472541b8cb089,
+        type: 3}
+    - target: {fileID: 4331830215520593489, guid: 51cb51d065c14cd4d8c4ff558239b518,
+        type: 3}
+      propertyPath: emoteLayers.Array.data[1].emotes.Array.data[8].sprite
+      value: 
+      objectReference: {fileID: 1846601341551891139, guid: 8b3f6cbeda0c8a04398472541b8cb089,
+        type: 3}
     - target: {fileID: 9108665165175664637, guid: 51cb51d065c14cd4d8c4ff558239b518,
         type: 3}
       propertyPath: eventName

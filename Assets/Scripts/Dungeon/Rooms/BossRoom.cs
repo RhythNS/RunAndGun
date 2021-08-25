@@ -216,6 +216,9 @@ public class BossRoom : DungeonRoom
         AliveHealthDict.Instance.OnAllEnemiesDied -= OnAllEnemiesDefeated;
         AliveHealthDict.Instance.OnAllPlayersDied -= OnAllPlayersDied;
 
+        BossDefeatedMessage bdm = new BossDefeatedMessage();
+        NetworkServer.SendToAll(bdm);
+
         OpenDoors();
         // SpawnLoot();
         SpawnExitToNextLevel();

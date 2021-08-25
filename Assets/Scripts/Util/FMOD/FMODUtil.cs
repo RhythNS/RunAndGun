@@ -16,4 +16,12 @@ public static class FMODUtil
         eventInstance.start();
         eventInstance.release();
     }
+
+    public static void PlayOnPosition(string eventName, Vector3 position)
+    {
+        EventInstance eventInstance = RuntimeManager.CreateInstance(eventName);
+        eventInstance.set3DAttributes(RuntimeUtils.To3DAttributes(position));
+        eventInstance.start();
+        eventInstance.release();
+    }
 }

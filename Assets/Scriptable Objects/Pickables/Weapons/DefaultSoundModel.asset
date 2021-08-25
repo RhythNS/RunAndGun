@@ -16,3 +16,5 @@ MonoBehaviour:
   emptyClipSound: event:/Default/Weapons/EmptyClip
   shootSound: event:/Default/Weapons/Shoot
   equipSound: event:/Default/Weapons/Equip
+  impactSound: 
+  inAirLoop: 

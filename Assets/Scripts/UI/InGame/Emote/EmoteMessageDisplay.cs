@@ -21,7 +21,9 @@ public class EmoteMessageDisplay : MonoBehaviour
         }
 
         Color playerColor = CharacterDict.Instance.PlayerColors[player.playerIndex];
+        Color lightPlayerColor = CharacterDict.Instance.LightPlayerColors[player.playerIndex];
         emoteImage.sprite = emote.Value.sprite;
+        emoteImage.color = lightPlayerColor;
         frameImage.color = playerColor;
 
         StartCoroutine(OnShow(emoteBoard.MessageAliveTime, emoteBoard.ScaleCurve));

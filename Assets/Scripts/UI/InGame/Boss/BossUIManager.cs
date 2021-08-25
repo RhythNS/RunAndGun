@@ -45,6 +45,7 @@ public class BossUIManager : MonoBehaviour
         nameObject.SetActive(false);
         healthObject.SetActive(false);
 
+        healthPercentage.UpdateValue((float)(currentTrackedHealth.Current) / (float)(currentTrackedHealth.Max));
         currentTrackedHealth.CurrentChangedAsPercentage += healthPercentage.UpdateValue;
         nameDisplay.text = entity.name;
         currentTrackedHealth.OnDied += OnBossDied;
@@ -59,7 +60,6 @@ public class BossUIManager : MonoBehaviour
             currentTrackedHealth.OnDied -= OnBossDied;
         }
         currentTrackedHealth = null;
-
     }
 
     private void OnBossDied()
@@ -82,9 +82,10 @@ public class BossUIManager : MonoBehaviour
     private IEnumerator DoHealthAnimation(float nameDisplayLength)
     {
         nameObject.SetActive(true);
+
         RectTransform rectTransform = nameObject.transform as RectTransform;
-        Vector3 pos = rectTransform.localPosition;
-        rectTransform.anchoredPosition = new Vector2(0.0f, 0.0f);
+        rectTransform.localPosition = new Vector2(0.0f, 0.0f);
+        Vector3 pos = new Vector3(0.0f, -rectTransform.rect.height * 1.5f);
 
         yield return EnumeratorUtil.GoToInSecondsLocalCurve(rectTransform, pos, nameCurve, nameDisplayLength);
         nameObject.SetActive(false);

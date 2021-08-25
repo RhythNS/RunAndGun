@@ -26,6 +26,12 @@ public class VolumeControl : PanelElement
         musicSlider.onValueChanged.AddListener(OnMusicChanged);
     }
 
+    public override bool InnerOnConfirm()
+    {
+        VolumeManager.Instance.Save();
+        return true;
+    }
+
     public override bool InnerOnCancel()
     {
         VolumeManager.Instance.SetVolume(prevSfx, "Sfx");

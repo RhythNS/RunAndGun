@@ -28,6 +28,9 @@ public class CharacterDict : MonoBehaviour
     public Color[] PlayerColors => playerColors;
     [SerializeField] private Color[] playerColors;
 
+    public Color[] LightPlayerColors => lightPlayerColors;
+    [SerializeField] private Color[] lightPlayerColors;
+
     public Player GetPlayerForType(CharacterType characterType)
     {
         for (int i = 0; i < players.Length; i++)
