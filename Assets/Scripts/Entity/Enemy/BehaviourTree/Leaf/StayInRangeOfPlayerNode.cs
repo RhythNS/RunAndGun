@@ -16,7 +16,7 @@ public class StayInRangeOfPlayerNode : BNodeAdapter
     [SerializeField] private FloatValue maxDistance;
 
     private Health health;
-    private float min, max, distanceFactor;
+    public float min, max, distanceFactor;
     private const float DISTANCE_TOLERANCE = 0.25f * 0.25f;
 
     public override void InnerBeginn()
@@ -53,8 +53,8 @@ public class StayInRangeOfPlayerNode : BNodeAdapter
     {
         StayInRangeOfPlayerNode sdfpn = CreateInstance<StayInRangeOfPlayerNode>();
         sdfpn.target = CloneValue(originalValueForClonedValue, target) as HealthValue;
-        sdfpn.minDistance = minDistance;
-        sdfpn.maxDistance = maxDistance;
+        sdfpn.minDistance = CloneValue(originalValueForClonedValue, minDistance) as FloatValue;
+        sdfpn.maxDistance = CloneValue(originalValueForClonedValue, maxDistance) as FloatValue;
         return sdfpn;
     }
 
