@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// Returns true if the given entity is still alive.
 /// </summary>
-public class IsInWeaponRange : BoolNode
+public class IsInWeaponRangeNode : BoolNode
 {
     public override string StringToolTip => "Returns true if target is in range of current weapon.";
 
@@ -13,9 +13,15 @@ public class IsInWeaponRange : BoolNode
 
     protected override BNode InnerClone(Dictionary<Value, Value> originalValueForClonedValue)
     {
-        IsInWeaponRange iiwr = CreateInstance<IsInWeaponRange>();
+        IsInWeaponRangeNode iiwr = CreateInstance<IsInWeaponRangeNode>();
         iiwr.targetHealth = CloneValue(originalValueForClonedValue, targetHealth) as HealthValue;
         return iiwr;
+    }
+
+    protected override void InnerReplaceValues(Dictionary<Value, Value> originalReplace)
+    {
+        if (originalReplace.ContainsKey(targetHealth))
+            targetHealth = originalReplace[targetHealth] as HealthValue;
     }
 
     protected override bool InnerIsFulfilled()

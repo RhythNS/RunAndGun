@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// Returns true if the given entity is still alive.
 /// </summary>
-public class IsHealthAboveValue : BoolNode
+public class IsHealthAboveValueNode : BoolNode
 {
     public override string StringToolTip => "Returns true if own health is above percentage.";
 
@@ -13,7 +13,7 @@ public class IsHealthAboveValue : BoolNode
 
     protected override BNode InnerClone(Dictionary<Value, Value> originalValueForClonedValue)
     {
-        IsHealthAboveValue ihav = CreateInstance<IsHealthAboveValue>();
+        IsHealthAboveValueNode ihav = CreateInstance<IsHealthAboveValueNode>();
         ihav.percentage = percentage;
         return ihav;
     }
