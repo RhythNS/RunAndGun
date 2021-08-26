@@ -17,4 +17,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Regions/EnemyTestRoom.unity
     guid: dd7179cc16c125848b59a80551723cb8
+  - enabled: 1
+    path: Assets/Scenes/Regions/AtlantisRegion.unity
+    guid: a93e59eaadb62b042820d97c98511f3a
+  - enabled: 1
+    path: Assets/Scenes/Regions/CastleRegion.unity
+    guid: 3b93f91a8deba19448d27bfc0efb5ed1
+  - enabled: 1
+    path: Assets/Scenes/Regions/DungeonRegion.unity
+    guid: a73aadb36ab55814584f311ceac68c95
   m_configObjects: {}

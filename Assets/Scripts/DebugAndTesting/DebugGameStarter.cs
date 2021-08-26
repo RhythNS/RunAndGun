@@ -70,7 +70,7 @@ public class DebugGameStarter : MonoBehaviour
 
         Dungeon dungeon = new Dungeon(rooms, corridors, enemyPos + new Vector2Int(layout.XSize, layout.YSize));
         DungeonConfig config = DungeonConfig.StandardConfig;
-        yield return DungeonCreator.Instance.CreateDungeon(-1, 1, config, dungeon);
+        yield return DungeonCreator.Instance.CreateDungeon(-1, 1, config, RegionDict.Instance.Tileset, dungeon);
 
         CombatRoom combatRoom = DungeonDict.Instance.Rooms.First(x => x.RoomType == RoomType.Combat) as CombatRoom;
         combatRoom.enemiesToSpawn = enemiesToSpawn;

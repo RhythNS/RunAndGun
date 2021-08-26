@@ -48,6 +48,9 @@ public class RegionDict : MonoBehaviour
     public GameObject PrefabDoorUD => prefabDoorUD;
     [SerializeField] private GameObject prefabDoorUD;
 
+    public Tileset Tileset => tileset;
+    [SerializeField] Tileset tileset;
+
     private void OnDestroy()
     {
         if (Instance == this)

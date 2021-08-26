@@ -17,7 +17,7 @@ MonoBehaviour:
   startingDifficulty: 10
   minPlayers: 1
   maxPlayers: 4
-  randomSeed: 0
+  randomSeed: 1
   seed: 0
   dungeonConfig:
     sizeX: 192

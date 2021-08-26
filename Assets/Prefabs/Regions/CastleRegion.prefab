@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &5362726799913484892
+--- !u!1 &5942353449938720229
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5362726799913484866}
-  - component: {fileID: 5362726799913484893}
+  - component: {fileID: 5942353449938720251}
+  - component: {fileID: 5942353449938720228}
   m_Layer: 0
-  m_Name: AtlantisRegion
+  m_Name: CastleRegion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5362726799913484866
+--- !u!4 &5942353449938720251
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5362726799913484892}
+  m_GameObject: {fileID: 5942353449938720229}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 17.639528, y: 7.9624314, z: -96.23852}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -31,19 +31,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5362726799913484893
+--- !u!114 &5942353449938720228
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5362726799913484892}
+  m_GameObject: {fileID: 5942353449938720229}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe1cfbdae089f894fbb9e96618c170f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  region: 3
+  region: 4
   startingRoomPickables:
   - {fileID: 11400000, guid: ff2c6c04229b1e7479c5e38810329a01, type: 2}
   - {fileID: 11400000, guid: b09bbc646a60c2b479355db2c7a061d6, type: 2}
@@ -71,4 +71,4 @@ MonoBehaviour:
     type: 3}
   prefabDoorUD: {fileID: 6098499219195057442, guid: b2515d84382afd24796391c735f7120d,
     type: 3}
-  tileset: {fileID: 11400000, guid: be039a8f3df4ec447a356b438e22320a, type: 2}
+  tileset: {fileID: 11400000, guid: 01ae879faa425a34094580c7ab9c1e1b, type: 2}

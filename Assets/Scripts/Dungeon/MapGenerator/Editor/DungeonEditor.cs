@@ -19,7 +19,7 @@ public class DungeonEditor : Editor
         base.OnInspectorGUI();
 
         if (GUILayout.Button("Create new dungeon")) {
-            dungeonCreator.CreateDungeon(int.MaxValue, 0, MapGenerator.DungeonConfig.StandardConfig);
+            dungeonCreator.CreateDungeon(int.MaxValue, 0, MapGenerator.DungeonConfig.StandardConfig, RegionDict.Instance.Tileset);
         }
     }
 }

@@ -105,6 +105,12 @@ public class GameManager : MonoBehaviour
 
     private static Region GetNextRegion()
     {
+        // Todo: delete this code and uncomment the next lines to renable the gamemode
+
+        Region[] regionsToPickFrom = { Region.Castle, Region.Atlantis, Region.Dungeon };
+        return RandomUtil.Element(regionsToPickFrom);
+
+        /*
         if (gameMode.customRegionOnLevels == null || gameMode.customRegionOnLevels.Length == 0)
             return Region.Debug; // <--- TODO:
 
@@ -115,6 +121,7 @@ public class GameManager : MonoBehaviour
         }
 
         return gameMode.customRegionOnLevels[gameMode.customRegionOnLevels.Length - 1].region;
+         */
     }
 
     public static void OnPlayerLoadedLevelChanged()

@@ -1,4 +1,4 @@
 ﻿public enum Region
 {
-    Debug, Lobby, EnemyTestRoom, Atlantis
+    Debug, Lobby, EnemyTestRoom, Atlantis, Castle, Dungeon
 }

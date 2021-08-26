@@ -21,8 +21,6 @@ public class DungeonCreator : MonoBehaviour
     private Tilemap tilemapCeiling;
 
     [SerializeField]
-    private Tileset tileset;
-    [SerializeField]
     private Tile tilePlaceHolder;
     [SerializeField]
     private Tile tilePlaceHolderHalf;
@@ -73,7 +71,7 @@ public class DungeonCreator : MonoBehaviour
     }
     #endregion
 
-    public IEnumerator CreateDungeon(int seed, int levelNumber, DungeonConfig config, Dungeon dungeonToLoad = null)
+    public IEnumerator CreateDungeon(int seed, int levelNumber, DungeonConfig config, Tileset tileset, Dungeon dungeonToLoad = null)
     {
         timer = new DungeonTimer();
         timer.Start();
@@ -100,9 +98,9 @@ public class DungeonCreator : MonoBehaviour
 
         yield return ClearPreviousTiles();
 
-        yield return SetTiles();
+        yield return SetTiles(tileset);
 
-        yield return SetBorderTiles();
+        yield return SetBorderTiles(tileset);
 
         yield return roomCreator.CreateRooms(dungeon, levelNumber, timer);
 
@@ -216,7 +214,7 @@ public class DungeonCreator : MonoBehaviour
             yield return timer.Wait(0.1f);
     }
 
-    private IEnumerator SetTiles()
+    private IEnumerator SetTiles(Tileset tileset)
     {
         // create new tilemaps
         Vector3Int[] positionsFloor;
@@ -281,17 +279,17 @@ public class DungeonCreator : MonoBehaviour
         }
     }
 
-    private IEnumerator SetBorderTiles()
+    private IEnumerator SetBorderTiles(Tileset tileset)
     {
         List<Vector3Int> positions = new List<Vector3Int>();
         List<TileBase> tiles = new List<TileBase>();
-        yield return InnerSetBorderTiles(positions, tiles, -10, dungeon.Size.x + 10, -10, 2);
-        yield return InnerSetBorderTiles(positions, tiles, -10, dungeon.Size.x + 10, dungeon.Size.y, dungeon.Size.y + 10);
-        yield return InnerSetBorderTiles(positions, tiles, -10, 0, 0, dungeon.Size.y);
-        yield return InnerSetBorderTiles(positions, tiles, dungeon.Size.x, dungeon.Size.x + 10, 0, dungeon.Size.y);
+        yield return InnerSetBorderTiles(positions, tiles, tileset, -10, dungeon.Size.x + 10, -10, 2);
+        yield return InnerSetBorderTiles(positions, tiles, tileset, -10, dungeon.Size.x + 10, dungeon.Size.y, dungeon.Size.y + 10);
+        yield return InnerSetBorderTiles(positions, tiles, tileset, -10, 0, 0, dungeon.Size.y);
+        yield return InnerSetBorderTiles(positions, tiles, tileset, dungeon.Size.x, dungeon.Size.x + 10, 0, dungeon.Size.y);
     }
 
-    private IEnumerator InnerSetBorderTiles(List<Vector3Int> positions, List<TileBase> tiles, int xStart, int xEnd, int yStart, int yEnd)
+    private IEnumerator InnerSetBorderTiles(List<Vector3Int> positions, List<TileBase> tiles, Tileset tileset, int xStart, int xEnd, int yStart, int yEnd)
     {
         for (int x = xStart; x < xEnd; x++)
         {
@@ -313,7 +311,7 @@ public class DungeonCreator : MonoBehaviour
     #region PublicMethods
     public void CreateLevel(int levelNumber)
     {
-        StartCoroutine(CreateDungeon(GameManager.gameMode.levelSeeds[levelNumber], levelNumber, GameManager.gameMode.dungeonConfig));
+        StartCoroutine(CreateDungeon(GameManager.gameMode.levelSeeds[levelNumber], levelNumber, GameManager.gameMode.dungeonConfig, RegionDict.Instance.Tileset));
     }
 
     public void AdjustMask(Vector3 position, Vector3 scale)

@@ -45,6 +45,7 @@ namespace MapGenerator
         /// </summary>
         public Pickable[] shopItems;
 
+
         /// <summary>
         /// Creates a new DungeonConfig.
         /// </summary>

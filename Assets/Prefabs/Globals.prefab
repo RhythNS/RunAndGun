@@ -429,6 +429,12 @@ MonoBehaviour:
     sceneName: LobbyRegion
   - region: 2
     sceneName: EnemyTestRoom
+  - region: 3
+    sceneName: AtlantisRegion
+  - region: 4
+    sceneName: CastleRegion
+  - region: 5
+    sceneName: DungeonRegion
 --- !u!114 &6147434120120078534
 MonoBehaviour:
   m_ObjectHideFlags: 0
