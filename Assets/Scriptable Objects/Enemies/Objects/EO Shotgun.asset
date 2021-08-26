@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 855900191247271055, guid: 59c49bc867132d442bb4bc6472c03805, type: 3}
   weapons:
-  - {fileID: 11400000, guid: 6c94d7e1d9a371e4c9b9479a48d76693, type: 2}
-  behaviourTree: {fileID: 11400000, guid: 5a62b165905bf2246bf6d474d8d4014f, type: 2}
+  - {fileID: 11400000, guid: a813f83e05dbc244491d83ab82ca7066, type: 2}
+  behaviourTree: {fileID: 11400000, guid: 6bcd8aa6b56f87b47b9ca0451db3f197, type: 2}
   stats:
     metersPerSecond: 4
     maxHealth: 30

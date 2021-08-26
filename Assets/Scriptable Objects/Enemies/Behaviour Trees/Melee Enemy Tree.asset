@@ -27,10 +27,10 @@ MonoBehaviour:
     newValue: {fileID: 0}
   - toOverwrite: {fileID: -4012384648624462460, guid: 5a62b165905bf2246bf6d474d8d4014f,
       type: 2}
-    newValue: {fileID: 0}
+    newValue: {fileID: 5568161008917145277}
   - toOverwrite: {fileID: -6122327776980015509, guid: 5a62b165905bf2246bf6d474d8d4014f,
       type: 2}
-    newValue: {fileID: 0}
+    newValue: {fileID: -3922773536245652959}
   - toOverwrite: {fileID: 1754515563807091247, guid: 5a62b165905bf2246bf6d474d8d4014f,
       type: 2}
     newValue: {fileID: 0}

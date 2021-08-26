@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9d1514134bc4fbd41bb739b1b9a49231, type: 3}
-  m_Name: RuleTileDungeonWall
+  m_Name: RuleTileCastleWall
   m_EditorClassIdentifier: 
   m_DefaultSprite: {fileID: 0}
   m_DefaultGameObject: {fileID: 0}
@@ -18,7 +18,7 @@ MonoBehaviour:
   m_TilingRules:
   - m_Id: 0
     m_Sprites:
-    - {fileID: -7430717000416064831, guid: 429c0861aa5a4254f97f01dbfcdb6261, type: 3}
+    - {fileID: 1127032972486826713, guid: 429c0861aa5a4254f97f01dbfcdb6261, type: 3}
     - {fileID: -4535219754890064970, guid: 429c0861aa5a4254f97f01dbfcdb6261, type: 3}
     m_GameObject: {fileID: 0}
     m_AnimationSpeed: 1
@@ -34,7 +34,7 @@ MonoBehaviour:
     m_RuleTransform: 0
   - m_Id: 1
     m_Sprites:
-    - {fileID: 4307174248353454657, guid: 429c0861aa5a4254f97f01dbfcdb6261, type: 3}
+    - {fileID: -5202571870083908258, guid: 429c0861aa5a4254f97f01dbfcdb6261, type: 3}
     m_GameObject: {fileID: 0}
     m_AnimationSpeed: 1
     m_PerlinScale: 0.5
@@ -49,7 +49,7 @@ MonoBehaviour:
     m_RuleTransform: 0
   - m_Id: 2
     m_Sprites:
-    - {fileID: 888888366287655370, guid: 429c0861aa5a4254f97f01dbfcdb6261, type: 3}
+    - {fileID: 2783433229216111699, guid: 429c0861aa5a4254f97f01dbfcdb6261, type: 3}
     m_GameObject: {fileID: 0}
     m_AnimationSpeed: 1
     m_PerlinScale: 0.5
@@ -64,7 +64,7 @@ MonoBehaviour:
     m_RuleTransform: 0
   - m_Id: 3
     m_Sprites:
-    - {fileID: 5001083249279705635, guid: 429c0861aa5a4254f97f01dbfcdb6261, type: 3}
+    - {fileID: 6945439786173917616, guid: 429c0861aa5a4254f97f01dbfcdb6261, type: 3}
     m_GameObject: {fileID: 0}
     m_AnimationSpeed: 1
     m_PerlinScale: 0.5

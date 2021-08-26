@@ -17,10 +17,9 @@ public class StartRoom : DungeonRoom
     {
         for (int i = 0; i < pickables.Length; i++)
         {
-            PickableInWorld.Place(pickables[i],
-                MathUtil.RandomVector3(
-                    new Vector3(-1.0f, -1.0f), new Vector3(1.0f, 1.0f)
-                ) + vector3);
+            Vector3 pos = vector3 + new Vector3(1.0f * (i - pickables.Length / 2.0f), 0.0f, 0.0f);
+            //PickableInWorld.Place(pickables[i], MathUtil.RandomVector3(new Vector3(-1.0f, -1.0f), new Vector3(1.0f, 1.0f)) + vector3);
+            PickableInWorld.Place(pickables[i], pos);
         }
     }
 }

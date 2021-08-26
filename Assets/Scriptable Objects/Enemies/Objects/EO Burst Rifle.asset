@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 3022296384892480377, guid: 362debbd5c9bf724dbcab5f7921817f4, type: 3}
   weapons:
-  - {fileID: 11400000, guid: ff2c6c04229b1e7479c5e38810329a01, type: 2}
+  - {fileID: 11400000, guid: 1640674c97a10434f9577c252b7449fc, type: 2}
   behaviourTree: {fileID: 11400000, guid: 1b7af82f814591f4186135b8dae2ff3e, type: 2}
   stats:
     metersPerSecond: 4

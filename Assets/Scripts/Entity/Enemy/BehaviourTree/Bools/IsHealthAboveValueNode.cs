@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Returns true if the given entity is still alive.
+/// Returns true if own health is above percentage.
 /// </summary>
 public class IsHealthAboveValueNode : BoolNode
 {

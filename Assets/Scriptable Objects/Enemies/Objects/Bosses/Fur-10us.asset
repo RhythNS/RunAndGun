@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5e87f3f94edef514493df48c604bd029, type: 3}
-  m_Name: EO Boss 1
+  m_Name: Fur-10us
   m_EditorClassIdentifier: 
-  prefab: {fileID: 6935130542220294974, guid: f285bbd8bc84e7e41b8fea818f1c0b97, type: 3}
+  prefab: {fileID: 6935130542220294974, guid: 517682a515f946e46a6d39a40ae424b3, type: 3}
   weapons:
   - {fileID: 11400000, guid: b50dc7558c5ce9e4cad984fcaa4d44b6, type: 2}
-  behaviourTree: {fileID: 11400000, guid: 51b34016b4f0576419ea8fd790ed3f20, type: 2}
+  behaviourTree: {fileID: 11400000, guid: d4cc0d2d203c4404f8acbfaa1f582618, type: 2}
   stats:
-    metersPerSecond: 5
-    maxHealth: 500
+    metersPerSecond: 7
+    maxHealth: 800

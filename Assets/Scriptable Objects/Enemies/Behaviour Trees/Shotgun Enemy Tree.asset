@@ -47,7 +47,19 @@ MonoBehaviour:
     width: 80
     height: 80
   behaviourTree: {fileID: 11400000, guid: 5a62b165905bf2246bf6d474d8d4014f, type: 2}
-  valuesToOverwrite: []
+  valuesToOverwrite:
+  - toOverwrite: {fileID: 5843617289265880086, guid: 5a62b165905bf2246bf6d474d8d4014f,
+      type: 2}
+    newValue: {fileID: 0}
+  - toOverwrite: {fileID: -4012384648624462460, guid: 5a62b165905bf2246bf6d474d8d4014f,
+      type: 2}
+    newValue: {fileID: 7258587278949779128}
+  - toOverwrite: {fileID: -6122327776980015509, guid: 5a62b165905bf2246bf6d474d8d4014f,
+      type: 2}
+    newValue: {fileID: -8765721487824878967}
+  - toOverwrite: {fileID: 1754515563807091247, guid: 5a62b165905bf2246bf6d474d8d4014f,
+      type: 2}
+    newValue: {fileID: 0}
 --- !u!114 &7258587278949779128
 MonoBehaviour:
   m_ObjectHideFlags: 0

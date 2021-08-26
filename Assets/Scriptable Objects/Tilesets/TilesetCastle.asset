@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdb9c413433edc24a82901334c5a4a7c, type: 3}
   m_Name: TilesetCastle
   m_EditorClassIdentifier: 
-  tileFloor: {fileID: 0}
-  tileWall: {fileID: 0}
-  tileCeiling: {fileID: 0}
+  tileFloor: {fileID: 11400000, guid: 1df0dd5ae0283354096322d226a3b573, type: 2}
+  tileWall: {fileID: 11400000, guid: efcd4a02f23b8b046987163ee5566e7c, type: 2}
+  tileCeiling: {fileID: 11400000, guid: 716142562b718964ea24d7c58adf2a4a, type: 2}
