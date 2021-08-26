@@ -12,12 +12,12 @@ public class ShootAtNode : BNodeAdapter
 
     public override int MaxNumberOfChildren => 0;
 
-    [SerializeField] private HealthValue targetHealth;
+    [SerializeField] protected HealthValue targetHealth;
 
-    private bool weaponStartedFiring = false;
+    protected bool weaponStartedFiring = false;
 
-    private EquippedWeapon weapon;
-    private Health health;
+    protected EquippedWeapon weapon;
+    protected Health health;
 
     public override void InnerBeginn()
     {

@@ -15,6 +15,8 @@ MonoBehaviour:
   prefab: {fileID: 6935130542220294974, guid: dd4ace2cf72759145879cf64d4195036, type: 3}
   weapons:
   - {fileID: 11400000, guid: b50dc7558c5ce9e4cad984fcaa4d44b6, type: 2}
+  - {fileID: 11400000, guid: b50dc7558c5ce9e4cad984fcaa4d44b6, type: 2}
+  - {fileID: 11400000, guid: b50dc7558c5ce9e4cad984fcaa4d44b6, type: 2}
   behaviourTree: {fileID: 11400000, guid: d4cc0d2d203c4404f8acbfaa1f582618, type: 2}
   stats:
     metersPerSecond: 10

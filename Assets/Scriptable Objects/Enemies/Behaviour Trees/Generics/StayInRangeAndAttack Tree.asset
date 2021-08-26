@@ -144,6 +144,27 @@ MonoBehaviour:
   m_Name: maxDistance
   m_EditorClassIdentifier: 
   value: 0
+--- !u!114 &7308477214849746130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88a3f33939467cf47a803f2be94ee835, type: 3}
+  m_Name: New ShootAtPredictNode
+  m_EditorClassIdentifier: 
+  breakPointEnabled: 0
+  children: []
+  boundsInEditor:
+    serializedVersion: 2
+    x: -220
+    y: 60
+    width: 80
+    height: 80
+  targetHealth: {fileID: 89303558089022605}
 --- !u!114 &7458006928806338609
 MonoBehaviour:
   m_ObjectHideFlags: 0
