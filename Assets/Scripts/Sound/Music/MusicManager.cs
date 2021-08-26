@@ -44,6 +44,7 @@ public class MusicManager : MonoBehaviour
     public void RegisterPlayer(Player player)
     {
         player.Health.CurrentChangedAsPercentage += HealthChanged;
+        instance.setParameterByID(healthParameter, 1.0f);
     }
 
     public void DeRegisterPlayer()

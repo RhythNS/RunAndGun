@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/RhyTestScenes/StartScene.unity
+    path: Assets/Scenes/StartScene.unity
     guid: 72d6bcf05f6220145ab70d64d8b3e23c
   - enabled: 1
     path: Assets/Scenes/Regions/DebugRegion.unity
