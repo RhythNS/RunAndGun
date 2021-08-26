@@ -1,4 +1,7 @@
-﻿public class VolumeChangeZone : EnterZone
+﻿/// <summary>
+/// Zone that opens the volume control.
+/// </summary>
+public class VolumeChangeZone : EnterZone
 {
     public override void OnEnter(Player player)
     {

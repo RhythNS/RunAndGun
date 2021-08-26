@@ -3,6 +3,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// UI element manager for showing the game over screen.
+/// </summary>
 public class GameOverScreen : MonoBehaviour
 {
     [SerializeField] private Button backButton;
@@ -32,6 +35,9 @@ public class GameOverScreen : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// Sets all stats of all players.
+    /// </summary>
     public void Set(StatsTransmission stats)
     {
         GlobalsDict.Instance.StartCoroutine(InnerSet(stats));
@@ -69,12 +75,18 @@ public class GameOverScreen : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Called when a connected client wants to leave the server.
+    /// </summary>
     private void OnLeaveServerClicked()
     {
         gameObject.SetActive(false);
         StartCoroutine(RegionSceneLoader.Instance.LoadScene(Region.Lobby));
     }
 
+    /// <summary>
+    /// Called when a host wants to retun to the lobby.
+    /// </summary>
     private void OnReturnToLobbyClicked()
     {
         gameObject.SetActive(false);

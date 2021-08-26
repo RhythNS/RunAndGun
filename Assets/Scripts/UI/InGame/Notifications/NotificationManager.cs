@@ -5,6 +5,9 @@ using System.Text;
 using TMPro;
 using UnityEngine;
 
+/// <summary>
+/// UI Element for displaying messages to the screen.
+/// </summary>
 public class NotificationManager : MonoBehaviour
 {
     [SerializeField] private float timeForSingleNotification = 2.0f;
@@ -19,6 +22,9 @@ public class NotificationManager : MonoBehaviour
         text.text = "";
     }
 
+    /// <summary>
+    /// Clears all messages.
+    /// </summary>
     public void ClearAll()
     {
         if (displayingStrings == null)
@@ -30,6 +36,10 @@ public class NotificationManager : MonoBehaviour
         text.text = "";
     }
 
+    /// <summary>
+    /// Shows a message.
+    /// </summary>
+    /// <param name="toDisplay">The message to be displayed.</param>
     public void Show(string toDisplay)
     {
         displayingStrings.Add(new Tuple<string, ExtendedCoroutine>(toDisplay,
@@ -44,6 +54,9 @@ public class NotificationManager : MonoBehaviour
         UpdateDisplay();
     }
 
+    /// <summary>
+    /// Updates the display.
+    /// </summary>
     private void UpdateDisplay()
     {
         if (displayingStrings.Count == 0)

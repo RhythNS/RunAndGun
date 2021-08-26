@@ -48,6 +48,9 @@ public class Config : MonoBehaviour
         volumes = loaded.volumes;
     }
 
+    /// <summary>
+    /// Sets values that are dependent on the current plattform.
+    /// </summary>
     private void SetValuesForPlattform()
     {
         switch (Application.platform)
@@ -72,6 +75,9 @@ public class Config : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Saves the config.
+    /// </summary>
     public void Save()
     {
         SaveGame saveGame = new SaveGame()

@@ -1,6 +1,8 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
+/// <summary>
+/// UI manager for all ui elements that are relevant during gameplay.
+/// </summary>
 public class InGameManager : MonoBehaviour
 {
     [SerializeField] private PercentageAs healthPercentage;

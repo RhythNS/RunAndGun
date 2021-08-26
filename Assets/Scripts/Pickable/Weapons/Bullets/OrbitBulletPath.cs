@@ -1,7 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
+/// <summary>
+/// Makes the bullet orbit around the shooter.
+/// </summary>
 [CreateAssetMenu(menuName = "Pickable/Weapon/BulletPath/Orbit")]
 public class OrbitBulletPath : BulletPath
 {
@@ -9,7 +10,8 @@ public class OrbitBulletPath : BulletPath
     [Range(1f, 115f)]
     private float radius = 1f;
 
-    public override float GetCurrentAngle(float aliveTime) {
+    public override float GetCurrentAngle(float aliveTime)
+    {
         float newAngle = Mathf.Rad2Deg * aliveTime * radius;
         return newAngle;
     }

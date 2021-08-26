@@ -5,6 +5,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Panel for connecting to another server.
+/// </summary>
 public class ServerConnect : PanelElement
 {
     [SerializeField] private Button refreshButton;
@@ -44,6 +47,9 @@ public class ServerConnect : PanelElement
         Refresh();
     }
 
+    /// <summary>
+    /// Refreshes the match list.
+    /// </summary>
     private void Refresh()
     {
         refreshButton.gameObject.SetActive(false);
@@ -62,11 +68,17 @@ public class ServerConnect : PanelElement
         RAGMatchmaker.Instance.GetMatchList(OnMatchListRecieved);
     }
 
+    /// <summary>
+    /// Callback for when the matchmaker reconnected.
+    /// </summary>
     private void OnReconnected()
     {
         RAGMatchmaker.Instance.GetMatchList(OnMatchListRecieved);
     }
 
+    /// <summary>
+    /// Callback for when the match list was recieved.
+    /// </summary>
     private void OnMatchListRecieved(bool success, Match[] matches)
     {
         refreshButton.gameObject.SetActive(true);
@@ -101,6 +113,9 @@ public class ServerConnect : PanelElement
         Destroy(matchDisplay.gameObject);
     }
 
+    /// <summary>
+    /// When the connect button was pressed.
+    /// </summary>
     private void OnConnectButtonPressed()
     {
         if (toConnectToMatch == null)
@@ -112,6 +127,9 @@ public class ServerConnect : PanelElement
         RAGMatchmaker.Instance.JoinMatch(toConnectToMatch, OnMatchJoined);
     }
 
+    /// <summary>
+    /// When the abort button was pressed.
+    /// </summary>
     private void OnAbortConnectButtonPressed()
     {
         joinServerTrans.gameObject.SetActive(false);
@@ -120,6 +138,9 @@ public class ServerConnect : PanelElement
         Refresh();
     }
 
+    /// <summary>
+    /// Callback for when a match was joined.
+    /// </summary>
     private void OnMatchJoined(bool success, Match match)
     {
         if (success == false)
@@ -144,6 +165,15 @@ public class ServerConnect : PanelElement
         OnConfirm();
     }
 
+    /// <summary>
+    /// Called when a match was clicked.
+    /// </summary>
+    /// <param name="match">The match to be connect to.</param>
+    /// <param name="isPasswordProtected">Wheter the match is password protected.</param>
+    /// <param name="matchName">The name of the match.</param>
+    /// <param name="connected">How many players are currently connected.</param>
+    /// <param name="maxPlayers">The maximum amount of players of the match.</param>
+    /// <param name="regionString">The region of the match.</param>
     public void OnMatchClicked(Match match, bool isPasswordProtected, string matchName, int connected, int maxPlayers, string regionString)
     {
         joinServerTrans.gameObject.SetActive(true);

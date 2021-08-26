@@ -1,4 +1,7 @@
-﻿public class ItemAdapter : Item
+﻿/// <summary>
+/// Helper class that can be inherrited from, if not every method of Item is needed.
+/// </summary>
+public class ItemAdapter : Item
 {
     public override void OnDrop(Player player)
     {

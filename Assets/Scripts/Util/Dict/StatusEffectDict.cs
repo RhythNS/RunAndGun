@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Dict for data used by status effects.
+/// </summary>
 public class StatusEffectDict : MonoBehaviour
 {
     public static StatusEffectDict Instance { get; private set; }
@@ -15,6 +18,9 @@ public class StatusEffectDict : MonoBehaviour
         Instance = this;
     }
 
+    /// <summary>
+    /// Particle system that is played on poisend entites.
+    /// </summary>
     public ParticleSystem PosionParticleSystem => posionParticleSystem;
     [SerializeField] private ParticleSystem posionParticleSystem;
 

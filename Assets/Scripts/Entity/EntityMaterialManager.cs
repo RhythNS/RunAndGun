@@ -2,6 +2,9 @@
 using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// Manages material effects for an entity.
+/// </summary>
 public class EntityMaterialManager : MonoBehaviour
 {
     private Material originalMaterial, currentEffectMaterial;
@@ -23,6 +26,11 @@ public class EntityMaterialManager : MonoBehaviour
         health.CurrentChanged += OnCurrentChanged;
     }
 
+    /// <summary>
+    /// Callback when the current health amount changed.
+    /// </summary>
+    /// <param name="prevValue">The previous health amount.</param>
+    /// <param name="newValue">The new health amount.</param>
     private void OnCurrentChanged(int prevValue, int newValue)
     {
         if (currentTempEffect != null && !currentTempEffect.IsFinshed)
@@ -32,12 +40,21 @@ public class EntityMaterialManager : MonoBehaviour
         StartTempEffect(HealthEffect(material, healthEffectDuration), material);
     }
 
+    /// <summary>
+    /// Plays a spawn effect. Should be called when the entity was first created.
+    /// </summary>
+    /// <param name="duration">The duration of the effect.</param>
     public void PlaySpawnEffect(float duration = 0.6f)
     {
         Material spawnMaterial = new Material(MaterialDict.Instance.SpawnMaterial);
         StartTempEffect(SpawnEffect(spawnMaterial, duration), spawnMaterial);
     }
 
+    /// <summary>
+    /// Plays a despawn effect. Should be called before the entity is destroyed.
+    /// </summary>
+    /// <param name="duration">The duration of the effect.</param>
+    /// <param name="onFinished">Callback when the effect has finished playing.</param>
     public void PlayDeSpawnEffect(float duration = 0.6f, Action onFinished = null)
     {
         Material spawnMaterial = new Material(MaterialDict.Instance.SpawnMaterial);
@@ -49,6 +66,11 @@ public class EntityMaterialManager : MonoBehaviour
         currentTempEffect = new ExtendedCoroutine(this, DeSpawnEffect(spawnMaterial, duration), onFinished, true);
     }
 
+    /// <summary>
+    /// Handles the displaying of the health effect.
+    /// </summary>
+    /// <param name="material">The health material.</param>
+    /// <param name="duration">The duration of the effect.</param>
     private IEnumerator HealthEffect(Material material, float duration)
     {
         float halfDuration = duration * 0.5f;
@@ -82,6 +104,11 @@ public class EntityMaterialManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Handles the displaying of the spawn effect.
+    /// </summary>
+    /// <param name="material">The spawn material.</param>
+    /// <param name="duration">The duration of the effect.</param>
     private IEnumerator SpawnEffect(Material material, float duration)
     {
         float timer = duration;
@@ -100,6 +127,11 @@ public class EntityMaterialManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Handles the displaying of the despawn effect.
+    /// </summary>
+    /// <param name="material">The despawn material.</param>
+    /// <param name="duration">The duration of the effect.</param>
     private IEnumerator DeSpawnEffect(Material material, float duration)
     {
         float timer = duration;
@@ -118,6 +150,11 @@ public class EntityMaterialManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Handles the displaying a temp effect.
+    /// </summary>
+    /// <param name="material">The temp material.</param>
+    /// <param name="duration">The duration of the effect.</param>
     private void StartTempEffect(IEnumerator enumerator, Material material)
     {
         if (currentTempEffect != null && currentTempEffect.IsFinshed == false)
@@ -127,6 +164,9 @@ public class EntityMaterialManager : MonoBehaviour
         currentTempEffect = new ExtendedCoroutine(this, enumerator, ResetMaterial, true);
     }
 
+    /// <summary>
+    /// Resets the material to the default material.
+    /// </summary>
     private void ResetMaterial()
     {
         spriteRenderer.material = originalMaterial;

@@ -1,13 +1,22 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Holds information about ui managers.
+/// </summary>
 public class UIManager : MonoBehaviour
 {
+    /// <summary>
+    /// The root canvas of the ui.
+    /// </summary>
     public Canvas Canvas => canvas;
     [SerializeField] Canvas canvas;
 
     [SerializeField] private LoadingScreenManager loadingScreenManager;
     [SerializeField] private InGameManager inGameManager;
 
+    /// <summary>
+    /// The manager that manages the options.
+    /// </summary>
     public OptionsUIManager OptionsManager => optionsManager;
     [SerializeField] private OptionsUIManager optionsManager;
 

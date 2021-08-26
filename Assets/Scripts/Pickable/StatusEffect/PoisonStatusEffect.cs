@@ -1,8 +1,14 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Damages the player every tick.
+/// </summary>
 [CreateAssetMenu(menuName = "Pickable/Status/Poison")]
 public class PoisonStatusEffect : StatusEffectAdapter
 {
+    /// <summary>
+    /// The amount of damage done per tick.
+    /// </summary>
     [SerializeField] private int damagePerTick;
 
     private ParticleSystem system;

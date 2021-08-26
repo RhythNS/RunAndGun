@@ -3,6 +3,9 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// UI Element that displays when a client wants to connect to a server.
+/// </summary>
 public class ConnectingScreen : MonoBehaviour
 {
     [SerializeField] private Image walkingSprite;
@@ -18,6 +21,9 @@ public class ConnectingScreen : MonoBehaviour
         StartCoroutine(CheckForConnected());
     }
 
+    /// <summary>
+    /// Checks if the player is connected to the server.
+    /// </summary>
     private IEnumerator CheckForConnected()
     {
         NetworkManager netManager = NetworkManager.singleton;

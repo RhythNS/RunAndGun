@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Starts the game.
+/// </summary>
 public class GameStarter : MonoBehaviour
 {
     [SerializeField] private Region regionToLoad;

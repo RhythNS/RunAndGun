@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+/// <summary>
+/// UI Element that manages the connection to another match.
+/// </summary>
 public class ServerConnectMatchDisplay : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private TMP_Text gameName;
@@ -20,6 +23,12 @@ public class ServerConnectMatchDisplay : MonoBehaviour, IPointerClickHandler
     private int maxPlayers;
     private string regionString;
 
+    /// <summary>
+    /// Inits all values.
+    /// </summary>
+    /// <param name="match">The match to which to be connected to.</param>
+    /// <param name="serverConnect">A reference to the server connect.</param>
+    /// <returns>Wheter it successeded or not.</returns>
     public bool Set(Match match, ServerConnect serverConnect)
     {
         if (match.matchData.TryGetValue("Match name", out MatchData nameData) == false ||

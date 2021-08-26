@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// GameManager for handling the lobby region.
+/// </summary>
 public class LobbyManager : MonoBehaviour
 {
     private static LobbyManager instance;
@@ -29,16 +32,27 @@ public class LobbyManager : MonoBehaviour
         LobbyLevel.Instance.Show();
     }
 
+    /// <summary>
+    /// Called when the list of connected players changed.
+    /// </summary>
+    /// <param name="player">The player that was added or removed.</param>
     public void OnPlayerChanged(Player player)
     {
         OnPlayerChangedReady();
     }
 
+    /// <summary>
+    /// Changes the selected game mode.
+    /// </summary>
+    /// <param name="gameMode">The new gamemode.</param>
     public static void ChangeGameMode(GameMode gameMode)
     {
         instance.selectedGameMode = gameMode;
     }
 
+    /// <summary>
+    /// Called when a player changed its status to be ready for entering the main game.
+    /// </summary>
     public static void OnPlayerChangedReady()
     {
         if (!instance)
@@ -78,6 +92,9 @@ public class LobbyManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Called when the countdown for starting the game finished.
+    /// </summary>
     private void OnCountDownFinished()
     {
         List<Player> players = PlayersDict.Instance.Players;
@@ -106,6 +123,9 @@ public class LobbyManager : MonoBehaviour
         Destroy(this);
     }
 
+    /// <summary>
+    /// Starts the countdown if all players are ready.
+    /// </summary>
     private IEnumerator StartGameCountdown()
     {
         Debug.Log("All players ready! Starting Countdown!");

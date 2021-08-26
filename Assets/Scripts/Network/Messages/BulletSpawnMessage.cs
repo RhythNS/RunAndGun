@@ -1,8 +1,9 @@
 ﻿using Mirror;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Message for when a bullet was spawned.
+/// </summary>
 public struct BulletSpawnMessage : NetworkMessage
 {
     public GameObject shooter;

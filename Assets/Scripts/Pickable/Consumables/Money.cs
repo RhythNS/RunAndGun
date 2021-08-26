@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Adds money to the players inventory when picked up.
+/// </summary>
 [CreateAssetMenu(menuName = "Pickable/Consumable/Money")]
 public class Money : Consumable
 {

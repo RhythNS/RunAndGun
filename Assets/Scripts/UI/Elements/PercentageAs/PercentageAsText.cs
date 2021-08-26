@@ -1,6 +1,9 @@
 ﻿using TMPro;
 using UnityEngine;
 
+/// <summary>
+/// Displays a percentage as a tmp text.
+/// </summary>
 public class PercentageAsText : PercentageAs
 {
     [SerializeField] private TMP_Text percentageText;

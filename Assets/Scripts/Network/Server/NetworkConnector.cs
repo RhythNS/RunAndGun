@@ -5,6 +5,9 @@ using System.Collections;
 using System.Net.Sockets;
 using UnityEngine;
 
+/// <summary>
+/// Helper class for connecting to or hosting a server.
+/// </summary>
 public class NetworkConnector : MonoBehaviour
 {
     #region ConnectToServer
@@ -75,6 +78,12 @@ public class NetworkConnector : MonoBehaviour
     #endregion
 
     #region StartServer
+    /// <summary>
+    /// Tries to start a server.
+    /// </summary>
+    /// <param name="lanOnly">Wheter the server should be lan only.</param>
+    /// <param name="onSuccess">Callback when the server started successful.</param>
+    /// <param name="onFailure">Callback when the server did not start.</param>
     public static void TryStartServer(bool lanOnly, Action onSuccess = null, Action onFailure = null)
     {
         NobleNetworkManager networkManager = (NobleNetworkManager)NetworkManager.singleton;

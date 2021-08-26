@@ -2,6 +2,9 @@
 using TiledSharp;
 using UnityEngine;
 
+/// <summary>
+/// Dict for tiled data.
+/// </summary>
 public class TiledDict : MonoBehaviour
 {
     public static TiledDict Instance { get; private set; }
@@ -49,6 +52,8 @@ public class TiledDict : MonoBehaviour
         }
         Instance = this;
 
+        // move all arrays into dictionaries for quicker access.
+
         for (int i = 0; i < tilesets.Length; i++)
         {
             tilesets[i].tileset = new TmxTileset(tilesets[i].tsxFile)
@@ -69,16 +74,32 @@ public class TiledDict : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Gets a specified tileset.
+    /// </summary>
+    /// <param name="name">The name of the tileset.</param>
+    /// <returns>A reference to the tileset.</returns>
     public Tileset GetTileset(string name)
     {
         return tilesetDict[name];
     }
 
+    /// <summary>
+    /// Gets a specified tilemap.
+    /// </summary>
+    /// <param name="name">The name of the tilemap.</param>
+    /// <returns>A reference to the tilemap.</returns>
     public Tilemap GetTileMap(string name)
     {
         return mapDict[name];
     }
 
+    /// <summary>
+    /// Try to get a custom object.
+    /// </summary>
+    /// <param name="name">The name of the custom object.</param>
+    /// <param name="obj">A reference to the object if found.</param>
+    /// <returns>Wheter it found the object or not.</returns>
     public bool TryGetObject(string name, out GameObject obj)
     {
         if (objectDict.TryGetValue(name, out obj))

@@ -3,17 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// UI Element for an emote.
+/// </summary>
 public class EmoteMessageDisplay : MonoBehaviour
 {
     [SerializeField] private Image frameImage;
     [SerializeField] private Image emoteImage;
 
+    /// <summary>
+    /// Inits all values.
+    /// </summary>
+    /// <param name="emoteMessage">The emote message recieved.</param>
+    /// <param name="emoteBoard">A reference to the emote board.</param>
     public void Set(EmoteMessage emoteMessage, EmoteBoard emoteBoard)
     {
         List<Player> players = PlayersDict.Instance.Players;
         Player player = players.Find(x => x.playerId == emoteMessage.playerID);
         EmoteDict.Emote? emote = EmoteDict.Instance.GetEmote(emoteMessage.emoteID);
 
+        // Is not valid?
         if (player == null || emote == null || player.playerIndex > 3)
         {
             Destroy(gameObject);

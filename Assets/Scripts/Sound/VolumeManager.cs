@@ -4,6 +4,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Manges fmod bus volumes.
+/// </summary>
 public class VolumeManager : MonoBehaviour
 {
     public static VolumeManager Instance { get; private set; }
@@ -43,6 +46,11 @@ public class VolumeManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Set the volume for a specific bus.
+    /// </summary>
+    /// <param name="volume">The new volume.</param>
+    /// <param name="name">The name of the bus.</param>
     public void SetVolume(float volume, string name)
     {
         if (nameForBus.TryGetValue(name, out Bus bus) == false)
@@ -54,6 +62,11 @@ public class VolumeManager : MonoBehaviour
         bus.setVolume(volume);
     }
 
+    /// <summary>
+    /// Get the volume for a specific bus.
+    /// </summary>
+    /// <param name="name">The name of the bus.</param>
+    /// <returns>The volume.</returns>
     public float GetVolume(string name)
     {
         if (nameForBus.TryGetValue(name, out Bus bus) == false)
@@ -66,6 +79,9 @@ public class VolumeManager : MonoBehaviour
         return volume;
     }
 
+    /// <summary>
+    /// Save the volumes for all busses.
+    /// </summary>
     public void Save()
     {
         Tuple<string, float>[] volumes = new Tuple<string, float>[busses.Length];
@@ -78,6 +94,10 @@ public class VolumeManager : MonoBehaviour
         Config.Instance.Save();
     }
 
+    /// <summary>
+    /// Load the volume levels of all busses.
+    /// </summary>
+    /// <param name="volumes"></param>
     public void Load(Tuple<string, float>[] volumes)
     {
         if (volumes == null)

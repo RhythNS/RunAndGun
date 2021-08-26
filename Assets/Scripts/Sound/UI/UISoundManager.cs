@@ -1,8 +1,9 @@
 ﻿using FMODUnity;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Sound manager for playing ui sounds through fmod.
+/// </summary>
 public class UISoundManager : MonoBehaviour
 {
     public enum Sound
@@ -32,6 +33,10 @@ public class UISoundManager : MonoBehaviour
         Instance = this;
     }
 
+    /// <summary>
+    /// Plays a sound.
+    /// </summary>
+    /// <param name="sound">The sound to be played.</param>
     public void PlaySound(Sound sound)
     {
         for (int i = 0; i < sounds.Length; i++)

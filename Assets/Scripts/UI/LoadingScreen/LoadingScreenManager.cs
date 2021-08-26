@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// UI Element for managing the loading screen.
+/// </summary>
 public class LoadingScreenManager : MonoBehaviour
 {
     public float Left { get; private set; } = 0.0f;
@@ -32,6 +35,9 @@ public class LoadingScreenManager : MonoBehaviour
 
     private readonly List<LoadingPlayerElement> playerElements = new List<LoadingPlayerElement>();
 
+    /// <summary>
+    /// Shows the loading screen.
+    /// </summary>
     public void Show()
     {
         gameObject.SetActive(true);
@@ -49,21 +55,13 @@ public class LoadingScreenManager : MonoBehaviour
         for (int i = 0; i < 4; i++)
         {
             Player player = players.Find(x => x.playerIndex == i);
+            // Check if there is a player connected in this slot. Then determine wheter the loading element
+            // should come from the right or from the left, based on wheter the current index is an even number.
             if (player)
                 CreateLoadingPlayerElement(i % 2 == 0 ? fromRightPrefab : fromLeftPrefab, -quaterHeight * i, player, CharacterDict.Instance.PlayerColors[i], width, height);
             else
                 CreateLoadingPlayerElement(emptyPrefab, -quaterHeight * i, null, notConnectedColor, width, height, i % 2 == 0);
         }
-        /*
-        for (int i = 0; i < players.Count; i++)
-        {
-            CreateLoadingPlayerElement(i % 2 == 0 ? fromRightPrefab : fromLeftPrefab, -quaterHeight * i, players[i], CharacterDict.Instance.PlayerColors[i], width, height);
-        }
-        for (int i = players.Count; i < 4; i++)
-        {
-            CreateLoadingPlayerElement(emptyPrefab, -quaterHeight * i, null, notConnectedColor, width, height, i % 2 == 0);
-        }
-         */
         StartCoroutine(InnerShow());
     }
 
@@ -78,6 +76,16 @@ public class LoadingScreenManager : MonoBehaviour
         yield return new WaitForSeconds(fadeInTime * 0.75f);
     }
 
+    /// <summary>
+    /// Creates a loading player element.
+    /// </summary>
+    /// <param name="prefab">The prefab to be used.</param>
+    /// <param name="y">The y coordinate of where the element should be.</param>
+    /// <param name="player">The player that the element is for. Can be null.</param>
+    /// <param name="color">The color of the player.</param>
+    /// <param name="width">The width of the loading screen.</param>
+    /// <param name="height">The height of the loading screen.</param>
+    /// <param name="overrideFadeFadeFromRight">True: force the panel to come from right, false: force the panel to come from left, null: do the expected entry.</param>
     private void CreateLoadingPlayerElement(LoadingPlayerElement prefab, float y, Player player, Color color, float width, float height, bool? overrideFadeFadeFromRight = null)
     {
         LoadingPlayerElement lpe = Instantiate(prefab, transform);
@@ -91,6 +99,9 @@ public class LoadingScreenManager : MonoBehaviour
         playerElements.Add(lpe);
     }
 
+    /// <summary>
+    /// Called to hide loading screen.
+    /// </summary>
     public void Hide()
     {
         StartCoroutine(InnerHide());

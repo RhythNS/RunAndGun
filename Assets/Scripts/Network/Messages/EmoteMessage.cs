@@ -1,5 +1,8 @@
 ﻿using Mirror;
 
+/// <summary>
+/// Message when a player emoted.
+/// </summary>
 public struct EmoteMessage : NetworkMessage
 {
     public int emoteID;

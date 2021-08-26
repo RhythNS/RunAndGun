@@ -3,6 +3,9 @@ using NobleConnect.Mirror;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Manages incoming messages and the connection processes.
+/// </summary>
 public class RAGNetworkManager : NobleNetworkManager
 {
     // TODO: Check all messages. If something is wrong, return to main menu
@@ -25,6 +28,7 @@ public class RAGNetworkManager : NobleNetworkManager
         for (int i = 0; i < networkPools.Length; i++)
             networkPools[i].Setup();
 
+        // Register all message handlers.
         NetworkClient.RegisterHandler<StartGameMessage>(OnStartGameMessage);
         NetworkClient.RegisterHandler<ReturnToLobbyMessage>(OnReturnToLobbyMessage);
         NetworkClient.RegisterHandler<DoorMessage>(OnDoorsMessage);
@@ -124,6 +128,11 @@ public class RAGNetworkManager : NobleNetworkManager
         newPlayer.entityName = joinMessage.name;
     }
 
+    /// <summary>
+    /// Gets a player index for a new player or a player that reconnected.
+    /// </summary>
+    /// <param name="ignoreNetID">Playerid that can be ignored. Can be null.</param>
+    /// <returns>The new player index. Can be null.</returns>
     private int? GetPlayerIndex(int? ignoreNetID)
     {
         List<Player> players = PlayersDict.Instance.Players;
@@ -148,6 +157,7 @@ public class RAGNetworkManager : NobleNetworkManager
         return indexToReturn;
     }
 
+    #region NetworkMessages
     private void OnStartGameMessage(StartGameMessage startGameMessage)
     {
         LobbyLevel.Instance.Hide();
@@ -232,4 +242,5 @@ public class RAGNetworkManager : NobleNetworkManager
     {
         GameOverScreen.Instance.Set(gameOverMessage.statsTransmission);
     }
+    #endregion
 }

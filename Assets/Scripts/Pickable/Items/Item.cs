@@ -1,7 +1,8 @@
-﻿public abstract class Item : Pickable
+﻿/// <summary>
+/// An item that can be picked up.
+/// </summary>
+public abstract class Item : Pickable
 {
-    public StatusEffectList OnList { get; set; }
-
     public override PickableType PickableType => PickableType.Item;
 
     public abstract void OnPickUp(Player player);

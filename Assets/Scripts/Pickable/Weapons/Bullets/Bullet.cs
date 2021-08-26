@@ -4,6 +4,9 @@ using Mirror;
 using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// The projectile shoot from a weapon.
+/// </summary>
 public class Bullet : NetworkBehaviour, IPoolable
 {
     public SpriteRenderer SpriteRenderer { get; private set; }
@@ -86,6 +89,11 @@ public class Bullet : NetworkBehaviour, IPoolable
     }
      */
 
+    /// <summary>
+    /// Deletes the bullet after the bullet reached its max range.
+    /// </summary>
+    /// <param name="velocity">The velocity of the bullet.</param>
+    /// <param name="range">How many units the bullets should travel for.</param>
     public IEnumerator DeleteWhenOutOfRange(Vector2 velocity, float range)
     {
         yield return new WaitForSeconds(range / velocity.magnitude);
@@ -117,11 +125,19 @@ public class Bullet : NetworkBehaviour, IPoolable
             OnHit(collision.gameObject);
     }
 
+    /// <summary>
+    /// Called when the bullet hit a local player.
+    /// </summary>
+    /// <param name="player">The player hit.</param>
     public void HitPlayer(Player player)
     {
         OnHit(player.gameObject);
     }
 
+    /// <summary>
+    /// Called when the bullet hit another collider.
+    /// </summary>
+    /// <param name="collider">The collider hit.</param>
     private void OnHit(GameObject collider)
     {
         if (collider.TryGetComponent(out Health health) && isServer)
@@ -140,6 +156,10 @@ public class Bullet : NetworkBehaviour, IPoolable
         Free();
     }
 
+    /// <summary>
+    /// Spawns impact effects.
+    /// </summary>
+    /// <param name="hitHealth">Wheter another entity was hit.</param>
     private void DoImpactEffects(bool hitHealth)
     {
         if (isServer || owningBullet)
@@ -151,6 +171,9 @@ public class Bullet : NetworkBehaviour, IPoolable
         }
     }
 
+    /// <summary>
+    /// Ignores collision with another specified collider.
+    /// </summary>
     public void IgnoreCollision(Collider2D other)
     {
         Physics2D.IgnoreCollision(ignoringCollider = other, OwnCollider, true);

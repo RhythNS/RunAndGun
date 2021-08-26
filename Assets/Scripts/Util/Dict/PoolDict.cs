@@ -1,7 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
+/// <summary>
+/// Dict for all Network pools.
+/// </summary>
 public class PoolDict : MonoBehaviour
 {
     public static PoolDict Instance { get; private set; }
@@ -17,6 +18,9 @@ public class PoolDict : MonoBehaviour
         Instance = this;
     }
 
+    /// <summary>
+    /// Pool for bullets.
+    /// </summary>
     public NetworkPool BulletPool => bulletPool;
     [SerializeField] private NetworkPool bulletPool;
 

@@ -1,6 +1,9 @@
 ﻿using TMPro;
 using UnityEngine;
 
+/// <summary>
+/// Displays an integer as a tmp text.
+/// </summary>
 public class IntAsText : IntAs
 {
     [SerializeField] private TMP_Text text;

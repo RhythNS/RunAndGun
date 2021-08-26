@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// Fires a specific amount of bullets before the entity must retrigger the shoot method.
+/// </summary>
 [CreateAssetMenu(menuName = "Pickable/Weapon/ShotModel/BurstFire")]
 public class BurstFireModel : ShotModel
 {

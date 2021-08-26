@@ -3,6 +3,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+/// <summary>
+/// UI element for displaying the current gun and magazine size.
+/// </summary>
 public class WeaponManager : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] IntAs bulletsLeftDisplay;
@@ -13,6 +16,10 @@ public class WeaponManager : MonoBehaviour, IPointerClickHandler
     private ExtendedCoroutine reloadCoroutine;
     private int maxBullets;
 
+    /// <summary>
+    /// Registers to all relevant events.
+    /// </summary>
+    /// <param name="player">The player that should be tracked.</param>
     public void RegisterEvents(Player player)
     {
         player.EquippedWeapon.BulletCountChanged += BulletCountChanged;
@@ -21,6 +28,9 @@ public class WeaponManager : MonoBehaviour, IPointerClickHandler
         SetNullWeapon();
     }
 
+    /// <summary>
+    /// Sets to display to the default state.
+    /// </summary>
     private void SetNullWeapon()
     {
         gunIcon.sprite = emptySprite;
@@ -29,6 +39,10 @@ public class WeaponManager : MonoBehaviour, IPointerClickHandler
         bulletsLeftPercentage.UpdateValue(1.0f);
     }
 
+    /// <summary>
+    /// Called when the weapon changed.
+    /// </summary>
+    /// <param name="newWeapon">The new weapon.</param>
     private void WeaponChanged(Weapon newWeapon)
     {
         if (reloadCoroutine != null && reloadCoroutine.IsFinshed == false)
@@ -46,6 +60,10 @@ public class WeaponManager : MonoBehaviour, IPointerClickHandler
         bulletsLeftPercentage.UpdateValue(1.0f);
     }
 
+    /// <summary>
+    /// Called when the reloading started.
+    /// </summary>
+    /// <param name="reloadTime">The time it takes to reload the weapon.</param>
     private void ReloadingBegins(float reloadTime)
     {
         if (reloadCoroutine != null && reloadCoroutine.IsFinshed == false)
@@ -54,6 +72,10 @@ public class WeaponManager : MonoBehaviour, IPointerClickHandler
         reloadCoroutine = new ExtendedCoroutine(this, ReloadAnimation(reloadTime), startNow: true);
     }
 
+    /// <summary>
+    /// Called when the current magazine count changed.
+    /// </summary>
+    /// <param name="amount">T´he new amount of bullets.</param>
     private void BulletCountChanged(int amount)
     {
         if (maxBullets == 0)
@@ -66,6 +88,10 @@ public class WeaponManager : MonoBehaviour, IPointerClickHandler
         bulletsLeftPercentage.UpdateValue((float)amount / (float)maxBullets);
     }
 
+    /// <summary>
+    /// Unregisters all events.
+    /// </summary>
+    /// <param name="player">The player that was tracked.</param>
     public void UnRegisterEvents(Player player)
     {
         player.EquippedWeapon.BulletCountChanged -= BulletCountChanged;
@@ -73,6 +99,10 @@ public class WeaponManager : MonoBehaviour, IPointerClickHandler
         player.EquippedWeapon.WeaponChanged -= WeaponChanged;
     }
 
+    /// <summary>
+    /// Does the reload animation.
+    /// </summary>
+    /// <param name="reloadTime">The duration of the animation.</param>
     private IEnumerator ReloadAnimation(float reloadTime)
     {
         float timer = 0.0f;

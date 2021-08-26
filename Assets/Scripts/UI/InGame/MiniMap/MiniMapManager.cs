@@ -1,10 +1,12 @@
 ﻿using MapGenerator;
 using Mirror;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// UI Element for the mini map.
+/// </summary>
 public class MiniMapManager : MonoBehaviour
 {
     private class Room
@@ -51,6 +53,9 @@ public class MiniMapManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Called when a new level was generated.
+    /// </summary>
     public void OnNewLevelGenerated()
     {
         Dungeon dungeon = DungeonDict.Instance.dungeon;
@@ -60,11 +65,18 @@ public class MiniMapManager : MonoBehaviour
         roomOffset = boundingRect.size / 2;
     }
 
+    /// <summary>
+    /// Called when the level was deleted.
+    /// </summary>
     public void OnLevelDeleted()
     {
         ClearTexturesAndRooms();
     }
 
+    /// <summary>
+    /// Called when entered a dungeon room.
+    /// </summary>
+    /// <param name="dungeonRoom">The room that was entered.</param>
     public void OnRoomEntered(DungeonRoom dungeonRoom)
     {
         if (dungeonRoom == null || enteredRooms.ContainsKey(dungeonRoom) == true)
@@ -78,6 +90,10 @@ public class MiniMapManager : MonoBehaviour
         NetworkServer.SendToAll(newRoomMessage);
     }
 
+    /// <summary>
+    /// Callback for when a new room was entered.
+    /// </summary>
+    /// <param name="dungeonRoom">The room that was entered.</param>
     public void OnNewRoomEntered(DungeonRoom dungeonRoom)
     {
         Texture2D texture = CreateTexture(dungeonRoom);
@@ -98,6 +114,10 @@ public class MiniMapManager : MonoBehaviour
         enteredRooms[dungeonRoom] = room;
     }
 
+    /// <summary>
+    /// Sets how zoomed in the map is.
+    /// </summary>
+    /// <param name="newZoomLevel">The new zoom level.</param>
     public void SetZoomLevel(float newZoomLevel)
     {
         background.rectTransform.sizeDelta = background.rectTransform.sizeDelta / zoomFactor * newZoomLevel;
@@ -109,6 +129,11 @@ public class MiniMapManager : MonoBehaviour
         zoomFactor = newZoomLevel;
     }
 
+    /// <summary>
+    /// Creates a texture based on a dungeon room.
+    /// </summary>
+    /// <param name="dungeonRoom">The dungeon room to which a texture should be generated to.</param>
+    /// <returns>The generated texture.</returns>
     private Texture2D CreateTexture(DungeonRoom dungeonRoom)
     {
         GetMinAndMaxValues(dungeonRoom, out int minX, out int minY, out int maxX, out int maxY);
@@ -142,6 +167,9 @@ public class MiniMapManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Clears all textures from memory and removes all rooms.
+    /// </summary>
     private void ClearTexturesAndRooms()
     {
         foreach (Room rooms in enteredRooms.Values)

@@ -3,6 +3,9 @@ using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 
+/// <summary>
+/// Editor for the RAGNetworkManager. Some code was taken from the NetworkManagerEditor.
+/// </summary>
 [CustomEditor(typeof(RAGNetworkManager), false)]
 [CanEditMultipleObjects]
 public class RagNetworkManagerEditor : Editor

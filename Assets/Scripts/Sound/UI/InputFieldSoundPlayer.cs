@@ -1,6 +1,9 @@
 ﻿using TMPro;
 using UnityEngine;
 
+/// <summary>
+/// Plays sounds when the input of a tmp input filed changed.
+/// </summary>
 public class InputFieldSoundPlayer : MonoBehaviour
 {
     private string prevInput;

@@ -1,7 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
+/// <summary>
+/// Spawns specfied bullets in a specified arc.
+/// </summary>
 [CreateAssetMenu(menuName = "Pickable/Weapon/BulletSpawn/Spray")]
 public class SprayBulletSpawn : BulletSpawnModel
 {

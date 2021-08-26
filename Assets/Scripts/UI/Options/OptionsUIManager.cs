@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Manager for all option panels.
+/// </summary>
 public class OptionsUIManager : MonoBehaviour
 {
     [SerializeField] private NameInput nameInput;

@@ -1,5 +1,8 @@
 ﻿using Mirror;
 
+/// <summary>
+/// Abstract class of entites that can be in the game.
+/// </summary>
 public abstract class Entity : NetworkBehaviour
 {
     public abstract EntityType EntityType { get; }

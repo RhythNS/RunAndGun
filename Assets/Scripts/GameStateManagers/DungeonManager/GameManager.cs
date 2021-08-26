@@ -2,15 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Handles the gameflow. This should only be active on the server.
+/// </summary>
 public class GameManager : MonoBehaviour
 {
     private static GameManager instance;
 
+    /// <summary>
+    /// All states that the GameManager can be in.
+    /// </summary>
     public enum State
     {
         LoadingLevel, Wandering, RoomEvent, Cleared, Failed
     }
 
+    /// <summary>
+    /// The current state of the GameManager.
+    /// </summary>
     public State CurrentState
     {
         get => currentState; private set
@@ -45,6 +54,10 @@ public class GameManager : MonoBehaviour
         currentLevel = -1;
     }
 
+    /// <summary>
+    /// Called when a player disconnected.
+    /// </summary>
+    /// <param name="player">The player that disconnected.</param>
     private void OnPlayerDisconnected(Player player)
     {
         Debug.Log(player.entityName + " has disconnected!");
@@ -54,11 +67,17 @@ public class GameManager : MonoBehaviour
         // Trigger onplayerchangedroom
     }
 
+    /// <summary>
+    /// Called when a new game was started.
+    /// </summary>
+    /// <param name="gameMode">The gamemode that was selected.</param>
+    /// <param name="seed">The seed of the game.</param>
     public static void OnStartNewGame(GameMode gameMode, int seed)
     {
         if (!instance)
             return;
 
+        // Create or reset the Stats.
         if (instance.TryGetComponent(out StatTracker tracker) == false)
             instance.gameObject.AddComponent<StatTracker>();
         else
@@ -69,11 +88,18 @@ public class GameManager : MonoBehaviour
         GameManager.gameMode = copied;
     }
 
+    /// <summary>
+    /// Called when a new Game started. Creates a random seed.
+    /// </summary>
+    /// <param name="gameMode">The sgamemode that was selected.</param>
     public static void OnStartNewGame(GameMode gameMode)
     {
         OnStartNewGame(gameMode, Random.Range(int.MinValue, int.MaxValue));
     }
 
+    /// <summary>
+    /// Called when a new level should be loaded.
+    /// </summary>
     public static void OnLoadNewLevel()
     {
         if (!instance)
@@ -103,9 +129,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Gets the next region of the gamemode.
+    /// </summary>
     private static Region GetNextRegion()
     {
-        // Todo: delete this code and uncomment the next lines to renable the gamemode
+        // Todo: delete this code and uncomment the next lines to renable the gamemode.
+        // Thas was made to show different regions on the finished assigment.
 
         Region[] regionsToPickFrom = { Region.Castle, Region.Atlantis, Region.Dungeon };
         return RandomUtil.Element(regionsToPickFrom);
@@ -124,6 +154,9 @@ public class GameManager : MonoBehaviour
          */
     }
 
+    /// <summary>
+    /// Called when a player loaded the level and is waiting for the game to start.
+    /// </summary>
     public static void OnPlayerLoadedLevelChanged()
     {
         if (!instance)
@@ -135,6 +168,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        // Have all players finished loading?
         List<Player> players = PlayersDict.Instance.Players;
         for (int i = 0; i < players.Count; i++)
         {
@@ -145,6 +179,9 @@ public class GameManager : MonoBehaviour
         OnLevelLoaded();
     }
 
+    /// <summary>
+    /// Called when the level finished loading.
+    /// </summary>
     public static void OnLevelLoaded()
     {
         if (!instance)
@@ -152,6 +189,7 @@ public class GameManager : MonoBehaviour
 
         instance.CurrentState = State.Wandering;
 
+        // Teleport all players into the start room.
         Vector3 toTeleport = new Vector3();
         DungeonRoom[] rooms = DungeonDict.Instance.Rooms;
         for (int i = 0; i < rooms.Length; i++)
@@ -162,7 +200,6 @@ public class GameManager : MonoBehaviour
                 break;
             }
         }
-
         List<Player> players = PlayersDict.Instance.Players;
         for (int i = 0; i < players.Count; i++)
         {
@@ -176,6 +213,9 @@ public class GameManager : MonoBehaviour
         DungeonDict.Instance.dungeon = DungeonCreator.Instance.dungeon; // TODO: Dungeon creator should set that itself
     }
 
+    /// <summary>
+    /// Called when all levels of the dungeon were cleared.
+    /// </summary>
     public static void OnDungeonCleared()
     {
         if (!instance)
@@ -185,6 +225,9 @@ public class GameManager : MonoBehaviour
         // display dialog to go back to lobby
     }
 
+    /// <summary>
+    /// Called when a room event started.
+    /// </summary>
     public static void OnRoomEventStarted()
     {
         if (!instance)
@@ -193,6 +236,9 @@ public class GameManager : MonoBehaviour
         instance.CurrentState = State.RoomEvent;
     }
 
+    /// <summary>
+    /// Called when a room event ended.
+    /// </summary>
     public static void OnRoomEventEnded()
     {
         if (!instance)
@@ -201,6 +247,9 @@ public class GameManager : MonoBehaviour
         instance.CurrentState = State.Wandering;
     }
 
+    /// <summary>
+    /// Called when all players died.
+    /// </summary>
     public void OnAllPlayersDied()
     {
         if (!instance)
@@ -211,6 +260,9 @@ public class GameManager : MonoBehaviour
         NetworkServer.SendToAll(msg);
     }
 
+    /// <summary>
+    /// Returns all players back to the lobby.
+    /// </summary>
     public static void BackToLobby()
     {
         if (!instance)
@@ -222,6 +274,9 @@ public class GameManager : MonoBehaviour
         NetworkServer.SendToAll(new ReturnToLobbyMessage());
     }
 
+    /// <summary>
+    /// Clears all kinds of objects from the world.
+    /// </summary>
     public static void ClearAllObjects()
     {
         if (!instance)
@@ -235,6 +290,9 @@ public class GameManager : MonoBehaviour
             NetworkServer.Destroy(enemies[i].gameObject);
     }
 
+    /// <summary>
+    /// Called when a player entered another room.
+    /// </summary>
     public static void OnPlayerChangedRoom(Player player)
     {
         if (!instance)

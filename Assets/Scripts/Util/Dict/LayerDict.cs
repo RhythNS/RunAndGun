@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Dict for information about the layers.
+/// </summary>
 public class LayerDict : MonoBehaviour
 {
     public static LayerDict Instance { get; private set; }
@@ -28,6 +31,9 @@ public class LayerDict : MonoBehaviour
         Instance = this;
     }
 
+    /// <summary>
+    /// Gets the bit mask of everything that the bullet can hit.
+    /// </summary>
     public int GetBulletCollisionLayerMask()
     {
         // return objectLayer | someOtherLayerThatBulletsCanHit
@@ -35,6 +41,12 @@ public class LayerDict : MonoBehaviour
             | 1 << dungeonRoomLayer | 1 << pickableLayer | 1 << downedPlayerLayer | 1 << unhittableLayer);
     }
 
+    /// <summary>
+    /// Gets the layer a bullet should be spawned on.
+    /// </summary>
+    /// <param name="entityType">The entity type that spawned the bullet.</param>
+    /// <param name="targetMode">The target mode of the gun.</param>
+    /// <returns>The layer.</returns>
     public int GetBulletLayer(EntityType entityType, TargetMode targetMode)
     {
         switch (entityType)
@@ -68,16 +80,34 @@ public class LayerDict : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Gets the player layer.
+    /// </summary>
     public int GetPlayerLayer() => playerLayer;
 
+    /// <summary>
+    /// Gets the enemy layer.
+    /// </summary>
     public int GetEnemyLayer() => enemyLayer;
 
+    /// <summary>
+    /// Gets the downed player layer.
+    /// </summary>
     public int GetDownedPlayerLayer() => downedPlayerLayer;
 
+    /// <summary>
+    /// Gets the dungeon layer.
+    /// </summary>
     public int GetDungeonRoomLayer() => dungeonRoomLayer;
 
+    /// <summary>
+    /// Gets the pickable layer.
+    /// </summary>
     public int GetPickableLayer() => pickableLayer;
 
+    /// <summary>
+    /// Gets the unhittable layer.
+    /// </summary>
     public int GetUnhittableLayer() => unhittableLayer;
 
     private void OnDestroy()

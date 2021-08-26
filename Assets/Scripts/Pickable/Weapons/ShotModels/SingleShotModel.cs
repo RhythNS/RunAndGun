@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// Must be retriggered for every bullet shot.
+/// </summary>
 [CreateAssetMenu(menuName = "Pickable/Weapon/ShotModel/SingleShot")]
 public class SingleShotModel : ShotModel
 {

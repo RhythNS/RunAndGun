@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Displays a percentage as a slider.
+/// </summary>
 public class PercentageAsSlider : PercentageAs
 {
     [SerializeField] private Slider slider;

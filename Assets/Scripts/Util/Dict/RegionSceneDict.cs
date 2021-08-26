@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Dict for data used to get the name of a region based on the enum value of the region.
+/// </summary>
 public class RegionSceneDict : MonoBehaviour
 {
     public static RegionSceneDict Instance { get; private set; }
@@ -24,6 +27,11 @@ public class RegionSceneDict : MonoBehaviour
         Instance = this;
     }
 
+    /// <summary>
+    /// Gets the name of a scene.
+    /// </summary>
+    /// <param name="region">The region to get the name to.</param>
+    /// <returns>The name of the scene.</returns>
     public string GetSceneName(Region region)
     {
         for (int i = 0; i < regionForSceneNames.Length; i++)

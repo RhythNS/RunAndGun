@@ -6,6 +6,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Panel for editing and showing information about the server.
+/// </summary>
 public class ServerInfo : PanelElement
 {
     [SerializeField] private TMP_InputField gamenameInput;
@@ -47,6 +50,9 @@ public class ServerInfo : PanelElement
         }
     }
 
+    /// <summary>
+    /// Start the server based on current inputs.
+    /// </summary>
     private void StartServer()
     {
         int players = maxPlayers.Value;
@@ -77,6 +83,9 @@ public class ServerInfo : PanelElement
         SetEnabled(false);
     }
 
+    /// <summary>
+    /// Callback for when a match was created.
+    /// </summary>
     private void OnMatchCreated(bool success, Match match)
     {
         if (success == true)
@@ -89,12 +98,18 @@ public class ServerInfo : PanelElement
         UIManager.Instance.ShowNotification("Could not create match! Check your internet connection!");
     }
 
+    /// <summary>
+    /// Stops the server.
+    /// </summary>
     private void StopServer()
     {
         RAGMatchmaker.Instance.Disconnect();
         OnCancel();
     }
 
+    /// <summary>
+    /// Dis- or enables all buttons.
+    /// </summary>
     private void SetEnabled(bool enabled)
     {
         startServerButton.enabled = enabled;

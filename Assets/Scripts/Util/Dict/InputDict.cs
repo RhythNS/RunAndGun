@@ -1,7 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
+/// <summary>
+/// Dict for data used by input clases.
+/// </summary>
 public class InputDict : MonoBehaviour
 {
     public static InputDict Instance { get; private set; }
@@ -17,9 +18,15 @@ public class InputDict : MonoBehaviour
         Instance = this;
     }
 
+    /// <summary>
+    /// The custom mouse cursor.
+    /// </summary>
     public Texture2D MouseCursor => mouseCursor;
     [SerializeField] private Texture2D mouseCursor;
 
+    /// <summary>
+    /// The prefab that should be spawned on mobule.
+    /// </summary>
     public MobileUIManager MobileUIManagerPrefab => mobileUIManagerPrefab;
     [SerializeField] private MobileUIManager mobileUIManagerPrefab;
 

@@ -1,14 +1,23 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
+/// <summary>
+/// On screen stick controller. Should only be used for mobile.
+/// </summary>
 public class StickController : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
+    /// <summary>
+    /// Wheter a pointer is currently pressing on the stick.
+    /// </summary>
     public bool Down { get; private set; }
 
     [SerializeField] private float deadzone = 0.1f;
     [SerializeField] private RectTransform innerStick;
     private RectTransform rectTransform;
 
+    /// <summary>
+    /// The current value of the stick.
+    /// </summary>
     public Vector2 Output { get; private set; }
 
     private void Awake()

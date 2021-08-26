@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Dict for all types of all pickables.
+/// </summary>
 public class PickableDict : MonoBehaviour
 {
     public static PickableDict Instance { get; private set; }
@@ -55,6 +58,12 @@ public class PickableDict : MonoBehaviour
             worldEffectDict.Add(worldEffects[i].Id, worldEffects[i]);
     }
 
+    /// <summary>
+    /// Get a pickable based on its type and network id.
+    /// </summary>
+    /// <param name="type">The type of the pickable.</param>
+    /// <param name="id">The network id of the pickable.</param>
+    /// <returns>The pickable.</returns>
     public Pickable Get(PickableType type, int id)
     {
         if (id == 0)
@@ -75,14 +84,35 @@ public class PickableDict : MonoBehaviour
         throw new Exception("Could not find " + type);
     }
 
+    /// <summary>
+    /// Gets a consumable based on its network id.
+    /// </summary>
+    /// <param name="id">The network id of the consumable.</param>
+    /// <returns>The gotten consumable.</returns>
     public Consumable GetConsumbale(int id) => id == 0 ? null : consumableDict[id];
 
+    /// Gets a weapon based on its network id.
+    /// </summary>
+    /// <param name="id">The network id of the weapon.</param>
+    /// <returns>The gotten weapon.</returns>
     public Weapon GetWeapon(int id) => id == 0 ? null : weaponDict[id];
 
+    /// Gets a status effect based on its network id.
+    /// </summary>
+    /// <param name="id">The network id of the status effect.</param>
+    /// <returns>The gotten status effect.</returns>
     public StatusEffect GetStatusEffect(ushort id) => id == 0 ? null :  Instantiate(statusEffectDict[id]);
 
+    /// Gets an item based on its network id.
+    /// </summary>
+    /// <param name="id">The network id of the item.</param>
+    /// <returns>The gotten item.</returns>
     public Item GetItem(int id) => id == 0 ? null : Instantiate(itemDict[id]);
 
+    /// Gets a world effect based on its network id.
+    /// </summary>
+    /// <param name="id">The network id of the world effect.</param>
+    /// <returns>The gotten world effect.</returns>
     public WorldEffect GetWorldEffect(ushort id) => id == 0 ? null : Instantiate(worldEffectDict[id]);
 
     private void OnDestroy()

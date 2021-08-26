@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Damages the player once when picked up.
+/// </summary>
 [CreateAssetMenu(menuName = "Pickable/Status/Damage")]
 public class DamageStatusEffect : StatusEffectAdapter
 {

@@ -1,6 +1,9 @@
 ﻿using Mirror;
 using UnityEngine;
 
+/// <summary>
+/// Class for placing a Pickable into the world.
+/// </summary>
 public class PickableInWorld : NetworkBehaviour
 {
     public Pickable Pickable => pickable;
@@ -9,6 +12,12 @@ public class PickableInWorld : NetworkBehaviour
     public bool IsBuyable => isBuyable;
     [SyncVar] private bool isBuyable;
 
+    /// <summary>
+    /// Places a pickable into the world.
+    /// </summary>
+    /// <param name="pickable">The pickable to be placed.</param>
+    /// <param name="position">The position to where it should be placed.</param>
+    /// <param name="isBuyable">Whether it is buyable.</param>
     [Server]
     public static void Place(Pickable pickable, Vector3 position, bool isBuyable = false)
     {

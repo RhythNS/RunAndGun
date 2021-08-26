@@ -1,6 +1,9 @@
 ﻿using MapGenerator;
 using UnityEngine;
 
+/// <summary>
+/// Holds all information of a game.
+/// </summary>
 [CreateAssetMenu(menuName = "Gamemode/Gamemode")]
 public class GameMode : ScriptableObject
 {
@@ -22,6 +25,10 @@ public class GameMode : ScriptableObject
         public Region region;
     }
 
+    /// <summary>
+    /// Inits all level seeds from a base seed.
+    /// </summary>
+    /// <param name="seed">The base seed.</param>
     public void Init(int seed)
     {
         Random.InitState(seed);
@@ -30,6 +37,11 @@ public class GameMode : ScriptableObject
             levelSeeds[i] = Random.Range(int.MinValue, int.MaxValue);
     }
 
+    /// <summary>
+    /// Checks if all custom regions are valid.
+    /// </summary>
+    /// <param name="errorReason">The reason why they are not valid.</param>
+    /// <returns>Wheter they were valid.</returns>
     public bool CustomRegionsAreValid(out string errorReason)
     {
         errorReason = "";

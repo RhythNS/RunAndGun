@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Helper class related to math methods.
+/// </summary>
 public abstract class MathUtil
 {
     public static bool InRangeInclusive(float min, float max, float val)

@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+﻿/// <summary>
+/// A pickable that is instaly picked up and is not added to a players inventory.
+/// </summary>
 public abstract class Consumable : Pickable
 {
     public override PickableType PickableType => PickableType.Consumable;

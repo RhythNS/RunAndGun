@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Dict for data for a region.
+/// </summary>
 public class RegionDict : MonoBehaviour
 {
     public static RegionDict Instance { get; private set; }
@@ -15,6 +18,9 @@ public class RegionDict : MonoBehaviour
         Instance = this;
     }
 
+    /// <summary>
+    /// The region that this dict is for.
+    /// </summary>
     public Region Region => region;
     [SerializeField] private Region region;
 
@@ -42,12 +48,21 @@ public class RegionDict : MonoBehaviour
     public EnemyObject[] EnemiesToSpawn => enemiesToSpawn;
     [SerializeField] private EnemyObject[] enemiesToSpawn;
 
+    /// <summary>
+    /// The Left-Right doors that spawn.
+    /// </summary>
     public GameObject PrefabDoorLR => prefabDoorLR;
     [SerializeField] private GameObject prefabDoorLR;
 
+    /// <summary>
+    /// The Up-Down doors that spawn.
+    /// </summary>
     public GameObject PrefabDoorUD => prefabDoorUD;
     [SerializeField] private GameObject prefabDoorUD;
 
+    /// <summary>
+    /// The tileset used by the dungeon generator.
+    /// </summary>
     public Tileset Tileset => tileset;
     [SerializeField] Tileset tileset;
 

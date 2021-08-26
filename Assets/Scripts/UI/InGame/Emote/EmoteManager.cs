@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// UI Element for sending emotes.
+/// </summary>
 public class EmoteManager : MonoBehaviour
 {
     [SerializeField] private Button showManagerButton;
@@ -47,6 +50,9 @@ public class EmoteManager : MonoBehaviour
         Hidden = true;
     }
 
+    /// <summary>
+    /// Get the starting position when entering or the end position when hiding.
+    /// </summary>
     private Vector2 GetStartPos()
     {
         RectTransform ownTrans = transform as RectTransform;
@@ -54,6 +60,9 @@ public class EmoteManager : MonoBehaviour
         return endPos - ownTrans.rect.width * Vector2.right;
     }
 
+    /// <summary>
+    /// Show the element.
+    /// </summary>
     public void Show()
     {
         if (extendedCoroutine != null && extendedCoroutine.IsFinshed == false)
@@ -68,11 +77,18 @@ public class EmoteManager : MonoBehaviour
             );
     }
 
+    /// <summary>
+    /// Called when shown finished.
+    /// </summary>
     public void OnShownFinished()
     {
         Hidden = false;
     }
 
+    /// <summary>
+    /// Called when the current layer should change.
+    /// </summary>
+    /// <param name="layerId">The new emote layer.</param>
     public void OnLayerChange(int layerId)
     {
         EmoteDict.EmoteLayer layer = EmoteDict.Instance.EmoteLayers[layerId];
@@ -92,6 +108,10 @@ public class EmoteManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Called when an emote was clicked.
+    /// </summary>
+    /// <param name="emoteID">The id of the emote.</param>
     public void OnEmote(int emoteID)
     {
         if (extendedCoroutine != null && extendedCoroutine.IsFinshed == false)
@@ -103,6 +123,9 @@ public class EmoteManager : MonoBehaviour
         Hide();
     }
 
+    /// <summary>
+    /// Hides the element.
+    /// </summary>
     public void Hide()
     {
         if (extendedCoroutine != null && extendedCoroutine.IsFinshed == false)
@@ -116,6 +139,9 @@ public class EmoteManager : MonoBehaviour
         yield return EnumeratorUtil.GoToInSecondsLocalCurve(transform, GetStartPos(), hideShowCurve, showInSeconds);
     }
 
+    /// <summary>
+    /// Called when the element is fully hidden.
+    /// </summary>
     private void OnHideFinished()
     {
         Hidden = true;

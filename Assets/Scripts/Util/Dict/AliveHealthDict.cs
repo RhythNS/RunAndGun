@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Dict for all current alive healths in the scene.
+/// </summary>
 public class AliveHealthDict : MonoBehaviour
 {
     public delegate void PlayerDied(Player player);
@@ -29,6 +32,10 @@ public class AliveHealthDict : MonoBehaviour
         Instance = this;
     }
 
+    /// <summary>
+    /// Registers a new health to the dict.
+    /// </summary>
+    /// <param name="health">The health to be registered.</param>
     public void Register(Health health)
     {
         if (health.TryGetComponent<Player>(out _))
@@ -37,6 +44,10 @@ public class AliveHealthDict : MonoBehaviour
             enemyHealths.Add(health);
     }
 
+    /// <summary>
+    /// Deregisters a health from the dict.
+    /// </summary>
+    /// <param name="health">The health to be deregistered.</param>
     public void DeRegister(Health health)
     {
         if (health.TryGetComponent(out Player player))

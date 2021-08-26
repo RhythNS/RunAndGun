@@ -1,4 +1,7 @@
-﻿public class ReadyZone : EnterZone
+﻿/// <summary>
+/// Zone that sets wheter the player is ready.
+/// </summary>
+public class ReadyZone : EnterZone
 {
     public override void OnEnter(Player player)
     {

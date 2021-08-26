@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Display an percentage as an image.
+/// </summary>
 public class PercentageAsImage : PercentageAs
 {
     [SerializeField] private Image percentageImage;

@@ -2,8 +2,14 @@
 using FMODUnity;
 using UnityEngine;
 
+/// <summary>
+/// Manges the music of the entire game.
+/// </summary>
 public class MusicManager : MonoBehaviour
 {
+    /// <summary>
+    /// The state the music should be in.
+    /// </summary>
     public enum State
     {
         None, Lobby, Dungeon, Boss
@@ -41,12 +47,19 @@ public class MusicManager : MonoBehaviour
         instance.start();
     }
 
+    /// <summary>
+    /// Register the local player.
+    /// </summary>
+    /// <param name="player">The local player.</param>
     public void RegisterPlayer(Player player)
     {
         player.Health.CurrentChangedAsPercentage += HealthChanged;
         instance.setParameterByID(healthParameter, 1.0f);
     }
 
+    /// <summary>
+    /// Deregister the local player.
+    /// </summary>
     public void DeRegisterPlayer()
     {
         Player player = Player.LocalPlayer;
@@ -56,11 +69,19 @@ public class MusicManager : MonoBehaviour
         player.Health.CurrentChangedAsPercentage -= HealthChanged;
     }
 
+    /// <summary>
+    /// Callback for when the current health value changed.
+    /// </summary>
+    /// <param name="newValue">The new current health value.</param>
     private void HealthChanged(float newValue)
     {
         instance.setParameterByID(healthParameter, newValue);
     }
 
+    /// <summary>
+    /// Change the state of the music.
+    /// </summary>
+    /// <param name="state">The new state.</param>
     public void ChangeState(State state)
     {
         if (currentState == state)

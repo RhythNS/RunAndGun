@@ -3,6 +3,9 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
+/// <summary>
+/// Generic UI Element for choosing an integer value.
+/// </summary>
 public class IntChooser : MonoBehaviour
 {
     [SerializeField] private Button leftButton;
@@ -15,6 +18,9 @@ public class IntChooser : MonoBehaviour
 
     public UnityEvent<int> OnValueChanged;
 
+    /// <summary>
+    /// The current value of the element.
+    /// </summary>
     public int Value
     {
         get => intValue;

@@ -2,6 +2,9 @@
 using System;
 using System.Collections.Generic;
 
+/// <summary>
+/// Helper class to send and recieve stats.
+/// </summary>
 [System.Serializable]
 public class StatsTransmission
 {
@@ -43,6 +46,9 @@ public class StatsTransmission
     }
 }
 
+/// <summary>
+/// Serializers for reading and writing StatsTransmissions.
+/// </summary>
 public static class StatsSerializer
 {
     public static StatsTransmission ReadStatsTransmission(this NetworkReader reader)

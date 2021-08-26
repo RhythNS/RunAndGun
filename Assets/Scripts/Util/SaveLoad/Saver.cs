@@ -2,8 +2,15 @@
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
+/// <summary>
+/// Static methods for saving and loading a game.
+/// </summary>
 public static class Saver
 {
+    /// <summary>
+    /// Saves a given game.
+    /// </summary>
+    /// <param name="saveGame">The game to be saved.</param>
     public static void Save(SaveGame saveGame)
     {
         string toSaveTo = Application.persistentDataPath + "/save.game";
@@ -16,6 +23,9 @@ public static class Saver
         }
     }
 
+    /// <summary>
+    /// Loads a game from disk.
+    /// </summary>
     public static SaveGame Load()
     {
         string toSaveTo = Application.persistentDataPath + "/save.game";

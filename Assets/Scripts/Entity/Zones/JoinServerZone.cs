@@ -1,4 +1,7 @@
-﻿public class JoinServerZone : EnterZone
+﻿/// <summary>
+/// Zone that opens the single server panel.
+/// </summary>
+public class JoinServerZone : EnterZone
 {
     public override void OnEnter(Player player)
     {

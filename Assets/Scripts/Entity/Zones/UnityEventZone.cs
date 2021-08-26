@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 
+/// <summary>
+/// Zone that raises unity events.
+/// </summary>
 public class UnityEventZone : EnterZone
 {
     [SerializeField] private UnityEvent onEnter;

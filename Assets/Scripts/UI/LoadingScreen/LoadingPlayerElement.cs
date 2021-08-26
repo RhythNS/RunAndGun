@@ -2,6 +2,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// A element in the loading screen.
+/// </summary>
 public class LoadingPlayerElement : MonoBehaviour
 {
     private LoadingScreenManager loadingScreenManager;
@@ -15,6 +18,13 @@ public class LoadingPlayerElement : MonoBehaviour
 
     private Player player;
 
+    /// <summary>
+    /// Sets all values.
+    /// </summary>
+    /// <param name="lsm">A reference to the loading screen manager.</param>
+    /// <param name="player">The player which the loading element is representing. Can be null</param>
+    /// <param name="backgroundColor">The background color of the element.</param>
+    /// <param name="overrideFadeFromRight">True: force the panel to come from right, false: force the panel to come from left, null: do the expected entry.</param>
     public void Set(LoadingScreenManager lsm, Player player, Color backgroundColor, bool? overrideFadeFromRight = null)
     {
         loadingScreenManager = lsm;
@@ -34,6 +44,9 @@ public class LoadingPlayerElement : MonoBehaviour
         player.StateCommunicator.OnPercentageChanged += percentageAsImage.UpdateValue;
     }
 
+    /// <summary>
+    /// Starts the fading in of the element.
+    /// </summary>
     public void FadeIn()
     {
         GetPositions(out Vector2 left, out Vector2 mid, out Vector2 right);
@@ -41,6 +54,9 @@ public class LoadingPlayerElement : MonoBehaviour
         StartCoroutine(EnumeratorUtil.GoToInSecondsLocalCurve(transform, mid, loadingScreenManager.FadeInCurve, loadingScreenManager.FadeInTime));
     }
 
+    /// <summary>
+    /// Starts the fading out of the element.
+    /// </summary>
     public void FadeOut()
     {
         GetPositions(out Vector2 left, out Vector2 mid, out Vector2 right);
@@ -48,6 +64,12 @@ public class LoadingPlayerElement : MonoBehaviour
         StartCoroutine(EnumeratorUtil.GoToInSecondsLocalCurve(transform, fadeFromRight ? left : right, loadingScreenManager.FadeOutCurve, loadingScreenManager.FadeOutTime));
     }
 
+    /// <summary>
+    /// Sets all relevant positions.
+    /// </summary>
+    /// <param name="left">The left point of the loading screen.</param>
+    /// <param name="mid">The mid point of the loading screen.</param>
+    /// <param name="right">The right point of the loading screen.</param>
     public void GetPositions(out Vector2 left, out Vector2 mid, out Vector2 right)
     {
         float y = transform.localPosition.y;

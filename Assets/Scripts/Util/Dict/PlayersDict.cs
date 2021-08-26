@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Dict for information about current connected players.
+/// </summary>
 public class PlayersDict : MonoBehaviour
 {
     public delegate void PlayerDisconnected(Player player);
@@ -23,12 +26,20 @@ public class PlayersDict : MonoBehaviour
         Instance = this;
     }
 
+    /// <summary>
+    /// Registers a new player to this dict.
+    /// </summary>
+    /// <param name="player">The player to be added.</param>
     public void Register(Player player)
     {
         Players.Add(player);
         OnPlayerConnected?.Invoke(player);
     }
 
+    /// <summary>
+    /// Deregisters a player from this dict.
+    /// </summary>
+    /// <param name="player">The player to be removed.</param>
     public void DeRegister(Player player)
     {
         Players.Remove(player);

@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Test class for testing the gamerule system.
+/// </summary>
 [CreateAssetMenu(menuName = "Gamemode/Rules/TestRule")]
 public class TestRule : GameRule
 {

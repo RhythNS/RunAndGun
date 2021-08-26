@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Panel for changing volume levels.
+/// </summary>
 public class VolumeControl : PanelElement
 {
     [SerializeField] private Slider musicSlider;

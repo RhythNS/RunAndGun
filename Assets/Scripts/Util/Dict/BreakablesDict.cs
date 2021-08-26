@@ -1,17 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
+/// <summary>
+/// Dict for all kinds of breakables that can be found in a dungeon.
+/// </summary>
 public class BreakablesDict : MonoBehaviour
 {
     public static BreakablesDict Instance { get; private set; }
 
-    [SerializeField]
-    private Breakable[] breakables;
+    [SerializeField] private Breakable[] breakables;
 
-    public int BreakablesCount {
-        get => breakables.Length;
-    }
+    /// <summary>
+    /// The amount of breakables in the breakable array.
+    /// </summary>
+    public int BreakablesCount { get => breakables.Length; }
 
     [System.Serializable]
     public struct Breakable
@@ -20,8 +21,10 @@ public class BreakablesDict : MonoBehaviour
         public Sprite broken;
     }
 
-    public void Awake() {
-        if (Instance) {
+    public void Awake()
+    {
+        if (Instance)
+        {
             Debug.LogError("BreakablesDict already in scene! Deleting myself!");
             Destroy(this);
             return;
@@ -29,7 +32,13 @@ public class BreakablesDict : MonoBehaviour
         Instance = this;
     }
 
-    public Breakable GetBreakable(int index) {
+    /// <summary>
+    /// Gets a breakable of the given index.
+    /// </summary>
+    /// <param name="index">The index of the breakable to be gotten.</param>
+    /// <returns>A reference to the breakable.</returns>
+    public Breakable GetBreakable(int index)
+    {
         if (index < 0 || index >= breakables.Length)
             throw new System.IndexOutOfRangeException("Index was not in range of breakables array");
 

@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Dict for what geographic regions a player can connect to.
+/// </summary>
 public class GeographicRegionDict : MonoBehaviour
 {
     public static GeographicRegionDict Instance { get; private set; }
@@ -24,6 +27,11 @@ public class GeographicRegionDict : MonoBehaviour
         Instance = this;
     }
 
+    /// <summary>
+    /// Get the display name of the region.
+    /// </summary>
+    /// <param name="region">The region to get the name for.</param>
+    /// <returns>The name of the region.</returns>
     public string GetName(NobleConnect.GeographicRegion region)
     {
         for (int i = 0; i < regionNames.Length; i++)

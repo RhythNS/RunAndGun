@@ -1,6 +1,9 @@
 ﻿using Mirror;
 using UnityEngine;
 
+/// <summary>
+/// Message for when a boss spawned.
+/// </summary>
 public struct BossSpawnMessage : NetworkMessage
 {
     public int id;

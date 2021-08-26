@@ -1,4 +1,7 @@
-﻿[System.Serializable]
+﻿/// <summary>
+/// Struct to describe how something changes stats for an entity.
+/// </summary>
+[System.Serializable]
 public struct StatsEffect
 {
     public int health;

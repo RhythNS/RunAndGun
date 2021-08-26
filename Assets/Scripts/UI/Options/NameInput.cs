@@ -1,6 +1,9 @@
 ﻿using TMPro;
 using UnityEngine;
 
+/// <summary>
+/// Panel for changing the name of the local player.
+/// </summary>
 public class NameInput : PanelElement
 {
     [SerializeField] private TMP_InputField nameInput;

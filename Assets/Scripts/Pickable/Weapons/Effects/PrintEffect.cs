@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Prints a debug message when the bullet hit a targeted entity.
+/// </summary>
 [CreateAssetMenu(menuName = "Pickable/Weapon/Effect/PrintEffect")]
 public class PrintEffect : Effect
 {

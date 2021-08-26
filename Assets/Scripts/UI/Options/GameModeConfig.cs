@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 
+/// <summary>
+/// A panel for configuring for changing gamemodes.
+/// </summary>
 public class GameModeConfig : PanelElement
 {
 

@@ -1,6 +1,9 @@
 ﻿using FMODUnity;
 using UnityEngine;
 
+/// <summary>
+/// Plays a sound when the bullet impacted something.
+/// </summary>
 [CreateAssetMenu(menuName = "Pickable/Weapon/BulletImpact/PlaySoundEffect")]
 public class PlaySoundImpactEffect : BulletImpactEffect
 {
@@ -10,5 +13,4 @@ public class PlaySoundImpactEffect : BulletImpactEffect
     {
         FMODUtil.PlayOnPosition(fmodEvent, position);
     }
-
 }

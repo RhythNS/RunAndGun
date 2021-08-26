@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
+/// <summary>
+/// Editor of an pickable to add helper buttons.
+/// </summary>
 [CustomEditor(typeof(Pickable), true)]
 public class PickableEditor : Editor
 {
@@ -38,14 +41,27 @@ public class PickableEditor : Editor
         serializedObject.ApplyModifiedProperties();
     }
 
+    /// <summary>
+    /// Fixes all ides.
+    /// </summary>
     public static void FixAllIDs()
     {
         foreach (PickableType pickableType in Enum.GetValues(typeof(PickableType)))
             FixIDsOfType(pickableType);
     }
 
+    /// <summary>
+    /// Fixes ids of a particular pickable type.
+    /// </summary>
+    /// <param name="pickableType">The type to be fixed.s</param>
     public static void FixIDsOfType(PickableType pickableType) => FixIDs(LoadPickables(pickableType));
 
+    /// <summary>
+    /// Gets a new id that is currently not in use.
+    /// </summary>
+    /// <param name="pickable">The pickable to which the new id should be generated for.</param>
+    /// <param name="id">The new id that should be used.</param>
+    /// <returns>Wheter it successeded or not.</returns>
     private static bool GetNewId(Pickable pickable, out ushort id)
     {
         List<Pickable> pickables = LoadPickables(pickable.PickableType);
@@ -84,6 +100,10 @@ public class PickableEditor : Editor
         return true;
     }
 
+    /// <summary>
+    /// Loads all pickables of a type into a list.
+    /// </summary>
+    /// <param name="pickable">The type of pickable.</param>
     public static List<Pickable> LoadPickables(PickableType pickable)
     {
         string[] guids = AssetDatabase.FindAssets(GetSearchString(pickable));

@@ -1,6 +1,10 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Base class for pooling Poolables.
+/// </summary>
+/// <typeparam name="T">The type that this pool manages.</typeparam>
 public abstract class Pool<T> : MonoBehaviour where T : IPoolable
 {
     [SerializeField] protected T prefab;
@@ -22,8 +26,14 @@ public abstract class Pool<T> : MonoBehaviour where T : IPoolable
         InnerAwake();
     }
 
+    /// <summary>
+    /// Called on awake. The pool should already be at starting amount.
+    /// </summary>
     protected abstract void InnerAwake();
 
+    /// <summary>
+    /// Gets a poolable from the pool.
+    /// </summary>
     public T Get()
     {
         if (poolQueue.Count == 0)
@@ -31,8 +41,15 @@ public abstract class Pool<T> : MonoBehaviour where T : IPoolable
         return poolQueue.Dequeue();
     }
 
+    /// <summary>
+    /// Creates a new instance of a poolable.
+    /// </summary>
     protected abstract T Create();
 
+    /// <summary>
+    /// Places the poolable into the pool or deletes it if too many instances were
+    /// in the pool already.
+    /// </summary>
     public void Free(T t)
     {
         if (poolQueue.Count == maxCapacity)

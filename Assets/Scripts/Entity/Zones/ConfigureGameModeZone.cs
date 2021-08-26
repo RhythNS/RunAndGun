@@ -1,4 +1,7 @@
-﻿public class ConfigureGameModeZone : EnterZone
+﻿/// <summary>
+/// Zone that opens the game mode configurer.
+/// </summary>
+public class ConfigureGameModeZone : EnterZone
 {
     public override void OnEnter(Player player)
     {

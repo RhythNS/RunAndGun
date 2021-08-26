@@ -1,5 +1,8 @@
 ﻿using Mirror;
 
+/// <summary>
+/// Serializers for Pickables.
+/// </summary>
 public static class PickableSerializer
 {
     public static void WritePickable(this NetworkWriter writer, Pickable pickable)

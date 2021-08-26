@@ -1,6 +1,9 @@
 ﻿using Mirror;
 using UnityEngine;
 
+/// <summary>
+/// Adapter to spawn a world effect when the bullet impacted something.
+/// </summary>
 [CreateAssetMenu(menuName = "Pickable/Weapon/BulletImpact/SpawnWorldEffect")]
 public class SpawnWorldEffect : BulletImpactEffect
 {

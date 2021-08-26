@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// UI Manager for managing UI Elements that are used for mobile.
+/// </summary>
 public class MobileUIManager : MonoBehaviour
 {
     public StickController Move => move;

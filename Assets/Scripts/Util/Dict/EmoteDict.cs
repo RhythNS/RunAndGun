@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Dict for data related to emotes.
+/// </summary>
 public class EmoteDict : MonoBehaviour
 {
     [System.Serializable]
@@ -44,6 +47,11 @@ public class EmoteDict : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Gets the emote based on its id.
+    /// </summary>
+    /// <param name="id">The id of the emote.</param>
+    /// <returns>The emote if found.</returns>
     public Emote? GetEmote(int id)
     {
         int layer = id & 0b111;

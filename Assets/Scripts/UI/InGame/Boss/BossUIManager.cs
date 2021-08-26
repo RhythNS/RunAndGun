@@ -2,6 +2,9 @@
 using TMPro;
 using UnityEngine;
 
+/// <summary>
+/// UI Element for showing the bosses name and health.
+/// </summary>
 public class BossUIManager : MonoBehaviour
 {
     public static BossUIManager Instance { get; private set; }
@@ -33,6 +36,11 @@ public class BossUIManager : MonoBehaviour
         healthObject.SetActive(false);
     }
 
+    /// <summary>
+    /// Shows the name first and then the health of an entity.
+    /// </summary>
+    /// <param name="entity">The entity to be tracked.</param>
+    /// <param name="nameDisplayLength">The duration of how long the name should be displayed for.</param>
     public void Show(Entity entity, float nameDisplayLength)
     {
         if (!entity || entity.TryGetComponent(out currentTrackedHealth) == false)
@@ -52,6 +60,9 @@ public class BossUIManager : MonoBehaviour
         StartCoroutine(DoHealthAnimation(nameDisplayLength));
     }
 
+    /// <summary>
+    /// Unsubscribe from all subscribed to events.
+    /// </summary>
     private void UnsubscribeFromEvents()
     {
         if (currentTrackedHealth)
@@ -62,6 +73,9 @@ public class BossUIManager : MonoBehaviour
         currentTrackedHealth = null;
     }
 
+    /// <summary>
+    /// Callback for when the boss died.
+    /// </summary>
     private void OnBossDied()
     {
         UnsubscribeFromEvents();
@@ -74,11 +88,19 @@ public class BossUIManager : MonoBehaviour
             );
     }
 
+    /// <summary>
+    /// Called when the health is fully hidden.
+    /// </summary>
     private void OnHealthHidden()
     {
         gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// Displays the name first and then displays the health.
+    /// </summary>
+    /// <param name="nameDisplayLength">How long the name should display for.</param>
+    /// <returns></returns>
     private IEnumerator DoHealthAnimation(float nameDisplayLength)
     {
         nameObject.SetActive(true);
@@ -102,5 +124,4 @@ public class BossUIManager : MonoBehaviour
 
         UnsubscribeFromEvents();
     }
-
 }

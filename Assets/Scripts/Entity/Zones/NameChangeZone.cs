@@ -1,4 +1,7 @@
-﻿public class NameChangeZone : EnterZone
+﻿/// <summary>
+/// Zone that opens the name changer.
+/// </summary>
+public class NameChangeZone : EnterZone
 {
     public override void OnEnter(Player player)
     {

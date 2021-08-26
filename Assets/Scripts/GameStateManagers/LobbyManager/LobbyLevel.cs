@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Manages the lobby level.
+/// </summary>
 public class LobbyLevel : MonoBehaviour
 {
     public static LobbyLevel Instance { get; private set; }
@@ -15,12 +18,18 @@ public class LobbyLevel : MonoBehaviour
         Instance = this;
     }
 
+    /// <summary>
+    /// Shows the level.
+    /// </summary>
     public void Show()
     {
         gameObject.SetActive(true);
         MusicManager.Instance.ChangeState(MusicManager.State.Lobby);
     }
 
+    /// <summary>
+    /// Hides the level.
+    /// </summary>
     public void Hide()
     {
         gameObject.SetActive(false);

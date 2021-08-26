@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// An item that in- or decreases stats.
+/// </summary>
 [CreateAssetMenu(menuName = "Pickable/Item/Stats Item")]
 public class StatsItem : Item
 {

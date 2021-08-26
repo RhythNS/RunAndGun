@@ -2,6 +2,9 @@
 using UnityEditor;
 using UnityEngine;
 
+/// <summary>
+/// Custom editor for the pickable dict in order to add all pickables automaticly into the array.
+/// </summary>
 [CustomEditor(typeof(PickableDict))]
 public class PickableDictEditor : Editor
 {

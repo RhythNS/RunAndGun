@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// Fires bullets for aslong as the weapon has ammo or stop was requested.
+/// </summary>
 [CreateAssetMenu(menuName = "Pickable/Weapon/ShotModel/FullAutomatic")]
 public class FullAutomaticModel : ShotModel
 {
