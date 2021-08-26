@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a92aee6a0c3882045b681e83aa44bfd7, type: 3}
   m_Name: Burst Fire Rifle
   m_EditorClassIdentifier: 
-  id: 2
+  id: 7
   icon: {fileID: -7903565074922245131, guid: 4da522509089bb34193f504d220d2956, type: 3}
   instantPickup: 0
   costs: 20
