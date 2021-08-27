@@ -52,6 +52,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 81f36331199e4e14fad6015f8836335b, type: 2}
   - {fileID: 11400000, guid: 8f36cc845c82941498d102be15fd04b8, type: 2}
   - {fileID: 11400000, guid: e18048e8628c39042b7d04a22dd9441d, type: 2}
+  - {fileID: 11400000, guid: 9586cf8d0f8948b41b2a3e6cc08fe23d, type: 2}
   lootingRoomPickables:
   - {fileID: 11400000, guid: 827216994d085974c970de0df9ff11d7, type: 2}
   - {fileID: 11400000, guid: 8f9766ed3bc60ff4b87b7e191a1ec6cb, type: 2}

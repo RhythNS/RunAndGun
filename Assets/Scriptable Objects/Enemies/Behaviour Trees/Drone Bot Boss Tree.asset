@@ -57,7 +57,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f7989142599437a41b268608b631071a, type: 3}
-  m_Name: New IsHealthBelowValueNode
+  m_Name: Is Health below 70%
   m_EditorClassIdentifier: 
   breakPointEnabled: 0
   children: []
@@ -78,7 +78,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 970434e28e4109e458ba3fe115085373, type: 3}
-  m_Name: New ChangeWeaponNode
+  m_Name: Change to 3rd Weapon
   m_EditorClassIdentifier: 
   breakPointEnabled: 0
   children: []
@@ -102,11 +102,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e14c49380ef658440a51306adf88ddd1, type: 3}
-  m_Name: New ParallelNode
+  m_Name: ParallelNode
   m_EditorClassIdentifier: 
   breakPointEnabled: 0
   children:
-  - {fileID: 8525613004688433917}
+  - {fileID: 79938920133177559}
   - {fileID: -8002492347293478781}
   boundsInEditor:
     serializedVersion: 2
@@ -114,8 +114,8 @@ MonoBehaviour:
     y: -60
     width: 80
     height: 80
-  childFailed: 0
-  childSucceeded: 0
+  childFailed: 1
+  childSucceeded: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -128,7 +128,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dffe61478ed6e7b498c9b997879bf192, type: 3}
   m_Name: Drone Bot Boss Tree
   m_EditorClassIdentifier: 
-  root: {fileID: 4873651102803142676}
+  root: {fileID: -3629565160080562978}
+--- !u!114 &79938920133177559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ebfb1a116e272644a2b5d0ee9def89e, type: 3}
+  m_Name: GuardNode
+  m_EditorClassIdentifier: 
+  breakPointEnabled: 0
+  children:
+  - {fileID: -6261618600922860209}
+  - {fileID: 712156800924370473}
+  boundsInEditor:
+    serializedVersion: 2
+    x: -180
+    y: 80
+    width: 80
+    height: 80
+  checkEverySeconds: 1
 --- !u!114 &712156800924370473
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -139,7 +162,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4bc2da5b9b910bb4d9d85f8722932c8b, type: 3}
-  m_Name: New IfElseNode
+  m_Name: Node
   m_EditorClassIdentifier: 
   breakPointEnabled: 0
   children:
@@ -168,7 +191,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f7989142599437a41b268608b631071a, type: 3}
-  m_Name: New IsHealthBelowValueNode
+  m_Name: Is Health below 30%
   m_EditorClassIdentifier: 
   breakPointEnabled: 0
   children: []
@@ -202,7 +225,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 970434e28e4109e458ba3fe115085373, type: 3}
-  m_Name: New ChangeWeaponNode
+  m_Name: Change to 2nd Weapon
   m_EditorClassIdentifier: 
   breakPointEnabled: 0
   children: []
@@ -216,59 +239,3 @@ MonoBehaviour:
   weaponIndex: 1
   timeBeforeChange: 0.5
   timeAfterChange: 0.5
---- !u!114 &4873651102803142676
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 600da718a367327438be6843a065f573, type: 3}
-  m_Name: New SubTreeNode
-  m_EditorClassIdentifier: 
-  breakPointEnabled: 0
-  children: []
-  boundsInEditor:
-    serializedVersion: 2
-    x: -340
-    y: -60
-    width: 80
-    height: 80
-  behaviourTree: {fileID: 11400000, guid: 5a62b165905bf2246bf6d474d8d4014f, type: 2}
-  valuesToOverwrite:
-  - toOverwrite: {fileID: 5843617289265880086, guid: 5a62b165905bf2246bf6d474d8d4014f,
-      type: 2}
-    newValue: {fileID: 0}
-  - toOverwrite: {fileID: -4012384648624462460, guid: 5a62b165905bf2246bf6d474d8d4014f,
-      type: 2}
-    newValue: {fileID: -6501362370709515396}
-  - toOverwrite: {fileID: -6122327776980015509, guid: 5a62b165905bf2246bf6d474d8d4014f,
-      type: 2}
-    newValue: {fileID: 2326246957227947856}
-  - toOverwrite: {fileID: 1754515563807091247, guid: 5a62b165905bf2246bf6d474d8d4014f,
-      type: 2}
-    newValue: {fileID: 0}
---- !u!114 &8525613004688433917
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 16c43c0470316c743aaf58d5d6a731d9, type: 3}
-  m_Name: New Sequence
-  m_EditorClassIdentifier: 
-  breakPointEnabled: 0
-  children:
-  - {fileID: -6261618600922860209}
-  - {fileID: 712156800924370473}
-  boundsInEditor:
-    serializedVersion: 2
-    x: -180
-    y: 80
-    width: 80
-    height: 80

@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13688288809bd054580042694f39a85c, type: 3}
   m_Name: RocketLauncher Damage World Effect
   m_EditorClassIdentifier: 
-  id: 1
+  id: 3
   icon: {fileID: 0}
   instantPickup: 0
   costs: 0
   type: 0
-  damage: 15
+  damage: 50

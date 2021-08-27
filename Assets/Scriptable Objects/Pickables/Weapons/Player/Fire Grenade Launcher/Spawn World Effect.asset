@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3895f0232f7c3744a3b7f740a6783a7, type: 3}
   m_Name: Spawn World Effect
   m_EditorClassIdentifier: 
-  prefab: {fileID: 0}
-  effects: []
+  prefab: {fileID: 5026648404421411319, guid: dcebd0465ed2bad4cad3c7267682bb85, type: 3}
+  effects:
+  - {fileID: 11400000, guid: 4e67cf703fff8d5418bbabcff1f850f5, type: 2}

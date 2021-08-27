@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3836cdd6b82e06a43bd5f7e99b23f4ee, type: 3}
   m_Name: Single Shot Model
   m_EditorClassIdentifier: 
-  timeBetweenShots: 0
+  timeBetweenShots: 0.5

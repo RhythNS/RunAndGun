@@ -22,6 +22,6 @@ public class IsHealthBelowValueNode : BoolNode
     {
         Health health = Brain.GetComponent<Health>();
         
-        return health.Current / health.Max < percentage;
+        return (float)health.Current / health.Max < percentage;
     }
 }

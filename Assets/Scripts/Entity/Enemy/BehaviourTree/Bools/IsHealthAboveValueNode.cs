@@ -22,6 +22,6 @@ public class IsHealthAboveValueNode : BoolNode
     {
         Health health = tree.AttachedBrain.GetComponent<Health>();
         
-        return health.Current / health.Max > percentage;
+        return (float)health.Current / health.Max > percentage;
     }
 }

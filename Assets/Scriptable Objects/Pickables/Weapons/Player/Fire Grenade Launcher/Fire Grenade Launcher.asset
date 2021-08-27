@@ -12,23 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a92aee6a0c3882045b681e83aa44bfd7, type: 3}
   m_Name: Fire Grenade Launcher
   m_EditorClassIdentifier: 
-  id: 21
+  id: 10
   icon: {fileID: 0}
   instantPickup: 0
   costs: 0
-  effects: []
-  shotModel: {fileID: 0}
-  bulletInfo: {fileID: 0}
-  bulletPath: {fileID: 0}
-  bulletSpawnModel: {fileID: 0}
-  animator: {fileID: 0}
-  weaponAnimatorType: 0
-  targetMode: 0
+  effects:
+  - {fileID: 11400000, guid: d34676ecb2805ee44b229b5c4562e24f, type: 2}
+  shotModel: {fileID: 11400000, guid: f67c0ccf9de394a4196808357dadbda5, type: 2}
+  bulletInfo: {fileID: 11400000, guid: 45e49c89beefbf0428b3d84a5aea65c8, type: 2}
+  bulletPath: {fileID: 11400000, guid: 6ae02eee6b9440c4dbb3e7ceab369424, type: 2}
+  bulletSpawnModel: {fileID: 11400000, guid: df098f7661ca9ed4a88a52d7ffdad406, type: 2}
+  animator: {fileID: 22100000, guid: 2548184d6be602145ab9127380569357, type: 2}
+  weaponAnimatorType: 1
+  targetMode: 1
   useLocalSpace: 0
-  range: 0
-  accuracy: 0
-  speed: 0
-  baseDamage: 0
-  magazineSize: 0
-  reloadTime: 0
-  weaponSoundModel: {fileID: 0}
+  range: 10
+  accuracy: 95
+  speed: 8
+  baseDamage: 10
+  magazineSize: 5
+  reloadTime: 4
+  weaponSoundModel: {fileID: 11400000, guid: 4dfacabd7a3ffbf45877e7be8b8217dd, type: 2}

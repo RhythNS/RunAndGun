@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileFloor: {fileID: 11400000, guid: 1df0dd5ae0283354096322d226a3b573, type: 2}
   tileWall: {fileID: 11400000, guid: efcd4a02f23b8b046987163ee5566e7c, type: 2}
-  tileCeiling: {fileID: 11400000, guid: 716142562b718964ea24d7c58adf2a4a, type: 2}
+  tileCeiling: {fileID: 11400000, guid: 0b3ace3360e4dc348aea5cef10ec4929, type: 2}

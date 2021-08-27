@@ -53,6 +53,13 @@ public class ChangeWeaponNode : BNodeAdapter
                         CurrentStatus = Status.Failure;
                         return;
                     }
+
+                    if (onEnemy.carryingWeapons[weaponIndex] == onEnemy.EquippedWeapon.Weapon)
+                    {
+                        CurrentStatus = Status.Success;
+                        return;
+                    }
+
                     selectedWeapon = onEnemy.carryingWeapons[weaponIndex];
                 }
                 state = CurrentState.BeforeChange;

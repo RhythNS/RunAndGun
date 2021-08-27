@@ -45,17 +45,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   region: 5
   startingRoomPickables:
-  - {fileID: 11400000, guid: ff2c6c04229b1e7479c5e38810329a01, type: 2}
+  - {fileID: 11400000, guid: 81f36331199e4e14fad6015f8836335b, type: 2}
   - {fileID: 11400000, guid: b09bbc646a60c2b479355db2c7a061d6, type: 2}
   - {fileID: 11400000, guid: f6f603894041f4d4db8824abc0e9371d, type: 2}
   - {fileID: 11400000, guid: 6c94d7e1d9a371e4c9b9479a48d76693, type: 2}
-  - {fileID: 11400000, guid: 81f36331199e4e14fad6015f8836335b, type: 2}
-  - {fileID: 11400000, guid: 8f36cc845c82941498d102be15fd04b8, type: 2}
-  - {fileID: 11400000, guid: e18048e8628c39042b7d04a22dd9441d, type: 2}
   lootingRoomPickables:
   - {fileID: 11400000, guid: 827216994d085974c970de0df9ff11d7, type: 2}
   - {fileID: 11400000, guid: 8f9766ed3bc60ff4b87b7e191a1ec6cb, type: 2}
   - {fileID: 11400000, guid: 37b7f573aa1f66d4faa905087592895c, type: 2}
+  - {fileID: 11400000, guid: 8f36cc845c82941498d102be15fd04b8, type: 2}
+  - {fileID: 11400000, guid: e18048e8628c39042b7d04a22dd9441d, type: 2}
+  - {fileID: 11400000, guid: 9586cf8d0f8948b41b2a3e6cc08fe23d, type: 2}
   bossesToSpawn:
   - {fileID: 11400000, guid: 2992f217daf690e459fd3ded2f45f271, type: 2}
   - {fileID: 11400000, guid: 415f447ccd5a84c46a74ed042d639dcf, type: 2}

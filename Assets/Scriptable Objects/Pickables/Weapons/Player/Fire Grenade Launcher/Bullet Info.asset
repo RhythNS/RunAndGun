@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c726a7dc2388cc3428a7e4ec3414092b, type: 3}
   m_Name: Bullet Info
   m_EditorClassIdentifier: 
-  sprite: {fileID: 0}
-  bulletImpactEffects: []
+  sprite: {fileID: 21300000, guid: eee77afa574856e4c9a225c69adb1a71, type: 3}
+  bulletImpactEffects:
+  - {fileID: 11400000, guid: caebda07addfb6d4fa29a444575a50c4, type: 2}
