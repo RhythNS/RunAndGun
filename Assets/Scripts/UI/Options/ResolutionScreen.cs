@@ -25,7 +25,7 @@ public class ResolutionScreen : PanelElement
         List<string> optionList = new List<string>();
         for (int i = 0; i < resolutions.Length; i++)
         {
-            string optionName = resolutions[i].width + " x " + resolutions[i].height;
+            string optionName = resolutions[i].width + " x " + resolutions[i].height + " " + resolutions[i].refreshRate + "Hz";
             optionList.Add(optionName);
 
             if (resolutions[i].width == Screen.currentResolution.width && resolutions[i].height == Screen.currentResolution.height)
