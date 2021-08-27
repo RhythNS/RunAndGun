@@ -17,7 +17,8 @@ public class GridShadowCastersGenerator : MonoBehaviour
     bool[,] hits;
     GameObject[,] instances;
 
-    public GameObject[] Generate() {
+    public GameObject[] Generate()
+    {
         Debug.Log("### Generating ShadowCasters ###");
 
         /* get the bounds of the area to check */
@@ -27,15 +28,18 @@ public class GridShadowCastersGenerator : MonoBehaviour
         var colliders = new List<Collider2D>();
         var tagedGos = GameObject.FindGameObjectsWithTag(colliderTag);
 
-        foreach (var go in tagedGos) {
+        foreach (var go in tagedGos)
+        {
             var goColliders = go.GetComponents<Collider2D>();
 
-            foreach (var goc in goColliders) {
+            foreach (var goc in goColliders)
+            {
                 colliders.Add(goc);
             }
         }
 
-        if (colliders.Count == 0) {
+        if (colliders.Count == 0)
+        {
             Debug.Log("No colliders found, aborting.");
             return new GameObject[0];
         }
@@ -45,7 +49,8 @@ public class GridShadowCastersGenerator : MonoBehaviour
         var bottomLeft = new Vector2(Mathf.Infinity, Mathf.Infinity);
         var topRight = new Vector2(-Mathf.Infinity, -Mathf.Infinity);
 
-        foreach (var col in colliders) {
+        foreach (var col in colliders)
+        {
             bottomLeft.x = Mathf.Min(bottomLeft.x, Mathf.Floor(col.bounds.min.x));
             bottomLeft.y = Mathf.Min(bottomLeft.y, Mathf.Floor(col.bounds.min.y));
             topRight.x = Mathf.Max(topRight.x, Mathf.Ceil(col.bounds.max.x));
@@ -63,8 +68,10 @@ public class GridShadowCastersGenerator : MonoBehaviour
         hits = new bool[countX, countY];
         instances = new GameObject[countX, countY];
 
-        for (int y = 0; y < countY; y++) {
-            for (int x = 0; x < countX; x++) {
+        for (int y = 0; y < countY; y++)
+        {
+            for (int x = 0; x < countX; x++)
+            {
                 hits[x, y] = IsHit(new Vector2(bottomLeft.x + x + 0.5f, bottomLeft.y + y + 0.5f));
             }
         }
@@ -73,27 +80,35 @@ public class GridShadowCastersGenerator : MonoBehaviour
 
         // removing old shadow casters! careful!
 
-        if (removePreviouslyGenerated) {
-            foreach (Transform shadowCaster in shadowCastersContainer) {
+        if (removePreviouslyGenerated)
+        {
+            foreach (Transform shadowCaster in shadowCastersContainer)
+            {
                 Destroy(shadowCaster.gameObject);
             }
         }
 
         // create new ones
 
-        for (int y = 0; y < countY; y++) {
+        for (int y = 0; y < countY; y++)
+        {
             var previousWasHit = false;
             GameObject currentInstance = null;
 
-            for (int x = 0; x < countX; x++) {
-                if (hits[x, y]) {
-                    if (!previousWasHit) {
+            for (int x = 0; x < countX; x++)
+            {
+                if (hits[x, y])
+                {
+                    if (!previousWasHit)
+                    {
 
                         // create new shadowCasterPrefab instance
 
                         currentInstance = Instantiate(shadowCasterPrefab, shadowCastersContainer);
                         currentInstance.transform.position = new Vector3(bottomLeft.x + x + 0.5f, bottomLeft.y + y + 0.5f, 0.0f);
-                    } else {
+                    }
+                    else
+                    {
 
                         // stretch prevois shadowCasterPrefab instance
 
@@ -103,7 +118,9 @@ public class GridShadowCastersGenerator : MonoBehaviour
 
                     instances[x, y] = currentInstance;
                     previousWasHit = true;
-                } else {
+                }
+                else
+                {
                     previousWasHit = false;
                 }
             }
@@ -111,13 +128,17 @@ public class GridShadowCastersGenerator : MonoBehaviour
 
         /* merge vertically if they have the same dimensions */
 
-        for (int y = 0; y < countY - 1; y++) { // -1 for skipping last row
-            for (int x = 0; x < countX; x++) {
+        for (int y = 0; y < countY - 1; y++)
+        { // -1 for skipping last row
+            for (int x = 0; x < countX; x++)
+            {
                 var bottomInstance = instances[x, y];
                 var topInstance = instances[x, y + 1];
 
-                if (bottomInstance != null && topInstance != null) {
-                    if (bottomInstance != topInstance && bottomInstance.transform.localScale.x == topInstance.transform.localScale.x) {
+                if (bottomInstance != null && topInstance != null)
+                {
+                    if (bottomInstance != topInstance && bottomInstance.transform.localScale.x == topInstance.transform.localScale.x)
+                    {
 
                         //merge! enlarge bottom instance...
 
@@ -126,7 +147,8 @@ public class GridShadowCastersGenerator : MonoBehaviour
 
                         // ...destroy top instance, save to instances array
 
-                        for (var i = 0; i < Mathf.RoundToInt(topInstance.transform.localScale.x); i++) {
+                        for (var i = 0; i < Mathf.RoundToInt(topInstance.transform.localScale.x); i++)
+                        {
                             instances[x + i, y + 1] = instances[x + i, y];
                         }
 
@@ -142,9 +164,12 @@ public class GridShadowCastersGenerator : MonoBehaviour
 
         var shadowCasterInstances = new List<GameObject>();
 
-        for (int y = 0; y < countY; y++) {
-            for (int x = 0; x < countX; x++) {
-                if (instances[x, y] != null && !shadowCasterInstances.Contains(instances[x, y])) {
+        for (int y = 0; y < countY; y++)
+        {
+            for (int x = 0; x < countX; x++)
+            {
+                if (instances[x, y] != null && !shadowCasterInstances.Contains(instances[x, y]))
+                {
                     shadowCasterInstances.Add(instances[x, y]);
                 }
             }
@@ -153,7 +178,8 @@ public class GridShadowCastersGenerator : MonoBehaviour
         return shadowCasterInstances.ToArray();
     }
 
-    bool IsHit(Vector2 pos) {
+    bool IsHit(Vector2 pos)
+    {
         var margin = .2f; // prevents overlapping
 
         // get tile bounds
@@ -165,8 +191,10 @@ public class GridShadowCastersGenerator : MonoBehaviour
 
         Collider2D[] colliders = Physics2D.OverlapAreaAll(bottomLeft, topRight);
 
-        foreach (var col in colliders) {
-            if (col.CompareTag(colliderTag)) {
+        foreach (var col in colliders)
+        {
+            if (col.CompareTag(colliderTag))
+            {
                 return true;
             }
         }

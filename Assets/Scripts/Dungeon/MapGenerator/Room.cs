@@ -26,7 +26,8 @@ namespace MapGenerator
         /// <param name="posX">The x-Position of the room.</param>
         /// <param name="posY">The y-Position of the room.</param>
         /// <param name="layout">The layout of the room.</param>
-        public Room(int posX, int posY, Fast2DArray<TileType> layout, List<TiledImporter.PrefabLocations> gameObjects, RoomType roomType) {
+        public Room(int posX, int posY, Fast2DArray<TileType> layout, List<TiledImporter.PrefabLocations> gameObjects, RoomType roomType)
+        {
             this.Position = new Vector2Int(posX, posY);
             this.Type = roomType;
             this.Layout = layout;
@@ -37,32 +38,42 @@ namespace MapGenerator
             this.TileCount = 0;
 
             List<Vector2Int> checkedPositions = new List<Vector2Int>();
-            for (int x = 0; x < this.Layout.XSize; x++) {
-                for (int y = 0; y < this.Layout.YSize; y++) {
-                    if (this.Layout[x, y] == TileType.Floor) {
+            for (int x = 0; x < this.Layout.XSize; x++)
+            {
+                for (int y = 0; y < this.Layout.YSize; y++)
+                {
+                    if (this.Layout[x, y] == TileType.Floor)
+                    {
                         TileCount++;
                     }
 
-                    if (this.Layout[x, y] == TileType.CorridorAccess && !checkedPositions.Contains(new Vector2Int(x, y))) {
+                    if (this.Layout[x, y] == TileType.CorridorAccess && !checkedPositions.Contains(new Vector2Int(x, y)))
+                    {
                         checkedPositions.Add(new Vector2Int(x, y));
 
-                        if (this.Layout[x + 1, y] == TileType.CorridorAccess) {
-                            if (this.Layout[x, y + 1] == TileType.Floor) {
+                        if (this.Layout[x + 1, y] == TileType.CorridorAccess)
+                        {
+                            if (this.Layout[x, y + 1] == TileType.Floor)
+                            {
                                 ExitDirections.Add(new Vector2Int(x, y), Direction.Down);
 
                                 int delta = 1;
-                                while (this.Layout[x + delta, y] == TileType.CorridorAccess && this.Layout[x + delta + 1, y] == TileType.CorridorAccess) {
+                                while (this.Layout[x + delta, y] == TileType.CorridorAccess && this.Layout[x + delta + 1, y] == TileType.CorridorAccess)
+                                {
                                     checkedPositions.Add(new Vector2Int(x + delta, y));
 
                                     ExitDirections.Add(new Vector2Int(x + delta, y), Direction.Down);
 
                                     delta++;
                                 }
-                            } else if (this.Layout[x, y - 1] == TileType.Floor) {
+                            }
+                            else if (this.Layout[x, y - 1] == TileType.Floor)
+                            {
                                 ExitDirections.Add(new Vector2Int(x, y), Direction.Up);
 
                                 int delta = 1;
-                                while (this.Layout[x + delta, y] == TileType.CorridorAccess && this.Layout[x + delta + 1, y] == TileType.CorridorAccess) {
+                                while (this.Layout[x + delta, y] == TileType.CorridorAccess && this.Layout[x + delta + 1, y] == TileType.CorridorAccess)
+                                {
                                     checkedPositions.Add(new Vector2Int(x + delta, y));
 
                                     ExitDirections.Add(new Vector2Int(x + delta, y), Direction.Up);
@@ -70,12 +81,16 @@ namespace MapGenerator
                                     delta++;
                                 }
                             }
-                        } else if (this.Layout[x, y + 1] == TileType.CorridorAccess) {
-                            if (this.Layout[x + 1, y] == TileType.Floor) {
+                        }
+                        else if (this.Layout[x, y + 1] == TileType.CorridorAccess)
+                        {
+                            if (this.Layout[x + 1, y] == TileType.Floor)
+                            {
                                 ExitDirections.Add(new Vector2Int(x, y), Direction.Left);
 
                                 int delta = 1;
-                                while (this.Layout[x, y + delta] == TileType.CorridorAccess && this.Layout[x, y + delta + 1] == TileType.CorridorAccess && this.Layout[x, y + delta + 2] == TileType.CorridorAccess) {
+                                while (this.Layout[x, y + delta] == TileType.CorridorAccess && this.Layout[x, y + delta + 1] == TileType.CorridorAccess && this.Layout[x, y + delta + 2] == TileType.CorridorAccess)
+                                {
                                     checkedPositions.Add(new Vector2Int(x, y + delta));
 
                                     ExitDirections.Add(new Vector2Int(x, y + delta), Direction.Left);
@@ -83,11 +98,14 @@ namespace MapGenerator
                                     delta++;
                                 }
                                 checkedPositions.Add(new Vector2Int(x, y + delta));
-                            } else if (this.Layout[x - 1, y] == TileType.Floor) {
+                            }
+                            else if (this.Layout[x - 1, y] == TileType.Floor)
+                            {
                                 ExitDirections.Add(new Vector2Int(x, y), Direction.Right);
 
                                 int delta = 1;
-                                while (this.Layout[x, y + delta] == TileType.CorridorAccess && this.Layout[x, y + delta + 1] == TileType.CorridorAccess && this.Layout[x, y + delta + 2] == TileType.CorridorAccess) {
+                                while (this.Layout[x, y + delta] == TileType.CorridorAccess && this.Layout[x, y + delta + 1] == TileType.CorridorAccess && this.Layout[x, y + delta + 2] == TileType.CorridorAccess)
+                                {
                                     checkedPositions.Add(new Vector2Int(x, y + delta));
 
                                     ExitDirections.Add(new Vector2Int(x, y + delta), Direction.Right);
@@ -109,11 +127,14 @@ namespace MapGenerator
         /// <summary>
         /// Returns all tiles that enemies / player can walk on.
         /// </summary>
-        public List<Vector2Int> GetWalkableTiles() {
+        public List<Vector2Int> GetWalkableTiles()
+        {
             List<Vector2Int> walkableTiles = new List<Vector2Int>();
 
-            for (int x = 0; x < Layout.XSize; x++) {
-                for (int y = 2; y < Layout.YSize; y++) {
+            for (int x = 0; x < Layout.XSize; x++)
+            {
+                for (int y = 2; y < Layout.YSize; y++)
+                {
                     if (Layout[x, y] == TileType.Floor && Layout[x, y - 1] == TileType.Floor && Layout[x, y - 2] == TileType.Floor)
                         walkableTiles.Add(new Vector2Int(x, y));
                 }

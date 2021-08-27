@@ -86,8 +86,7 @@ public class BossRoom : DungeonRoom
 
         PlayersStartPos = (bossReadyZone.OnDoor.transform.position - bossReadyZone.transform.position) * 2 + bossReadyZone.transform.position;
 
-        BossSpawnMessage bossSpawnMessage = new BossSpawnMessage
-        {
+        BossSpawnMessage bossSpawnMessage = new BossSpawnMessage {
             bossGameObjects = objs,
             id = id,
             animationType = bossObjects[0].AnimationType
@@ -98,7 +97,7 @@ public class BossRoom : DungeonRoom
             SpawnedEnemies[i] = objs[i].GetComponent<Enemy>();
 
         NetworkServer.SendToAll(bossSpawnMessage);
-        
+
         // Make all players not being able to move.
         List<Player> players = PlayersDict.Instance.Players;
         for (int i = 0; i < players.Count; i++)

@@ -57,7 +57,8 @@ namespace MapGenerator
         /// <param name="corridorMaxLength">The maximum length of a corridor.</param>
         /// <param name="generateShopRoom">If this floor should have a ShopRoom.</param>
         /// <param name="itemsToSpawn">The items to spawn at the spawn point.</param>
-        public DungeonConfig(int sizeX, int sizeY, int minRooms, int maxRooms, int corridorMinLength, int corridorMaxLength, bool generateShopRoom, Pickable[] itemsToSpawn, Pickable[] shopItems) {
+        public DungeonConfig(int sizeX, int sizeY, int minRooms, int maxRooms, int corridorMinLength, int corridorMaxLength, bool generateShopRoom, Pickable[] itemsToSpawn, Pickable[] shopItems)
+        {
             this.sizeX = sizeX;
             this.sizeY = sizeY;
 
@@ -72,8 +73,7 @@ namespace MapGenerator
             this.shopItems = shopItems;
         }
 
-        public static DungeonConfig StandardConfig => new DungeonConfig
-        {
+        public static DungeonConfig StandardConfig => new DungeonConfig {
             sizeX = 192,
             sizeY = 192,
             minRooms = 10,

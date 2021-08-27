@@ -7,9 +7,9 @@ public class CombatRoom : DungeonRoom
 {
     public override bool EventOnRoomEntered => true;
     public override RoomType RoomType => RoomType.Combat;
- 
+
     public int ThreatLevel { get; set; }
-    
+
     public EnemyObject[] enemiesToSpawn;
 
     public override void OnAllPlayersEntered()

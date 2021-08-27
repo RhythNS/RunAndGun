@@ -24,10 +24,8 @@ public abstract class DungeonRoom : MonoBehaviour
     /// <summary>
     /// A border around the room. This is used to determine when the players are fully in a room.
     /// </summary>
-    public Rect Border
-    {
-        get => border; set
-        {
+    public Rect Border {
+        get => border; set {
             border = value;
             boxCollider.offset = value.position + (value.size * 0.5f);
             boxCollider.size = value.size - new Vector2(3, 3); // TODO: Temp placeholder value for shrinking the bounds.
@@ -116,8 +114,7 @@ public abstract class DungeonRoom : MonoBehaviour
     [Server]
     public void CloseDoors()
     {
-        DoorMessage doorMessage = new DoorMessage()
-        {
+        DoorMessage doorMessage = new DoorMessage() {
             open = false,
             roomId = id
         };
@@ -143,8 +140,7 @@ public abstract class DungeonRoom : MonoBehaviour
     [Server]
     public void OpenDoors()
     {
-        DoorMessage doorMessage = new DoorMessage()
-        {
+        DoorMessage doorMessage = new DoorMessage() {
             open = true,
             roomId = id
         };

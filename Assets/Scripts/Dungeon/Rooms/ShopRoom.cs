@@ -23,8 +23,6 @@ public class ShopRoom : DungeonRoom
             return;
 
         for (int i = 0; i < shopItems.Length; i++)
-        {
             PickableInWorld.Place(shopItems[i], locations[i], true);
-        }
     }
 }
