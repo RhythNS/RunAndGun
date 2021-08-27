@@ -93,7 +93,7 @@ public class Config : MonoBehaviour
     public static bool saveFileExisted = false;
 
     // ---- Connection ----
-    private string playerName = "Test";
+    private string playerName = "Player";
     public string password = "";
     private CharacterType selectedPlayerType = CharacterType.Melee;
 

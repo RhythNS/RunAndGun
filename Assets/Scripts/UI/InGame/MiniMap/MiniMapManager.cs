@@ -40,6 +40,8 @@ public class MiniMapManager : MonoBehaviour
             return;
         }
         Instance = this;
+
+        gameObject.SetActive(false);
     }
 
     private void Update()
