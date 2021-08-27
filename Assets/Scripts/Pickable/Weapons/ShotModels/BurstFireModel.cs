@@ -7,12 +7,21 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Pickable/Weapon/ShotModel/BurstFire")]
 public class BurstFireModel : ShotModel
 {
+    /// <summary>
+    /// How much time is in between the bursts (in seconds).
+    /// </summary>
     [SerializeField] [Tooltip("How much time is in between the bursts (in seconds).")]
     private float timeBetweenBursts;
 
+    /// <summary>
+    /// How many shots are in one burst.
+    /// </summary>
     [SerializeField] [Tooltip("How many shots are in one burst.")]
     private int shotsPerBurst;
 
+    /// <summary>
+    /// How much time is in between individual rounds (in seconds).
+    /// </summary>
     [SerializeField] [Tooltip("How much time is in between individual rounds (in seconds).")]
     private float timeBetweenShots;
 

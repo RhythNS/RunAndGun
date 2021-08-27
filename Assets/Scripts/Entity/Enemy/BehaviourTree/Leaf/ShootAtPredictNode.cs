@@ -5,6 +5,8 @@ using UnityEngine;
 /// <summary>
 /// Shoots at a target with movement prediction. Returns false when the weapon is empty. Returns
 /// true when the target died.
+/// 
+/// Too overpowered. AI never misses. Currently unused.
 /// </summary>
 public class ShootAtPredictNode : ShootAtNode
 {

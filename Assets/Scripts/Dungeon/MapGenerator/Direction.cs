@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MapGenerator
+﻿namespace MapGenerator
 {
     /// <summary>
     /// Directions on the x-y 2D plane.

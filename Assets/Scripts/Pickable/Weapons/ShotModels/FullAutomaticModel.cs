@@ -7,6 +7,9 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Pickable/Weapon/ShotModel/FullAutomatic")]
 public class FullAutomaticModel : ShotModel
 {
+    /// <summary>
+    /// How much time is in between individual rounds (in seconds).
+    /// </summary>
     [SerializeField] [Tooltip("How much time is in between individual rounds (in seconds).")]
     private float timeBetweenShots;
 

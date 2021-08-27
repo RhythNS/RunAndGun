@@ -12,10 +12,22 @@ namespace MapGenerator
         /// The maximum size of the Dungeon.
         /// </summary>
         public Vector2Int Size { get; private set; }
+        /// <summary>
+        /// The layout of the dungeon map.
+        /// </summary>
         private readonly Fast2DArray<TileType> mapLayout;
 
+        /// <summary>
+        /// Different roomlayouts to be used during generation.
+        /// </summary>
         private readonly Fast2DArray<TileType>[] roomLayouts;
+        /// <summary>
+        /// Different roomGameObjects to be used during generation.
+        /// </summary>
         private readonly List<TiledImporter.PrefabLocations>[] roomGameObjects;
+        /// <summary>
+        /// Different roomTypes to be used during generation.
+        /// </summary>
         private readonly RoomType[] roomTypes;
 
         private readonly List<Room> rooms = new List<Room>();
@@ -184,6 +196,9 @@ namespace MapGenerator
             }
         }
 
+        /// <summary>
+        /// Deletes all corridors that don't connect two rooms together.
+        /// </summary>
         private void DeleteDeadEnds() {
             for (int x = 0; x < Size.x; x++) {
                 mapLayout[x, 0] = TileType.Wall;
@@ -273,6 +288,13 @@ namespace MapGenerator
             }
         }
 
+        /// <summary>
+        /// Generates a new room at the specified exit position.
+        /// </summary>
+        /// <param name="exit">The exit of the corridor where this room should be generated.</param>
+        /// <param name="isBossRoom">If this should be a bossroom.</param>
+        /// <param name="isShopRoom">If this should be a shoproom.</param>
+        /// <returns>Returns true, if generation was successful.</returns>
         private bool GenerateRoom(Exit exit, bool isBossRoom = false, bool isShopRoom = false) {
             int[] roomArray = new int[roomLayouts.Length - 3];
             for (int i = 3; i < roomLayouts.Length; i++)
@@ -330,6 +352,11 @@ namespace MapGenerator
             return false;
         }
 
+        /// <summary>
+        /// Generates a new corridor at the specified exit position.
+        /// </summary>
+        /// <param name="exit">The exit of the corridor where this room should be generated.</param>
+        /// <returns>Returns true, if generation was successful.</returns>
         private bool GenerateCorridor(Exit exit) {
             int length = Random.Range(Corridor.MIN_LENGTH, Corridor.MAX_LENGTH + 1);
             Corridor corridor = new Corridor(exit.Position.x, exit.Position.y, length, exit.Direction);
@@ -343,6 +370,13 @@ namespace MapGenerator
             return false;
         }
 
+        /// <summary>
+        /// Returns if the map is empty in the specified area where the room should be.
+        /// </summary>
+        /// <param name="room">The room to check.</param>
+        /// <param name="direction">The direction in which to check.</param>
+        /// <param name="exitPosition">Unused parameter.</param>
+        /// <returns>Returns true, if the map is empty in the area.</returns>
         private bool IsEmptyInArea(Room room, Direction direction, Vector2Int exitPosition) {
             switch (direction) {
                 case Direction.Up:
@@ -397,6 +431,12 @@ namespace MapGenerator
             return true;
         }
 
+        /// <summary>
+        /// Returns if the map is empty in the specified area where the room should be.
+        /// </summary>
+        /// <param name="room">The room to check.</param>
+        /// <param name="direction">The direction in which to check.</param>
+        /// <returns>Returns true, if the map is empty in the area.</returns>
         private bool IsEmptyInArea(Corridor corridor, Direction direction) {
             switch (direction) {
                 case Direction.Up:
@@ -443,6 +483,10 @@ namespace MapGenerator
             return true;
         }
 
+        /// <summary>
+        /// Adds a room to the map layout.
+        /// </summary>
+        /// <param name="room">The room to add.</param>
         private void AddRoom(Room room) {
             rooms.Add(room);
 
@@ -471,6 +515,10 @@ namespace MapGenerator
             }
         }
 
+        /// <summary>
+        /// Adds a corridor to the map layout.
+        /// </summary>
+        /// <param name="corridor">The corridor to add.</param>
         private void AddCorridor(Corridor corridor) {
             corridors.Add(corridor);
 
@@ -482,6 +530,11 @@ namespace MapGenerator
             }
         }
 
+        /// <summary>
+        /// Converts a Fast2DArray<int> to Fast2DArray<TileType>
+        /// </summary>
+        /// <param name="arrayIn">The input array.</param>
+        /// <param name="arrayOut">The output array.</param>
         private void Fast2DArrayIntToTileType(ref Fast2DArray<int>[] arrayIn, ref Fast2DArray<TileType>[] arrayOut) {
             for (int i = 0; i < roomLayouts.Length; i++) {
                 arrayOut[i] = new Fast2DArray<TileType>(arrayIn[i].XSize, arrayIn[i].YSize);
@@ -493,6 +546,10 @@ namespace MapGenerator
             }
         }
 
+        /// <summary>
+        /// Returns a list with all exits positions.
+        /// </summary>
+        /// <param name="exits">The list with all exits.</param>
         private void GetAllExits(ref List<Exit> exits) {
             exits.Clear();
 
@@ -536,6 +593,11 @@ namespace MapGenerator
             }
         }
 
+        /// <summary>
+        /// Returns all door locations of the specified room.
+        /// </summary>
+        /// <param name="roomId">The room to look for.</param>
+        /// <returns>An array of DoorLocations</returns>
         public DoorLocations[] GetDoorsOfRoom(int roomId) {
             List<DoorLocations> doorLocations = new List<DoorLocations>();
 
@@ -554,6 +616,11 @@ namespace MapGenerator
             return doorLocations.ToArray();
         }
 
+        /// <summary>
+        /// Returns the walkable tiles of a specified room.
+        /// </summary>
+        /// <param name="roomId">The room to look for.</param>
+        /// <returns>Returns a list of Vector2Int</returns>
         public List<Vector2Int> GetWalkableTiles(int roomId) {
             List<Vector2Int> walkableTiles = rooms[roomId].GetWalkableTiles();
 
@@ -726,9 +793,19 @@ namespace MapGenerator
         #endregion
     }
 
+    /// <summary>
+    /// Structure for door locations of a room.
+    /// </summary>
     public struct DoorLocations
     {
+        /// <summary>
+        /// The position of the door.
+        /// </summary>
         public Vector2Int Position { get; set; }
+
+        /// <summary>
+        /// If the door is vertical or horizontal aligned.
+        /// </summary>
         public bool IsLeftRight { get; set; }
     }
 }

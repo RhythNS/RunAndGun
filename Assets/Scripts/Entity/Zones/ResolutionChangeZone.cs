@@ -1,5 +1,5 @@
 ﻿/// <summary>
-/// Zone that opens the volume control.
+/// Zone that opens the resolution / fullscreen controls.
 /// </summary>
 public class ResolutionChangeZone : EnterZone
 {

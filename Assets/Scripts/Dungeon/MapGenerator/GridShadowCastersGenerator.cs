@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 /// <summary>
+/// CURRENTLY UNUSED
 /// From: https://www.reddit.com/r/Unity3D/comments/ewpoek/script_for_generating_shadowcaster2ds_for_tilemaps/
 /// </summary>
 

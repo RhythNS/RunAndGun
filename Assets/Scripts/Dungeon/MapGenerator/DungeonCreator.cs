@@ -71,6 +71,13 @@ public class DungeonCreator : MonoBehaviour
     }
     #endregion
 
+    /// <summary>
+    /// Creates the dungeon in an async way.
+    /// </summary>
+    /// <param name="seed">The random seed for the dungeon.</param>
+    /// <param name="levelNumber">The current level number.</param>
+    /// <param name="config">The config to load and use during generation.</param>
+    /// <param name="tileset">The tileset to use for the tilemap generation.</param>
     public IEnumerator CreateDungeon(int seed, int levelNumber, DungeonConfig config, Tileset tileset, Dungeon dungeonToLoad = null)
     {
         timer = new DungeonTimer();
@@ -114,6 +121,10 @@ public class DungeonCreator : MonoBehaviour
             Player.LocalPlayer.StateCommunicator.CmdLevelSetLoaded(true);
     }
 
+    /// <summary>
+    /// Clears a previous dungeon and removes all tiles and objects.
+    /// </summary>
+    /// <returns></returns>
     public IEnumerator ClearPreviousDungeon()
     {
         timer = new DungeonTimer(false);
@@ -126,6 +137,10 @@ public class DungeonCreator : MonoBehaviour
     }
 
     #region DungeonCreateHelperMethods
+    /// <summary>
+    /// Destroys all dungeon gameobjects.
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator DestroyPreviousGameObjects()
     {
         if (roomsContainer.childCount > 0)
@@ -148,6 +163,9 @@ public class DungeonCreator : MonoBehaviour
             yield return timer.Wait(0.01f);
     }
 
+    /// <summary>
+    /// Loads the roomlayouts, objects and types from the rooms that were created in Tiled.
+    /// </summary>
     private IEnumerator LoadRoomTypes(List<Fast2DArray<int>> roomLayouts, List<List<TiledImporter.PrefabLocations>> roomGameObjects, List<RoomType> roomTypes)
     {
         roomLayouts.Add(TiledImporter.Instance.GetReplacableMap("startRoom", out PropertyDict properties, out List<TiledImporter.PrefabLocations> gos));
@@ -194,12 +212,19 @@ public class DungeonCreator : MonoBehaviour
             yield return timer.Wait(0.05f);
     }
 
+    /// <summary>
+    /// Adjusts the mask to make the whole dungeon visible.
+    /// </summary>
     private void AdjustMask()
     {
         mask.localScale = new Vector3(dungeon.Size.x, dungeon.Size.y, 1f);
         mask.position = transform.position + (mask.localScale / 2f);
     }
 
+    /// <summary>
+    /// Clears all tilemaps.
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator ClearPreviousTiles()
     {
         tilemapFloor.ClearAllTiles();
@@ -214,6 +239,11 @@ public class DungeonCreator : MonoBehaviour
             yield return timer.Wait(0.1f);
     }
 
+    /// <summary>
+    /// Sets the tiles of the tilemap asynchronously due to performance reasons.
+    /// </summary>
+    /// <param name="tileset">The tileset to use.</param>
+    /// <returns></returns>
     private IEnumerator SetTiles(Tileset tileset)
     {
         // create new tilemaps
@@ -279,6 +309,11 @@ public class DungeonCreator : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Sets the overlapping border tiles, so the player cannot look behind the tilemap.
+    /// </summary>
+    /// <param name="tileset"></param>
+    /// <returns></returns>
     private IEnumerator SetBorderTiles(Tileset tileset)
     {
         List<Vector3Int> positions = new List<Vector3Int>();
@@ -309,46 +344,74 @@ public class DungeonCreator : MonoBehaviour
     #endregion
 
     #region PublicMethods
+    /// <summary>
+    /// Creates a new dungeon.
+    /// </summary>
+    /// <param name="levelNumber"></param>
     public void CreateLevel(int levelNumber)
     {
         StartCoroutine(CreateDungeon(GameManager.gameMode.levelSeeds[levelNumber], levelNumber, GameManager.gameMode.dungeonConfig, RegionDict.Instance.Tileset));
     }
 
+    /// <summary>
+    /// Adjusts the mask to given position and scale.
+    /// </summary>
+    /// <param name="position"></param>
+    /// <param name="scale"></param>
     public void AdjustMask(Vector3 position, Vector3 scale)
     {
         mask.localScale = scale;
         mask.position = position + scale / 2f + new Vector3(0f, 1f, 0f);
     }
 
+    /// <summary>
+    /// Resets the mask to the full dungeon size.
+    /// </summary>
     public void ResetMask()
     {
         mask.localScale = new Vector3(dungeon.Size.x, dungeon.Size.y, 1f);
         mask.position = transform.position + (mask.localScale / 2f);
     }
 
+    /// <summary>
+    /// Calculates the world position from a tile and adding half.
+    /// </summary>
     public Vector3 TilePositionToWorldPositionMiddle(Vector2Int pos)
     {
         return position + new Vector3(pos.x + 0.5f, pos.y + 0.5f, 0.0f);
         //return tilemapFloor.CellToWorld((Vector3Int)pos) + tilemapFloor.cellSize * 0.5f;
     }
 
+    /// <summary>
+    /// Calculates the world position from a tile and adding half.
+    /// </summary>
     public Vector3 TilePositionToWorldPositionMiddle(int x, int y)
     {
         return position + new Vector3(x + 0.5f, y + 0.5f, 0.0f);
         // return tilemapFloor.CellToWorld(new Vector3Int(x, y, 0)) + tilemapFloor.cellSize * 0.5f;
     }
+
+    /// <summary>
+    /// Calculates the world position from a tile.
+    /// </summary>
     public Vector3 TilePositionToWorldPosition(Vector2Int pos)
     {
         return position + new Vector3(pos.x, pos.y, 0.0f);
         // return tilemapFloor.CellToWorld((Vector3Int)pos);
     }
 
+    /// <summary>
+    /// Calculates the tile position from a worldposition.
+    /// </summary>
     public Vector2Int WorldPositionToTilePosition(Vector3 pos)
     {
         return new Vector2Int((int)(pos.x - position.x), (int)(pos.y - position.y));
         // return (Vector2Int)tilemapFloor.WorldToCell(pos);
     }
 
+    /// <summary>
+    /// Sets the current load status of the map (used in loading screen).
+    /// </summary>
     public void SetLoadStatus(float currentLoadStatus)
     {
         if (Player.LocalPlayer)

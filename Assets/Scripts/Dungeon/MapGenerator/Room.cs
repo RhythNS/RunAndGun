@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace MapGenerator
 {
+    /// <summary>
+    /// Structure for a room to be used during dungeon generation.
+    /// </summary>
     public struct Room
     {
         public Vector2Int Position { get; set; }
@@ -103,6 +106,9 @@ namespace MapGenerator
             get => Layout[x, y];
         }
 
+        /// <summary>
+        /// Returns all tiles that enemies / player can walk on.
+        /// </summary>
         public List<Vector2Int> GetWalkableTiles() {
             List<Vector2Int> walkableTiles = new List<Vector2Int>();
 

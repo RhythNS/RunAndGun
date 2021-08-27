@@ -6,9 +6,15 @@
 [CreateAssetMenu(menuName = "Pickable/Weapon/BulletSpawn/Spray")]
 public class SprayBulletSpawn : BulletSpawnModel
 {
+    /// <summary>
+    /// The amount of pellets in a single shot.
+    /// </summary>
     [SerializeField][Tooltip("The amount of pellets in a single shot.")]
     private uint pelletAmount;
 
+    /// <summary>
+    /// In degrees in front of the weapon.
+    /// </summary>
     [SerializeField][Tooltip("In degrees in front of the weapon.")]
     private float sprayArc;
 
