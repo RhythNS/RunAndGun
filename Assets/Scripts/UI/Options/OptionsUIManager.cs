@@ -9,6 +9,7 @@ public class OptionsUIManager : MonoBehaviour
     [SerializeField] private ServerConnect serverConnect;
     [SerializeField] private ServerInfo serverInfo;
     [SerializeField] private VolumeControl volumeControl;
+    [SerializeField] private ResolutionScreen resolutionScreen;
     [SerializeField] private GameModeConfig gameModeConfig;
 
     private void Awake()
@@ -30,4 +31,7 @@ public class OptionsUIManager : MonoBehaviour
     
     public void ShowGameModeConfig() => gameModeConfig.Show();
     public void HideGameModeConfig() => gameModeConfig.Hide();
+
+    public void ShowResolutionControl() => resolutionScreen.Show();
+    public void HideResolutionControl() => resolutionScreen.Hide();
 }
