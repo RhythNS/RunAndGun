@@ -96,7 +96,7 @@ public class DungeonCreator : MonoBehaviour
             yield return LoadRoomTypes(roomLayouts, roomGameObjects, roomTypes);
 
             //seed = -1304249244;
-            //seed = "I wanna go home".GetHashCode();
+            seed = "I wanna go home".GetHashCode();
             dungeon = new Dungeon(roomLayouts.ToArray(), roomGameObjects.ToArray(), roomTypes.ToArray(), seed, config);
         }
         DungeonDict.Instance.dungeon = dungeon;

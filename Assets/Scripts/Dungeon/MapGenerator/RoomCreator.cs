@@ -106,6 +106,7 @@ namespace MapGenerator
                     shopRoom.shopItems = new Pickable[numItems];
                     shopRoom.locations = new Vector2[numItems];
                     shopRoom.prices = new uint[numItems];
+                    // TODO: Replace Pickabledict with dungeon config shop pickables.
                     for (int j = 0; j < numItems; j++)
                     {
                         int rnd = Random.Range(0, PickableDict.Instance.NumWeapons + PickableDict.Instance.NumItems);
