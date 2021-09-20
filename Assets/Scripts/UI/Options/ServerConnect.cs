@@ -155,8 +155,8 @@ public class ServerConnect : PanelElement
 
         //NetworkManager.singleton.StartClient(match);
         NobleNetworkManager manager = (NobleNetworkManager)NetworkManager.singleton;
-        string ip = match.matchData["ipAddress"];
-        int port = match.matchData["port"];
+        string ip = Config.Instance.lastConnectedIP = match.matchData["ipAddress"];
+        int port = Config.Instance.lastConnectedPort = match.matchData["port"];
         manager.networkAddress = ip;
         manager.networkPort = (ushort)port;
         manager.StartClient();

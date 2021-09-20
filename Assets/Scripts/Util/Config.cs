@@ -125,6 +125,10 @@ public class Config : MonoBehaviour
     // ---- Sound ----
     public Tuple<string, float>[] volumes;
 
+    // ---- Sound ----
+    public string lastConnectedIP = "";
+    public int lastConnectedPort = 0;
+
     private void OnDestroy()
     {
         if (Instance == this)

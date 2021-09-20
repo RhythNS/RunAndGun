@@ -241,11 +241,14 @@ public class Player : Entity
             camera.ToFollow = null;
         if (PlayersDict.Instance)
             PlayersDict.Instance.DeRegister(this);
+
+        if (LocalPlayer != this)
+            return;
+
+        LocalPlayer = null;
         if (UIManager.Instance)
             UIManager.Instance.OnLocalPlayerDeleted();
         if (MusicManager.Instance)
             MusicManager.Instance.DeRegisterPlayer();
-        if (LocalPlayer == this)
-            LocalPlayer = null;
     }
 }

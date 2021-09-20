@@ -63,6 +63,7 @@ public class NetworkConnector : MonoBehaviour
 
     public static void DisconnectClient()
     {
+        (NetworkManager.singleton as RAGNetworkManager).ExpectingDisconnect = true;
         NetworkClient.Disconnect();
         NetworkManager.singleton.StopServer();
     }
@@ -88,11 +89,13 @@ public class NetworkConnector : MonoBehaviour
     {
         NobleNetworkManager networkManager = (NobleNetworkManager)NetworkManager.singleton;
 
+        /*
         if (networkManager.isNetworkActive == true)
         {
             networkManager.StopClient();
             networkManager.StopServer();
         }
+         */
 
         if (lanOnly == true)
             networkManager.StartHostLANOnly();

@@ -11,6 +11,7 @@ public class RAGNetworkManager : NobleNetworkManager
     // TODO: Check all messages. If something is wrong, return to main menu
 
     public bool IsLanOnly => isLANOnly;
+    public bool ExpectingDisconnect { get; set; }
 
     public override void OnStartServer()
     {
@@ -59,6 +60,43 @@ public class RAGNetworkManager : NobleNetworkManager
             password = Config.Instance.password
         };
         conn.Send(message);
+    }
+
+    public override void OnClientDisconnect(NetworkConnection conn)
+    {
+        base.OnClientDisconnect(conn);
+
+        if (ExpectingDisconnect)
+            OnPlannedDisconnect();
+        else
+            OnSuddenDisconnect();
+
+        ExpectingDisconnect = false;
+    }
+
+    private void OnSuddenDisconnect()
+    {
+        Debug.Log("Sudden disconnect!");
+
+        if (RegionDict.Instance.Region == Region.Lobby)
+        {
+            NetworkConnector.TryStartServer(false);
+            UIManager.Instance.ShowNotification("Lost connection to the server!");
+            return;
+        }
+        LostConnectionScreen.Instance.Show();
+    }
+
+    private void OnPlannedDisconnect()
+    {
+        Debug.Log("Planned disconnect!");
+
+        if (RegionDict.Instance.Region == Region.Lobby)
+        {
+            NetworkConnector.TryStartServer(false);
+            return;
+        }
+        GlobalsDict.Instance.StartCoroutine(RegionSceneLoader.Instance.LoadScene(Region.Lobby));
     }
 
     /// <summary>
