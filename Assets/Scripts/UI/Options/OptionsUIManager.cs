@@ -11,6 +11,7 @@ public class OptionsUIManager : MonoBehaviour
     [SerializeField] private VolumeControl volumeControl;
     [SerializeField] private ResolutionScreen resolutionScreen;
     [SerializeField] private GameModeConfig gameModeConfig;
+    [SerializeField] private LostConnectionScreen lostConnectionScreen;
 
     private void Awake()
     {
@@ -34,4 +35,6 @@ public class OptionsUIManager : MonoBehaviour
 
     public void ShowResolutionControl() => resolutionScreen.Show();
     public void HideResolutionControl() => resolutionScreen.Hide();
+
+    public void ShowLostConnectionScreen() => lostConnectionScreen.Show();
 }

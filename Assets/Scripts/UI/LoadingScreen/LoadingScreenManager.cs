@@ -12,6 +12,8 @@ public class LoadingScreenManager : MonoBehaviour
     public float Right { get; private set; } = 0.0f;
     public float Mid { get; private set; } = 0.0f;
 
+    public bool Active { get; private set; } = false;
+
     public float FadeInTime => fadeInTime;
     [SerializeField] private float fadeInTime;
 
@@ -40,6 +42,7 @@ public class LoadingScreenManager : MonoBehaviour
     /// </summary>
     public void Show()
     {
+        Active = true;
         gameObject.SetActive(true);
         List<Player> players = PlayersDict.Instance.Players;
 
@@ -104,6 +107,7 @@ public class LoadingScreenManager : MonoBehaviour
     /// </summary>
     public void Hide()
     {
+        Active = false;
         StartCoroutine(InnerHide());
     }
 

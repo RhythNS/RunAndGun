@@ -1,5 +1,6 @@
 ﻿using Mirror;
 using NobleConnect.Mirror;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,16 +12,9 @@ public class RAGNetworkManager : NobleNetworkManager
     // TODO: Check all messages. If something is wrong, return to main menu
 
     public bool IsLanOnly => isLANOnly;
-    public bool ExpectingDisconnect { get; set; }
+    public bool ExpectingDisconnect { get; set; } = false;
 
-    public override void OnStartServer()
-    {
-        base.OnStartServer();
-
-        // Register custom messages
-        NetworkServer.RegisterHandler<JoinMessage>(OnJoinMessage);
-    }
-
+    #region Client
     public override void OnStartClient()
     {
         base.OnStartClient();
@@ -42,13 +36,6 @@ public class RAGNetworkManager : NobleNetworkManager
         NetworkClient.RegisterHandler<GameOverMessage>(OnGameOverMessage);
     }
 
-    public override void OnServerConnect(NetworkConnection conn)
-    {
-        base.OnServerConnect(conn);
-
-        Debug.Log("Someone connected to the server!");
-    }
-
     public override void OnClientConnect(NetworkConnection conn)
     {
         base.OnClientConnect(conn);
@@ -60,11 +47,39 @@ public class RAGNetworkManager : NobleNetworkManager
             password = Config.Instance.password
         };
         conn.Send(message);
+
+        ExpectingDisconnect = false;
     }
 
     public override void OnClientDisconnect(NetworkConnection conn)
     {
+        Debug.Log("Client disconnected! Waiting for shutdown!");
+
         base.OnClientDisconnect(conn);
+        StartCoroutine(WaitForDisconnect());
+
+        if (ExpectingDisconnect == true)
+            return;
+
+        NetworkIdentity[] identities = FindObjectsOfType<NetworkIdentity>();
+        for (int i = 0; i < identities.Length; i++)
+        {
+            Destroy(identities[i].gameObject);
+        }
+
+        if (UIManager.Instance.IsLoadingScreenActive() == true)
+        {
+            DungeonCreator.Instance.StopAllCoroutines();
+            UIManager.Instance.HideLevelLoadScreen();
+        }
+    }
+
+    private IEnumerator WaitForDisconnect()
+    {
+        while (client != null)
+        {
+            yield return null;
+        }
 
         if (ExpectingDisconnect)
             OnPlannedDisconnect();
@@ -84,7 +99,7 @@ public class RAGNetworkManager : NobleNetworkManager
             UIManager.Instance.ShowNotification("Lost connection to the server!");
             return;
         }
-        LostConnectionScreen.Instance.Show();
+        UIManager.Instance.OptionsManager.ShowLostConnectionScreen();
     }
 
     private void OnPlannedDisconnect()
@@ -97,6 +112,23 @@ public class RAGNetworkManager : NobleNetworkManager
             return;
         }
         GlobalsDict.Instance.StartCoroutine(RegionSceneLoader.Instance.LoadScene(Region.Lobby));
+    }
+    #endregion
+
+    #region Server
+    public override void OnStartServer()
+    {
+        base.OnStartServer();
+
+        // Register custom messages
+        NetworkServer.RegisterHandler<JoinMessage>(OnJoinMessage);
+    }
+
+    public override void OnServerConnect(NetworkConnection conn)
+    {
+        base.OnServerConnect(conn);
+
+        Debug.Log("Someone connected to the server!");
     }
 
     /// <summary>
@@ -194,6 +226,7 @@ public class RAGNetworkManager : NobleNetworkManager
         }
         return indexToReturn;
     }
+    #endregion
 
     #region NetworkMessages
     private void OnStartGameMessage(StartGameMessage startGameMessage)
