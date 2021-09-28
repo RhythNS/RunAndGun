@@ -18,6 +18,7 @@ public class Player : Entity
     /// </summary>
     [SyncVar] public int playerId;
     [SyncVar] public int playerIndex;
+    public string uniqueIdentifier;
 
     [SerializeField] [EventRef] private string itemPickUpSound;
 

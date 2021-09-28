@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Mirror;
+using NobleConnect.Mirror;
+using System;
 using UnityEngine;
 
 /// <summary>
@@ -115,6 +117,15 @@ public class Config : MonoBehaviour
     }
 
 
+    [SerializeField] private string tempIdentifier;
+    public string GetUniqueIdentifier()
+    {
+        // TODO: replace with acctual id stuff.
+        if (string.IsNullOrEmpty(tempIdentifier))
+            tempIdentifier = Environment.MachineName + ((NobleNetworkManager)NetworkManager.singleton).networkPort;
+        return tempIdentifier;
+    }
+
     // ---- Input ----
     public InputType selectedInput = InputType.KeyMouse;
     public bool useFocusPoint = true;
@@ -125,7 +136,7 @@ public class Config : MonoBehaviour
     // ---- Sound ----
     public Tuple<string, float>[] volumes;
 
-    // ---- Sound ----
+    // ---- Last server ----
     public string lastConnectedIP = "";
     public int lastConnectedPort = 0;
 

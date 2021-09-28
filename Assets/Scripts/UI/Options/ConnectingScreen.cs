@@ -12,13 +12,15 @@ public class ConnectingScreen : MonoBehaviour
     [SerializeField] private Sprite[] walkingAnimation;
     [SerializeField] private float timePerSprite;
 
+    private ExtendedCoroutine checkForConnect, waitAndConnect;
+
     private float timer;
     private int atSprite;
 
     public void Show()
     {
         gameObject.SetActive(true);
-        StartCoroutine(CheckForConnected());
+        checkForConnect = new ExtendedCoroutine(this, CheckForConnected(), startNow: true);
     }
 
     /// <summary>
@@ -35,10 +37,7 @@ public class ConnectingScreen : MonoBehaviour
                 case NetworkManagerMode.Offline:
                 case NetworkManagerMode.Host:
                 case NetworkManagerMode.ServerOnly:
-                    NetworkConnector.TryStartServer(false);
-                    yield return null;
-                    UIManager.Instance.ShowNotification("Could not connect to server!");
-                    gameObject.SetActive(false);
+                    OnFailed();
                     yield break;
 
                 case NetworkManagerMode.ClientOnly:
@@ -52,6 +51,23 @@ public class ConnectingScreen : MonoBehaviour
 
             yield return new WaitForSeconds(0.1f);
         }
+    }
+
+    public void OnFailed()
+    {
+        if (checkForConnect != null && checkForConnect.IsFinshed == false)
+            checkForConnect.Stop(false);
+
+        if (waitAndConnect == null || waitAndConnect.IsFinshed == true)
+            waitAndConnect = new ExtendedCoroutine(this, WaitAndConnect(), startNow: true);
+    }
+
+    private IEnumerator WaitAndConnect()
+    {
+        NetworkConnector.TryStartServer(false);
+        yield return null;
+        UIManager.Instance.ShowNotification("Could not connect to server!");
+        gameObject.SetActive(false);
     }
 
     private void Update()

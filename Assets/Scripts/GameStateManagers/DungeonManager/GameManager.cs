@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
         if (instance != this)
             return;
 
-        PlayersDict.Instance.OnPlayerDisconnected += OnPlayerDisconnected;
+        PlayersDict.Instance.OnPlayerRemoved += OnPlayerDisconnected;
         AliveHealthDict.Instance.OnAllPlayersDied += OnAllPlayersDied;
         currentLevel = -1;
     }
@@ -341,7 +341,7 @@ public class GameManager : MonoBehaviour
             if (AliveHealthDict.Instance)
                 AliveHealthDict.Instance.OnAllPlayersDied -= OnAllPlayersDied;
             if (PlayersDict.Instance)
-                PlayersDict.Instance.OnPlayerDisconnected -= OnPlayerDisconnected;
+                PlayersDict.Instance.OnPlayerRemoved -= OnPlayerDisconnected;
             instance = null;
         }
     }

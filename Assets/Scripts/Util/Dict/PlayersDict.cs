@@ -6,14 +6,14 @@ using UnityEngine;
 /// </summary>
 public class PlayersDict : MonoBehaviour
 {
-    public delegate void PlayerDisconnected(Player player);
-    public delegate void PlayerConnected(Player player);
+    public delegate void PlayerRemoved(Player player);
+    public delegate void PlayerAdded(Player player);
 
     public static PlayersDict Instance { get; private set; }
 
     public List<Player> Players { get; private set; } = new List<Player>();
-    public event PlayerDisconnected OnPlayerDisconnected;
-    public event PlayerConnected OnPlayerConnected;
+    public event PlayerRemoved OnPlayerRemoved;
+    public event PlayerAdded OnPlayerAdded;
 
     private void Awake()
     {
@@ -33,7 +33,7 @@ public class PlayersDict : MonoBehaviour
     public void Register(Player player)
     {
         Players.Add(player);
-        OnPlayerConnected?.Invoke(player);
+        OnPlayerAdded?.Invoke(player);
     }
 
     /// <summary>
@@ -43,7 +43,17 @@ public class PlayersDict : MonoBehaviour
     public void DeRegister(Player player)
     {
         Players.Remove(player);
-        OnPlayerDisconnected?.Invoke(player);
+        OnPlayerRemoved?.Invoke(player);
+    }
+
+    public Player GetPlayerWithID(int playerID)
+    {
+        return Players.Find(x => x.playerId == playerID);
+    }
+
+    public Player GetPlayerWithUniqueIdentifier(string uniqueIdentifier)
+    {
+        return Players.Find(x => x.uniqueIdentifier == uniqueIdentifier);
     }
 
     private void OnDestroy()

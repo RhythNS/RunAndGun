@@ -27,8 +27,8 @@ public class LobbyManager : MonoBehaviour
 
     private void Start()
     {
-        PlayersDict.Instance.OnPlayerDisconnected += OnPlayerChanged;
-        PlayersDict.Instance.OnPlayerConnected += OnPlayerChanged;
+        PlayersDict.Instance.OnPlayerRemoved += OnPlayerChanged;
+        PlayersDict.Instance.OnPlayerAdded += OnPlayerChanged;
         LobbyLevel.Instance.Show();
     }
 
@@ -142,8 +142,8 @@ public class LobbyManager : MonoBehaviour
     {
         if (PlayersDict.Instance)
         {
-            PlayersDict.Instance.OnPlayerDisconnected -= OnPlayerChanged;
-            PlayersDict.Instance.OnPlayerConnected -= OnPlayerChanged;
+            PlayersDict.Instance.OnPlayerRemoved -= OnPlayerChanged;
+            PlayersDict.Instance.OnPlayerAdded -= OnPlayerChanged;
         }
     }
 }

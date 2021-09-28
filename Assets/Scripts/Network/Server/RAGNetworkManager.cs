@@ -13,6 +13,7 @@ public class RAGNetworkManager : NobleNetworkManager
 
     public bool IsLanOnly => isLANOnly;
     public bool ExpectingDisconnect { get; set; } = false;
+    private DisconnectMessage.Type expectingDisconnectType = DisconnectMessage.Type.Unknown;
 
     #region Client
     public override void OnStartClient()
@@ -34,6 +35,7 @@ public class RAGNetworkManager : NobleNetworkManager
         NetworkClient.RegisterHandler<MiniMapNewRoomMessage>(OnMiniMapNewRoomMessage);
         NetworkClient.RegisterHandler<EmoteMessage>(OnEmoteMessage);
         NetworkClient.RegisterHandler<GameOverMessage>(OnGameOverMessage);
+        NetworkClient.RegisterHandler<DisconnectMessage>(OnDisconnectMessage);
     }
 
     public override void OnClientConnect(NetworkConnection conn)
@@ -44,11 +46,18 @@ public class RAGNetworkManager : NobleNetworkManager
         {
             name = Config.Instance.PlayerName,
             characterType = Config.Instance.SelectedPlayerType,
-            password = Config.Instance.password
+            password = Config.Instance.password,
+            uniqueIdentifier = Config.Instance.GetUniqueIdentifier()
         };
         conn.Send(message);
 
         ExpectingDisconnect = false;
+        expectingDisconnectType = DisconnectMessage.Type.Unknown;
+    }
+
+    private void OnDisconnectMessage(NetworkConnection connection, DisconnectMessage disconnectMessage)
+    {
+        expectingDisconnectType = disconnectMessage.type;
     }
 
     public override void OnClientDisconnect(NetworkConnection conn)
@@ -91,21 +100,37 @@ public class RAGNetworkManager : NobleNetworkManager
 
     private void OnSuddenDisconnect()
     {
-        Debug.Log("Sudden disconnect!");
+        string reason;
+        switch (expectingDisconnectType)
+        {
+            case DisconnectMessage.Type.PasswordWrong:
+                reason = "Could not join server! Entered password is wrong!";
+                break;
+            case DisconnectMessage.Type.ServerFull:
+                reason = "Could not join server! The server is already full!";
+                break;
+            case DisconnectMessage.Type.Kicked:
+                reason = "You were kicked from the server!";
+                break;
+            case DisconnectMessage.Type.JoinedGameInProgress:
+                reason = "Could not join server! Game already in progress!";
+                break;
+            default:
+                reason = "Lost connection to the server!";
+                break;
+        }
 
         if (RegionDict.Instance.Region == Region.Lobby)
         {
             NetworkConnector.TryStartServer(false);
-            UIManager.Instance.ShowNotification("Lost connection to the server!");
+            UIManager.Instance.ShowNotification(reason);
             return;
         }
-        UIManager.Instance.OptionsManager.ShowLostConnectionScreen();
+        UIManager.Instance.OptionsManager.ShowLostConnectionScreen(expectingDisconnectType == DisconnectMessage.Type.Kicked);
     }
 
     private void OnPlannedDisconnect()
     {
-        Debug.Log("Planned disconnect!");
-
         if (RegionDict.Instance.Region == Region.Lobby)
         {
             NetworkConnector.TryStartServer(false);
@@ -131,6 +156,18 @@ public class RAGNetworkManager : NobleNetworkManager
         Debug.Log("Someone connected to the server!");
     }
 
+    public override void OnServerDisconnect(NetworkConnection conn)
+    {
+        Player player = PlayersDict.Instance.GetPlayerWithID(conn.connectionId);
+
+        if (player != null && RegionDict.Instance.Region != Region.Lobby)
+        {
+            NetworkServer.RemovePlayerForConnection(conn, false);
+        }
+
+        base.OnServerDisconnect(conn);
+    }
+
     /// <summary>
     /// JoinMessage is sent by clients when a player joins for the first time or
     /// when a player wants to change their roll.
@@ -139,63 +176,108 @@ public class RAGNetworkManager : NobleNetworkManager
     /// <param name="joinMessage">The message.</param>
     private void OnJoinMessage(NetworkConnection connection, JoinMessage joinMessage)
     {
+        Player oldPlayer = PlayersDict.Instance.GetPlayerWithUniqueIdentifier(joinMessage.uniqueIdentifier);
+        // Was the player connected to the server before?
+        if (oldPlayer != null)
+        {
+            // Is the player still connected?
+            if (connection.identity.gameObject == oldPlayer.gameObject)
+            {
+                JoinReplaceCharacter(connection, JoinCreateNewPlayer(connection, joinMessage), joinMessage);
+                return;
+            }
+
+            // Player is reconnecting
+            JoinReconnect(connection, oldPlayer);
+            return;
+        }
+
+        // Is the game already in progress?
+        if (RegionDict.Instance.Region != Region.Lobby)
+        {
+            DelayedDisconnect(connection, DisconnectMessage.Type.JoinedGameInProgress);
+            return;
+        }
+
+        // Player joined for the first time and we are in the lobby scene.
+        Player newPlayer = JoinCreateNewPlayer(connection, joinMessage);
+        JoinFirstTime(connection, newPlayer, joinMessage);
+    }
+
+    private Player JoinCreateNewPlayer(NetworkConnection connection, JoinMessage joinMessage)
+    {
         Player newPlayer = Instantiate(CharacterDict.Instance.GetPlayerForType(joinMessage.characterType));
         newPlayer.SmoothSync.setPosition(
             RandomUtil.Element(startPositions).position,
             true
             );
         newPlayer.playerId = connection.connectionId;
+        newPlayer.uniqueIdentifier = joinMessage.uniqueIdentifier;
+        return newPlayer;
+    }
 
-        // Do they want to replace their character?
-        if (connection.identity?.gameObject)
+    private void JoinReplaceCharacter(NetworkConnection connection, Player newPlayer, JoinMessage joinMessage)
+    {
+        GameObject oldPlayer = connection.identity.gameObject;
+        Player castPlayer = oldPlayer.GetComponent<Player>();
+
+        if (castPlayer != null)
+            newPlayer.playerIndex = castPlayer.playerIndex;
+        else
         {
-            GameObject oldPlayer = connection.identity.gameObject;
-            Player castPlayer = oldPlayer.GetComponent<Player>();
-
-            if (castPlayer != null)
-                newPlayer.playerIndex = castPlayer.playerIndex;
-            else
-            {
-                int? index = GetPlayerIndex(connection.connectionId);
-                if (index == null)
-                {
-                    Debug.LogError("Old player did not have a connection and there are no places remaining!");
-                    connection.Disconnect();
-                    Destroy(oldPlayer);
-                    Destroy(newPlayer);
-                    return;
-                }
-                newPlayer.playerIndex = index.Value;
-            }
-
-            NetworkServer.ReplacePlayerForConnection(connection, newPlayer.gameObject);
-
-            Destroy(oldPlayer);
-        }
-        else // They joined for the first time
-        {
-            string reqPassword = Config.Instance.password;
-            if (reqPassword.Length != 0 && joinMessage.password.Equals(reqPassword) == false)
-            {
-                Debug.LogError("New player joined with wrong password!");
-                connection.Disconnect();
-                Destroy(newPlayer);
-                return;
-            }
-
             int? index = GetPlayerIndex(connection.connectionId);
             if (index == null)
             {
-                Debug.LogError("New player joined a full game!");
-                connection.Disconnect();
+                DelayedDisconnect(connection, DisconnectMessage.Type.ServerFull);
+
+                Destroy(oldPlayer);
                 Destroy(newPlayer);
                 return;
             }
             newPlayer.playerIndex = index.Value;
-
-            NetworkServer.AddPlayerForConnection(connection, newPlayer.gameObject);
         }
+
+        NetworkServer.ReplacePlayerForConnection(connection, newPlayer.gameObject);
+
+        Destroy(oldPlayer);
         newPlayer.entityName = joinMessage.name;
+    }
+
+    private void JoinFirstTime(NetworkConnection connection, Player newPlayer, JoinMessage joinMessage)
+    {
+        string reqPassword = Config.Instance.password;
+        if (reqPassword.Length != 0 && joinMessage.password.Equals(reqPassword) == false)
+        {
+            DelayedDisconnect(connection, DisconnectMessage.Type.PasswordWrong);
+
+            Destroy(newPlayer);
+            return;
+        }
+
+        int? index = GetPlayerIndex(connection.connectionId);
+        if (index == null)
+        {
+            DelayedDisconnect(connection, DisconnectMessage.Type.ServerFull);
+
+            Destroy(newPlayer);
+            return;
+        }
+        newPlayer.playerIndex = index.Value;
+
+        NetworkServer.AddPlayerForConnection(connection, newPlayer.gameObject);
+        newPlayer.entityName = joinMessage.name;
+    }
+
+    private void JoinReconnect(NetworkConnection connection, Player oldPlayer)
+    {
+        StartGameMessage sgm = new StartGameMessage()
+        {
+            gameMode = GameManager.gameMode,
+            levelSeed = GameManager.gameMode.seed
+        };
+        connection.Send(sgm);
+
+        NetworkServer.AddPlayerForConnection(connection, oldPlayer.gameObject);
     }
 
     /// <summary>
@@ -225,6 +307,23 @@ public class RAGNetworkManager : NobleNetworkManager
                 return indexToReturn;
         }
         return indexToReturn;
+    }
+
+    private void DelayedDisconnect(NetworkConnection connection, DisconnectMessage.Type? type)
+    {
+        if (type != null)
+        {
+            DisconnectMessage dm = new DisconnectMessage() { type = type.Value };
+            connection.Send(dm);
+        }
+
+        StartCoroutine(InnerDelayedDisconnect(connection));
+    }
+
+    private IEnumerator InnerDelayedDisconnect(NetworkConnection connection)
+    {
+        yield return new WaitForSeconds(0.1f);
+        connection.Disconnect();
     }
     #endregion
 
