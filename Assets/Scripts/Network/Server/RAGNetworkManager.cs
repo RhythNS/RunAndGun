@@ -42,14 +42,8 @@ public class RAGNetworkManager : NobleNetworkManager
     {
         base.OnClientConnect(conn);
 
-        JoinMessage message = new JoinMessage
-        {
-            name = Config.Instance.PlayerName,
-            characterType = Config.Instance.SelectedPlayerType,
-            password = Config.Instance.password,
-            uniqueIdentifier = Config.Instance.GetUniqueIdentifier()
-        };
-        conn.Send(message);
+        JoinMessage joinMessage = JoinMessage.GetDefault();
+        conn.Send(joinMessage);
 
         ExpectingDisconnect = false;
         expectingDisconnectType = DisconnectMessage.Type.Unknown;
@@ -65,6 +59,10 @@ public class RAGNetworkManager : NobleNetworkManager
         Debug.Log("Client disconnected! Waiting for shutdown!");
 
         base.OnClientDisconnect(conn);
+
+        if (NetworkServer.active == false)
+            RAGMatchmaker.Instance.Disconnect();
+
         StartCoroutine(WaitForDisconnect());
 
         if (ExpectingDisconnect == true)
@@ -181,7 +179,7 @@ public class RAGNetworkManager : NobleNetworkManager
         if (oldPlayer != null)
         {
             // Is the player still connected?
-            if (connection.identity.gameObject == oldPlayer.gameObject)
+            if (connection.identity?.gameObject == oldPlayer.gameObject)
             {
                 JoinReplaceCharacter(connection, JoinCreateNewPlayer(connection, joinMessage), joinMessage);
                 return;
@@ -202,6 +200,7 @@ public class RAGNetworkManager : NobleNetworkManager
         // Player joined for the first time and we are in the lobby scene.
         Player newPlayer = JoinCreateNewPlayer(connection, joinMessage);
         JoinFirstTime(connection, newPlayer, joinMessage);
+        RAGMatchmaker.Instance.UpdatePlayerCount(PlayersDict.Instance.Players.Count);
     }
 
     private Player JoinCreateNewPlayer(NetworkConnection connection, JoinMessage joinMessage)
@@ -270,6 +269,9 @@ public class RAGNetworkManager : NobleNetworkManager
 
     private void JoinReconnect(NetworkConnection connection, Player oldPlayer)
     {
+        NetworkServer.AddPlayerForConnection(connection, oldPlayer.gameObject);
+        oldPlayer.playerId = connection.connectionId;
+        
         StartGameMessage sgm = new StartGameMessage()
         {
             gameMode = GameManager.gameMode,
@@ -277,7 +279,14 @@ public class RAGNetworkManager : NobleNetworkManager
         };
         connection.Send(sgm);
 
-        NetworkServer.AddPlayerForConnection(connection, oldPlayer.gameObject);
+        Debug.Log("Current level " + GameManager.currentLevel);
+        GenerateLevelMessage glm = new GenerateLevelMessage()
+        {
+            levelNumber = GameManager.currentLevel,
+            reconnecting = true,
+            region = RegionDict.Instance.Region
+        };
+        connection.Send(glm);
     }
 
     /// <summary>
@@ -324,6 +333,7 @@ public class RAGNetworkManager : NobleNetworkManager
     {
         yield return new WaitForSeconds(0.1f);
         connection.Disconnect();
+        RAGMatchmaker.Instance.UpdatePlayerCount(PlayersDict.Instance.Players.Count);
     }
     #endregion
 
@@ -346,7 +356,7 @@ public class RAGNetworkManager : NobleNetworkManager
 
     private void OnGenerateLevelMessage(GenerateLevelMessage generateLevelMessage)
     {
-        UIManager.Instance.ShowLevelLoadScreen();
+        UIManager.Instance.ShowLevelLoadScreen(generateLevelMessage.reconnecting);
         DungeonDict.Instance.ClearRooms();
         RegionSceneLoader loader = RegionSceneLoader.Instance;
         new ExtendedCoroutine(this, loader.LoadScene(generateLevelMessage), loader.LoadLevel, true);

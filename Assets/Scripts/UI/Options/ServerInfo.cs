@@ -25,6 +25,8 @@ public class ServerInfo : PanelElement
         stopServerButton.onClick.AddListener(StopServer);
     }
 
+    public override bool ShouldShow() => NetworkServer.active == true;
+
     public override void InnerOnShow()
     {
         SetEnabled(true);
@@ -36,8 +38,8 @@ public class ServerInfo : PanelElement
             startServerText.text = "Start Server";
             stopServerButton.gameObject.SetActive(false);
             return;
-        }
-        if (NetworkServer.active)
+        } 
+        else if (NetworkServer.active)
         {
             stopServerButton.gameObject.SetActive(true);
             startServerText.text = "Update Server";
@@ -72,7 +74,7 @@ public class ServerInfo : PanelElement
         if (RAGMatchmaker.Instance.GetCurrentMatch() != null)
         {
             RAGMatchmaker.Instance.SetMatchData(matchData);
-            InnerOnConfirm();
+            OnConfirm();
             return;
         }
 

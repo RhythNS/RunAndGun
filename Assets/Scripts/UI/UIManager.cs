@@ -49,7 +49,7 @@ public class UIManager : MonoBehaviour
 
     public void OnLocalPlayerDeleted() => inGameManager.UnRegisterEvents();
 
-    public void ShowLevelLoadScreen() => loadingScreenManager.Show();
+    public void ShowLevelLoadScreen(bool reconnecting = false) => loadingScreenManager.Show(reconnecting);
     public void HideLevelLoadScreen() => loadingScreenManager.Hide();
     public bool IsLoadingScreenActive() => loadingScreenManager.Active;
 

@@ -37,11 +37,14 @@ public class LoadingScreenManager : MonoBehaviour
 
     private readonly List<LoadingPlayerElement> playerElements = new List<LoadingPlayerElement>();
 
+    public bool Reconnecting { get; private set; } = false;
+
     /// <summary>
     /// Shows the loading screen.
     /// </summary>
-    public void Show()
+    public void Show(bool reconnecting = false)
     {
+        Reconnecting = reconnecting;
         Active = true;
         gameObject.SetActive(true);
         List<Player> players = PlayersDict.Instance.Players;
@@ -66,6 +69,18 @@ public class LoadingScreenManager : MonoBehaviour
                 CreateLoadingPlayerElement(emptyPrefab, -quaterHeight * i, null, notConnectedColor, width, height, i % 2 == 0);
         }
         StartCoroutine(InnerShow());
+
+        if (reconnecting)
+            Player.LocalPlayer.StateCommunicator.OnPercentageChanged += OnReconnectPercentageChanged;
+    }
+
+    private void OnReconnectPercentageChanged(float newPerc)
+    {
+        if (newPerc < 0.99f)
+            return;
+
+        Player.LocalPlayer.StateCommunicator.OnPercentageChanged -= OnReconnectPercentageChanged;
+        Hide();
     }
 
     private IEnumerator InnerShow()

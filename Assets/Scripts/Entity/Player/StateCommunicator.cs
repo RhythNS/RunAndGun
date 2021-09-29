@@ -32,8 +32,8 @@ public class StateCommunicator : NetworkBehaviour
     [Command]
     public void CmdSetLevelLoadPercentage(float newPercentage)
     {
-        if (levelLoaded == true)
-            return;
+        //if (levelLoaded == true)
+        //    return;
 
         loadPercentage = newPercentage;
     }

@@ -12,11 +12,7 @@ public class JoinSingleServer : MonoBehaviour
             NetworkConnector.TryStartServer(false);
         else
         {
-            JoinMessage joinMessage = new JoinMessage()
-            {
-                characterType = Config.Instance.SelectedPlayerType,
-                name = Config.Instance.PlayerName
-            };
+            JoinMessage joinMessage = JoinMessage.GetDefault();
             NetworkClient.Send(joinMessage);
         }
 

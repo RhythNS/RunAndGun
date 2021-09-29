@@ -15,11 +15,8 @@ public class SwitchCharacterWhenTouched : MonoBehaviour
             if (toSwitchTo == Config.Instance.SelectedPlayerType)
                 return;
 
-            JoinMessage joinMessage = new JoinMessage()
-            {
-                characterType = toSwitchTo,
-                name = player.entityName
-            };
+            JoinMessage joinMessage = JoinMessage.GetDefault();
+            joinMessage.characterType = toSwitchTo;
             NetworkClient.Send(joinMessage);
         }
     }

@@ -58,11 +58,23 @@ public abstract class PanelElement : MonoBehaviour
     /// </summary>
     public void Show()
     {
+        if (ShouldShow() == false)
+            return;
+
         if (Player.LocalPlayer)
             Player.LocalPlayer.Input.enabled = false;
 
         gameObject.SetActive(true);
         InnerOnShow();
+    }
+
+    /// <summary>
+    /// Called when the panel should be shown.
+    /// </summary>
+    /// <returns>Wheter the panel should be shown.</returns>
+    public virtual bool ShouldShow()
+    {
+        return true;
     }
 
     /// <summary>

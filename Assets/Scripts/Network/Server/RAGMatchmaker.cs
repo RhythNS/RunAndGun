@@ -13,6 +13,7 @@ public class RAGMatchmaker : MonoBehaviour
 {
     public static RAGMatchmaker Instance { get; private set; }
     public bool IsReady => matchUp.IsReady;
+    public bool Disconnected { get; private set; }
 
     private Matchmaker matchUp;
 
@@ -81,11 +82,21 @@ public class RAGMatchmaker : MonoBehaviour
         matchUp.SetMatchData(matchData);
     }
 
+    public void UpdatePlayerCount(int currentPlayerCount)
+    {
+        if (matchUp.currentMatch == null)
+            return;
+
+        matchUp.currentMatch.matchData["Connected players"] = currentPlayerCount;
+        matchUp.UpdateMatchData();
+    }
+
     /// <summary>
     /// Disconnects from the matchup service.
     /// </summary>
     public void Disconnect()
     {
+        Disconnected = true;
         if (NetworkServer.active)
             matchUp.DestroyMatch();
         else
