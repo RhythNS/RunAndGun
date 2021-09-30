@@ -27,5 +27,9 @@ MonoBehaviour:
     corridorMinLength: 10
     corridorMaxLength: 32
     generateShopRoom: 1
-    shopItems: []
+    shopItems:
+    - {fileID: 11400000, guid: 8f36cc845c82941498d102be15fd04b8, type: 2}
+    - {fileID: 11400000, guid: e18048e8628c39042b7d04a22dd9441d, type: 2}
+    - {fileID: 11400000, guid: 9586cf8d0f8948b41b2a3e6cc08fe23d, type: 2}
+    - {fileID: 11400000, guid: ff2c6c04229b1e7479c5e38810329a01, type: 2}
   customRegionOnLevels: []

@@ -61,6 +61,12 @@ public class RegionDict : MonoBehaviour
     [SerializeField] private GameObject prefabDoorUD;
 
     /// <summary>
+    /// The price signs in the shop.
+    /// </summary>
+    public GameObject ShopItemPriceSign => shopItemPriceSign;
+    [SerializeField] private GameObject shopItemPriceSign;
+
+    /// <summary>
     /// The tileset used by the dungeon generator.
     /// </summary>
     public Tileset Tileset => tileset;

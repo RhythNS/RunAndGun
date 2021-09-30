@@ -16,7 +16,7 @@ namespace MapGenerator
         /// <param name="levelNumber">The number of the level.</param>
         /// <param name="timer">The current used DungeonTimer.</param>
         /// <returns></returns>
-        public IEnumerator CreateRooms(Dungeon dungeon, int levelNumber, DungeonTimer timer)
+        public IEnumerator CreateRooms(Dungeon dungeon, int levelNumber, DungeonConfig config, DungeonTimer timer)
         {
             List<DungeonRoom> dungeonRooms = new List<DungeonRoom>();
             DungeonDict.Instance.ResetRooms(dungeon.Rooms.Length + dungeon.Corridors.Length);
@@ -30,7 +30,7 @@ namespace MapGenerator
                 GameObject dungeonRoomObject = Instantiate(DungeonCreator.Instance.PrefabDungeonRoom);
                 dungeonRoomObject.transform.parent = DungeonCreator.Instance.RoomsContainer;
 
-                DungeonRoom dungeonRoom = SetRoomType(dungeon.Rooms[i], dungeonRoomObject, levelNumber);
+                DungeonRoom dungeonRoom = SetRoomType(dungeon.Rooms[i], dungeonRoomObject, levelNumber, config);
                 // set room id
                 dungeonRoom.id = i;
 
@@ -69,7 +69,7 @@ namespace MapGenerator
         /// <param name="dungeonRoomObject">The gameobject to which the room should be generate don.</param>
         /// <param name="levelNumber">The number of the level.</param>
         /// <returns>The fully generated DungeonRoom.</returns>
-        private DungeonRoom SetRoomType(Room room, GameObject dungeonRoomObject, int levelNumber)
+        private DungeonRoom SetRoomType(Room room, GameObject dungeonRoomObject, int levelNumber, DungeonConfig config)
         {
             switch (room.Type)
             {
@@ -105,21 +105,11 @@ namespace MapGenerator
                     const int numItems = 4;
                     shopRoom.shopItems = new Pickable[numItems];
                     shopRoom.locations = new Vector2[numItems];
-                    shopRoom.prices = new uint[numItems];
                     // TODO: Replace Pickabledict with dungeon config shop pickables.
                     for (int j = 0; j < numItems; j++)
                     {
-                        int rnd = Random.Range(0, PickableDict.Instance.NumWeapons + PickableDict.Instance.NumItems);
-                        if (rnd >= PickableDict.Instance.NumWeapons)
-                        {
-                            shopRoom.shopItems[j] = PickableDict.Instance.GetItem(j - PickableDict.Instance.NumWeapons + 1);
-                            shopRoom.prices[j] = 10;
-                        }
-                        else
-                        {
-                            shopRoom.shopItems[j] = PickableDict.Instance.GetWeapon(j + 1);
-                            shopRoom.prices[j] = 15;
-                        }
+                        int rnd = Random.Range(0, config.shopItems.Length);
+                        shopRoom.shopItems[j] = config.shopItems[rnd];
                         shopRoom.locations[j] = room.Position + new Vector2Int((int)room.GameObjects[j + 4].Position.x, (int)room.GameObjects[j + 4].Position.y);
                     }
                     shopRoom.SpawnItems();

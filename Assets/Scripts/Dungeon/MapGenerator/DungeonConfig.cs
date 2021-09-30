@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace MapGenerator
 {
@@ -57,6 +58,7 @@ namespace MapGenerator
         /// <param name="corridorMaxLength">The maximum length of a corridor.</param>
         /// <param name="generateShopRoom">If this floor should have a ShopRoom.</param>
         /// <param name="itemsToSpawn">The items to spawn at the spawn point.</param>
+        /// <param name="shopItems">The items to spawn at the shop including their prices.</param>
         public DungeonConfig(int sizeX, int sizeY, int minRooms, int maxRooms, int corridorMinLength, int corridorMaxLength, bool generateShopRoom, Pickable[] itemsToSpawn, Pickable[] shopItems)
         {
             this.sizeX = sizeX;

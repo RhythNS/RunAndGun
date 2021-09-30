@@ -71,4 +71,6 @@ MonoBehaviour:
     type: 3}
   prefabDoorUD: {fileID: 6098499219195057442, guid: b2515d84382afd24796391c735f7120d,
     type: 3}
+  shopItemPriceSign: {fileID: 7082901670167062823, guid: 3ffab7726a89da24aa3419941d77c1a9,
+    type: 3}
   tileset: {fileID: 11400000, guid: 0c5d703550ca70f4594063aee1da4a77, type: 2}
