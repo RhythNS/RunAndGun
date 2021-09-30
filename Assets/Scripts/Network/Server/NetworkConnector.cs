@@ -79,13 +79,41 @@ public class NetworkConnector : MonoBehaviour
     #endregion
 
     #region StartServer
+    public static IEnumerator RestartServerWithInternetConnection(Action onSuccess)
+    {
+        NobleNetworkManager networkManager = (NobleNetworkManager)NetworkManager.singleton;
+        networkManager.StopHost();
+        while (NetworkServer.active)
+        {
+            yield return null;
+        }
+        if (TryStartServer(false) == false)
+        {
+            OnRestartFailed();
+            yield break;
+        }
+        yield return null;
+        networkManager = (NobleNetworkManager)NetworkManager.singleton;
+        Debug.Log("Waiting for endpoint");
+        while (networkManager.HostEndPoint == null)
+        {
+            yield return null;
+        }
+        Debug.Log("Success");
+        onSuccess?.Invoke();
+    }
+
+    private static void OnRestartFailed()
+    {
+        UIManager.Instance.ShowNotification("Could not connect to the internet!");
+        TryStartServer(true);
+    }
+
     /// <summary>
     /// Tries to start a server.
     /// </summary>
     /// <param name="lanOnly">Wheter the server should be lan only.</param>
-    /// <param name="onSuccess">Callback when the server started successful.</param>
-    /// <param name="onFailure">Callback when the server did not start.</param>
-    public static void TryStartServer(bool lanOnly, Action onSuccess = null, Action onFailure = null)
+    public static bool TryStartServer(bool lanOnly)
     {
         NobleNetworkManager networkManager = (NobleNetworkManager)NetworkManager.singleton;
 
@@ -97,32 +125,32 @@ public class NetworkConnector : MonoBehaviour
         }
          */
 
-        if (lanOnly == true)
-            networkManager.StartHostLANOnly();
-        else
+        // Try to start server. If the port is already in use, catch the error and try a different one.
+        int startPort = networkManager.networkPort;
+        for (int i = 0; i < 5; i++)
         {
-            // Try to start server. If the port is already in use, catch the error and try a different one.
-            int startPort = networkManager.networkPort;
-            for (int i = 0; i < 5; i++)
+            try
             {
-                try
-                {
-                    networkManager.networkPort = startPort + i;
+                networkManager.networkPort = startPort + i;
+
+                if (lanOnly)
+                    networkManager.StartHostLANOnly();
+                else
                     networkManager.StartHost();
-                    return;
-                }
-                catch (SocketException se)
-                {
-                    if (se.SocketErrorCode == SocketError.AddressAlreadyInUse)
-                        continue;
 
-                    // unknown error
-                    throw se;
-                }
+                return true;
             }
+            catch (SocketException se)
+            {
+                if (se.SocketErrorCode == SocketError.AddressAlreadyInUse)
+                    continue;
 
-            throw new Exception("Could not start a local server!");
+                // unknown error
+                Debug.LogException(se);
+            }
         }
+
+        return false;
     }
     #endregion
 }

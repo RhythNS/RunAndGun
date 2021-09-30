@@ -73,6 +73,14 @@ public class ServerConnect : PanelElement
     /// </summary>
     private void OnReconnected()
     {
+        if (RAGMatchmaker.Instance.IsReady == false)
+        {
+            DeleteAllContentChildren();
+            Instantiate(noConnectionPrefab, contentTrans);
+            refreshButton.gameObject.SetActive(true);
+            return;
+        }
+
         RAGMatchmaker.Instance.GetMatchList(OnMatchListRecieved);
     }
 
@@ -83,12 +91,7 @@ public class ServerConnect : PanelElement
     {
         refreshButton.gameObject.SetActive(true);
 
-        while (contentTrans.childCount != 0)
-        {
-            Transform trans = contentTrans.GetChild(0);
-            trans.parent = null;
-            Destroy(trans.gameObject);
-        }
+        DeleteAllContentChildren();
 
         if (success == false)
         {
@@ -111,6 +114,16 @@ public class ServerConnect : PanelElement
             matchDisplay = Instantiate(matchDisplayPrefab);
         }
         Destroy(matchDisplay.gameObject);
+    }
+
+    private void DeleteAllContentChildren()
+    {
+        while (contentTrans.childCount != 0)
+        {
+            Transform trans = contentTrans.GetChild(0);
+            trans.SetParent(null);
+            Destroy(trans.gameObject);
+        }
     }
 
     /// <summary>

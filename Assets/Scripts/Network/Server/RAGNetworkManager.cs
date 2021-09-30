@@ -271,7 +271,7 @@ public class RAGNetworkManager : NobleNetworkManager
     {
         NetworkServer.AddPlayerForConnection(connection, oldPlayer.gameObject);
         oldPlayer.playerId = connection.connectionId;
-        
+
         StartGameMessage sgm = new StartGameMessage()
         {
             gameMode = GameManager.gameMode,
@@ -279,7 +279,6 @@ public class RAGNetworkManager : NobleNetworkManager
         };
         connection.Send(sgm);
 
-        Debug.Log("Current level " + GameManager.currentLevel);
         GenerateLevelMessage glm = new GenerateLevelMessage()
         {
             levelNumber = GameManager.currentLevel,
@@ -336,6 +335,18 @@ public class RAGNetworkManager : NobleNetworkManager
         RAGMatchmaker.Instance.UpdatePlayerCount(PlayersDict.Instance.Players.Count);
     }
     #endregion
+
+    public override void Update()
+    {
+        try
+        {
+            base.Update();
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogWarning(e);
+        }
+    }
 
     #region NetworkMessages
     private void OnStartGameMessage(StartGameMessage startGameMessage)

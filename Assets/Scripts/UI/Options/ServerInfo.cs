@@ -19,6 +19,9 @@ public class ServerInfo : PanelElement
     [SerializeField] private Button stopServerButton;
     [SerializeField] private TMP_Dropdown regionDropDown;
 
+    private int players;
+    private Dictionary<string, MatchData> matchData;
+
     private void Start()
     {
         startServerButton.onClick.AddListener(StartServer);
@@ -57,12 +60,12 @@ public class ServerInfo : PanelElement
     /// </summary>
     private void StartServer()
     {
-        int players = maxPlayers.Value;
+        players = maxPlayers.Value;
         string matchName = gamenameInput.text;
         Config.Instance.password = passwordInput.text;
         int regionVal = regionDropDown.value + 1;
 
-        Dictionary<string, MatchData> matchData = new Dictionary<string, MatchData>()
+        matchData = new Dictionary<string, MatchData>()
         {
             { "Match name", matchName },
             { "Max players", players },
@@ -78,11 +81,13 @@ public class ServerInfo : PanelElement
             return;
         }
 
-        NobleNetworkManager networkManager = (NobleNetworkManager)NetworkManager.singleton;
-//        networkManager.StopClient();
-//        networkManager.StopServer();
-        RAGMatchmaker.Instance.HostMatch(matchData, players, OnMatchCreated);
+        GlobalsDict.Instance.StartCoroutine(NetworkConnector.RestartServerWithInternetConnection(OnServerStarted));
         SetEnabled(false);
+    }
+
+    private void OnServerStarted()
+    {
+        RAGMatchmaker.Instance.HostMatch(matchData, players, OnMatchCreated);
     }
 
     /// <summary>

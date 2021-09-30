@@ -586,9 +586,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ignorePlatform: 0
   password: 
+  tempIdentifier: 
   selectedInput: 0
   useFocusPoint: 1
   targetFramesPerSecondLoadingScreen: 60
+  lastConnectedIP: 
+  lastConnectedPort: 0
 --- !u!114 &1365799234809505996
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -696,9 +699,9 @@ MonoBehaviour:
   matchmakerURL: noblewhale.com
   matchmakerPort: 20205
   timeout: 5
-  maxReconnectionAttempts: 5
+  maxReconnectionAttempts: 3
   externalIPSource: ipv4.noblewhale.com
-  autoConnect: 1
+  autoConnect: 0
 --- !u!114 &4639023130057972085
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -13,7 +13,6 @@ public class RAGMatchmaker : MonoBehaviour
 {
     public static RAGMatchmaker Instance { get; private set; }
     public bool IsReady => matchUp.IsReady;
-    public bool Disconnected { get; private set; }
 
     private Matchmaker matchUp;
 
@@ -96,7 +95,6 @@ public class RAGMatchmaker : MonoBehaviour
     /// </summary>
     public void Disconnect()
     {
-        Disconnected = true;
         if (NetworkServer.active)
             matchUp.DestroyMatch();
         else
