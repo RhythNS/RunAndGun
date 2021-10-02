@@ -86,7 +86,8 @@ public class Config : MonoBehaviour
         {
             playerName = PlayerName,
             lastSelectedCharacterType = SelectedPlayerType,
-            volumes = volumes
+            volumes = volumes,
+            lcg = LastConnectedGame
         };
         Saver.Save(saveGame);
     }
@@ -137,8 +138,15 @@ public class Config : MonoBehaviour
     public Tuple<string, float>[] volumes;
 
     // ---- Last server ----
-    public string lastConnectedIP = "";
-    public int lastConnectedPort = 0;
+    public LastConnectedGame LastConnectedGame
+    {
+        get => lastConnectedGame; set
+        {
+            lastConnectedGame = value;
+            Save();
+        }
+    }
+    private LastConnectedGame lastConnectedGame;
 
     private void OnDestroy()
     {

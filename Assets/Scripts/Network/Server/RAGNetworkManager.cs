@@ -10,7 +10,6 @@ using UnityEngine;
 public class RAGNetworkManager : NobleNetworkManager
 {
     // TODO: Check all messages. If something is wrong, return to main menu
-
     public bool IsLanOnly => isLANOnly;
     public bool ExpectingDisconnect { get; set; } = false;
     private DisconnectMessage.Type expectingDisconnectType = DisconnectMessage.Type.Unknown;
@@ -99,6 +98,7 @@ public class RAGNetworkManager : NobleNetworkManager
     private void OnSuddenDisconnect()
     {
         string reason;
+        bool removeLastConnectedGame = true;
         switch (expectingDisconnectType)
         {
             case DisconnectMessage.Type.PasswordWrong:
@@ -115,8 +115,14 @@ public class RAGNetworkManager : NobleNetworkManager
                 break;
             default:
                 reason = "Lost connection to the server!";
+                removeLastConnectedGame = false;
                 break;
         }
+
+        if (removeLastConnectedGame)
+            Config.Instance.LastConnectedGame = null;
+        else
+            Config.Instance.LastConnectedGame = LastConnectedGame.Disconnected(Config.Instance.LastConnectedGame);
 
         if (RegionDict.Instance.Region == Region.Lobby)
         {
@@ -333,6 +339,11 @@ public class RAGNetworkManager : NobleNetworkManager
         yield return new WaitForSeconds(0.1f);
         connection.Disconnect();
         RAGMatchmaker.Instance.UpdatePlayerCount(PlayersDict.Instance.Players.Count);
+    }
+
+    public override void OnServerPrepared(string hostAddress, ushort hostPort)
+    {
+        Debug.Log("Server prepared: " + hostAddress + ":" + hostPort);
     }
     #endregion
 

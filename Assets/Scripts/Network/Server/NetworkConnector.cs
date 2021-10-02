@@ -87,19 +87,18 @@ public class NetworkConnector : MonoBehaviour
         {
             yield return null;
         }
+        yield return new WaitForSeconds(0.1f);
         if (TryStartServer(false) == false)
         {
             OnRestartFailed();
             yield break;
         }
-        yield return null;
-        networkManager = (NobleNetworkManager)NetworkManager.singleton;
         Debug.Log("Waiting for endpoint");
-        while (networkManager.HostEndPoint == null)
+        while (((NobleNetworkManager)NetworkManager.singleton).HostEndPoint == null)
         {
-            yield return null;
+            yield return new WaitForSeconds(0.1f);
         }
-        Debug.Log("Success");
+        Debug.Log("Noble network established!");
         onSuccess?.Invoke();
     }
 
@@ -116,14 +115,6 @@ public class NetworkConnector : MonoBehaviour
     public static bool TryStartServer(bool lanOnly)
     {
         NobleNetworkManager networkManager = (NobleNetworkManager)NetworkManager.singleton;
-
-        /*
-        if (networkManager.isNetworkActive == true)
-        {
-            networkManager.StopClient();
-            networkManager.StopServer();
-        }
-         */
 
         // Try to start server. If the port is already in use, catch the error and try a different one.
         int startPort = networkManager.networkPort;

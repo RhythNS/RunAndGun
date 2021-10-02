@@ -9,7 +9,11 @@ public class JoinSingleServer : MonoBehaviour
     private void Start()
     {
         if (NetworkClient.active == false)
+#if UNITY_EDITOR
             NetworkConnector.TryStartServer(false);
+#else
+            NetworkConnector.TryStartServer(true);
+#endif
         else
         {
             JoinMessage joinMessage = JoinMessage.GetDefault();

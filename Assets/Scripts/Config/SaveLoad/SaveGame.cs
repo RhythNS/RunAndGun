@@ -9,4 +9,5 @@ public class SaveGame
     public string playerName;
     public CharacterType lastSelectedCharacterType;
     public Tuple<string, float>[] volumes;
+    public LastConnectedGame lcg;
 }
