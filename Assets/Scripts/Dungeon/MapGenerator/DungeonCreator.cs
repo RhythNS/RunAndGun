@@ -118,7 +118,7 @@ public class DungeonCreator : MonoBehaviour
         position = transform.position;
 
         if (Player.LocalPlayer) // check to allow for debugging if a localplayer is not scene
-            Player.LocalPlayer.StateCommunicator.CmdLevelSetLoaded(true);
+            Player.LocalPlayer.StateCommunicator.LevelSetLoaded(true);
     }
 
     /// <summary>
@@ -415,7 +415,7 @@ public class DungeonCreator : MonoBehaviour
     public void SetLoadStatus(float currentLoadStatus)
     {
         if (Player.LocalPlayer)
-            Player.LocalPlayer.StateCommunicator.CmdSetLevelLoadPercentage(currentLoadStatus);
+            Player.LocalPlayer.StateCommunicator.SetLevelLoadPercentage(currentLoadStatus);
     }
     #endregion
 }

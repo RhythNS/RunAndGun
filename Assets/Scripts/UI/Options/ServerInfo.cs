@@ -41,7 +41,7 @@ public class ServerInfo : PanelElement
             startServerText.text = "Start Server";
             stopServerButton.gameObject.SetActive(false);
             return;
-        } 
+        }
         else if (NetworkServer.active)
         {
             stopServerButton.gameObject.SetActive(true);
@@ -81,7 +81,7 @@ public class ServerInfo : PanelElement
             return;
         }
 
-        GlobalsDict.Instance.StartCoroutine(NetworkConnector.RestartServerWithInternetConnection(OnServerStarted));
+        GlobalsDict.Instance.StartCoroutine(NetworkConnector.RestartServerWithInternetConnection(OnServerStarted, OnServerFailedToConnect));
         SetEnabled(false);
     }
 
@@ -90,11 +90,18 @@ public class ServerInfo : PanelElement
         RAGMatchmaker.Instance.HostMatch(matchData, players, OnMatchCreated);
     }
 
+    private void OnServerFailedToConnect()
+    {
+        UIManager.Instance.ShowNotification("Could not host server! Check your internet connection!");
+    }
+
     /// <summary>
     /// Callback for when a match was created.
     /// </summary>
     private void OnMatchCreated(bool success, Match match)
     {
+        Debug.Log("Match hosted: " + success);
+
         if (success == true)
         {
             OnConfirm();

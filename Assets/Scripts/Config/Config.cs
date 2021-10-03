@@ -48,6 +48,7 @@ public class Config : MonoBehaviour
         playerName = loaded.playerName;
         selectedPlayerType = loaded.lastSelectedCharacterType;
         volumes = loaded.volumes;
+        lastConnectedGame = loaded.lcg;
     }
 
     /// <summary>

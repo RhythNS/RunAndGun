@@ -20,6 +20,9 @@ public class LastConnectedGame
 
     public static LastConnectedGame Disconnected(LastConnectedGame lcg)
     {
+        if (lcg == null)
+            return lcg;
+
         lcg.time = DateTime.Now;
         lcg.timeIsConnected = false;
         return lcg;

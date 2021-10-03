@@ -378,6 +378,22 @@ public class RAGNetworkManager : NobleNetworkManager
 
     private void OnGenerateLevelMessage(GenerateLevelMessage generateLevelMessage)
     {
+        // We need to wait a frame if we are reconnecting. This is quite ugly but i dont know how else you
+        // can delay code just a frame.
+        if (generateLevelMessage.reconnecting == true)
+            StartCoroutine(GenerateLevelAfterFrame(generateLevelMessage));
+        else
+            InnerGenerateLevelMessage(generateLevelMessage);
+    }
+
+    private IEnumerator GenerateLevelAfterFrame(GenerateLevelMessage generateLevelMessage)
+    {
+        yield return null;
+        InnerGenerateLevelMessage(generateLevelMessage);
+    }
+
+    private void InnerGenerateLevelMessage(GenerateLevelMessage generateLevelMessage)
+    {
         UIManager.Instance.ShowLevelLoadScreen(generateLevelMessage.reconnecting);
         DungeonDict.Instance.ClearRooms();
         RegionSceneLoader loader = RegionSceneLoader.Instance;

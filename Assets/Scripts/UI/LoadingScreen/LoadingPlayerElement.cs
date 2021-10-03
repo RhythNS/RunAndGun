@@ -53,6 +53,12 @@ public class LoadingPlayerElement : MonoBehaviour
         }
     }
 
+    public void ForceUpdate(float percentage)
+    {
+        percentageAsText.UpdateValue(percentage);
+        percentageAsImage.UpdateValue(percentage);
+    }
+
     /// <summary>
     /// Starts the fading in of the element.
     /// </summary>

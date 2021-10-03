@@ -1,4 +1,4 @@
-﻿using FMODUnity;
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -71,16 +71,25 @@ public class LoadingScreenManager : MonoBehaviour
         StartCoroutine(InnerShow());
 
         if (reconnecting)
-            Player.LocalPlayer.StateCommunicator.OnPercentageChanged += OnReconnectPercentageChanged;
+        {
+            Player.LocalPlayer.StateCommunicator.OnLocalPercentageChanged += OnReconnectPercentageChanged;
+            Player.LocalPlayer.StateCommunicator.OnLocalLevelLoadedChanged += OnReconnectLoadedChanged;
+        }
+    }
+
+    private void OnReconnectLoadedChanged(bool loaded)
+    {
+        if (loaded == false)
+            return;
+
+        Player.LocalPlayer.StateCommunicator.OnLocalPercentageChanged -= OnReconnectPercentageChanged;
+        Player.LocalPlayer.StateCommunicator.OnLocalLevelLoadedChanged -= OnReconnectLoadedChanged;
+        Hide();
     }
 
     private void OnReconnectPercentageChanged(float newPerc)
     {
-        if (newPerc < 0.99f)
-            return;
-
-        Player.LocalPlayer.StateCommunicator.OnPercentageChanged -= OnReconnectPercentageChanged;
-        Hide();
+        playerElements[Player.LocalPlayer.playerIndex].ForceUpdate(newPerc);
     }
 
     private IEnumerator InnerShow()

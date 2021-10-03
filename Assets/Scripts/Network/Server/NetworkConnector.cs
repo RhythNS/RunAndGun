@@ -79,7 +79,7 @@ public class NetworkConnector : MonoBehaviour
     #endregion
 
     #region StartServer
-    public static IEnumerator RestartServerWithInternetConnection(Action onSuccess)
+    public static IEnumerator RestartServerWithInternetConnection(Action onSuccess, Action onFailure)
     {
         NobleNetworkManager networkManager = (NobleNetworkManager)NetworkManager.singleton;
         networkManager.StopHost();
@@ -99,6 +99,10 @@ public class NetworkConnector : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
         Debug.Log("Noble network established!");
+        if (RAGMatchmaker.Instance.IsReady == false)
+        {
+            yield return RAGMatchmaker.Instance.Reconnect();
+        }
         onSuccess?.Invoke();
     }
 

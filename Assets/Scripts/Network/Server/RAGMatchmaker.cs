@@ -48,6 +48,7 @@ public class RAGMatchmaker : MonoBehaviour
     /// <param name="onMatchCreated">Callback when the match was created.</param>
     public void HostMatch(Dictionary<string, MatchData> matchData, int maxPlayers, Action<bool, Match> onMatchCreated)
     {
+        Debug.Log("Hosting match");
         NetworkManager.singleton.maxConnections = maxPlayers;
         // NetworkManager.singleton.StartHost();
         matchUp.CreateMatch(maxPlayers, matchData, onMatchCreated);
