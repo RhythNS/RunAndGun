@@ -91,6 +91,11 @@ public class RAGMatchmaker : MonoBehaviour
         matchUp.UpdateMatchData();
     }
 
+    public void DestroyMatch()
+    {
+        matchUp.DestroyMatch();
+    }
+
     /// <summary>
     /// Disconnects from the matchup service.
     /// </summary>

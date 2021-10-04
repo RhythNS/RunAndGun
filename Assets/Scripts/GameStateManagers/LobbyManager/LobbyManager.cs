@@ -108,6 +108,9 @@ public class LobbyManager : MonoBehaviour
 
         int seed = selectedGameMode.randomSeed ? Random.Range(int.MinValue, int.MaxValue) : selectedGameMode.seed;
 
+        if (RAGMatchmaker.Instance.IsReady && RAGMatchmaker.Instance.GetCurrentMatch() != null)
+            RAGMatchmaker.Instance.DestroyMatch();
+
         GameManager.OnStartNewGame(selectedGameMode, seed);
 
         StartGameMessage sgm = new StartGameMessage
