@@ -31,15 +31,7 @@ public class GameManager : MonoBehaviour
     private State currentState = State.LoadingLevel;
 
     public static GameMode gameMode;
-    public static int currentLevel
-    {
-        get => _currentLevel; set
-        {
-            Debug.Log("Setting level to " + value);
-            _currentLevel = value;
-        }
-    }
-    private static int _currentLevel;
+    public static int currentLevel;
 
     private void Awake()
     {

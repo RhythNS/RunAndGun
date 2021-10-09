@@ -119,7 +119,7 @@ public class EquippedWeapon : NetworkBehaviour
         weapon = newWeapon;
         remainingBullets = weapon.MagazineSize;
         bulletLayerSpawn = LayerDict.Instance.GetBulletLayer(Health.EntityType, weapon.TargetMode);
-        // Reset all timed values and stuff
+        // TODO: Reset all timed values and stuff
     }
 
     /// <summary>
