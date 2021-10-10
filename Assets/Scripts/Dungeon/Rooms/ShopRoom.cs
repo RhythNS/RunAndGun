@@ -1,4 +1,5 @@
 ﻿using MapGenerator;
+using System;
 using UnityEngine;
 
 /// <summary>
@@ -15,7 +16,7 @@ public class ShopRoom : DungeonRoom
     public override RoomType RoomType => RoomType.Shop;
 
     /// <summary>
-    /// Spawns the itmes that the playes can buy.
+    /// Spawns the items that the players can buy.
     /// </summary>
     public void SpawnItems()
     {
@@ -32,6 +33,35 @@ public class ShopRoom : DungeonRoom
             Mirror.NetworkServer.Spawn(itemPriceSigns[i]);
 
             PickableInWorld.Place(shopItems[i], locations[i], true);
+        }
+    }
+
+    /// <summary>
+    /// Removes the price tag from the closest item.
+    /// </summary>
+    /// <param name="position">The position to check.</param>
+    public void RemovePriceTag(Vector3 position)
+    {
+        int index = -1;
+        float dist = 100.0f;
+
+        for (int i = 0; i < itemPriceSigns.Length; i++)
+        {
+            if (itemPriceSigns[i] == null)
+                continue;
+
+            float tmpDist = Vector3.Distance(position, itemPriceSigns[i].transform.position);
+            if (tmpDist < dist)
+            {
+                index = i;
+                dist = tmpDist;
+            }
+        }
+
+        if (index >= 0)
+        {
+            Mirror.NetworkServer.Destroy(itemPriceSigns[index]);
+            itemPriceSigns[index] = null;
         }
     }
 }
