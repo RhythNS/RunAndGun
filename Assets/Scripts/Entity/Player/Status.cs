@@ -52,6 +52,23 @@ public class Status : NetworkBehaviour
         body = GetComponent<Rigidbody2D>();
     }
 
+    private void Start()
+    {
+        player.Stats.OnDodgeChanged += OnDashStatChanged;
+        OnDashStatChanged(player.Stats.Dodge);
+    }
+
+    private void OnDestroy()
+    {
+        if (player)
+            player.Stats.OnDodgeChanged -= OnDashStatChanged;
+    }
+
+    public void OnDashStatChanged(int dashStat)
+    {
+        SetDashCooldown(PlayerStatsDict.Instance.GetDodgeCooldown(dashStat));
+    }
+
     /// <summary>
     /// Update the time that is needed between the player can dash.
     /// </summary>

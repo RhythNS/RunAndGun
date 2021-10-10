@@ -9,8 +9,10 @@ public class KeyMouseInput : RAGInput
 {
     public override InputType InputType => InputType.KeyMouse;
 
-    protected override void OnStart()
+    public override void Start()
     {
+        base.Start();
+
         Texture2D cursor = InputDict.Instance.MouseCursor;
 
         Cursor.visible = true;
@@ -71,7 +73,7 @@ public class KeyMouseInput : RAGInput
         Destroy(this);
     }
 
-    private void OnDestroy()
+    public override void OnDestroy()
     {
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
     }

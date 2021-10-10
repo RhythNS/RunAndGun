@@ -7833,6 +7833,131 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 51cb51d065c14cd4d8c4ff558239b518, type: 3}
+--- !u!1 &1365799233891446724 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1365799234425872912, guid: 51cb51d065c14cd4d8c4ff558239b518,
+    type: 3}
+  m_PrefabInstance: {fileID: 1365799233891446723}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1365799233891446725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1365799233891446724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbea30b7b23542049a7e866f6f8ecc38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minValue: 1
+  maxValue: 100
+  healthCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 40
+      inSlope: 110
+      outSlope: 110
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 150
+      inSlope: 110
+      outSlope: 110
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  speedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1600
+      inSlope: 5173.457
+      outSlope: 5173.457
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.861465
+    - serializedVersion: 3
+      time: 1
+      value: 3750
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  luckCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  dodgeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 3
+      inSlope: -2.0675075
+      outSlope: -2.0675075
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.05792357
+    - serializedVersion: 3
+      time: 0.5
+      value: 1.7453308
+      inSlope: -2.649147
+      outSlope: -1.4643352
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 1
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: -1.5132083
+      outSlope: 2
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 1
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &6526795480502565712
 PrefabInstance:
   m_ObjectHideFlags: 0

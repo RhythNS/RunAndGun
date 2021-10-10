@@ -35,12 +35,26 @@ public abstract class RAGInput : MonoBehaviour
         MovementMultiplicator = 1.0f;
     }
 
-    private void Start()
+    public virtual void Start()
     {
-        movementForce = GetComponent<Stats>().GetMovementForce();
+        Stats stats = GetComponent<Stats>();
+        stats.OnSpeedChanged += OnMovementStatChanged;
+        OnMovementStatChanged(stats.Speed);
+
         playerCamera = Camera.main.GetComponent<PlayerCamera>();
         useFocusPoint = Config.Instance.useFocusPoint;
-        OnStart(); // Call start on child classes.
+    }
+
+    public virtual void OnDestroy()
+    {
+        Stats stats = GetComponent<Stats>();
+        if (stats)
+            stats.OnSpeedChanged -= OnMovementStatChanged;
+    }
+
+    public void OnMovementStatChanged(int movementStat)
+    {
+        movementForce = PlayerStatsDict.Instance.GetMovementForce(movementStat);
     }
 
     /// <summary>
@@ -143,12 +157,6 @@ public abstract class RAGInput : MonoBehaviour
     protected virtual bool HasFocusPoint => false;
 
     protected virtual Vector2 GetFocusPoint() { return transform.position; }
-
-    /// <summary>
-    /// Called after all internal values of RAGInput have been set. Should be treated as the
-    /// Unity Start method.
-    /// </summary>
-    protected abstract void OnStart();
 
     /// <summary>
     /// Gets the direction to where the player wants to go.
