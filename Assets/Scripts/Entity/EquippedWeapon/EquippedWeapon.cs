@@ -114,7 +114,7 @@ public class EquippedWeapon : NetworkBehaviour
     public void Swap(Weapon newWeapon, bool dropOldWeapon = true)
     {
         if (weapon != null && dropOldWeapon == true)
-            PickableInWorld.Place(weapon, transform.position);
+            PickableInWorld.Place(weapon, transform.position, playSpawnAnimation : false);
 
         weapon = newWeapon;
         remainingBullets = weapon.MagazineSize;

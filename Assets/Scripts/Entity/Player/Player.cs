@@ -95,9 +95,10 @@ public class Player : Entity
     [Command]
     public void CmdPickup(GameObject pickup)
     {
-        if (!pickup.TryGetComponent(out PickableInWorld piw))
+        if (!pickup.TryGetComponent(out PickableInWorld piw) || piw.Available == false)
             return;
 
+        piw.PickedUp();
         Pickable pickable = piw.Pickable;
 
         if (piw.IsBuyable)
@@ -128,8 +129,6 @@ public class Player : Entity
         }
 
         RpcItemPickedUp(pickable);
-
-        Destroy(pickup);
     }
 
     /// <summary>
@@ -147,8 +146,6 @@ public class Player : Entity
                 break;
             case PickableType.Weapon:
                 FMODUtil.PlayOnTransform(((Weapon)pickable).WeaponSoundModel.EquipSound, transform);
-                break;
-            case PickableType.StatusEffect:
                 break;
         }
     }

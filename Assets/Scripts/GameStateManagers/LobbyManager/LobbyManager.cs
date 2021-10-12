@@ -12,6 +12,7 @@ public class LobbyManager : MonoBehaviour
 
     private ExtendedCoroutine gameStartCountdown;
 
+    [SerializeField] private TutorialZone tutorialZone;
     [SerializeField] private GameMode selectedGameMode;
 
     private void Awake()
@@ -29,6 +30,7 @@ public class LobbyManager : MonoBehaviour
     {
         PlayersDict.Instance.OnPlayerRemoved += OnPlayerChanged;
         PlayersDict.Instance.OnPlayerAdded += OnPlayerChanged;
+        tutorialZone.Register();
         LobbyLevel.Instance.Show();
     }
 
@@ -148,5 +150,6 @@ public class LobbyManager : MonoBehaviour
             PlayersDict.Instance.OnPlayerRemoved -= OnPlayerChanged;
             PlayersDict.Instance.OnPlayerAdded -= OnPlayerChanged;
         }
+        tutorialZone.DeRegister();
     }
 }
