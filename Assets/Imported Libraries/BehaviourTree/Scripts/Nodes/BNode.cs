@@ -75,7 +75,7 @@ namespace Rhyth.BTree
         /// It should be used to set values that are not going to change during execution.
         /// </summary>
         /// <param name="tree">The tree that the node is on.</param>
-        public virtual void Setup(BTree tree)
+        public void Setup(BTree tree)
         {
             this.tree = tree;
             InnerSetup();
@@ -173,6 +173,8 @@ namespace Rhyth.BTree
         /// </summary>
         protected Value CloneValue(Dictionary<Value, Value> originalValueForClonedValue, Value toClone)
         {
+            if (toClone == null)
+                return null;
             if (originalValueForClonedValue.ContainsKey(toClone))
                 return originalValueForClonedValue[toClone];
             Value cloned = toClone.Clone();

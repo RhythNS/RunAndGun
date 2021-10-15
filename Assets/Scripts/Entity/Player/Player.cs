@@ -24,6 +24,7 @@ public class Player : Entity
 
     public static Player LocalPlayer { get; private set; }
 
+    public bool IsAI { get; private set; } = false;
     public bool CanMove { get; private set; } = true;
     public RAGInput Input { get; private set; }
     public Stats Stats { get; private set; }
@@ -40,9 +41,16 @@ public class Player : Entity
     public StatusEffectList StatusEffectList { get; private set; }
     public EntityMaterialManager EntityMaterialManager { get; private set; }
     public LocalSound LocalSound { get; private set; }
+    public PlayerAI PlayerAI { get; private set; }
 
+    /*
     private Vector3 lastPosition = Vector3.zero;
     public Vector3 LastPosition => lastPosition;
+    private void LateUpdate()
+    {
+        lastPosition = transform.position;
+    }
+     */
 
     private void Awake()
     {
@@ -58,6 +66,8 @@ public class Player : Entity
         StatusEffectList = GetComponent<StatusEffectList>();
         EntityMaterialManager = GetComponent<EntityMaterialManager>();
         LocalSound = GetComponent<LocalSound>();
+        PlayerAI = GetComponent<PlayerAI>();
+        IsAI = PlayerAI;
     }
 
     private void Update()
@@ -65,14 +75,10 @@ public class Player : Entity
         PositionConverter.AdjustZ(transform);
     }
 
-    private void LateUpdate()
-    {
-        lastPosition = transform.position;
-    }
-
     private void Start()
     {
-        PlayersDict.Instance.Register(this);
+        if (IsAI == false)
+            PlayersDict.Instance.Register(this);
         EntityMaterialManager.PlaySpawnEffect();
     }
 
@@ -80,12 +86,31 @@ public class Player : Entity
     {
         LocalPlayer = this;
         Config.Instance.SelectedPlayerType = characterType;
-        Input = RAGInput.AttachInput(gameObject);
+        Input = RAGInput.AttachInput(this);
         UIManager.Instance.OnLocalPlayerStarted(this, Input.InputType);
         MusicManager.Instance.RegisterPlayer(this);
         Camera.main.GetComponent<PlayerCamera>().ToFollow = transform;
         PlayerAnimationController = gameObject.AddComponent<PlayerAnimationController>();
         gameObject.AddComponent<StudioListener>();
+    }
+
+    public override void OnStartServer()
+    {
+        if (IsAI == true)
+            Input = RAGInput.AttachInput(this);
+    }
+
+    [Server]
+    public void ResetToDefault()
+    {
+        EquippedWeapon.Swap(null, false);
+        for (int i = Inventory.Items.Count - 1; i >= 0; i--)
+        {
+            Inventory.CmdDropItem(Inventory.Items[i], false);
+        }
+        Inventory.money = 0;
+        Health.Init(Health.Max);
+        StatusEffectList.Clear();
     }
 
     /// <summary>
@@ -237,7 +262,7 @@ public class Player : Entity
     {
         if (Camera.main && Camera.main.TryGetComponent(out PlayerCamera camera) && camera.ToFollow == transform)
             camera.ToFollow = null;
-        if (PlayersDict.Instance)
+        if (PlayersDict.Instance && IsAI == false)
             PlayersDict.Instance.DeRegister(this);
 
         if (LocalPlayer != this)

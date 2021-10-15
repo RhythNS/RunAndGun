@@ -1,14 +1,17 @@
-﻿using Mirror;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class TutorialZone : MonoBehaviour
 {
     [SerializeField] private Vector2 halfBounds;
+    [SerializeField] private PlayerReviveSpawner playerReviveSpawner;
 
     private Vector2 min, max;
     private List<PickableInWorld> activeWeapons = new List<PickableInWorld>();
+
+    private List<Player> playersInside = new List<Player>();
+
+    private bool active = false;
 
     private void Start()
     {
@@ -27,6 +30,44 @@ public class TutorialZone : MonoBehaviour
     {
         PickableInWorld.OnSpawned -= OnPickableSpawned;
         PickableInWorld.OnDeSpawned -= OnPickableDeSpawned;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.TryGetComponent(out Player player) == false
+            || player.IsAI == true)
+            return;
+
+        playersInside.Add(player);
+
+        if (active == false)
+            OnPlayersEntered();
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.TryGetComponent(out Player player) == false
+            || player.IsAI == true)
+            return;
+
+        player.ResetToDefault();
+        playersInside.Remove(player);
+
+        if (playersInside.Count == 0)
+            OnAllPlayersLeft();
+    }
+
+    private void OnPlayersEntered()
+    {
+        active = true;
+        playerReviveSpawner.Spawn();
+    }
+
+    private void OnAllPlayersLeft()
+    {
+        active = false;
+        if (PlayersDict.Instance?.Players.Count > 0)
+            playerReviveSpawner.DeSpawn();
     }
 
     private void OnPickableSpawned(PickableInWorld piw)

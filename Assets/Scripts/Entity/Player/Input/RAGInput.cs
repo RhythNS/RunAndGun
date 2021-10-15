@@ -62,16 +62,19 @@ public abstract class RAGInput : MonoBehaviour
     /// </summary>
     /// <param name="gameObject">The gameobject to which the input is attached to.</param>
     /// <returns>A reference to the created input.</returns>
-    public static RAGInput AttachInput(GameObject gameObject)
+    public static RAGInput AttachInput(Player player)
     {
         // Is there already a input instance on the player?
-        if (gameObject.TryGetComponent(out RAGInput input))
+        if (player.TryGetComponent(out RAGInput input))
             input.Remove();
+
+        if (player.IsAI == true)
+            return player.gameObject.AddComponent<AIInput>();
 
         switch (Config.Instance.selectedInput)
         {
             case InputType.KeyMouse:
-                return gameObject.AddComponent<KeyMouseInput>();
+                return player.gameObject.AddComponent<KeyMouseInput>();
             /*
         case InputType.Keyboard:
             break;
@@ -79,7 +82,7 @@ public abstract class RAGInput : MonoBehaviour
             break;
             */
             case InputType.Mobile:
-                return gameObject.AddComponent<MobileInput>();
+                return player.gameObject.AddComponent<MobileInput>();
             default:
                 Debug.LogError("InputType " + Config.Instance.selectedInput + " not found!");
                 return null;
