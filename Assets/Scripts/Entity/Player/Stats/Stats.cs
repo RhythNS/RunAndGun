@@ -43,6 +43,11 @@ public class Stats : NetworkBehaviour
         dodge = baseDodge;
     }
 
+    public override void OnStartServer()
+    {
+        player.Health.SetMax(PlayerStatsDict.Instance.GetHealth(health));
+    }
+
     /// <summary>
     /// Called when the item list changed.
     /// </summary>

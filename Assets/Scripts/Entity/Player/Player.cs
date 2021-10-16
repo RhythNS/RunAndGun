@@ -26,6 +26,7 @@ public class Player : Entity
 
     public bool IsAI { get; private set; } = false;
     public bool CanMove { get; private set; } = true;
+    public bool IsAuthorityResponsible { get; private set; } = false;
     public RAGInput Input { get; private set; }
     public Stats Stats { get; private set; }
     public Status Status { get; private set; }
@@ -92,12 +93,17 @@ public class Player : Entity
         Camera.main.GetComponent<PlayerCamera>().ToFollow = transform;
         PlayerAnimationController = gameObject.AddComponent<PlayerAnimationController>();
         gameObject.AddComponent<StudioListener>();
+        IsAuthorityResponsible = true;
     }
 
     public override void OnStartServer()
     {
-        if (IsAI == true)
-            Input = RAGInput.AttachInput(this);
+        if (IsAI == false)
+            return;
+
+        PlayerAnimationController = gameObject.AddComponent<PlayerAnimationController>();
+        Input = RAGInput.AttachInput(this);
+        IsAuthorityResponsible = true;
     }
 
     [Server]
@@ -119,6 +125,16 @@ public class Player : Entity
     /// <param name="pickup">The gameobject to be picked up. This must have the PickableInWorld component on it!</param>
     [Command]
     public void CmdPickup(GameObject pickup)
+    {
+        ServerPickup(pickup);
+    }
+
+    /// <summary>
+    /// Picks up a PickableInWorld.
+    /// </summary>
+    /// <param name="pickup">The gameobject to be picked up. This must have the PickableInWorld component on it!</param>
+    [Server]
+    public void ServerPickup(GameObject pickup)
     {
         if (!pickup.TryGetComponent(out PickableInWorld piw) || piw.Available == false)
             return;
@@ -184,6 +200,18 @@ public class Player : Entity
     [Command]
     public void CmdBulletHit(GameObject gameObject, GameObject affecterObj, Weapon firedWeapon)
     {
+        ServerBulletHit(gameObject, affecterObj, firedWeapon);
+    }
+
+    /// <summary>
+    /// Notifies the server that the player has been hit by a bullet.
+    /// </summary>
+    /// <param name="gameObject">The bullet that hit the player.</param>
+    /// <param name="affecterObj">The entity that shoot the bullet.</param>
+    /// <param name="firedWeapon">The weapon that fired the bullet.</param>
+    [Server]
+    public void ServerBulletHit(GameObject gameObject, GameObject affecterObj, Weapon firedWeapon)
+    {
         // Check if the Player was hit by a bullet that did not already hit something else.
         if (gameObject && gameObject.TryGetComponent(out Bullet bullet) == true && gameObject.activeInHierarchy)
         {
@@ -224,13 +252,19 @@ public class Player : Entity
         }
 
 
-        if (isLocalPlayer && !Status.Dashing)
+        if (IsAuthorityResponsible && !Status.Dashing)
         {
             if (other.TryGetComponent(out PickableInWorld pickable) && pickable.Pickable.InstantPickup)
-                CmdPickup(pickable.gameObject);
+                if (IsAI)
+                    ServerPickup(pickable.gameObject);
+                else
+                    CmdPickup(pickable.gameObject);
             else if (other.TryGetComponent(out Bullet bullet))
             {
-                CmdBulletHit(bullet.gameObject, bullet.shooterObject, bullet.fromWeapon);
+                if (IsAI)
+                    ServerBulletHit(bullet.gameObject, bullet.shooterObject, bullet.fromWeapon);
+                else
+                    CmdBulletHit(bullet.gameObject, bullet.shooterObject, bullet.fromWeapon);
             }
             else if (other.TryGetComponent(out Player player))
             {
