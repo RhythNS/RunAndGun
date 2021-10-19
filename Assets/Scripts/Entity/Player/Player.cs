@@ -20,8 +20,6 @@ public class Player : Entity
     [SyncVar] public int playerIndex;
     public string uniqueIdentifier;
 
-    [SerializeField] [EventRef] private string itemPickUpSound;
-
     public static Player LocalPlayer { get; private set; }
 
     public bool IsAI { get; private set; } = false;
@@ -139,7 +137,6 @@ public class Player : Entity
         if (!pickup.TryGetComponent(out PickableInWorld piw) || piw.Available == false)
             return;
 
-        piw.PickedUp();
         Pickable pickable = piw.Pickable;
 
         if (piw.IsBuyable)
@@ -152,6 +149,7 @@ public class Player : Entity
             if (CurrentRoom is ShopRoom sr)
                 sr.RemovePriceTag(piw.transform.position);
         }
+        piw.PickedUp();
 
         switch (pickable.PickableType)
         {
@@ -186,7 +184,7 @@ public class Player : Entity
         {
             case PickableType.Consumable:
             case PickableType.Item:
-                FMODUtil.PlayOnTransform(itemPickUpSound, transform);
+                FMODUtil.PlayOnTransform(SoundDict.Instance.ItemPickUpSound, transform);
                 break;
             case PickableType.Weapon:
                 FMODUtil.PlayOnTransform(((Weapon)pickable).WeaponSoundModel.EquipSound, transform);

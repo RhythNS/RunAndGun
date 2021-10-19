@@ -5,6 +5,15 @@
 /// </summary>
 public class LobbyLevel : MonoBehaviour
 {
+    [System.Serializable]
+    private class Bounds
+    {
+        public Vector2 position;
+        public Vector2 scale;
+    }
+
+    [SerializeField] private Bounds bounds;
+
     public static LobbyLevel Instance { get; private set; }
 
     private void Awake()
@@ -26,6 +35,7 @@ public class LobbyLevel : MonoBehaviour
         gameObject.SetActive(true);
         StartCoroutine(DungeonCreator.Instance.ClearPreviousDungeon());
         MusicManager.Instance.ChangeState(MusicManager.State.Lobby);
+        DungeonCreator.Instance.AdjustMask(bounds.position, bounds.scale);
     }
 
     /// <summary>
@@ -40,5 +50,11 @@ public class LobbyLevel : MonoBehaviour
     {
         if (Instance == this)
             Instance = null;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(bounds.position + (bounds.scale * 0.5f), bounds.scale);
     }
 }

@@ -148,15 +148,6 @@ public abstract class RAGInput : MonoBehaviour
         Body.AddForce(GetMovementInput() * (movementForce * MovementMultiplicator));
     }
 
-    /// <summary>
-    /// Should only be called from Status.
-    /// </summary>
-    /// <param name="newValue">The new movement multiplicator.</param>
-    public void SetMovementMultiplicator(float newValue)
-    {
-        MovementMultiplicator = newValue;
-    }
-
     protected virtual bool HasFocusPoint => false;
 
     protected virtual Vector2 GetFocusPoint() { return transform.position; }

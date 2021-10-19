@@ -31,7 +31,7 @@ public class PickableInWorld : NetworkBehaviour
     /// <param name="position">The position to where it should be placed.</param>
     /// <param name="isBuyable">Whether it is buyable.</param>
     [Server]
-    public static void Place(Pickable pickable, Vector3 position, bool isBuyable = false, bool playSpawnAnimation = true)
+    public static PickableInWorld Place(Pickable pickable, Vector3 position, bool isBuyable = false, bool playSpawnAnimation = true)
     {
         GameObject gObject = Instantiate(PickableDict.Instance.PickableInWorldPrefab);
         gObject.layer = LayerDict.Instance.GetPickableLayer();
@@ -42,6 +42,7 @@ public class PickableInWorld : NetworkBehaviour
         piw.isBuyable = isBuyable;
         piw.playSpawnAnimation = playSpawnAnimation;
         NetworkServer.Spawn(gObject);
+        return piw;
     }
 
     public override void OnStartClient()

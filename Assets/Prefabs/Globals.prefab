@@ -92,6 +92,8 @@ GameObject:
   - component: {fileID: 6147434120120078534}
   - component: {fileID: 4331830215520593489}
   - component: {fileID: 3892839556540046609}
+  - component: {fileID: 7664036751175732713}
+  - component: {fileID: 6867228825887532725}
   m_Layer: 0
   m_Name: Dicts
   m_TagString: Untagged
@@ -464,48 +466,81 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   emoteLayers:
-  - name: General
+  - name: Faces
     emotes:
     - identifier: 
-      sprite: {fileID: 21300000, guid: c1eb8da769290bc4dae2b4f0ef050f28, type: 3}
+      sprite: {fileID: 1358680944413601997, guid: f29ce8ecfd817b245bdbc0da42e4ed73,
+        type: 3}
       id: 0
     - identifier: 
-      sprite: {fileID: 21300000, guid: c8ce78a297cac62439e25e6c38a5b469, type: 3}
+      sprite: {fileID: 8560450389038738817, guid: f29ce8ecfd817b245bdbc0da42e4ed73,
+        type: 3}
       id: 0
     - identifier: 
-      sprite: {fileID: 21300000, guid: 38d9f63fd71b05f4798d7a3763a3e396, type: 3}
+      sprite: {fileID: 7397839153621870338, guid: f29ce8ecfd817b245bdbc0da42e4ed73,
+        type: 3}
       id: 0
     - identifier: 
-      sprite: {fileID: 21300000, guid: 6fa850b275a30104a92f825885a4c67a, type: 3}
+      sprite: {fileID: 6233039292562749219, guid: f29ce8ecfd817b245bdbc0da42e4ed73,
+        type: 3}
       id: 0
     - identifier: 
-      sprite: {fileID: 21300000, guid: ab48bd1dd755e364a9d81c2bb435cf4e, type: 3}
+      sprite: {fileID: -2194667968016709300, guid: f29ce8ecfd817b245bdbc0da42e4ed73,
+        type: 3}
       id: 0
     - identifier: 
-      sprite: {fileID: 21300000, guid: 627edb842cf1bbf49b0916c52cd507ea, type: 3}
+      sprite: {fileID: -2260012342086508981, guid: f29ce8ecfd817b245bdbc0da42e4ed73,
+        type: 3}
       id: 0
     - identifier: 
-      sprite: {fileID: 21300000, guid: 08bbb38c01d687a46bf3c27e51c38342, type: 3}
+      sprite: {fileID: 6190484951090040358, guid: f29ce8ecfd817b245bdbc0da42e4ed73,
+        type: 3}
       id: 0
     - identifier: 
-      sprite: {fileID: 21300000, guid: 6da14cb87d3688c48806753715dc4610, type: 3}
+      sprite: {fileID: -7732956015899300384, guid: f29ce8ecfd817b245bdbc0da42e4ed73,
+        type: 3}
       id: 0
     - identifier: 
-      sprite: {fileID: 21300000, guid: bd536211b97f7134a82ee7b3fe5e330f, type: 3}
+      sprite: {fileID: 723362977619312270, guid: f29ce8ecfd817b245bdbc0da42e4ed73,
+        type: 3}
       id: 0
-  - name: Reaction
+  - name: Symbols
     emotes:
     - identifier: 
-      sprite: {fileID: 21300000, guid: de1249dbba762a545a0ad245272bdb55, type: 3}
+      sprite: {fileID: 211069865737578204, guid: 8b3f6cbeda0c8a04398472541b8cb089,
+        type: 3}
       id: 0
     - identifier: 
-      sprite: {fileID: 21300000, guid: 00f02b4e1f111b944a88179cbbf39aa1, type: 3}
+      sprite: {fileID: 8650254843087023023, guid: 8b3f6cbeda0c8a04398472541b8cb089,
+        type: 3}
       id: 0
     - identifier: 
-      sprite: {fileID: 21300000, guid: 06aae06e42fe2d545b780bca6baca009, type: 3}
+      sprite: {fileID: -2077084847556229935, guid: 8b3f6cbeda0c8a04398472541b8cb089,
+        type: 3}
       id: 0
     - identifier: 
-      sprite: {fileID: 21300000, guid: 6ad58bf6ef4a96d47a6ece0fa4454e29, type: 3}
+      sprite: {fileID: 997842016656946391, guid: 8b3f6cbeda0c8a04398472541b8cb089,
+        type: 3}
+      id: 0
+    - identifier: 
+      sprite: {fileID: -287259115211605663, guid: 8b3f6cbeda0c8a04398472541b8cb089,
+        type: 3}
+      id: 0
+    - identifier: 
+      sprite: {fileID: -8506494374677069109, guid: 8b3f6cbeda0c8a04398472541b8cb089,
+        type: 3}
+      id: 0
+    - identifier: 
+      sprite: {fileID: 8567407652144255134, guid: 8b3f6cbeda0c8a04398472541b8cb089,
+        type: 3}
+      id: 0
+    - identifier: 
+      sprite: {fileID: 3214438038795450700, guid: 8b3f6cbeda0c8a04398472541b8cb089,
+        type: 3}
+      id: 0
+    - identifier: 
+      sprite: {fileID: 1846601341551891139, guid: 8b3f6cbeda0c8a04398472541b8cb089,
+        type: 3}
       id: 0
 --- !u!114 &3892839556540046609
 MonoBehaviour:
@@ -534,6 +569,138 @@ MonoBehaviour:
     region: 6
   - name: SA
     region: 7
+--- !u!114 &7664036751175732713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1365799234425872912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbea30b7b23542049a7e866f6f8ecc38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minValue: 1
+  maxValue: 100
+  healthCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 40
+      inSlope: 110
+      outSlope: 110
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 150
+      inSlope: 110
+      outSlope: 110
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  speedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1600
+      inSlope: 5173.457
+      outSlope: 5173.457
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.861465
+    - serializedVersion: 3
+      time: 1
+      value: 3750
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  luckCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  dodgeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 3
+      inSlope: -2.0675075
+      outSlope: -2.0675075
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.05792357
+    - serializedVersion: 3
+      time: 0.5
+      value: 1.7453308
+      inSlope: -2.649147
+      outSlope: -1.4643352
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 1
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: -1.5132083
+      outSlope: 2
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 1
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &6867228825887532725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1365799234425872912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47f8d5aa0cb6a544c983a84623c71272, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemPickUpSound: event:/Universal Dungeon Sounds/PlayerPickup
 --- !u!1 &1365799234809505999
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using Mirror;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class TutorialZone : MonoBehaviour
 {
     [SerializeField] private Vector2 halfBounds;
     [SerializeField] private PlayerReviveSpawner playerReviveSpawner;
+    [SerializeField] private TutorialShop shop;
 
     private Vector2 min, max;
     private List<PickableInWorld> activeWeapons = new List<PickableInWorld>();
@@ -61,13 +63,22 @@ public class TutorialZone : MonoBehaviour
     {
         active = true;
         playerReviveSpawner.Spawn();
+        shop.Spawn();
     }
 
     private void OnAllPlayersLeft()
     {
         active = false;
-        if (PlayersDict.Instance?.Players.Count > 0)
-            playerReviveSpawner.DeSpawn();
+
+        // If the server is shutting down while the player is in the tutorial zone, then
+        // this causes an InvalidOperationException because the spawned list of objects
+        // was modified whilst it tried to delete everything. Since we do not need to
+        // delete anything when we are shutting down, we will just do nothing.
+        if (ClientScene.ready == false)
+            return;
+
+        playerReviveSpawner.DeSpawn();
+        shop.DeSpawn();
     }
 
     private void OnPickableSpawned(PickableInWorld piw)
@@ -80,7 +91,7 @@ public class TutorialZone : MonoBehaviour
             return;
         }
 
-        if (piw.Pickable.PickableType == PickableType.Weapon)
+        if (piw.IsBuyable == false && piw.Pickable.PickableType == PickableType.Weapon)
         {
             if (activeWeapons.Count > 0)
             {

@@ -97,7 +97,10 @@ public class Status : NetworkBehaviour
         if (!downedPlayerAbleToRevive || downedPlayerAbleToRevive.Health.Alive)
             return;
 
-        CmdReviveTeammate(downedPlayerAbleToRevive.gameObject);
+        if (isServer)
+            ServerReviving(downedPlayerAbleToRevive);
+        else
+            CmdReviveTeammate(downedPlayerAbleToRevive.gameObject);
     }
 
     /// <summary>
@@ -121,7 +124,7 @@ public class Status : NetworkBehaviour
     {
         // Maybe add a check if the player is in range.
 
-        if (!player || player.Health.Alive)
+        if (!player || player.Health.Alive || CanInteract == false)
             return;
 
         downedPlayerAbleToRevive = player;
