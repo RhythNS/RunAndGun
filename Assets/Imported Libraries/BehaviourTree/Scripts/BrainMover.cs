@@ -5,7 +5,7 @@ public class BrainMover : MonoBehaviour
     /// <summary>
     /// The squared distance to mark a node as "reached".
     /// </summary>
-    private static readonly float MAGNITUDE_SQUARED_TO_REACH = 0.15f * 0.15f;
+    protected static readonly float MAGNITUDE_SQUARED_TO_REACH = 0.15f * 0.15f;
 
     public enum PathState // in late update
     {
@@ -15,8 +15,7 @@ public class BrainMover : MonoBehaviour
     /// <summary>
     /// The current state of the path.
     /// </summary>
-    public PathState State { get => state; 
-        private set => state = value; }
+    public PathState State { get => state; protected set => state = value; }
     [SerializeField] private PathState state = PathState.Reached;
 
     /// <summary>
@@ -81,7 +80,7 @@ public class BrainMover : MonoBehaviour
         State = PathState.Reached;
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         switch (State)
         {
@@ -108,7 +107,7 @@ public class BrainMover : MonoBehaviour
         }
     }
 
-    private void LateUpdate()
+    protected virtual void LateUpdate()
     {
         // If the should move is different from the last frame then update wheter the AI Agent should move or not
         if (ShouldMove != didMoveLastFrame)

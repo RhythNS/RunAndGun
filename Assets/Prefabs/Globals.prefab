@@ -586,6 +586,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ignorePlatform: 0
   password: 
+  tempIdentifier: 
   selectedInput: 0
   useFocusPoint: 1
   targetFramesPerSecondLoadingScreen: 60
@@ -611,6 +612,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4436296186711646576}
   - component: {fileID: 1335863983716831299}
+  - component: {fileID: 3824100986498084039}
   m_Layer: 0
   m_Name: GamestateManager
   m_TagString: Untagged
@@ -649,6 +651,18 @@ MonoBehaviour:
   visible: 0
   m_AssetId: 
   hasSpawned: 0
+--- !u!114 &3824100986498084039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2221242444935213018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f14f9a2708ecebf4b878ef0564bbca9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2231233067460551503
 GameObject:
   m_ObjectHideFlags: 0
@@ -696,9 +710,9 @@ MonoBehaviour:
   matchmakerURL: noblewhale.com
   matchmakerPort: 20205
   timeout: 5
-  maxReconnectionAttempts: 5
+  maxReconnectionAttempts: 3
   externalIPSource: ipv4.noblewhale.com
-  autoConnect: 1
+  autoConnect: 0
 --- !u!114 &4639023130057972085
 MonoBehaviour:
   m_ObjectHideFlags: 0

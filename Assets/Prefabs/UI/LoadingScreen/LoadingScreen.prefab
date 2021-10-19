@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 1609651911148215597}
   - component: {fileID: 5622789374144728990}
   - component: {fileID: 999716278628842556}
-  - component: {fileID: 1746210306519318778}
   m_Layer: 5
   m_Name: LoadingScreen
   m_TagString: Untagged
@@ -117,15 +116,3 @@ MonoBehaviour:
   notConnectedColor: {r: 0.3584906, g: 0.3584906, b: 0.3584906, a: 1}
   loadingStartSound: event:/Universal Dungeon Sounds/LoadingStart
   loadingEndSound: event:/Universal Dungeon Sounds/LoadingEnd
---- !u!114 &1746210306519318778
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8196731842357577901}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e7c8b75817c8064298543217ad883bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

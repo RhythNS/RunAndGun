@@ -32,11 +32,26 @@ public class SetClosestHealthNode : BoolNode
         if (healths.Count == 0)
             return false;
 
-        Health bestHealth = healths[0];
-        float bestDistance = (tree.AttachedBrain.transform.position - bestHealth.transform.position).sqrMagnitude;
+        Health ownHealth = tree.AttachedBrain.GetComponent<Health>();
+        Health bestHealth = null;
+        float bestDistance = 0.0f;
 
-        for (int i = 1; i < healths.Count; i++)
+        int i;
+        for (i = 0; i < healths.Count; i++)
         {
+            if (healths[i] != ownHealth)
+            {
+                bestHealth = healths[i];
+                bestDistance = (tree.AttachedBrain.transform.position - bestHealth.transform.position).sqrMagnitude;
+                break;
+            }
+        }
+
+        for (++i; i < healths.Count; i++)
+        {
+            if (healths[i] == ownHealth)
+                continue;
+
             float newDistance = (tree.AttachedBrain.transform.position - healths[i].transform.position).sqrMagnitude;
             if (bestDistance > newDistance)
             {
@@ -44,6 +59,9 @@ public class SetClosestHealthNode : BoolNode
                 bestHealth = healths[i];
             }
         }
+
+        if (bestHealth == null)
+            return false;
 
         targetHealth.Set(bestHealth);
         return true;

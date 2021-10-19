@@ -15,8 +15,6 @@ public class SpawnWorldEffect : BulletImpactEffect
         if (NetworkServer.active == false)
             return;
 
-        WorldEffectInWorld toSpawn = Instantiate(prefab, position, Quaternion.identity);
-        toSpawn.Init(inflicter, effects);
-        NetworkServer.Spawn(toSpawn.gameObject);
+        WorldEffectInWorld.Place(prefab, effects, inflicter, position, Quaternion.identity);
     }
 }

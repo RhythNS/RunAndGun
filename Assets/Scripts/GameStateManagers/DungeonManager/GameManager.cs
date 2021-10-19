@@ -49,18 +49,17 @@ public class GameManager : MonoBehaviour
         if (instance != this)
             return;
 
-        PlayersDict.Instance.OnPlayerDisconnected += OnPlayerDisconnected;
+        PlayersDict.Instance.OnPlayerRemoved += OnPlayerRemoved;
         AliveHealthDict.Instance.OnAllPlayersDied += OnAllPlayersDied;
-        currentLevel = -1;
     }
 
     /// <summary>
-    /// Called when a player disconnected.
+    /// Called when a player was removed.
     /// </summary>
-    /// <param name="player">The player that disconnected.</param>
-    private void OnPlayerDisconnected(Player player)
+    /// <param name="player">The player that was removed.</param>
+    private void OnPlayerRemoved(Player player)
     {
-        Debug.Log(player.entityName + " has disconnected!");
+        Debug.Log(player.entityName + " was removed!");
         // TODO: Figure out what happens here.
         // If level is loading =>
         // If level is not loading => 
@@ -86,6 +85,8 @@ public class GameManager : MonoBehaviour
         GameMode copied = Instantiate(gameMode);
         copied.Init(seed);
         GameManager.gameMode = copied;
+
+        currentLevel = -1;
     }
 
     /// <summary>
@@ -114,10 +115,10 @@ public class GameManager : MonoBehaviour
             OnDungeonCleared();
             return;
         }
-
         GenerateLevelMessage generateLevelMessage = new GenerateLevelMessage()
         {
             levelNumber = currentLevel,
+            reconnecting = false,
             region = GetNextRegion()
         };
 
@@ -163,10 +164,7 @@ public class GameManager : MonoBehaviour
             return;
 
         if (instance.CurrentState != State.LoadingLevel)
-        {
-            Debug.LogWarning("Someone reported level change while playing!");
             return;
-        }
 
         // Have all players finished loading?
         List<Player> players = PlayersDict.Instance.Players;
@@ -341,7 +339,7 @@ public class GameManager : MonoBehaviour
             if (AliveHealthDict.Instance)
                 AliveHealthDict.Instance.OnAllPlayersDied -= OnAllPlayersDied;
             if (PlayersDict.Instance)
-                PlayersDict.Instance.OnPlayerDisconnected -= OnPlayerDisconnected;
+                PlayersDict.Instance.OnPlayerRemoved -= OnPlayerRemoved;
             instance = null;
         }
     }

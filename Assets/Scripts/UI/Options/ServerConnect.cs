@@ -13,6 +13,7 @@ public class ServerConnect : PanelElement
     [SerializeField] private Button refreshButton;
     [SerializeField] private Button connectButton;
     [SerializeField] private Button abortConnectButton;
+    [SerializeField] private Button reconnectButton;
 
     [SerializeField] private RectTransform contentTrans;
     [SerializeField] private RectTransform overviewTrans;
@@ -30,6 +31,9 @@ public class ServerConnect : PanelElement
 
     [SerializeField] private ConnectingScreen connectingScreen;
 
+    [SerializeField] private float timeForDisconnectReconnect = 60.0f * 15.0f;
+    [SerializeField] private float timeForConnectReconnect = 60.0f * 30.0f;
+
     private Match toConnectToMatch;
 
     private void Start()
@@ -37,6 +41,7 @@ public class ServerConnect : PanelElement
         refreshButton.onClick.AddListener(Refresh);
         connectButton.onClick.AddListener(OnConnectButtonPressed);
         abortConnectButton.onClick.AddListener(OnAbortConnectButtonPressed);
+        reconnectButton.onClick.AddListener(OnReconnectButtonPressed);
     }
 
     public override void InnerOnShow()
@@ -44,7 +49,19 @@ public class ServerConnect : PanelElement
         joinServerTrans.gameObject.SetActive(false);
         overviewTrans.gameObject.SetActive(true);
 
+        reconnectButton.gameObject.SetActive(ShouldShowReconnectButton());
+
         Refresh();
+    }
+
+    private bool ShouldShowReconnectButton()
+    {
+        LastConnectedGame lcg = Config.Instance.LastConnectedGame;
+        if (lcg == null)
+            return false;
+
+        float reconnectTime = lcg.timeIsConnected ? timeForConnectReconnect : timeForDisconnectReconnect;
+        return reconnectTime > lcg.GetSecondsTimeDifferenceSinceNow();
     }
 
     /// <summary>
@@ -73,6 +90,14 @@ public class ServerConnect : PanelElement
     /// </summary>
     private void OnReconnected()
     {
+        if (RAGMatchmaker.Instance.IsReady == false)
+        {
+            DeleteAllContentChildren();
+            Instantiate(noConnectionPrefab, contentTrans);
+            refreshButton.gameObject.SetActive(true);
+            return;
+        }
+
         RAGMatchmaker.Instance.GetMatchList(OnMatchListRecieved);
     }
 
@@ -83,12 +108,7 @@ public class ServerConnect : PanelElement
     {
         refreshButton.gameObject.SetActive(true);
 
-        while (contentTrans.childCount != 0)
-        {
-            Transform trans = contentTrans.GetChild(0);
-            trans.parent = null;
-            Destroy(trans.gameObject);
-        }
+        DeleteAllContentChildren();
 
         if (success == false)
         {
@@ -111,6 +131,16 @@ public class ServerConnect : PanelElement
             matchDisplay = Instantiate(matchDisplayPrefab);
         }
         Destroy(matchDisplay.gameObject);
+    }
+
+    private void DeleteAllContentChildren()
+    {
+        while (contentTrans.childCount != 0)
+        {
+            Transform trans = contentTrans.GetChild(0);
+            trans.SetParent(null);
+            Destroy(trans.gameObject);
+        }
     }
 
     /// <summary>
@@ -138,6 +168,24 @@ public class ServerConnect : PanelElement
         Refresh();
     }
 
+    private void OnReconnectButtonPressed()
+    {
+        LastConnectedGame lcg = Config.Instance.LastConnectedGame;
+        if (lcg == null)
+            return;
+
+        NetworkConnector.DisconnectClient();
+
+        NobleNetworkManager manager = (NobleNetworkManager)NetworkManager.singleton;
+        manager.networkAddress = lcg.lastConnectedIP;
+        manager.networkPort = (ushort)lcg.lastConnectedPort;
+        
+        manager.StartClient();
+
+        connectingScreen.Show();
+        OnConfirm();
+    }
+
     /// <summary>
     /// Callback for when a match was joined.
     /// </summary>
@@ -159,6 +207,9 @@ public class ServerConnect : PanelElement
         int port = match.matchData["port"];
         manager.networkAddress = ip;
         manager.networkPort = (ushort)port;
+
+        Config.Instance.LastConnectedGame = LastConnectedGame.Connected(ip, port);
+
         manager.StartClient();
 
         connectingScreen.Show();

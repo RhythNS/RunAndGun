@@ -49,15 +49,15 @@ public class UIManager : MonoBehaviour
 
     public void OnLocalPlayerDeleted() => inGameManager.UnRegisterEvents();
 
-    public void ShowLevelLoadScreen() => loadingScreenManager.Show();
-
+    public void ShowLevelLoadScreen(bool reconnecting = false) => loadingScreenManager.Show(reconnecting);
     public void HideLevelLoadScreen() => loadingScreenManager.Hide();
+    public bool IsLoadingScreenActive() => loadingScreenManager.Active;
 
     public void OnPlayerEmoted(EmoteMessage emoteMessage) => inGameManager.OnPlayerEmoted(emoteMessage);
 
     public void ToggleEmotePanel() => inGameManager.ToggleEmotePanel();
 
-    public void ShowNotification(string toDisplay) => inGameManager.ShowNotification(toDisplay);
+    public void ShowNotification(string toDisplay) => optionsManager.ShowNotification(toDisplay);
 
     private void OnDestroy()
     {

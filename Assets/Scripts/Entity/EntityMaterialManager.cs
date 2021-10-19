@@ -71,7 +71,7 @@ public class EntityMaterialManager : MonoBehaviour
     /// </summary>
     /// <param name="material">The health material.</param>
     /// <param name="duration">The duration of the effect.</param>
-    private IEnumerator HealthEffect(Material material, float duration)
+    public static IEnumerator HealthEffect(Material material, float duration)
     {
         float halfDuration = duration * 0.5f;
         float timer = 0;
@@ -109,7 +109,7 @@ public class EntityMaterialManager : MonoBehaviour
     /// </summary>
     /// <param name="material">The spawn material.</param>
     /// <param name="duration">The duration of the effect.</param>
-    private IEnumerator SpawnEffect(Material material, float duration)
+    public static IEnumerator SpawnEffect(Material material, float duration)
     {
         float timer = duration;
         bool continueExecuting = true;
@@ -132,7 +132,7 @@ public class EntityMaterialManager : MonoBehaviour
     /// </summary>
     /// <param name="material">The despawn material.</param>
     /// <param name="duration">The duration of the effect.</param>
-    private IEnumerator DeSpawnEffect(Material material, float duration)
+    public static IEnumerator DeSpawnEffect(Material material, float duration)
     {
         float timer = duration;
         bool continueExecuting = true;

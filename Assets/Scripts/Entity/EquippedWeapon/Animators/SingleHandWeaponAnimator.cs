@@ -11,14 +11,18 @@ public class SingleHandWeaponAnimator : WeaponAnimator
     {
         if (direction.x > 0.0f)
         {
-            transform.localPosition = WeaponPoints.EastHand;
+            Vector3 pos = WeaponPoints.EastHand;
+            pos.z = transform.localPosition.z;
+            transform.localPosition = pos;
             SpriteRenderer.flipX = false;
             float angle = Vector2.Angle(Vector2.right, direction);
             transform.rotation = Quaternion.Euler(0.0f, 0.0f, direction.y > 0 ? angle : -angle);
         }
         else
         {
-            transform.localPosition = WeaponPoints.WestHand;
+            Vector3 pos = WeaponPoints.WestHand;
+            pos.z = transform.localPosition.z;
+            transform.localPosition = pos;
             SpriteRenderer.flipX = true;
             float angle = Vector2.Angle(Vector2.left, direction);
             transform.rotation = Quaternion.Euler(0.0f, 0.0f, direction.y > 0 ? -angle : angle);

@@ -31,6 +31,7 @@ public class GameMode : ScriptableObject
     /// <param name="seed">The base seed.</param>
     public void Init(int seed)
     {
+        this.seed = seed;
         Random.InitState(seed);
         levelSeeds = new int[levelAmount];
         for (int i = 0; i < levelAmount; i++)

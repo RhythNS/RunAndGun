@@ -15,24 +15,15 @@ public class Health : NetworkBehaviour
     /// The current amount of hitpoints.
     /// </summary>
     [SyncVar(hook = nameof(OnCurrentChanged))] private int current = 200;
-    /// <summary>
-    /// The current amount of defence points.
-    /// </summary>
-    [SyncVar(hook = nameof(OnDefenceChanged))] private int defence = 10;
 
     [SerializeField] [EventRef] private string hitSound;
     [SerializeField] [EventRef] private string diedSound;
 
     public event IntChangedWithPrev MaxChanged;
     public event IntChangedWithPrev CurrentChanged;
-    public event IntChangedWithPrev DefenceChanged;
     public event HealthPercentageChanged CurrentChangedAsPercentage;
     public event Died OnDied;
 
-    /// <summary>
-    /// The current amount defence points.
-    /// </summary>
-    public int Defence => defence;
     /// <summary>
     /// The max amount of hitpoints.
     /// </summary>
@@ -94,15 +85,6 @@ public class Health : NetworkBehaviour
     }
 
     /// <summary>
-    /// Changes the max defence.
-    /// </summary>
-    [Server]
-    public void SetDefence(int amount)
-    {
-        defence = amount;
-    }
-
-    /// <summary>
     /// Revives an entity.
     /// </summary>
     /// <param name="amount">The amount of health to be restored.</param>
@@ -111,7 +93,7 @@ public class Health : NetworkBehaviour
     {
         if (enabled)
         {
-            Debug.Log("Cant revive " + gameObject.name + "! He is not dead!");
+            Debug.Log("Cant revive " + gameObject.name + "! They are not dead!");
             return;
         }
 
@@ -171,7 +153,6 @@ public class Health : NetworkBehaviour
         if (trackStat)
             StatTracker.Instance.GetStat<DamageInflicted>(source).Add(amount);
 
-        // TODO: Add defence to this
         current = Mathf.Clamp(current - amount, 0, max);
         if (current == 0)
         {
@@ -223,15 +204,5 @@ public class Health : NetworkBehaviour
     private void OnMaxChanged(int prevMax, int currentMax)
     {
         MaxChanged?.Invoke(prevMax, currentMax);
-    }
-
-    /// <summary>
-    /// Callback when the defence changed.
-    /// </summary>
-    /// <param name="prevDefence">The previous defence.</param>
-    /// <param name="currentDefence">The new defence.</param>
-    private void OnDefenceChanged(int prevDefence, int currentDefence)
-    {
-        DefenceChanged?.Invoke(prevDefence, currentDefence);
     }
 }

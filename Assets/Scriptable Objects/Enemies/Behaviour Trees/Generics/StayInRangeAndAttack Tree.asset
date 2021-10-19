@@ -38,7 +38,7 @@ MonoBehaviour:
   - {fileID: -4911195261524936624}
   boundsInEditor:
     serializedVersion: 2
-    x: -40
+    x: -60
     y: -80
     width: 80
     height: 80
@@ -121,7 +121,7 @@ MonoBehaviour:
   children: []
   boundsInEditor:
     serializedVersion: 2
-    x: -160
+    x: -180
     y: -80
     width: 80
     height: 80

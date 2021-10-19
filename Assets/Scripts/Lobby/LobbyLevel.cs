@@ -24,6 +24,7 @@ public class LobbyLevel : MonoBehaviour
     public void Show()
     {
         gameObject.SetActive(true);
+        StartCoroutine(DungeonCreator.Instance.ClearPreviousDungeon());
         MusicManager.Instance.ChangeState(MusicManager.State.Lobby);
     }
 

@@ -35,12 +35,26 @@ public abstract class RAGInput : MonoBehaviour
         MovementMultiplicator = 1.0f;
     }
 
-    private void Start()
+    public virtual void Start()
     {
-        movementForce = GetComponent<Stats>().GetMovementForce();
+        Stats stats = GetComponent<Stats>();
+        stats.OnSpeedChanged += OnMovementStatChanged;
+        OnMovementStatChanged(stats.Speed);
+
         playerCamera = Camera.main.GetComponent<PlayerCamera>();
         useFocusPoint = Config.Instance.useFocusPoint;
-        OnStart(); // Call start on child classes.
+    }
+
+    public virtual void OnDestroy()
+    {
+        Stats stats = GetComponent<Stats>();
+        if (stats)
+            stats.OnSpeedChanged -= OnMovementStatChanged;
+    }
+
+    public void OnMovementStatChanged(int movementStat)
+    {
+        movementForce = PlayerStatsDict.Instance.GetMovementForce(movementStat);
     }
 
     /// <summary>
@@ -48,16 +62,19 @@ public abstract class RAGInput : MonoBehaviour
     /// </summary>
     /// <param name="gameObject">The gameobject to which the input is attached to.</param>
     /// <returns>A reference to the created input.</returns>
-    public static RAGInput AttachInput(GameObject gameObject)
+    public static RAGInput AttachInput(Player player)
     {
         // Is there already a input instance on the player?
-        if (gameObject.TryGetComponent(out RAGInput input))
+        if (player.TryGetComponent(out RAGInput input))
             input.Remove();
+
+        if (player.IsAI == true)
+            return player.gameObject.AddComponent<AIInput>();
 
         switch (Config.Instance.selectedInput)
         {
             case InputType.KeyMouse:
-                return gameObject.AddComponent<KeyMouseInput>();
+                return player.gameObject.AddComponent<KeyMouseInput>();
             /*
         case InputType.Keyboard:
             break;
@@ -65,7 +82,7 @@ public abstract class RAGInput : MonoBehaviour
             break;
             */
             case InputType.Mobile:
-                return gameObject.AddComponent<MobileInput>();
+                return player.gameObject.AddComponent<MobileInput>();
             default:
                 Debug.LogError("InputType " + Config.Instance.selectedInput + " not found!");
                 return null;
@@ -143,12 +160,6 @@ public abstract class RAGInput : MonoBehaviour
     protected virtual bool HasFocusPoint => false;
 
     protected virtual Vector2 GetFocusPoint() { return transform.position; }
-
-    /// <summary>
-    /// Called after all internal values of RAGInput have been set. Should be treated as the
-    /// Unity Start method.
-    /// </summary>
-    protected abstract void OnStart();
 
     /// <summary>
     /// Gets the direction to where the player wants to go.

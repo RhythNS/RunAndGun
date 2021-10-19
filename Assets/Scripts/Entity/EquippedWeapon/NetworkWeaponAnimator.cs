@@ -13,13 +13,19 @@ public class NetworkWeaponAnimator : NetworkBehaviour
 
     public WeaponAnimator WeaponAnimator { get; private set; }
 
-    private bool serverAuthority;
+    private bool serverAuthority = false;
 
     private void Awake()
     {
-        serverAuthority = GetComponent<Entity>().EntityType == EntityType.Enemy;
         WeaponAnimator = GetComponentInChildren<WeaponAnimator>(); // TODO: <-- maybe change this
     }
+
+    public override void OnStartServer()
+    {
+        serverAuthority = true;
+    }
+        //serverAuthority = isServer || GetComponent<Entity>().EntityType == EntityType.Enemy;
+        //Debug.Log(gameObject.name + " " + serverAuthority);
 
     public void OnStartedFire()
     {

@@ -3,5 +3,5 @@
 /// </summary>
 public enum InputType
 {
-    KeyMouse, Keyboard, Controller, Mobile
+    KeyMouse, Keyboard, Controller, Mobile, AI
 }

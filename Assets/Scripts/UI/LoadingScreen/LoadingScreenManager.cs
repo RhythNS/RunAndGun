@@ -1,4 +1,4 @@
-﻿using FMODUnity;
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +11,8 @@ public class LoadingScreenManager : MonoBehaviour
     public float Left { get; private set; } = 0.0f;
     public float Right { get; private set; } = 0.0f;
     public float Mid { get; private set; } = 0.0f;
+
+    public bool Active { get; private set; } = false;
 
     public float FadeInTime => fadeInTime;
     [SerializeField] private float fadeInTime;
@@ -35,11 +37,15 @@ public class LoadingScreenManager : MonoBehaviour
 
     private readonly List<LoadingPlayerElement> playerElements = new List<LoadingPlayerElement>();
 
+    public bool Reconnecting { get; private set; } = false;
+
     /// <summary>
     /// Shows the loading screen.
     /// </summary>
-    public void Show()
+    public void Show(bool reconnecting = false)
     {
+        Reconnecting = reconnecting;
+        Active = true;
         gameObject.SetActive(true);
         List<Player> players = PlayersDict.Instance.Players;
 
@@ -63,6 +69,27 @@ public class LoadingScreenManager : MonoBehaviour
                 CreateLoadingPlayerElement(emptyPrefab, -quaterHeight * i, null, notConnectedColor, width, height, i % 2 == 0);
         }
         StartCoroutine(InnerShow());
+
+        if (reconnecting)
+        {
+            Player.LocalPlayer.StateCommunicator.OnLocalPercentageChanged += OnReconnectPercentageChanged;
+            Player.LocalPlayer.StateCommunicator.OnLocalLevelLoadedChanged += OnReconnectLoadedChanged;
+        }
+    }
+
+    private void OnReconnectLoadedChanged(bool loaded)
+    {
+        if (loaded == false)
+            return;
+
+        Player.LocalPlayer.StateCommunicator.OnLocalPercentageChanged -= OnReconnectPercentageChanged;
+        Player.LocalPlayer.StateCommunicator.OnLocalLevelLoadedChanged -= OnReconnectLoadedChanged;
+        Hide();
+    }
+
+    private void OnReconnectPercentageChanged(float newPerc)
+    {
+        playerElements[Player.LocalPlayer.playerIndex].ForceUpdate(newPerc);
     }
 
     private IEnumerator InnerShow()
@@ -104,6 +131,7 @@ public class LoadingScreenManager : MonoBehaviour
     /// </summary>
     public void Hide()
     {
+        Active = false;
         StartCoroutine(InnerHide());
     }
 

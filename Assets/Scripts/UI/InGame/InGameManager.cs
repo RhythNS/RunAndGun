@@ -11,7 +11,6 @@ public class InGameManager : MonoBehaviour
     [SerializeField] private MiniMapManager miniMapManager;
     [SerializeField] private EmoteManager emoteManager;
     [SerializeField] private EmoteBoard emoteBoard;
-    [SerializeField] private NotificationManager notificationManager;
 
     public void RegisterEvents(Player player)
     {
@@ -22,7 +21,6 @@ public class InGameManager : MonoBehaviour
         moneyAmount.UpdateValue(player.Inventory.money);
         weaponManager.RegisterEvents(player);
         emoteBoard.ClearAll();
-        notificationManager.ClearAll();
     }
 
     public void UnRegisterEvents()
@@ -40,8 +38,6 @@ public class InGameManager : MonoBehaviour
     }
 
     public void OnPlayerEmoted(EmoteMessage emoteMessage) => emoteBoard.OnPlayerEmoted(emoteMessage);
-
-    public void ShowNotification(string toDisplay) => notificationManager.Show(toDisplay);
 
     public void ToggleEmotePanel()
     {

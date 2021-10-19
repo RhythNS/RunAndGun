@@ -17,6 +17,15 @@ public class WorldEffectInWorld : NetworkBehaviour
     private bool hasTickables;
     private static readonly float secondsPerTick = 1.0f;
 
+    [Server]
+    public static WorldEffectInWorld Place(WorldEffectInWorld prefab, WorldEffect[] effects, Health inflicter, Vector3 position, Quaternion quaternion)
+    {
+        WorldEffectInWorld toSpawn = Instantiate(prefab, position, quaternion);
+        toSpawn.Init(inflicter, effects);
+        NetworkServer.Spawn(toSpawn.gameObject);
+        return toSpawn;
+    }
+
     /// <summary>
     /// Inits all fields.
     /// </summary>
@@ -60,9 +69,7 @@ public class WorldEffectInWorld : NetworkBehaviour
         if (collision.TryGetComponent(out Health target) == false || target.Alive == false)
             return;
 
-        // If this is a player and the player is not the local player then return.
-        // This is because this should be client authoritive.
-        if (collision.TryGetComponent(out Player player) && player.isLocalPlayer == false)
+        if (collision.TryGetComponent(out Player player) && player.IsAuthorityResponsible == false)
             return;
 
         bool healthWasAlreadyOn = coroutineForHealth.ContainsKey(target);

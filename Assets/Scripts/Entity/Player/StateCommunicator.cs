@@ -10,6 +10,8 @@ public class StateCommunicator : NetworkBehaviour
     public bool bossAnimationFinished = false;
 
     public event PercentageChanged OnPercentageChanged;
+    public event PercentageChanged OnLocalPercentageChanged;
+    public event BoolChanged OnLocalLevelLoadedChanged;
 
     [SyncVar(hook = nameof(OnLevelLoadPercentageChanged))] private float loadPercentage;
 
@@ -26,14 +28,20 @@ public class StateCommunicator : NetworkBehaviour
         LobbyManager.OnPlayerChangedReady();
     }
 
+    public void SetLevelLoadPercentage(float newPercentage)
+    {
+        OnLocalPercentageChanged?.Invoke(newPercentage);
+        CmdSetLevelLoadPercentage(newPercentage);
+    }
+
     /// <summary>
     /// Called to update the players loading progress.
     /// </summary>
     [Command]
     public void CmdSetLevelLoadPercentage(float newPercentage)
     {
-        if (levelLoaded == true)
-            return;
+        //if (levelLoaded == true)
+        //    return;
 
         loadPercentage = newPercentage;
     }
@@ -41,6 +49,13 @@ public class StateCommunicator : NetworkBehaviour
     public void OnLevelLoadPercentageChanged(float oldPercentage, float newPercentage)
     {
         OnPercentageChanged?.Invoke(newPercentage);
+    }
+
+    public void LevelSetLoaded(bool loaded)
+    {
+        OnLocalLevelLoadedChanged?.Invoke(loaded);
+
+        CmdLevelSetLoaded(loaded);
     }
 
     /// <summary>

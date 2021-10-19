@@ -12,6 +12,7 @@ public class LobbyManager : MonoBehaviour
 
     private ExtendedCoroutine gameStartCountdown;
 
+    [SerializeField] private TutorialZone tutorialZone;
     [SerializeField] private GameMode selectedGameMode;
 
     private void Awake()
@@ -27,8 +28,9 @@ public class LobbyManager : MonoBehaviour
 
     private void Start()
     {
-        PlayersDict.Instance.OnPlayerDisconnected += OnPlayerChanged;
-        PlayersDict.Instance.OnPlayerConnected += OnPlayerChanged;
+        PlayersDict.Instance.OnPlayerRemoved += OnPlayerChanged;
+        PlayersDict.Instance.OnPlayerAdded += OnPlayerChanged;
+        tutorialZone.Register();
         LobbyLevel.Instance.Show();
     }
 
@@ -108,6 +110,9 @@ public class LobbyManager : MonoBehaviour
 
         int seed = selectedGameMode.randomSeed ? Random.Range(int.MinValue, int.MaxValue) : selectedGameMode.seed;
 
+        if (RAGMatchmaker.Instance.IsReady && RAGMatchmaker.Instance.GetCurrentMatch() != null)
+            RAGMatchmaker.Instance.DestroyMatch();
+
         GameManager.OnStartNewGame(selectedGameMode, seed);
 
         StartGameMessage sgm = new StartGameMessage
@@ -142,8 +147,9 @@ public class LobbyManager : MonoBehaviour
     {
         if (PlayersDict.Instance)
         {
-            PlayersDict.Instance.OnPlayerDisconnected -= OnPlayerChanged;
-            PlayersDict.Instance.OnPlayerConnected -= OnPlayerChanged;
+            PlayersDict.Instance.OnPlayerRemoved -= OnPlayerChanged;
+            PlayersDict.Instance.OnPlayerAdded -= OnPlayerChanged;
         }
+        tutorialZone.DeRegister();
     }
 }

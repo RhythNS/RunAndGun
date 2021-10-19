@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Mirror;
+using NobleConnect.Mirror;
+using System;
 using UnityEngine;
 
 /// <summary>
@@ -46,6 +48,7 @@ public class Config : MonoBehaviour
         playerName = loaded.playerName;
         selectedPlayerType = loaded.lastSelectedCharacterType;
         volumes = loaded.volumes;
+        lastConnectedGame = loaded.lcg;
     }
 
     /// <summary>
@@ -84,7 +87,8 @@ public class Config : MonoBehaviour
         {
             playerName = PlayerName,
             lastSelectedCharacterType = SelectedPlayerType,
-            volumes = volumes
+            volumes = volumes,
+            lcg = LastConnectedGame
         };
         Saver.Save(saveGame);
     }
@@ -115,6 +119,15 @@ public class Config : MonoBehaviour
     }
 
 
+    [SerializeField] private string tempIdentifier;
+    public string GetUniqueIdentifier()
+    {
+        // TODO: replace with acctual id stuff.
+        if (string.IsNullOrEmpty(tempIdentifier))
+            tempIdentifier = Environment.MachineName + ((NobleNetworkManager)NetworkManager.singleton).networkPort;
+        return tempIdentifier;
+    }
+
     // ---- Input ----
     public InputType selectedInput = InputType.KeyMouse;
     public bool useFocusPoint = true;
@@ -124,6 +137,17 @@ public class Config : MonoBehaviour
 
     // ---- Sound ----
     public Tuple<string, float>[] volumes;
+
+    // ---- Last server ----
+    public LastConnectedGame LastConnectedGame
+    {
+        get => lastConnectedGame; set
+        {
+            lastConnectedGame = value;
+            Save();
+        }
+    }
+    private LastConnectedGame lastConnectedGame;
 
     private void OnDestroy()
     {

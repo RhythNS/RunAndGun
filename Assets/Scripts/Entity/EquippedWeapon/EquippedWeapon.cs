@@ -114,12 +114,19 @@ public class EquippedWeapon : NetworkBehaviour
     public void Swap(Weapon newWeapon, bool dropOldWeapon = true)
     {
         if (weapon != null && dropOldWeapon == true)
-            PickableInWorld.Place(weapon, transform.position);
+            PickableInWorld.Place(weapon, transform.position, playSpawnAnimation: false);
 
         weapon = newWeapon;
-        remainingBullets = weapon.MagazineSize;
-        bulletLayerSpawn = LayerDict.Instance.GetBulletLayer(Health.EntityType, weapon.TargetMode);
-        // Reset all timed values and stuff
+        if (!newWeapon)
+        {
+            remainingBullets = 0;
+        }
+        else
+        {
+            remainingBullets = weapon.MagazineSize;
+            bulletLayerSpawn = LayerDict.Instance.GetBulletLayer(Health.EntityType, weapon.TargetMode);
+        }
+        // TODO: Reset all timed values and stuff
     }
 
     /// <summary>

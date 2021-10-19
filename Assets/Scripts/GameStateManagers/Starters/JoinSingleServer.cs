@@ -9,14 +9,14 @@ public class JoinSingleServer : MonoBehaviour
     private void Start()
     {
         if (NetworkClient.active == false)
+#if UNITY_EDITOR
             NetworkConnector.TryStartServer(false);
+#else
+            NetworkConnector.TryStartServer(true);
+#endif
         else
         {
-            JoinMessage joinMessage = new JoinMessage()
-            {
-                characterType = Config.Instance.SelectedPlayerType,
-                name = Config.Instance.PlayerName
-            };
+            JoinMessage joinMessage = JoinMessage.GetDefault();
             NetworkClient.Send(joinMessage);
         }
 

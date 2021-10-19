@@ -193,7 +193,7 @@ namespace Rhyth.BTree
                                     nodeMenu.AddItem(new GUIContent(prefix + "/" + nodeName, allNodesForTypes[i].StringToolTip), false, () =>
                                     {
                                         BNode createNode = (BNode)CreateInstance(type);
-                                        createNode.name = "New " + createNode.GetType().Name;
+                                        createNode.name = createNode.GetType().Name;
                                         createNode.boundsInEditor = new Rect(mousePos, new Vector2(80, 80));
                                         AssetDatabase.AddObjectToAsset(createNode, tree.targetObject);
                                         AssetDatabase.SaveAssets();

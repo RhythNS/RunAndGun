@@ -48,6 +48,7 @@ public class RAGMatchmaker : MonoBehaviour
     /// <param name="onMatchCreated">Callback when the match was created.</param>
     public void HostMatch(Dictionary<string, MatchData> matchData, int maxPlayers, Action<bool, Match> onMatchCreated)
     {
+        Debug.Log("Hosting match");
         NetworkManager.singleton.maxConnections = maxPlayers;
         // NetworkManager.singleton.StartHost();
         matchUp.CreateMatch(maxPlayers, matchData, onMatchCreated);
@@ -79,6 +80,20 @@ public class RAGMatchmaker : MonoBehaviour
     public void SetMatchData(Dictionary<string, MatchData> matchData)
     {
         matchUp.SetMatchData(matchData);
+    }
+
+    public void UpdatePlayerCount(int currentPlayerCount)
+    {
+        if (matchUp.currentMatch == null)
+            return;
+
+        matchUp.currentMatch.matchData["Connected players"] = currentPlayerCount;
+        matchUp.UpdateMatchData();
+    }
+
+    public void DestroyMatch()
+    {
+        matchUp.DestroyMatch();
     }
 
     /// <summary>

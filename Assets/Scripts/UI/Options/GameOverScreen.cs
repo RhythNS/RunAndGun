@@ -81,7 +81,7 @@ public class GameOverScreen : MonoBehaviour
     private void OnLeaveServerClicked()
     {
         gameObject.SetActive(false);
-        StartCoroutine(RegionSceneLoader.Instance.LoadScene(Region.Lobby));
+        NetworkConnector.DisconnectClient();
     }
 
     /// <summary>

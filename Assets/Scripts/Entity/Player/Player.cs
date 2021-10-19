@@ -18,12 +18,15 @@ public class Player : Entity
     /// </summary>
     [SyncVar] public int playerId;
     [SyncVar] public int playerIndex;
+    public string uniqueIdentifier;
 
     [SerializeField] [EventRef] private string itemPickUpSound;
 
     public static Player LocalPlayer { get; private set; }
 
+    public bool IsAI { get; private set; } = false;
     public bool CanMove { get; private set; } = true;
+    public bool IsAuthorityResponsible { get; private set; } = false;
     public RAGInput Input { get; private set; }
     public Stats Stats { get; private set; }
     public Status Status { get; private set; }
@@ -39,9 +42,16 @@ public class Player : Entity
     public StatusEffectList StatusEffectList { get; private set; }
     public EntityMaterialManager EntityMaterialManager { get; private set; }
     public LocalSound LocalSound { get; private set; }
+    public PlayerAI PlayerAI { get; private set; }
 
+    /*
     private Vector3 lastPosition = Vector3.zero;
     public Vector3 LastPosition => lastPosition;
+    private void LateUpdate()
+    {
+        lastPosition = transform.position;
+    }
+     */
 
     private void Awake()
     {
@@ -57,6 +67,8 @@ public class Player : Entity
         StatusEffectList = GetComponent<StatusEffectList>();
         EntityMaterialManager = GetComponent<EntityMaterialManager>();
         LocalSound = GetComponent<LocalSound>();
+        PlayerAI = GetComponent<PlayerAI>();
+        IsAI = PlayerAI;
     }
 
     private void Update()
@@ -64,14 +76,10 @@ public class Player : Entity
         PositionConverter.AdjustZ(transform);
     }
 
-    private void LateUpdate()
-    {
-        lastPosition = transform.position;
-    }
-
     private void Start()
     {
-        PlayersDict.Instance.Register(this);
+        if (IsAI == false)
+            PlayersDict.Instance.Register(this);
         EntityMaterialManager.PlaySpawnEffect();
     }
 
@@ -79,12 +87,36 @@ public class Player : Entity
     {
         LocalPlayer = this;
         Config.Instance.SelectedPlayerType = characterType;
-        Input = RAGInput.AttachInput(gameObject);
+        Input = RAGInput.AttachInput(this);
         UIManager.Instance.OnLocalPlayerStarted(this, Input.InputType);
         MusicManager.Instance.RegisterPlayer(this);
         Camera.main.GetComponent<PlayerCamera>().ToFollow = transform;
         PlayerAnimationController = gameObject.AddComponent<PlayerAnimationController>();
         gameObject.AddComponent<StudioListener>();
+        IsAuthorityResponsible = true;
+    }
+
+    public override void OnStartServer()
+    {
+        if (IsAI == false)
+            return;
+
+        PlayerAnimationController = gameObject.AddComponent<PlayerAnimationController>();
+        Input = RAGInput.AttachInput(this);
+        IsAuthorityResponsible = true;
+    }
+
+    [Server]
+    public void ResetToDefault()
+    {
+        EquippedWeapon.Swap(null, false);
+        for (int i = Inventory.Items.Count - 1; i >= 0; i--)
+        {
+            Inventory.CmdDropItem(Inventory.Items[i], false);
+        }
+        Inventory.money = 0;
+        Health.Init(Health.Max);
+        StatusEffectList.Clear();
     }
 
     /// <summary>
@@ -94,9 +126,20 @@ public class Player : Entity
     [Command]
     public void CmdPickup(GameObject pickup)
     {
-        if (!pickup.TryGetComponent(out PickableInWorld piw))
+        ServerPickup(pickup);
+    }
+
+    /// <summary>
+    /// Picks up a PickableInWorld.
+    /// </summary>
+    /// <param name="pickup">The gameobject to be picked up. This must have the PickableInWorld component on it!</param>
+    [Server]
+    public void ServerPickup(GameObject pickup)
+    {
+        if (!pickup.TryGetComponent(out PickableInWorld piw) || piw.Available == false)
             return;
 
+        piw.PickedUp();
         Pickable pickable = piw.Pickable;
 
         if (piw.IsBuyable)
@@ -130,8 +173,6 @@ public class Player : Entity
         }
 
         RpcItemPickedUp(pickable);
-
-        Destroy(pickup);
     }
 
     /// <summary>
@@ -150,8 +191,6 @@ public class Player : Entity
             case PickableType.Weapon:
                 FMODUtil.PlayOnTransform(((Weapon)pickable).WeaponSoundModel.EquipSound, transform);
                 break;
-            case PickableType.StatusEffect:
-                break;
         }
     }
 
@@ -163,6 +202,18 @@ public class Player : Entity
     /// <param name="firedWeapon">The weapon that fired the bullet.</param>
     [Command]
     public void CmdBulletHit(GameObject gameObject, GameObject affecterObj, Weapon firedWeapon)
+    {
+        ServerBulletHit(gameObject, affecterObj, firedWeapon);
+    }
+
+    /// <summary>
+    /// Notifies the server that the player has been hit by a bullet.
+    /// </summary>
+    /// <param name="gameObject">The bullet that hit the player.</param>
+    /// <param name="affecterObj">The entity that shoot the bullet.</param>
+    /// <param name="firedWeapon">The weapon that fired the bullet.</param>
+    [Server]
+    public void ServerBulletHit(GameObject gameObject, GameObject affecterObj, Weapon firedWeapon)
     {
         // Check if the Player was hit by a bullet that did not already hit something else.
         if (gameObject && gameObject.TryGetComponent(out Bullet bullet) == true && gameObject.activeInHierarchy)
@@ -204,13 +255,19 @@ public class Player : Entity
         }
 
 
-        if (isLocalPlayer && !Status.Dashing)
+        if (IsAuthorityResponsible && !Status.Dashing)
         {
             if (other.TryGetComponent(out PickableInWorld pickable) && pickable.Pickable.InstantPickup)
-                CmdPickup(pickable.gameObject);
+                if (IsAI)
+                    ServerPickup(pickable.gameObject);
+                else
+                    CmdPickup(pickable.gameObject);
             else if (other.TryGetComponent(out Bullet bullet))
             {
-                CmdBulletHit(bullet.gameObject, bullet.shooterObject, bullet.fromWeapon);
+                if (IsAI)
+                    ServerBulletHit(bullet.gameObject, bullet.shooterObject, bullet.fromWeapon);
+                else
+                    CmdBulletHit(bullet.gameObject, bullet.shooterObject, bullet.fromWeapon);
             }
             else if (other.TryGetComponent(out Player player))
             {
@@ -242,13 +299,16 @@ public class Player : Entity
     {
         if (Camera.main && Camera.main.TryGetComponent(out PlayerCamera camera) && camera.ToFollow == transform)
             camera.ToFollow = null;
-        if (PlayersDict.Instance)
+        if (PlayersDict.Instance && IsAI == false)
             PlayersDict.Instance.DeRegister(this);
+
+        if (LocalPlayer != this)
+            return;
+
+        LocalPlayer = null;
         if (UIManager.Instance)
             UIManager.Instance.OnLocalPlayerDeleted();
         if (MusicManager.Instance)
             MusicManager.Instance.DeRegisterPlayer();
-        if (LocalPlayer == this)
-            LocalPlayer = null;
     }
 }

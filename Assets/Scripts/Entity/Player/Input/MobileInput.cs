@@ -40,10 +40,6 @@ public class MobileInput : RAGInput
         dash = true;
     }
 
-    protected override void OnStart()
-    {
-    }
-
     protected override bool GetDashInput()
     {
         if (dash)

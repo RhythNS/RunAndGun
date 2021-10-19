@@ -8,18 +8,31 @@ public abstract class WeaponAnimator : MonoBehaviour
     public abstract WeaponAnimatorType WeaponAnimatorType { get; }
 
     public Animator Animator { get; set; }
-
     protected WeaponPoints WeaponPoints { get; private set; }
-
     protected SpriteRenderer SpriteRenderer { get; private set; }
+    protected EntityAnimationController EntityAnimationController { get; private set; }
+    protected Direction EntityDirection => EntityAnimationController ? EntityAnimationController.CurDirection : Direction.Down;
 
     private void Awake()
     {
         WeaponPoints = transform.parent.GetComponent<WeaponPoints>();
         SpriteRenderer = GetComponent<SpriteRenderer>();
+        SpriteRenderer.flipX = false;
+        SpriteRenderer.flipY = false;
+
+        EntityAnimationController = transform.parent.GetComponent<EntityAnimationController>();
+        if (EntityAnimationController)
+            EntityAnimationController.DirectionChanged += EntityDirectionChanged;
+
         Animator = GetComponent<Animator>();
 
         InnerAwake();
+    }
+
+    private void OnDestroy()
+    {
+        if (EntityAnimationController)
+            EntityAnimationController.DirectionChanged -= EntityDirectionChanged;
     }
 
     protected virtual void InnerAwake() { }
@@ -34,7 +47,7 @@ public abstract class WeaponAnimator : MonoBehaviour
     {
         GameObject gObj = oldAnimator.gameObject;
         WeaponAnimatorType weaponAnimatorType = newWeapon ? newWeapon.WeaponAnimatorType : WeaponAnimatorType.Null;
-        
+
         Destroy(oldAnimator);
         WeaponAnimator newAnimator;
 
@@ -106,4 +119,23 @@ public abstract class WeaponAnimator : MonoBehaviour
     /// Sets the direction of where the entity is aiming at.
     /// </summary>
     public abstract void SetDirection(Vector2 direction);
+
+    public void EntityDirectionChanged(Direction direction)
+    {
+        Vector3 pos = transform.localPosition;
+        switch (direction)
+        {
+            case Direction.Up:
+            case Direction.Right:
+                pos.z = 0.01f;
+                break;
+
+            case Direction.Down:
+            case Direction.Left:
+                pos.z = -0.01f;
+                break;
+        }
+
+        transform.localPosition = pos;
+    }
 }

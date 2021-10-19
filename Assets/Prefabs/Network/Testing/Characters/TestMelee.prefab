@@ -398,6 +398,7 @@ MonoBehaviour:
   characterType: 0
   playerId: 0
   playerIndex: 0
+  uniqueIdentifier: 
   itemPickUpSound: event:/Universal Dungeon Sounds/PlayerPickup
 --- !u!114 &2103416701
 MonoBehaviour:
@@ -441,10 +442,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  baseHealth: 100
+  baseHealth: 10
   health: 0
-  baseDefence: 3
-  defence: 0
   baseSpeed: 3
   speed: 0
   baseLuck: 5

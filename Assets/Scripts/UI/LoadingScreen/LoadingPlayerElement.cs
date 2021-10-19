@@ -40,8 +40,23 @@ public class LoadingPlayerElement : MonoBehaviour
         this.player = player;
         username.text = player.entityName;
         unitIcon.sprite = CharacterDict.Instance.GetSpriteForType(player.CharacterType);
-        player.StateCommunicator.OnPercentageChanged += percentageAsText.UpdateValue;
-        player.StateCommunicator.OnPercentageChanged += percentageAsImage.UpdateValue;
+
+        if (lsm.Reconnecting == false)
+        {
+            player.StateCommunicator.OnPercentageChanged += percentageAsText.UpdateValue;
+            player.StateCommunicator.OnPercentageChanged += percentageAsImage.UpdateValue;
+        }
+        else
+        {
+            percentageAsText.UpdateValue(1.0f);
+            percentageAsImage.UpdateValue(1.0f);
+        }
+    }
+
+    public void ForceUpdate(float percentage)
+    {
+        percentageAsText.UpdateValue(percentage);
+        percentageAsImage.UpdateValue(percentage);
     }
 
     /// <summary>
