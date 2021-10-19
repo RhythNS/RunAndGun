@@ -99,8 +99,44 @@ namespace MapGenerator
             {
                 for (int y = 0; y < Size.y; y++)
                 {
+                    if (Size.y == 3 && y != 2)
+                        continue;
+
                     walkableTiles.Add(new Vector2Int(Position.x + x, Position.y + y));
                 }
+            }
+
+            // fix missing tiles for corridors
+            switch (Direction)
+            {
+                case Direction.Right:
+                    walkableTiles.Add(new Vector2Int(Position.x + Size.x, Position.y + 2));
+                    break;
+
+                case Direction.Left:
+                    walkableTiles.Add(new Vector2Int(Position.x - 1, Position.y + 2));
+                    break;
+
+                case Direction.Up:
+                    walkableTiles.Add(new Vector2Int(Position.x + 0, Position.y + Size.y + 0));
+                    walkableTiles.Add(new Vector2Int(Position.x + 1, Position.y + Size.y + 0));
+                    walkableTiles.Add(new Vector2Int(Position.x + 0, Position.y + Size.y + 1));
+                    walkableTiles.Add(new Vector2Int(Position.x + 1, Position.y + Size.y + 1));
+                    walkableTiles.Add(new Vector2Int(Position.x + 0, Position.y + Size.y + 2));
+                    walkableTiles.Add(new Vector2Int(Position.x + 1, Position.y + Size.y + 2));
+                    break;
+
+                case Direction.Down:
+                    walkableTiles.Add(new Vector2Int(Position.x + 0, Position.y - 1));
+                    walkableTiles.Add(new Vector2Int(Position.x + 1, Position.y - 1));
+                    walkableTiles.Add(new Vector2Int(Position.x + 0, Position.y + Size.y + 0));
+                    walkableTiles.Add(new Vector2Int(Position.x + 1, Position.y + Size.y + 0));
+                    walkableTiles.Add(new Vector2Int(Position.x + 0, Position.y + Size.y + 1));
+                    walkableTiles.Add(new Vector2Int(Position.x + 1, Position.y + Size.y + 1));
+                    break;
+
+                default:
+                    break;
             }
 
             return walkableTiles;

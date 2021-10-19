@@ -178,6 +178,9 @@ public class RAGNetworkManager : NobleNetworkManager
     {
         UIManager.Instance.ShowLevelLoadScreen();
         DungeonDict.Instance.ClearRooms();
+
+        MiniMapManager.Instance.OnLevelDeleted();
+
         RegionSceneLoader loader = RegionSceneLoader.Instance;
         new ExtendedCoroutine(this, loader.LoadScene(generateLevelMessage), loader.LoadLevel, true);
     }

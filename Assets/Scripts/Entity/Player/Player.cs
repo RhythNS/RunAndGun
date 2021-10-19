@@ -105,6 +105,9 @@ public class Player : Entity
                 return;
 
             Inventory.money -= (int)pickable.Costs;
+
+            if (CurrentRoom is ShopRoom sr)
+                sr.RemovePriceTag(piw.transform.position);
         }
 
         switch (pickable.PickableType)

@@ -14,19 +14,25 @@ public class MiniMapManager : MonoBehaviour
         public Texture2D texture;
         public DungeonRoom dungeonRoom;
         public Image image;
+        public Image background;
 
-        public Room(Texture2D texture, DungeonRoom dungeonRoom, Image image)
+        public Room(Texture2D texture, DungeonRoom dungeonRoom, Image image, Image background)
         {
             this.texture = texture;
             this.dungeonRoom = dungeonRoom;
             this.image = image;
+            this.background = background;
         }
     }
 
     public static MiniMapManager Instance { get; private set; }
 
+    [SerializeField] private Image floorPlan;
     [SerializeField] private Image background;
     [SerializeField] private float zoomFactor = 2.0f;
+
+    [SerializeField] private Color floorColor = Color.blue;
+    [SerializeField] private Color wallColor = Color.gray;
 
     private Dictionary<DungeonRoom, Room> enteredRooms = new Dictionary<DungeonRoom, Room>();
     private Vector2Int roomOffset;
@@ -41,16 +47,17 @@ public class MiniMapManager : MonoBehaviour
         }
         Instance = this;
 
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
     }
 
     private void Update()
     {
         if (Player.LocalPlayer)
         {
-            Vector2 position = Player.LocalPlayer.transform.position;
+            Vector2 position = Player.LocalPlayer.transform.position + new Vector3(roomOffset.x, roomOffset.y, 0f);
             position.x = (roomOffset.x - position.x) * zoomFactor;
             position.y = (roomOffset.y - position.y) * zoomFactor;
+            floorPlan.transform.localPosition = position;
             background.transform.localPosition = position;
         }
     }
@@ -63,7 +70,8 @@ public class MiniMapManager : MonoBehaviour
         Dungeon dungeon = DungeonDict.Instance.dungeon;
         RectInt boundingRect = new RectInt(0,0, dungeon.Size.x, dungeon.Size.y);
 
-        background.rectTransform.sizeDelta = new Vector2(boundingRect.width, boundingRect.height) * zoomFactor;
+        floorPlan.rectTransform.sizeDelta = new Vector2(boundingRect.width, boundingRect.height);// * zoomFactor;
+        background.rectTransform.sizeDelta = new Vector2(boundingRect.width, boundingRect.height);// * zoomFactor;
         roomOffset = boundingRect.size / 2;
     }
 
@@ -98,21 +106,37 @@ public class MiniMapManager : MonoBehaviour
     /// <param name="dungeonRoom">The room that was entered.</param>
     public void OnNewRoomEntered(DungeonRoom dungeonRoom)
     {
-        Texture2D texture = CreateTexture(dungeonRoom);
-        texture.filterMode = FilterMode.Point;
-
-        GameObject roomObject = new GameObject("Room");
-        roomObject.transform.parent = background.transform;
+        GameObject roomObject = new GameObject("Room_" + dungeonRoom.RoomType.ToString());
+        roomObject.transform.parent = floorPlan.transform;
+        GameObject roomBgObject = new GameObject("Room_" + dungeonRoom.RoomType.ToString());
+        roomBgObject.transform.parent = background.transform;
 
         GetMinAndMaxValues(dungeonRoom, out int minX, out int minY, out int maxX, out int maxY);
+
+        // create room layout
+        Texture2D texture = CreateTextureFromRoom(dungeonRoom);
+        texture.filterMode = FilterMode.Point;
+
         Image image = roomObject.AddComponent<Image>();
-        image.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
-        image.rectTransform.sizeDelta = new Vector2(texture.width * zoomFactor, texture.height * zoomFactor);
+        image.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0f, 0f));
+        image.rectTransform.sizeDelta = new Vector2(texture.width, texture.height) * zoomFactor;
+        image.rectTransform.pivot = new Vector2(0f, 0f);
+        image.rectTransform.localPosition = new Vector2(minX, minY) * zoomFactor;
+        image.rectTransform.localScale = Vector3.one;
 
-        Vector2 position = new Vector2(minX, minY) * zoomFactor;
-        image.rectTransform.localPosition = position;
+        // create room background / border
+        Texture2D bgTexture = CreateBackgroundTextureForRoom();
+        bgTexture.filterMode = FilterMode.Point;
 
-        Room room = new Room(texture, dungeonRoom, image);
+        Image bg = roomBgObject.AddComponent<Image>();
+        bg.sprite = Sprite.Create(bgTexture, new Rect(0, 0, 4, 4), new Vector2(0f, 0f));
+        bg.color = wallColor;
+        bg.rectTransform.sizeDelta = new Vector2(texture.width + 2f, texture.height + 2f) * zoomFactor;
+        bg.rectTransform.pivot = new Vector2(0f, 0f);
+        bg.rectTransform.localPosition = new Vector2(minX - 1f, minY - 1f) * zoomFactor;
+        bg.rectTransform.localScale = Vector3.one;
+
+        Room room = new Room(texture, dungeonRoom, image, bg);
         enteredRooms[dungeonRoom] = room;
     }
 
@@ -122,11 +146,15 @@ public class MiniMapManager : MonoBehaviour
     /// <param name="newZoomLevel">The new zoom level.</param>
     public void SetZoomLevel(float newZoomLevel)
     {
+        floorPlan.rectTransform.sizeDelta = floorPlan.rectTransform.sizeDelta / zoomFactor * newZoomLevel;
         background.rectTransform.sizeDelta = background.rectTransform.sizeDelta / zoomFactor * newZoomLevel;
         foreach (Room room in enteredRooms.Values)
         {
-            room.image.rectTransform.sizeDelta = new Vector2(room.texture.width * newZoomLevel, room.texture.height * newZoomLevel);
+            room.image.rectTransform.sizeDelta = new Vector2(room.texture.width, room.texture.height) * newZoomLevel;
             room.image.rectTransform.localPosition = room.image.rectTransform.localPosition / zoomFactor * newZoomLevel;
+
+            room.background.rectTransform.sizeDelta = new Vector2(room.texture.width, room.texture.height) * newZoomLevel;
+            room.background.rectTransform.localPosition = room.background.rectTransform.localPosition / zoomFactor * newZoomLevel;
         }
         zoomFactor = newZoomLevel;
     }
@@ -136,17 +164,47 @@ public class MiniMapManager : MonoBehaviour
     /// </summary>
     /// <param name="dungeonRoom">The dungeon room to which a texture should be generated to.</param>
     /// <returns>The generated texture.</returns>
-    private Texture2D CreateTexture(DungeonRoom dungeonRoom)
+    private Texture2D CreateTextureFromRoom(DungeonRoom dungeonRoom)
     {
         GetMinAndMaxValues(dungeonRoom, out int minX, out int minY, out int maxX, out int maxY);
-        Texture2D texture = new Texture2D(maxX - minX, maxY - minY, TextureFormat.ARGB32, false);
+
+        Texture2D texture = new Texture2D(maxX - minX + 1, maxY - minY + 1, TextureFormat.ARGB32, false);
         texture.hideFlags = HideFlags.HideAndDontSave;
+        texture.filterMode = FilterMode.Point;
+
+        Color32[] cols = new Color32[texture.width * texture.height];
+        for (int i = 0; i < cols.Length; i++)
+            cols[i] = Color.clear;
+        texture.SetPixels32(cols);
+
         for (int i = 0; i < dungeonRoom.walkableTiles.Count; i++)
         {
             Vector2Int pos = dungeonRoom.walkableTiles[i] - new Vector2Int(minX, minY);
-            texture.SetPixel(pos.x, pos.y, Color.blue);
+            texture.SetPixel(pos.x, pos.y, floorColor);
         }
         texture.Apply();
+
+        return texture;
+    }
+
+    /// <summary>
+    /// Creates a texture based as a background to a dungeon room.
+    /// </summary>
+    /// <param name="dungeonRoom"></param>
+    /// <returns>The generated texture.</returns>
+    private Texture2D CreateBackgroundTextureForRoom()
+    {
+        Texture2D texture = Texture2D.whiteTexture;
+        texture.hideFlags = HideFlags.HideAndDontSave;
+        texture.filterMode = FilterMode.Point;
+
+        // somehow causes the Unity Editor to change colors?!
+        //Color32[] cols = new Color32[16];
+        //for (int i = 0; i < cols.Length; i++)
+        //    cols[i] = wallColor;
+        //texture.SetPixels32(cols);
+        //texture.Apply();
+
         return texture;
     }
 
@@ -157,7 +215,7 @@ public class MiniMapManager : MonoBehaviour
 
         for (int i = 0; i < dungeonRoom.walkableTiles.Count; i++)
         {
-            Vector2Int pos = dungeonRoom.walkableTiles[i] - roomOffset;
+            Vector2Int pos = dungeonRoom.walkableTiles[i];
             if (minX > pos.x)
                 minX = pos.x;
             if (minY > pos.y)
@@ -183,10 +241,13 @@ public class MiniMapManager : MonoBehaviour
         }
         enteredRooms.Clear();
 
-        for (int i = 0; i < background.transform.childCount; i++)
-        {
-            Destroy(background.transform.GetChild(i));
-        }
+        //for (int i = 0; i < floorPlan.transform.childCount; i++)
+        for (int i = floorPlan.transform.childCount - 1; i >= 0; i--)
+            Destroy(floorPlan.transform.GetChild(i).gameObject);
+
+        //for (int i = 0; i < background.transform.childCount; i++)
+        for (int i = background.transform.childCount - 1; i >= 0; i--)
+            Destroy(background.transform.GetChild(i).gameObject);
     }
 
     private void OnDestroy()

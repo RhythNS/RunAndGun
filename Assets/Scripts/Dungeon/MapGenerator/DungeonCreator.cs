@@ -109,7 +109,7 @@ public class DungeonCreator : MonoBehaviour
 
         yield return SetBorderTiles(tileset);
 
-        yield return roomCreator.CreateRooms(dungeon, levelNumber, timer);
+        yield return roomCreator.CreateRooms(dungeon, levelNumber, config, timer);
 
         MiniMapManager.Instance.OnNewLevelGenerated();
 
