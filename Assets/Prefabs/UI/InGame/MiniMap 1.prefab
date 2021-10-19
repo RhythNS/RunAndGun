@@ -256,7 +256,7 @@ MonoBehaviour:
   background: {fileID: 50139452567413158}
   zoomFactor: 6
   floorColor: {r: 0, g: 0, b: 1, a: 1}
-  wallColor: {r: 0, g: 0, b: 0, a: 0}
+  wallColor: {r: 0.6415094, g: 0.6415094, b: 0.6415094, a: 1}
 --- !u!1 &4265343071573625412
 GameObject:
   m_ObjectHideFlags: 0

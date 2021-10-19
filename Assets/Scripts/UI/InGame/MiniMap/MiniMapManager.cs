@@ -241,11 +241,13 @@ public class MiniMapManager : MonoBehaviour
         }
         enteredRooms.Clear();
 
-        for (int i = 0; i < floorPlan.transform.childCount; i++)
-            Destroy(floorPlan.transform.GetChild(i));
+        //for (int i = 0; i < floorPlan.transform.childCount; i++)
+        for (int i = floorPlan.transform.childCount - 1; i >= 0; i--)
+            Destroy(floorPlan.transform.GetChild(i).gameObject);
 
-        for (int i = 0; i < background.transform.childCount; i++)
-            Destroy(background.transform.GetChild(i));
+        //for (int i = 0; i < background.transform.childCount; i++)
+        for (int i = background.transform.childCount - 1; i >= 0; i--)
+            Destroy(background.transform.GetChild(i).gameObject);
     }
 
     private void OnDestroy()
