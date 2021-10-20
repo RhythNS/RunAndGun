@@ -6593,6 +6593,8 @@ MonoBehaviour:
   effects:
   - {fileID: 11400000, guid: f946f3889b73fcf429e85eb16bb285a2, type: 2}
   spawnAfterSeconds: 0.2
+  rewardAfterRevive: {fileID: 11400000, guid: 8f9766ed3bc60ff4b87b7e191a1ec6cb, type: 2}
+  rewardSpawnOffset: {x: 0, y: -2.39, z: 0}
 --- !u!1 &1667473466
 GameObject:
   m_ObjectHideFlags: 0

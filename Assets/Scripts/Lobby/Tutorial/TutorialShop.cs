@@ -10,7 +10,7 @@ public class TutorialShop : MonoBehaviour
 
     private void Start()
     {
-        spawnedItems = new PickableInWorld[toSpawnPickables.Length];
+        spawnedItems = new PickableInWorld[spawnLocations.Length];
 
         // Testing:
         int[] toTest = new int[100];

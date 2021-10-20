@@ -47,6 +47,7 @@ public class EquippedWeapon : NetworkBehaviour
     [SerializeField] private bool requestStopFire;
     private Vector2 localDirection;
     private Player onPlayer;
+    private Rigidbody2D onBody;
 
     private ExtendedCoroutine fireCoroutine;
     private ExtendedCoroutine reloadCoroutine;
@@ -55,6 +56,7 @@ public class EquippedWeapon : NetworkBehaviour
     {
         Health = GetComponent<Health>();
         Collider2D = GetComponent<Collider2D>();
+        onBody = GetComponent<Rigidbody2D>();
 
         NetworkWeaponAnimator = GetComponent<NetworkWeaponAnimator>();
         onPlayer = GetComponent<Player>();
@@ -254,9 +256,10 @@ public class EquippedWeapon : NetworkBehaviour
         BulletInfo info = Weapon.BulletInfo;
         bullet.SpriteRenderer.sprite = info.Sprite;
         Vector2 velocity = direction * Weapon.Speed;
-        bullet.Body.velocity = velocity;
+        bullet.Body.velocity = (onBody ? onBody.velocity : Vector2.zero) + velocity;
         bullet.velocity = velocity;
         //bullet.transform.position = BulletSpawnPosition;
+        bullet.transform.rotation = Quaternion.FromToRotation(Vector2.up, direction);
         bullet.StartCoroutine(bullet.DeleteWhenOutOfRange(velocity, Weapon.Range));
 
         return bullet;

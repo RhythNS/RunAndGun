@@ -14,6 +14,9 @@ public class PlayerReviveSpawner : MonoBehaviour
     [SerializeField] private float spawnAfterSeconds;
     private ExtendedCoroutine effectSpawn;
 
+    [SerializeField] private Pickable rewardAfterRevive;
+    [SerializeField] private Vector3 rewardSpawnOffset;
+
     private Player spawnedPlayer;
 
     [Server]
@@ -25,13 +28,23 @@ public class PlayerReviveSpawner : MonoBehaviour
         spawnedPlayer = Instantiate(playerPrefab, transform.position, Quaternion.identity);
         spawnedPlayer.PlayerAI.Brain.tree = tree;
         NetworkServer.Spawn(spawnedPlayer.gameObject);
+        spawnedPlayer.Health.CurrentChanged += SpawnedPlayerHealthChanged;
 
         effectSpawn = new ExtendedCoroutine(this, SpawnWorldEffect(), startNow: true);
+    }
+
+    private void SpawnedPlayerHealthChanged(int _, int newValue)
+    {
+        if (newValue <= 0)
+            return;
+
+        PickableInWorld.Place(rewardAfterRevive, transform.position + rewardSpawnOffset);
     }
 
     [Server]
     public void DeSpawn()
     {
+        spawnedPlayer.Health.CurrentChanged -= SpawnedPlayerHealthChanged;
         NetworkServer.Destroy(spawnedPlayer.gameObject);
 
         if (effectSpawn != null && effectSpawn.IsFinshed == false)
@@ -48,5 +61,7 @@ public class PlayerReviveSpawner : MonoBehaviour
     {
         Gizmos.color = Color.red;
         GizmosUtil.DrawPoint(transform.position);
+        Gizmos.color = Color.green;
+        GizmosUtil.DrawPoint(transform.position + rewardSpawnOffset);
     }
 }
