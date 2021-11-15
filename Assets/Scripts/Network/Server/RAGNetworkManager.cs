@@ -153,6 +153,7 @@ public class RAGNetworkManager : NobleNetworkManager
         NetworkServer.RegisterHandler<JoinMessage>(OnJoinMessage);
     }
 
+    #region DisAndConnect
     public override void OnServerConnect(NetworkConnection conn)
     {
         base.OnServerConnect(conn);
@@ -185,6 +186,7 @@ public class RAGNetworkManager : NobleNetworkManager
         if (oldPlayer != null)
         {
             // Is the player still connected?
+            // TODO: Maybe disable this, once the game is out of the lobby region?
             if (connection.identity?.gameObject == oldPlayer.gameObject)
             {
                 JoinReplaceCharacter(connection, JoinCreateNewPlayer(connection, joinMessage), joinMessage);
@@ -275,6 +277,15 @@ public class RAGNetworkManager : NobleNetworkManager
 
     private void JoinReconnect(NetworkConnection connection, Player oldPlayer)
     {
+        NetworkIdentity identity = oldPlayer.GetComponent<NetworkIdentity>();
+
+        // Check if player already has someone controlling them:
+        if (identity.connectionToClient != null && connection != identity.connectionToClient)
+        {
+            DelayedDisconnect(connection, DisconnectMessage.Type.Unknown);
+            return;
+        }
+
         NetworkServer.AddPlayerForConnection(connection, oldPlayer.gameObject);
         oldPlayer.playerId = connection.connectionId;
 
@@ -340,6 +351,7 @@ public class RAGNetworkManager : NobleNetworkManager
         connection.Disconnect();
         RAGMatchmaker.Instance.UpdatePlayerCount(PlayersDict.Instance.Players.Count);
     }
+    #endregion
 
     public override void OnServerPrepared(string hostAddress, ushort hostPort)
     {
@@ -349,6 +361,8 @@ public class RAGNetworkManager : NobleNetworkManager
 
     public override void Update()
     {
+        // Try catch exceptions because noble sometimes throws unfixable errors that
+        // do not impact the game whatsoever.
         try
         {
             base.Update();

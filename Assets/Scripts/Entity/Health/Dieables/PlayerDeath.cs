@@ -14,7 +14,6 @@ public class PlayerDeath : MonoBehaviour, IDieable
 
     public void Die()
     {
-        Debug.Log(player.name + " has died!");
         player.Collider2D.isTrigger = true;
         player.gameObject.layer = LayerDict.Instance.GetDownedPlayerLayer();
         player.PlayerAnimationController?.OnDeath();

@@ -30,7 +30,7 @@ TagManager:
   - 
   - 
   - PlayerOnlyBlockable
-  - 
+  - EnemyOnlyBlockable
   - 
   - Floor
   - Wall

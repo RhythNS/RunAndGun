@@ -37,7 +37,7 @@ public class TutorialShop : MonoBehaviour
 
         for (int i = 0; i < spawnedItems.Length; i++)
         {
-            if (!spawnedItems[i].gameObject)
+            if (!spawnedItems[i])
                 continue;
 
             NetworkServer.Destroy(spawnedItems[i].gameObject);

@@ -9,6 +9,8 @@
         Brain = GetComponent<Brain>();
         BrainMover = GetComponent<BrainMover>();
         OnPlayer = GetComponent<Player>();
+
+        Brain.enabled = false;
     }
 
     public override void OnStartServer()
