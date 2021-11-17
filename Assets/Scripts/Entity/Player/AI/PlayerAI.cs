@@ -1,4 +1,6 @@
-﻿public class PlayerAI : Mirror.NetworkBehaviour
+﻿using Mirror;
+
+public class PlayerAI : NetworkBehaviour
 {
     public Brain Brain { get; private set; }
     public BrainMover BrainMover { get; private set; }

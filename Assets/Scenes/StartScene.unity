@@ -7672,7 +7672,7 @@ PrefabInstance:
     - target: {fileID: 1365799234425872916, guid: 51cb51d065c14cd4d8c4ff558239b518,
         type: 3}
       propertyPath: worldEffects.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1365799234425872916, guid: 51cb51d065c14cd4d8c4ff558239b518,
         type: 3}
@@ -7697,6 +7697,12 @@ PrefabInstance:
       propertyPath: worldEffects.Array.data[2]
       value: 
       objectReference: {fileID: 11400000, guid: b9330fa747c05b147987e286b87ce552,
+        type: 2}
+    - target: {fileID: 1365799234425872916, guid: 51cb51d065c14cd4d8c4ff558239b518,
+        type: 3}
+      propertyPath: worldEffects.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: f946f3889b73fcf429e85eb16bb285a2,
         type: 2}
     - target: {fileID: 1365799234809505997, guid: 51cb51d065c14cd4d8c4ff558239b518,
         type: 3}

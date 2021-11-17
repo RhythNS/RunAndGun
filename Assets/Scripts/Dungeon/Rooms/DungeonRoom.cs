@@ -171,7 +171,7 @@ public abstract class DungeonRoom : MonoBehaviour
         int maxIterations = enemiesToSpawn.Length * 25;
         int iterations = 0;
 
-        Vector2Int playerPos = DungeonCreator.Instance.WorldPositionToTilePosition(Player.LocalPlayer.transform.position);
+        Vector2Int playerPos = ConversionDict.WorldPositionToTilePosition(Player.LocalPlayer.transform.position);
 
         while (enemySpawns.Count < enemiesToSpawn.Length && iterations < maxIterations)
         {
@@ -225,7 +225,7 @@ public abstract class DungeonRoom : MonoBehaviour
         int maxIterations = pickables.Length * 25;
         int iterations = 0;
 
-        Vector2Int playerPos = DungeonCreator.Instance.WorldPositionToTilePosition(Player.LocalPlayer.transform.position);
+        Vector2Int playerPos = ConversionDict.WorldPositionToTilePosition(Player.LocalPlayer.transform.position);
 
         while (lootSpawns.Count < pickables.Length && iterations < maxIterations)
         {

@@ -13,6 +13,7 @@ public class LobbyLevel : MonoBehaviour
     }
 
     [SerializeField] private Bounds bounds;
+    [SerializeField] private GameObject lobbyPathfinder;
 
     public static LobbyLevel Instance { get; private set; }
 
@@ -36,6 +37,11 @@ public class LobbyLevel : MonoBehaviour
         StartCoroutine(DungeonCreator.Instance.ClearPreviousDungeon());
         MusicManager.Instance.ChangeState(MusicManager.State.Lobby);
         DungeonCreator.Instance.AdjustMask(bounds.position, bounds.scale);
+        IPathfinder pathfinder = lobbyPathfinder.GetComponent<IPathfinder>();
+        if (pathfinder == null)
+            Debug.LogWarning("Could not get a pathfinder from the pathfinder object!");
+        DungeonDict.Instance.pathfinder = pathfinder;
+        ConversionDict.Instance.offsetPosition = Vector3.zero;
     }
 
     /// <summary>

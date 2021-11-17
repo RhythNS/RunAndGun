@@ -12,4 +12,7 @@ public abstract class VectorUtil
     /// <returns>The floored vector.</returns>
     public static Vector3Int FloorVectorToInt(in Vector3 input)
         => new Vector3Int(Mathf.FloorToInt(input.x), Mathf.FloorToInt(input.y), Mathf.FloorToInt(input.z));
+
+    public static bool InBounds(Vector2 from, Vector2 to, Vector2 value)
+        => value.x >= from.x && value.y >= from.y && value.x < to.x && value.y < to.y;
 }

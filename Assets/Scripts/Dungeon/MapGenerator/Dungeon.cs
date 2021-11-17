@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace MapGenerator
 {
-    public class Dungeon
+    public class Dungeon : IPathfinder
     {
         private const int ITERATIONS = 128;
 
@@ -852,7 +852,7 @@ namespace MapGenerator
                 }
 
                 //path.Add(new Vector2(current.x, current.y));
-                path.Add(DungeonCreator.Instance.TilePositionToWorldPositionMiddle(current.x, current.y));
+                path.Add(ConversionDict.TilePositionToWorldPositionMiddle(current.x, current.y));
                 current = cameFrom[current];
             }
 

@@ -21,6 +21,8 @@ public class DungeonDict : MonoBehaviour
     /// </summary>
     public Dungeon dungeon;
 
+    public IPathfinder pathfinder;
+
     [SerializeField] private bool debug = false;
 
     private void Awake()

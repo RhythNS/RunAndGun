@@ -50,12 +50,12 @@ public class SetPathFromHealthNode : BNodeAdapter
                 return;
             }
 
-            Vector2Int startPos = DungeonCreator.Instance.WorldPositionToTilePosition(Brain.transform.position);
-            Vector2Int endPos = DungeonCreator.Instance.WorldPositionToTilePosition(health.transform.position);
+            Vector2Int startPos = ConversionDict.WorldPositionToTilePosition(Brain.transform.position);
+            Vector2Int endPos = ConversionDict.WorldPositionToTilePosition(health.transform.position);
 
             //task = Task<List<Vector2>>.Factory.StartNew(() => DebugPathFinder.Instance.TryFindPath(startPos, endPos));
             //Debug.LogWarning("SetPathFromHealthNode is running with debug path finder! This will only work in the test scene!");
-            task = Task<List<Vector2>>.Factory.StartNew(() => DungeonDict.Instance.dungeon.TryFindPath(startPos, endPos));
+            task = Task<List<Vector2>>.Factory.StartNew(() => DungeonDict.Instance.pathfinder.TryFindPath(startPos, endPos));
 
             return;
         }

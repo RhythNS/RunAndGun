@@ -17,6 +17,12 @@ public class GameMode : ScriptableObject
     public int seed;
     public DungeonConfig dungeonConfig;
     public RegionOnLevel[] customRegionOnLevels;
+    
+    // starting items
+
+    // gamerules?
+    // friendly enabled?
+    // hit detection clientside
 
     [System.Serializable]
     public struct RegionOnLevel

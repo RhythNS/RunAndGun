@@ -50,7 +50,6 @@ public class DungeonCreator : MonoBehaviour
     private Vector2Int maxSize = Vector2Int.one;
 
     private DungeonTimer timer;
-    private Vector3 position;
 
     #region UnityEvents
     private void Awake()
@@ -100,6 +99,7 @@ public class DungeonCreator : MonoBehaviour
             dungeon = new Dungeon(roomLayouts.ToArray(), roomGameObjects.ToArray(), roomTypes.ToArray(), seed, config);
         }
         DungeonDict.Instance.dungeon = dungeon;
+        DungeonDict.Instance.pathfinder = dungeon;
 
         AdjustMask();
 
@@ -115,7 +115,7 @@ public class DungeonCreator : MonoBehaviour
 
         SetLoadStatus(1.0f);
 
-        position = transform.position;
+        ConversionDict.Instance.offsetPosition = transform.position;
 
         if (Player.LocalPlayer) // check to allow for debugging if a localplayer is not scene
             Player.LocalPlayer.StateCommunicator.LevelSetLoaded(true);
@@ -371,42 +371,6 @@ public class DungeonCreator : MonoBehaviour
     {
         mask.localScale = new Vector3(dungeon.Size.x, dungeon.Size.y, 1f);
         mask.position = transform.position + (mask.localScale / 2f);
-    }
-
-    /// <summary>
-    /// Calculates the world position from a tile and adding half.
-    /// </summary>
-    public Vector3 TilePositionToWorldPositionMiddle(Vector2Int pos)
-    {
-        return position + new Vector3(pos.x + 0.5f, pos.y + 0.5f, 0.0f);
-        //return tilemapFloor.CellToWorld((Vector3Int)pos) + tilemapFloor.cellSize * 0.5f;
-    }
-
-    /// <summary>
-    /// Calculates the world position from a tile and adding half.
-    /// </summary>
-    public Vector3 TilePositionToWorldPositionMiddle(int x, int y)
-    {
-        return position + new Vector3(x + 0.5f, y + 0.5f, 0.0f);
-        // return tilemapFloor.CellToWorld(new Vector3Int(x, y, 0)) + tilemapFloor.cellSize * 0.5f;
-    }
-
-    /// <summary>
-    /// Calculates the world position from a tile.
-    /// </summary>
-    public Vector3 TilePositionToWorldPosition(Vector2Int pos)
-    {
-        return position + new Vector3(pos.x, pos.y, 0.0f);
-        // return tilemapFloor.CellToWorld((Vector3Int)pos);
-    }
-
-    /// <summary>
-    /// Calculates the tile position from a worldposition.
-    /// </summary>
-    public Vector2Int WorldPositionToTilePosition(Vector3 pos)
-    {
-        return new Vector2Int((int)(pos.x - position.x), (int)(pos.y - position.y));
-        // return (Vector2Int)tilemapFloor.WorldToCell(pos);
     }
 
     /// <summary>

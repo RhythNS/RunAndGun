@@ -77,7 +77,7 @@ namespace MapGenerator
                     StartRoom startRoom = dungeonRoomObject.AddComponent<StartRoom>();
                     if (Player.LocalPlayer.isServer && levelNumber == 0)
                     {
-                        startRoom.SpawnItems(RegionDict.Instance.StartingRoomPickables, DungeonCreator.Instance.TilePositionToWorldPosition(room.Position + (room.Layout.Size / 2)));
+                        startRoom.SpawnItems(RegionDict.Instance.StartingRoomPickables, ConversionDict.TilePositionToWorldPosition(room.Position + (room.Layout.Size / 2)));
                     }
                     return startRoom;
 
