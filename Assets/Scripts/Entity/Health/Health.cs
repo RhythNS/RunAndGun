@@ -101,6 +101,12 @@ public class Health : NetworkBehaviour
         current = Mathf.Clamp(amount, 0, max);
     }
 
+    [Server]
+    public void Kill()
+    {
+        ServerDamage(int.MaxValue, null);
+    }
+
     /// <summary>
     /// Takes damage.
     /// </summary>
@@ -176,7 +182,7 @@ public class Health : NetworkBehaviour
     [ClientRpc]
     private void RpcOnDied()
     {
-        OnDied?.Invoke();
+        OnDied?.Invoke(gameObject);
         FMODUtil.PlayOnTransform(diedSound, transform);
         if (!isServer)
             GetComponent<IDieable>().Die();

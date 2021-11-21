@@ -2,7 +2,10 @@
 
 public class DungeonRadioButtonGroup : DungeonButtonGroup
 {
-    [SerializeField] private int defaultOn = 0;
+    public int CurrentOn => currentOn;
+    [SerializeField] private int currentOn = 0;
+
+    public event IntChanged OnSelectedButtonChanged;
 
     public override void OnStartServer()
     {
@@ -11,11 +14,11 @@ public class DungeonRadioButtonGroup : DungeonButtonGroup
         if (buttons.Length == 0)
             return;
 
-        if (defaultOn < 0 || defaultOn >= buttons.Length)
+        if (currentOn < 0 || currentOn >= buttons.Length)
         {
             Debug.LogWarning("Buttongroup " + name + " had an invaild default on (" +
-                defaultOn + "/" + buttons.Length + ")!");
-            defaultOn = 0;
+                currentOn + "/" + buttons.Length + ")!");
+            currentOn = 0;
         }
 
         for (int i = 0; i < buttons.Length; i++)
@@ -24,7 +27,7 @@ public class DungeonRadioButtonGroup : DungeonButtonGroup
             buttons[i].SetStayPressed(true);
         }
 
-        buttons[defaultOn].SetPressed(true);
+        buttons[currentOn].SetPressed(true);
     }
 
     public override void OnButtonChanged(DungeonButton dungeonButton, bool newPressed)
@@ -34,8 +37,12 @@ public class DungeonRadioButtonGroup : DungeonButtonGroup
 
         for (int i = 0; i < buttons.Length; i++)
         {
-            if (buttons[i] != dungeonButton)
+            if (buttons[i] == dungeonButton)
+                currentOn = i;
+            else
                 buttons[i].SetPressed(false, false);
         }
+
+        OnSelectedButtonChanged?.Invoke(currentOn);
     }
 }

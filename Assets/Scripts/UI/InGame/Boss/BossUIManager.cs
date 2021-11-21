@@ -76,7 +76,7 @@ public class BossUIManager : MonoBehaviour
     /// <summary>
     /// Callback for when the boss died.
     /// </summary>
-    private void OnBossDied()
+    private void OnBossDied(GameObject _)
     {
         UnsubscribeFromEvents();
 
