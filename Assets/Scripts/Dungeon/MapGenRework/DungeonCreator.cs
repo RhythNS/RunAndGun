@@ -19,9 +19,8 @@ namespace Assets.Scripts.Dungeon.MapGenRework
             List<GameObject> rooms = new List<GameObject>();
 
             for (int i = 0; i < roomLayouts.Length; i++)
-                for (int j = 0; j < types.Length; j++)
-                    if (roomLayouts[i].GetComponent<Room>().GetRoomType() == types[j])
-                        rooms.Add(roomLayouts[i]);
+                if (types.Contains(roomLayouts[i].GetComponent<Room>().GetRoomType()))
+                    rooms.Add(roomLayouts[i]);
 
             return rooms;
         }
@@ -46,13 +45,9 @@ namespace Assets.Scripts.Dungeon.MapGenRework
 
         public void CreateDungeon()
         {
-            foreach (var go in roomGameObjects)
+            for (int i = transform.childCount - 1; i >= 0; i--)
             {
-#if UNITY_EDITOR
-                DestroyImmediate(go);
-#else
-                Destroy(go);
-#endif
+                DestroyImmediate(transform.GetChild(0).gameObject);
             }
 
             roomGameObjects = new List<GameObject>();
@@ -139,6 +134,19 @@ namespace Assets.Scripts.Dungeon.MapGenRework
                     DestroyImmediate(roomGameObjects[i]);
                 }
             }
+
+            for (int i = 0; i < roomGameObjects.Count; i++)
+            {
+                if (roomGameObjects[i] == null)
+                    continue;
+
+                Room room = roomGameObjects[i].GetComponent<Room>();
+
+                foreach (var conn in room.GetConnections())
+                {
+                    conn.Place();
+                }
+            }
         }
 
         private bool IsOverlappingRoom(GameObject roomObject)
@@ -149,7 +157,6 @@ namespace Assets.Scripts.Dungeon.MapGenRework
             {
                 if (room.IsInBounds(roomGameObjects[i].GetComponent<Room>().GetBoundingRectWorld()))
                 {
-                    Debug.Log("overlap");
                     return true;
                 }
             }

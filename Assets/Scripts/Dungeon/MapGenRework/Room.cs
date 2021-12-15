@@ -16,11 +16,6 @@ namespace Assets.Scripts.Dungeon.MapGenRework
         private RoomConnection[] connections = new RoomConnection[0];
 
         [SerializeField]
-        private Vector3 minBounds;
-        [SerializeField]
-        private Vector3 maxBounds;
-
-        [SerializeField]
         private Rect boundingRect;
 
         public Rect GetBoundingRect()
@@ -53,9 +48,10 @@ namespace Assets.Scripts.Dungeon.MapGenRework
             return new Rect(transform.position.x + boundingRect.x, transform.position.y + boundingRect.y, boundingRect.width, boundingRect.height);
         }
 
-        private void OnDrawGizmos()
+        private void OnDrawGizmosSelected()
         {
-
+            Gizmos.color = Color.white;
+            Gizmos.DrawWireCube(transform.position + new Vector3(boundingRect.center.x, boundingRect.center.y), boundingRect.size);
             for (int i = 0; i < connections.Length; i++)
             {
                 if (connections[i].isOccupied)
@@ -65,12 +61,6 @@ namespace Assets.Scripts.Dungeon.MapGenRework
 
                 Gizmos.DrawLine(connections[i].transform.position, connections[i].transform.position + connections[i].transform.right);
             }
-        }
-
-        private void OnDrawGizmosSelected()
-        {
-            Gizmos.color = Color.white;
-            Gizmos.DrawWireCube(transform.position + new Vector3(boundingRect.center.x, boundingRect.center.y), boundingRect.size);
         }
     }
 }
