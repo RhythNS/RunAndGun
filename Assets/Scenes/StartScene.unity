@@ -760,7 +760,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1437744876}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c9d08f8404978ef4ab7b868e40541f06, type: 3}
   m_Name: 
@@ -7738,6 +7738,36 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Globals
+      objectReference: {fileID: 0}
+    - target: {fileID: 7664036751175732713, guid: 51cb51d065c14cd4d8c4ff558239b518,
+        type: 3}
+      propertyPath: healthCurve.m_Curve.Array.data[0].value
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7664036751175732713, guid: 51cb51d065c14cd4d8c4ff558239b518,
+        type: 3}
+      propertyPath: healthCurve.m_Curve.Array.data[1].value
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 7664036751175732713, guid: 51cb51d065c14cd4d8c4ff558239b518,
+        type: 3}
+      propertyPath: healthCurve.m_Curve.Array.data[0].inSlope
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7664036751175732713, guid: 51cb51d065c14cd4d8c4ff558239b518,
+        type: 3}
+      propertyPath: healthCurve.m_Curve.Array.data[1].inSlope
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7664036751175732713, guid: 51cb51d065c14cd4d8c4ff558239b518,
+        type: 3}
+      propertyPath: healthCurve.m_Curve.Array.data[0].outSlope
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7664036751175732713, guid: 51cb51d065c14cd4d8c4ff558239b518,
+        type: 3}
+      propertyPath: healthCurve.m_Curve.Array.data[1].outSlope
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 9108665165175664637, guid: 51cb51d065c14cd4d8c4ff558239b518,
         type: 3}

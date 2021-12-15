@@ -256,7 +256,8 @@ public class EquippedWeapon : NetworkBehaviour
         BulletInfo info = Weapon.BulletInfo;
         bullet.SpriteRenderer.sprite = info.Sprite;
         Vector2 velocity = direction * Weapon.Speed;
-        bullet.Body.velocity = (onBody ? onBody.velocity : Vector2.zero) + velocity;
+        //bullet.Body.velocity = (onBody ? onBody.velocity : Vector2.zero) + velocity;
+        bullet.Body.velocity = velocity;
         bullet.velocity = velocity;
         //bullet.transform.position = BulletSpawnPosition;
         bullet.transform.rotation = Quaternion.FromToRotation(Vector2.up, direction);
